@@ -1,0 +1,15 @@
+---
+title: "Report #1"
+author: "inSileco"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  pdf_document:
+    fig_caption: true
+  html_document:
+      toc: yes
+      toc_float: yes
+--- 
+
+# First part 
+
+This is it the report to be used. 
