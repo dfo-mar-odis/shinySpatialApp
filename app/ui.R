@@ -27,11 +27,23 @@ ui <- fluidPage(
           h2(div(img(src="img/bio_logo.jpg", height = 80), "Spatial Shiny App")),
           tabsetPanel(
             
+            # Identification
+            tabPanel(
+              "Identify", 
+              icon = icon("user-check"),
+              helpText("This tab allows you to identify yourself."),
+              textInput("user_name", label = "Enter your name", value = "Lorem ipsum"),
+              textInput("user_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
+              textAreaInput("user_email", label = "Provide the reason/rationale for generating the report", value = ""),
+              checkboxInput("user_consent", label = "By checking this box, you abide to ..."),
+              submitButton("Submit", icon = icon("paper-plane"))
+            ),
+            
             # LAYER ADDITION 
             tabPanel(
-              "Add layers", 
+              "Add", 
               icon = icon("database"),
-              helpText("This tab alows you to add layers on map."),
+              helpText("This tab allows you to add layers on map."),
               checkboxGroupInput("data_src", 
                                 label = "Select the data you need", 
                                 choiceNames = tb_ref$layer,
@@ -45,7 +57,7 @@ ui <- fluidPage(
             
             # LAYER CREATION 
             tabPanel(
-            "Create layers", 
+            "Create", 
             icon = icon("pencil"),
             helpText("This tab allows you to create and save layers."),
             h4("Create geom from map (geojson)"),
@@ -57,7 +69,7 @@ ui <- fluidPage(
             
             # SPATIAL OPERATION(S) 
             tabPanel(
-              "Spatial operation(s)", 
+              "Manipulate", 
               icon = icon("cog"),
               helpText("This tab allows you performs spatial operation."),
               selectInput("oper_slc", "Select one available operation", 
@@ -88,11 +100,6 @@ ui <- fluidPage(
             )
           ),
             
-
-            mainPanel(
-
-)
-          
             
         ),
 
