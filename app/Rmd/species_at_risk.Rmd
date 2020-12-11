@@ -1,0 +1,187 @@
+---
+title: "Reproducible Report for Species in Maritimes Region - for Internal DFO use only"
+author: Synthesis prepared by the MSP Team
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output:
+  html_document:
+    theme: paper
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+
+
+```{r Define Site, echo = FALSE, include = FALSE, cache = FALSE, eval = FALSE}
+#HTML output of code is automatically generated in Catalina's computer: RProjects/MSP/SearchPEZ/code
+#output of get.data.R should be manually moved to RProjects/MSP/SearchPEZ/outputs/sitenamexkm  
+rm(list=ls(all=TRUE))
+AquaSiteName <- "FarmersLedge"
+PEZversion <- "4748m"
+#make sure you delete all shp.xml files in the folder to be able to run this code
+minYear <- 2002
+# cat(AquaSiteName)
+```
+```{r setup, echo=FALSE, include=FALSE, cache=FALSE, eval = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
+library(Mar.datawrangling)
+library(knitr)
+library(kableExtra)
+library(rgdal)
+library(maps)
+library(lubridate)
+library(raster)
+library(RCurl)
+#install.packages("devtools")
+#devtools::install_github("JosephCrispell/basicPlotteR")
+library(basicPlotteR) #use the two lines above to install this package
+#source("C:/RProjects/SearchPEZ/code/.Rprofile") #Catalina's path to access Oracle passwords
+```
+
+```{r source functions, echo=FALSE, include=FALSE, cache=FALSE, eval = FALSE}
+# the .Rmd file sets the working directory based on where it resides and ignores the wd set by the .RProj file
+source("site_map.r")
+source("plot_wsdb.r")
+source("filter_wsdb.r")
+# ## Another option is to load directly from the web and read in using Rcurl
+# function_urls <- c("https://raw.githubusercontent.com/AtlanticR/MSP/master/SearchPEZ/code/site_map.r",
+#                    "https://raw.githubusercontent.com/AtlanticR/MSP/master/SearchPEZ/code/plot_wsdb.r",
+#                    "https://raw.githubusercontent.com/AtlanticR/MSP/master/SearchPEZ/code/filter_wsdb.r")
+# 
+# for (i in function_urls){eval(parse(text = RCurl::getURL(i, ssl.verifypeer = FALSE)),envir=.GlobalEnv)}
+```
+
+```{r Set up paths, echo=FALSE, include=FALSE, cache=FALSE, eval = FALSE}
+mspPath <- "../"
+data.dir = "../../../Data/mar.wrangling"
+#create a folder in outputs with the name of the site and buffer area search
+dataPath <- file.path("../outputs",paste0(AquaSiteName,PEZversion))
+# setwd(dataPath) #not needed?
+polyPath <- "../../../Data/Zones/SearchPEZpolygons"
+site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName))
+#wsdbFile <- file.path("../inputs","WSDB_GLazin_AllSpecies_2018.csv")
+wsdbFile <- file.path("../../../Data/NaturalResources/Species/Cetaceans/WSDB","MarWSDBSightingsForCGomez_27Oct2020.csv")
+```
+
+```{r read baseline data for maps, echo=FALSE, include=FALSE, cache=FALSE, eval = FALSE}
+landGDB <- "../../../Data/Boundaries/Coast50K/Coastline50k.gdb"
+land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)
+```
+
+```{r Define PEZ!, echo=FALSE, include=FALSE, cache=FALSE, eval = FALSE}
+pl <- list.files(polyPath,"*.shp")
+pl <- pl[-grep("xml",pl)]
+PEZ_poly <- readOGR(file.path(polyPath,pl[grep(paste0("PEZ_",AquaSiteName,PEZversion),pl)]))
+```
+
+### **About this report**
+
+This reproducible report summarizes species that have been reported in specific areas drawing from databases available, both within and outside the Department (**2002 - 2018**). This report if for internal DFO use only. No maps, layers, or data that violate the rule of 5 will be shared outside of the department. 
+
+### **How to use this report?**
+
+This report is used used to inform a general list of species that have been reported in a given area. Absence of a species in this report should be interpreted as an absence of reporting, not as an absence of the species in the area. The focus of this report is on species presence and not on associated numbers, frequency, or catch information. For more information, please read the "resources and sources of uncertainty" section of this document. 
+
+We recommend to circulate the species list generated in this synthesis to appropriate DFO units and sectors to verify and supplement the information provided (e.g. reported spatial and temporal presence/absence of species in the area). 
+
+### **Search area**
+
+Map below shows the polygon (blue) used to search regional databases and summarize species reported.
+
+**Site:**
+```{r echo=FALSE, results='asis', eval = FALSE}
+cat(AquaSiteName)
+```
+
+```{r Fig 1 PEZ polygon, fig.height=8, fig.width=11, eval = FALSE}
+site_map(PEZ_poly,site,land,40)
+```
+
+
+### **Whale Sightings Database (WSDB)**
+
+The Marine Mammal and Pelagic Animals or Whale Sighting Database (WSDB) was
+implemented in 2002 by the Department of Fisheries and Oceans (DFO) to provide a
+central repository for opportunistic sightings of marine animals and to improve
+accessibility to data from surveys and research activities conducted in the Bay of Fundy and on the Scotian Shelf (MacDonald et al 2017). Most sightings are collected on an opportunistic basis and observations may come from individuals with a variety of expertise in marine mammal identification experiences. Most data is gathered from platforms of opportunity that were vessel-based. Please read the Important Disclaimers for WSDB in the section below. For more information see <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf> or contact <XMARWhaleSightings@dfo-mpo.gc.ca>
+
+Map below includes SARA and COSEWIC species within the search area. Absence of a species in the map should be interpreted as an absence of reporting, not as an absence of the species in the area (e.g. sightings information underrepresents presence of cetaceans as this search does not include acoustic detections). 
+
+```{r read wsdb and filter SARA & COSEWIC cetacean spp, echo=FALSE, include=FALSE, cache=FALSE, eval = FALSE}
+wsdb <- read.csv(wsdbFile)
+wsdb <- wsdb[which(wsdb$YEAR>=minYear),]
+#wsdb <- remove_landPoints(wsdb,land) # work in progress
+wsdb_filter <- filter_wsdb(wsdb)
+```
+```{r Fig 4 Whale Sightings Database, fig.height=8, fig.width=11, eval = FALSE}
+par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
+#par(mar = c(5.1, 4.1, 4.1, 2.1))
+site_map(PEZ_poly,site,land,5)
+plot_wsdb(PEZ_poly,wsdb_filter,5)
+```
+
+
+### **Priority Areas to Enhance Monitoring of Cetaceans**
+
+Species Distribution Models  were used to predict and identify priority areas for enhanced monitoring of cetaceans in eastern Canadian waters off Nova Scotia, Newfoundland and Labrador (Gomez et al. 2020) <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>. Outputs from this report are available in the Open Data record <https://open.canada.ca/data/en/dataset/c094782e-0d6f-4cc0-b5a3-58908493a433> and summarized in this report for cetacean SAR. 
+
+TBA: priorityCetaceanFile <- file.path("../../../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP","../../../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Fin_Whale.tif")
+
+
+
+### **Blue Whale Important Habitat**
+
+<https://open.canada.ca/data/en/dataset/8fafd919-fcbe-43a3-a911-3d9461273441>
+
+TBA: blueFile <- file.path("../../../Data/NaturalResources/Species/Cetaceans/BlueWhaleHabitat_FGP","../../../Data/NaturalResources/Species/Cetaceans/BlueWhaleHabitat_FGP/BlueWhaleHabitat_HabitatBaleineBleue.shp")
+
+
+
+### **Important Disclaimers for WSDB**
+
+- The sighting data have not yet been completely error-checked. 
+
+- The quality of some of the sighting data is unknown. Most sightings are collected on an opportunistic basis and observations may come from individuals with a variety of expertise in marine mammal identification experiences. 
+
+- Most data have been gathered from platforms of opportunity that were vessel-based. The inherent problems with negative or positive reactions by cetaceans to the approach of such vessels have not yet been factored into the data 
+
+- Sighting effort has not been quantified (i.e., the numbers cannot be used to estimate true species density or abundance for an area). Lack of sightings do not represent lack of species present in a particular area 
+
+- Numbers sighted have not been verified (especially in light of the significant differences in detectability among species). 
+
+- For completeness, the data represent an amalgamation of sightings from a variety of years and seasons. Effort (and number of sightings) is not necessarily consistent among months, years, and areas. There are large gaps between years. Thus seasonal, depth, and distributional information should not be considered definitive. 
+
+- Many sightings could not be identified to species, but are listed to the smallest taxonomic group possible
+
+
+
+### **Cetacean Information**
+
+- Please review the "Interpreting results for marine spatial planning purposes" section for a summary of caveats and uncertainty associated with model prediction in Gomez et al. 2020 <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>.
+
+### **This document**
+
+This synthesis is created using Rmarkdown and therefore this document can be reproduced and reused using the code  available in <https://github.com/AtlanticR/MSP/tree/master/SearchPEZ>. The full document can be updated rapidly as more or different information becomes available.
+
+This document was prepared by the Science MSP Team: <Catalina.Gomez@dfo-mpo.gc.ca>, <Gordana.Lazin@dfo-mpo.gc.ca>, <Brian.Bower@dfo-mpo.gc.ca>, <Philip.Greyson@dfo-mpo.gc.ca>, and <Tana.Worcester@dfo-mpo.gc.ca>
+
+
+
+###**References**
+
+NOTE FOR DEVELOPMENT: WOULD NEED TO INCLUDE ADDITIONAL REFERENCES AND PROPER CITATIONS 
+
+MacDonald, D., Emery, P., Themelis, D., Smedbol, R.K., Harris, L.E., and McCurdy, Q. 2017. Marine mammal and pelagic animal sightings (Whalesightings) database: a user’s guide. Can. Tech. Rep. Fish. Aquat. Sci. 3244: v + 44 p.<https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf> 
+
+Kennedy R.D. 2019. The North Atlantic Right Whale Consortium Database: A Guide for Users and Contributors. Version 6. North Atlantic Right Whale Consortium Reference Document 2019-02.144 pp. <https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf> 
+
+
+
+### **Acknowledgements**
+
+<Mike.McMahon@dfo-mpo.gc.ca>! for providing code and advice in the use of `Mar.datawrangling`: A suite of tools for extracting, filtering and aggregating data from the Maritimes fisheries science databases <https://github.com/Maritimes/Mar.datawrangling>
+
+The Atlantic R Learning & Development Initiative <https://github.com/AtlanticR>.  

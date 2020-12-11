@@ -1,14 +1,19 @@
 readSpatial <- function(con, crs = 3857) { 
-  # msgInfo("reading", con)
-  out <- read_sf_try(con, crs = crs)
-  if (isFALSE(out)) {
-    out <- read_raster_try(con, crs = crs)
+  # rds 
+  if (grepl("\\.[Rr]ds", con)) {
+    out <- readRDS(con)
+  } else {
+    # msgInfo("reading", con)
+    out <- read_sf_try(con, crs = crs)
+    if (isFALSE(out)) {
+      out <- read_raster_try(con, crs = crs)
+    }
+    # 
+    if (isFALSE(out)) {
+      msgError("cannot read", con)
+      out <- NULL 
+    } 
   }
-  # 
-  if (isFALSE(out)) {
-    msgError("cannot read", con)
-    out <- NULL 
-  }  
   out
 }
   

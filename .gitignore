@@ -2,6 +2,8 @@
 app/output/*/*.tex
 app/output/*/*.pdf
 app/output/*/*.html
+app/output/*/*.docx
+tmp/
 
 # History files
 .Rhistory

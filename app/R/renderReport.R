@@ -1,5 +1,11 @@
-renderReport <- function(x, fl = "report", dir = "output/doc") {
+renderReport <- function(x, fl = "", dir = "output/doc") {
   msgInfo("Generating report", x)
+  if (fl == "") {
+    fl <- NULL 
+  } else {
+    # nasty trick due to current behavior   
+    fl <- rep(20)
+  }
   out <- tryCatch({
     rmarkdown::render(x, 
       output_format = "all", 
