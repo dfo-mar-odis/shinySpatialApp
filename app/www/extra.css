@@ -5,3 +5,11 @@
 #file_report {
   color: #337ab7;
 }
+
+#valid_details {
+  color: #34c369;
+}
+
+#invalid_details {
+  color: #b83343;
+}

@@ -22,7 +22,7 @@ ui <- fluidPage(
 
     # Sidebar with a ui for grabbing mapedit data
     sidebarLayout(
-        # ,
+
         sidebarPanel( 
           h2(div(img(src="img/bio_logo.jpg", height = 80), "Spatial Shiny App")),
           
@@ -39,35 +39,12 @@ ui <- fluidPage(
               checkboxInput("user_consent", label = "By checking this box, you abide to ..."),
               br(),
               actionButton("get_user_details", 'Valid details', icon = icon("pencil")),
+              HTML("&nbsp;"),
               textOutput("valid_details", inline = TRUE),
+              textOutput("invalid_details", inline = TRUE),
             ),
             
-            # LAYER ADDITION 
-            # tabPanel(
-            #   "Crete",
-            #   tabsetPanel(
-            #     tabPanel(
-            #       "Identify",
-            #     ),
-            #     tabPanel(
-            #       "Identify2",
-            #     )
-            #   )
-            # ),
-            # tabPanel(
-            #   "Add", 
-            #   icon = icon("database"),
-            #   helpText("This tab allows you to add layers on map."),
-            #   checkboxGroupInput("data_src", 
-            #                     label = "Select the data you need", 
-            #                     choiceNames = tb_ref$layer,
-            #                     choiceValues = tb_ref$id),
-            # 
-            #   h4("Add a spatial file"),
-            #   fileInput("spa_ext", "Choose a file",
-            #   accept = c(".kml", ".tiff", ".shp", ".geojson")
-            #   )
-            # ),
+            
             
             # LAYER CREATION 
             tabPanel(
@@ -89,33 +66,81 @@ ui <- fluidPage(
                 "Draw from map",
                 h4("Create geom from map (geojson)"),
                 textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
-                numericInput("geom_buffer", label = "Optional buffer (in meters)", value = "0", min = 0),
                 actionButton('save', 'Create from Map', icon = icon("pencil")),
               ),
               tabPanel(
                 "Input Shapefile",
                 h4("Use your own shapefile"),
-                fileInput("spa_ext", "Choose a file",
-                  accept = c(".shp", ".geojson")
-                  )
+                fileInput("spa_ext", "Choose a file", accept = c(".shp", ".geojson"))
               )
             )
-            
-            
-
           ),
+          
+          
+          # LAYER ADDITION 
+          # tabPanel(
+          #   "Crete",
+          #   tabsetPanel(
+          #     tabPanel(
+          #       "Identify",
+          #     ),
+          #     tabPanel(
+          #       "Identify2",
+          #     )
+          #   )
+          # ),
+          # tabPanel(
+          #   "Add", 
+          #   icon = icon("database"),
+          #   helpText("This tab allows you to add layers on map."),
+          #   checkboxGroupInput("data_src", 
+          #                     label = "Select the data you need", 
+          #                     choiceNames = tb_ref$layer,
+          #                     choiceValues = tb_ref$id),
+          # 
+          #   h4("Add a spatial file"),
+          #   fileInput("spa_ext", "Choose a file",
+          #   accept = c(".kml", ".tiff", ".shp", ".geojson")
+          #   )
+          # ),
+          
+          
             
             # SPATIAL OPERATION(S) 
             tabPanel(
               "Manipulate", 
               icon = icon("cog"),
-              helpText("This tab allows you performs spatial operation."),
-              selectInput("oper_slc", "Select one available operation", 
-                       choices = ls_oper, 
-                       selected = "none"),
-          
-              textInput("name_output", label = "Enter output name (filename)", value = "output_01"),
-              actionButton("oper_doit", "Perform operation", icon("cog"))
+              helpText("This tab allows you to specify the spatial operation(s) to be performed."),
+              
+              tabsetPanel(
+                tabPanel(
+                  "Data source",
+                  br(),
+                  checkboxGroupInput("data_src", 
+                                      label = "Select the data you need", 
+                                      choiceNames = tb_ref$layer,
+                                      choiceValues = tb_ref$id),
+                ),
+                tabPanel(
+                  "Input Area(s)",
+                  br(),
+                  h4("Create geom from map (geojson)"),
+                  textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
+                  actionButton('save', 'Create from Map', icon = icon("pencil")),
+                ),
+                tabPanel(
+                  "Perform operation(s)",
+                  br(),
+                  selectInput("oper_slc", "Select one available operation", 
+                           choices = ls_oper, 
+                           selected = "none"),           
+                  numericInput("geom_buffer", label = "Optional buffer (in meters)", value = "0", min = 0),
+              
+                  textInput("name_output", label = "Enter output name (filename)", value = "output_01"),
+                  actionButton("oper_doit", "Perform operation", icon("cog"))
+                )
+              )
+              
             ),
             
             # REPORT

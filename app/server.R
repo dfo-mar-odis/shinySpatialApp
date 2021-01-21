@@ -1,31 +1,42 @@
 map <- selectionMap()
+
 server <- function(input, output) {
   
     # store all data needed for the report reactively
     report_data <- reactiveValues()
+    # list of data and areas 
+    report_data$slc_data_src <- report_data$slc_areas <- list()
     
+    # VALID AND STORE USER INFO
     valid_details <- reactive({
       if (check_name(input$user_name)) {
         report_data$user <- input$user_name
         if (check_email(input$user_email)) {
           report_data$mail <- input$user_mail
           if (input$user_consent) {
-            output$valid_details <- renderText("ok")
+            output$valid_details <- renderText("All good!")
+            output$invalid_details <- renderText("")
             report_data$valid_details <- TRUE
           } else {
-            output$valid_details <- renderText("You must abide to the terms.")
+            output$invalid_details <- renderText("You must abide to the terms.")
+            output$valid_details <- renderText("")
             report_data$valid_details <- FALSE
           }
         } else {
-          output$valid_details <- renderText("Please enter a valid email.")
+          output$invalid_details <- renderText("Please enter a valid email.")
+          output$valid_details <- renderText("")
         }
       } else {
-        output$valid_details <- renderText("Please enter a valid name.")
+        output$invalid_details <- renderText("Please enter a valid name.")
+        output$valid_details <- renderText("")
       }
     })
     
     observeEvent(input$get_user_details, { valid_details() })
     
+  
+  
+  
   
     spa_all <- reactiveValues()
     # spa_all$vec => loaded list of geom
@@ -51,6 +62,9 @@ server <- function(input, output) {
       edits <- callModule(editMod, leafmap = map, id = "map")
     })
   
+  
+  
+  
     
     # CREATE LAYER 
     observeEvent(input$save, {
@@ -75,7 +89,7 @@ server <- function(input, output) {
     
 
     
-    # REPORT
+    # GENERATE REPORT
     values <- reactiveValues()
     values$generate <- 0
     ## select files available

@@ -6,7 +6,13 @@ selectionMap <- function(map = NULL, feat = NULL) {
        # leafem::removeMouseCoordinates() %>%
        # add popup table?
        leafem::addMouseCoordinates() %>%
-       leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7) 
+       leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7) %>%
+       leaflet::addProviderTiles('Esri.OceanBasemap', group = 'Ocean Basemap') %>%
+       leaflet::addProviderTiles("OpenTopoMap", group = "OpenTopoMap") %>%
+       leaflet::addProviderTiles("OpenStreetMap", group = "OpenStreetMap") %>%
+       addLayersControl(
+         baseGroups = c('OpenStreetMap', 'Ocean Basemap', 'OpenTopoMap'),
+         position = 'bottomleft')
   } else out <- map
 
   if (!"sf" %in% class(feat)) {
