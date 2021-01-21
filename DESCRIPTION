@@ -8,11 +8,13 @@ Authors@R: c(
 Imports:
   cli,
   crayon,
+  glue,
   laeaflet,
   leafem,
   mapedit,
   sf,
   shiny,
+  shinyjs,
   raster,
   rmarkdown,
   whisker

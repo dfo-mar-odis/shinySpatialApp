@@ -1,95 +1,130 @@
-server <- function(input, output) {
+server <- function(input, output, session) {
   
-    # store all data needed for the report reactively
-    report_data <- reactiveValues()
+    # Store all data needed for the report reactively
+    data_in <- reactiveValues()
     # list of data and areas 
-    report_data$slc_data_src <- report_data$slc_areas <- list()
+    data_in$data_src <- data_in$geoms <- list()
+    
+    
+    
+    # INITIATE MAP
+    map <- selectionMap()
+    spa_all <- reactiveValues()
+    edits <- callModule(editMod, leafmap = map, id = "map")  
+    
+    
     
     # VALID AND STORE USER INFO
     valid_details <- reactive({
+      output$invalid_details <- output$valid_details <- renderText("")
       if (check_name(input$user_name)) {
-        report_data$user <- input$user_name
+        data_in$user <- input$user_name
         if (check_email(input$user_email)) {
-          report_data$mail <- input$user_mail
+          data_in$mail <- input$user_mail
           if (input$user_consent) {
             output$valid_details <- renderText("All good!")
-            output$invalid_details <- renderText("")
-            report_data$valid_details <- TRUE
+            data_in$valid_details <- TRUE
           } else {
             output$invalid_details <- renderText("You must abide to the terms.")
-            output$valid_details <- renderText("")
-            report_data$valid_details <- FALSE
+            data_in$valid_details <- FALSE
           }
         } else {
           output$invalid_details <- renderText("Please enter a valid email.")
-          output$valid_details <- renderText("")
         }
       } else {
         output$invalid_details <- renderText("Please enter a valid name.")
-        output$valid_details <- renderText("")
       }
     })
     
     observeEvent(input$get_user_details, { valid_details() })
-    
-  
-  
-    # map <- selectionMap(spa, tb_ref$layer)
-    map <- selectionMap()
-    spa_all <- reactiveValues()
-    edits <- callModule(editMod, leafmap = map, id = "map")
-    # print(tb_ref)
-    # print(spa)
-  
-  
-    
-    # # spa_all$vec => loaded list of geom
-    # spa_all$vec <- spa_all$spa_ext <- spa_all$spa_int <- NULL
-    # 
-    # sel <- reactive(input$data_src)
-    # edits <- callModule(editMod, leafmap = map, id = "map")
-    # 
-    # # ADD LAYERS 
-    # ## add existing layer(s)
-    # observeEvent(input$data_src, {
-    #     # map <- leafem::addFeatures()
-    #     spa_all$spa_int <- spa[as.numeric(sel())]
-    #     spa_all$vec <- c(spa_all$spa_int, spa_all$spa_ext)
-    #     map <- selectionMap(map, spa_all$vec)
-    #     edits <- callModule(editMod, leafmap = map, id = "map")
-    # })
-    # ## add external layer 
-    # observeEvent(input$spa_ext, {
-    #   spa_all$spa_ext <- c(spa_all$spa_int, list(readSpatial(input$spa_ext$datapath)))
-    #   spa_all$vec <- c(spa_all$spa_int, spa_all$spa_ext)
-    #   map <- selectionMap(map, spa_all$spa_ext)
-    #   edits <- callModule(editMod, leafmap = map, id = "map")
-    # })
   
   
   
 
     # CREATE LAYER 
-    observeEvent(input$save, {
+    
+    ## From bbox (2Bdone)
+    
+    ## From map 
+    observeEvent(input$save_from_map, {
+      
+      output$created_from_map_not <- output$created_from_map <- renderText("")
         
         geom <- edits()$finished
         if (!is.null(geom)) {
-            sf::write_sf(geom, 
-              paste0('output/spatial/', input$name_geom, '.geojson'), delete_layer = TRUE, delete_dsn = TRUE)
+            nm <- glue('output/spatial/{input$name_geom}.geojson')
+            if (!file.exists(nm)) {
+              sf::write_sf(geom, nm ,delete_layer = TRUE, delete_dsn = TRUE)
+              output$created_from_map <- renderText(glue('{nm}.geojson created'))
+              data_in$geoms <- append(data_in$geoms, 
+                list(list(geom = geom, name = basename(nm), method = "drawn")))
+            } else output$created_from_map_not <- renderText("Cannot overwrite existing file")
+        } else {
+          output$created_from_map_not <- renderText("Please use the map on the right.")
         }
-        if (input$geom_buffer) {
-          msgInfo(input$geom_buffer, "m buffer to be added.")
-        }
+
     })
+    
+    ## From external shapefile
+    spa_ext <- reactiveValues()
+    # ## add external layer 
+    shinyjs::hide(id = "shp_to_map")
+    shinyjs::hide(id = "save_shp")
+    observeEvent(input$import_shapefile, {
+      shinyjs::show(id = "shp_to_map")
+      shinyjs::show(id = "save_shp")
+    })
+    observeEvent(input$shp_to_map, {
+      geom_ext <- readSpatial(input$import_shapefile$datapath)
+      map2 <- map %>% leafem::addFeatures(geom_ext)
+      edits <- callModule(editMod, leafmap = map2, id = "map")
+      # spa_ext <- readSpatial(input$spa_ext$datapath)
+    })
+    observeEvent(input$save_shp, {             
+      geom_ext <- readSpatial(input$import_shapefile$datapath)
+      data_in$geoms <- append(data_in$geoms, 
+            list(list(geom = geom_ext, name = input$import_shapefile$name, method = "external")))
+    })
+    
+    
+    
+    
     
     
     # SPATIAL OPERATION 
+    
+    ## Selection of existing data source
+    
+    
+    ## Selection of area (previously created)
+    observe({
+      
+      if (!length(data_in$geoms)) {
+        x <- character(0)
+      } else {
+        x <- unlist(
+          lapply(data_in$geoms, 
+            function(y) glue('{y$name} ({y$method})'))
+          )
+      }
+      updateCheckboxGroupInput(session, "check_input_areas",
+        label = 'Select',
+        choices = x,
+        selected = x
+      )
+    })
+
+
+    ## Select operation 
     observeEvent(input$oper_doit, {
       # TO DO 
-      print(spatialOperation(input$oper_slc))
-      print(input$name_output)
+
     })
-    
+
+
+
+
+
 
     
     # GENERATE REPORT

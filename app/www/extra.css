@@ -6,10 +6,11 @@
   color: #337ab7;
 }
 
-#valid_details {
+#valid_details, #created_from_map {
   color: #34c369;
 }
 
-#invalid_details {
+#invalid_details, #created_from_map_not {
   color: #b83343;
 }
+

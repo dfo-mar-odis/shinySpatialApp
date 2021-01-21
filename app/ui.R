@@ -13,6 +13,8 @@ tb_ref <- data.frame(
 
 ui <- fluidPage(
   
+  useShinyjs(),
+  
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "extra.css")
   ),
@@ -28,7 +30,7 @@ ui <- fluidPage(
           
           tabsetPanel(
             
-            # Identification
+            # IDENTIFICATION
             tabPanel(
               "Identify", 
               icon = icon("user-check"),
@@ -39,7 +41,7 @@ ui <- fluidPage(
               checkboxInput("user_consent", label = "By checking this box, you abide to ..."),
               br(),
               actionButton("get_user_details", 'Valid details', icon = icon("pencil")),
-              HTML("&nbsp;"),
+              hspace(2),
               textOutput("valid_details", inline = TRUE),
               textOutput("invalid_details", inline = TRUE),
             ),
@@ -60,18 +62,24 @@ ui <- fluidPage(
                 numericInput("bbox_ymin", label = "Ymin", value = "0", min = -90, max = 90),
                 numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90),
                 br(),
-                actionButton('save', 'Add to map', icon = icon("pencil"))
+                actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
+                actionButton('save_bbox', 'Save', icon = icon("download"))
               ),
               tabPanel(
                 "Draw from map",
                 h4("Create geom from map (geojson)"),
                 textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
-                actionButton('save', 'Create from Map', icon = icon("pencil")),
+                actionButton('save_from_map', 'Save from map', icon = icon("download")),
+                hspace(2),
+                textOutput("created_from_map", inline = TRUE),
+                textOutput("created_from_map_not", inline = TRUE)
               ),
               tabPanel(
                 "Input Shapefile",
                 h4("Use your own shapefile"),
-                fileInput("spa_ext", "Choose a file", accept = c(".shp", ".geojson"))
+                fileInput("import_shapefile", "Choose a file", accept = c(".shp", ".geojson")),
+                actionButton('shp_to_map', 'Add to map', icon = icon("pencil")),
+                actionButton('save_shp', 'Save', icon = icon("download"))
               )
             )
           ),
@@ -124,9 +132,8 @@ ui <- fluidPage(
                 tabPanel(
                   "Input Area(s)",
                   br(),
-                  h4("Create geom from map (geojson)"),
-                  textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
-                  actionButton('save', 'Create from Map', icon = icon("pencil")),
+                  checkboxGroupInput("check_input_areas", "Select area", 
+                    c("none"))
                 ),
                 tabPanel(
                   "Perform operation(s)",

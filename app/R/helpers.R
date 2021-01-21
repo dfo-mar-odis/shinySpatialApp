@@ -1,8 +1,10 @@
 library(shiny)
+library(shinyjs)
 library(leaflet)
 library(leafem)
 library(mapedit)
 library(sf)
+library(glue)
 
 msgInfo <- function(..., appendLF = TRUE) {
   txt <- paste(cli::symbol$info, ...)
@@ -34,3 +36,7 @@ msgWarning <- function(..., appendLF = TRUE) {
   invisible(txt)
 }
 
+
+hspace <- function(n) HTML(paste(rep("&nbsp;", n), collapse = ""))
+
+xtc_elmt <- function(x, y) unlist(lapply(x, `[`, y) )
