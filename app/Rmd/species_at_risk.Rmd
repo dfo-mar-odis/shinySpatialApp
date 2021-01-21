@@ -3,6 +3,7 @@ title: "Reproducible Report for Species in Maritimes Region - for Internal DFO u
 author: Synthesis prepared by the MSP Team
 mail: {{mail}}
 user: {{user}}
+notes: {{notes}}
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
   html_document:

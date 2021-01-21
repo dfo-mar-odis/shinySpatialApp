@@ -1,11 +1,34 @@
 map <- selectionMap()
 server <- function(input, output) {
   
-  
+    # store all data needed for the report reactively
+    report_data <- reactiveValues()
+    
+    valid_details <- reactive({
+      if (check_name(input$user_name)) {
+        report_data$user <- input$user_name
+        if (check_email(input$user_email)) {
+          report_data$mail <- input$user_mail
+          if (input$user_consent) {
+            output$valid_details <- renderText("ok")
+            report_data$valid_details <- TRUE
+          } else {
+            output$valid_details <- renderText("You must abide to the terms.")
+            report_data$valid_details <- FALSE
+          }
+        } else {
+          output$valid_details <- renderText("Please enter a valid email.")
+        }
+      } else {
+        output$valid_details <- renderText("Please enter a valid name.")
+      }
+    })
+    
+    observeEvent(input$get_user_details, { valid_details() })
     
   
     spa_all <- reactiveValues()
-    # spa_all$vec => loadded list of geom
+    # spa_all$vec => loaded list of geom
     spa_all$vec <- spa_all$spa_ext <- spa_all$spa_int <- NULL
     
     sel <- reactive(input$data_src)

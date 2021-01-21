@@ -35,9 +35,11 @@ ui <- fluidPage(
               helpText("This tab allows you to identify yourself."),
               textInput("user_name", label = "Enter your name", value = "Lorem ipsum"),
               textInput("user_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
-              textAreaInput("user_email", label = "Provide the reason/rationale for generating the report", value = ""),
+              textAreaInput("user_notes", label = "Provide the reason/rationale for generating the report", value = ""),
               checkboxInput("user_consent", label = "By checking this box, you abide to ..."),
-              submitButton("Submit", icon = icon("paper-plane"))
+              br(),
+              actionButton("get_user_details", 'Valid details', icon = icon("pencil")),
+              textOutput("valid_details", inline = TRUE),
             ),
             
             # LAYER ADDITION 
