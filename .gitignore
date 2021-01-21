@@ -1,4 +1,5 @@
 # Project-specific files 
+app/output/spatial/*.geojson
 app/output/*/*.tex
 app/output/*/*.pdf
 app/output/*/*.html
