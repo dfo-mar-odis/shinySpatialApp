@@ -25,6 +25,7 @@ ui <- fluidPage(
         # ,
         sidebarPanel( 
           h2(div(img(src="img/bio_logo.jpg", height = 80), "Spatial Shiny App")),
+          
           tabsetPanel(
             
             # Identification
@@ -40,31 +41,66 @@ ui <- fluidPage(
             ),
             
             # LAYER ADDITION 
-            tabPanel(
-              "Add", 
-              icon = icon("database"),
-              helpText("This tab allows you to add layers on map."),
-              checkboxGroupInput("data_src", 
-                                label = "Select the data you need", 
-                                choiceNames = tb_ref$layer,
-                                choiceValues = tb_ref$id),
-                
-              h4("Add a spatial file"),
-              fileInput("spa_ext", "Choose a file",
-              accept = c(".kml", ".tiff", ".shp", ".geojson")
-              )
-            ),
+            # tabPanel(
+            #   "Crete",
+            #   tabsetPanel(
+            #     tabPanel(
+            #       "Identify",
+            #     ),
+            #     tabPanel(
+            #       "Identify2",
+            #     )
+            #   )
+            # ),
+            # tabPanel(
+            #   "Add", 
+            #   icon = icon("database"),
+            #   helpText("This tab allows you to add layers on map."),
+            #   checkboxGroupInput("data_src", 
+            #                     label = "Select the data you need", 
+            #                     choiceNames = tb_ref$layer,
+            #                     choiceValues = tb_ref$id),
+            # 
+            #   h4("Add a spatial file"),
+            #   fileInput("spa_ext", "Choose a file",
+            #   accept = c(".kml", ".tiff", ".shp", ".geojson")
+            #   )
+            # ),
             
             # LAYER CREATION 
             tabPanel(
             "Create", 
             icon = icon("pencil"),
             helpText("This tab allows you to create and save layers."),
-            h4("Create geom from map (geojson)"),
-            textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
-            numericInput("geom_buffer", label = "Optional buffer (in meters)", value = "0", min = 0),
-            actionButton('save', 'Create from Map', icon = icon("pencil")),
-              
+            tabsetPanel(
+              tabPanel(
+                "Bounding box",
+                h4("Enter coordinates of the bounding box"),
+                numericInput("bbox_xmin", label = "Xmin", value = "0", min = -180, max = 180),
+                numericInput("bbox_xmax", label = "Xmax", value = "0", min = -180, max = 180),
+                numericInput("bbox_ymin", label = "Ymin", value = "0", min = -90, max = 90),
+                numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90),
+                br(),
+                actionButton('save', 'Add to map', icon = icon("pencil"))
+              ),
+              tabPanel(
+                "Draw from map",
+                h4("Create geom from map (geojson)"),
+                textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
+                numericInput("geom_buffer", label = "Optional buffer (in meters)", value = "0", min = 0),
+                actionButton('save', 'Create from Map', icon = icon("pencil")),
+              ),
+              tabPanel(
+                "Input Shapefile",
+                h4("Use your own shapefile"),
+                fileInput("spa_ext", "Choose a file",
+                  accept = c(".shp", ".geojson")
+                  )
+              )
+            )
+            
+            
+
           ),
             
             # SPATIAL OPERATION(S) 

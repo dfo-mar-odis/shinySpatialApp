@@ -1,6 +1,9 @@
 map <- selectionMap()
 server <- function(input, output) {
   
+  
+    
+  
     spa_all <- reactiveValues()
     # spa_all$vec => loadded list of geom
     spa_all$vec <- spa_all$spa_ext <- spa_all$spa_int <- NULL
@@ -71,7 +74,7 @@ server <- function(input, output) {
   
     ## generate report
     observeEvent(input$generate_rmd, {
-      # intermediate var, so not to render Rmd when values$rmd_path changes
+      # intermediate var, so that Rmd not being rendered when values$rmd_path changes
       # but only when we click 
       path <- values$rmd_path
       output$render_success <- renderText(renderReport(path, fl = input$report_name))
