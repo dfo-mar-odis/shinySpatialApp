@@ -1,5 +1,3 @@
-map <- selectionMap()
-
 server <- function(input, output) {
   
     # store all data needed for the report reactively
@@ -36,36 +34,41 @@ server <- function(input, output) {
     
   
   
-  
-  
+    # map <- selectionMap(spa, tb_ref$layer)
+    map <- selectionMap()
     spa_all <- reactiveValues()
-    # spa_all$vec => loaded list of geom
-    spa_all$vec <- spa_all$spa_ext <- spa_all$spa_int <- NULL
-    
-    sel <- reactive(input$data_src)
     edits <- callModule(editMod, leafmap = map, id = "map")
-    
-    # ADD LAYERS 
-    ## add existing layer(s)
-    observeEvent(input$data_src, {
-        # map <- leafem::addFeatures()
-        spa_all$spa_int <- spa[as.numeric(sel())]
-        spa_all$vec <- c(spa_all$spa_int, spa_all$spa_ext)
-        map <- selectionMap(map, spa_all$vec)
-        edits <- callModule(editMod, leafmap = map, id = "map")
-    })
-    ## add external layer 
-    observeEvent(input$spa_ext, {
-      spa_all$spa_ext <- c(spa_all$spa_int, list(readSpatial(input$spa_ext$datapath)))
-      spa_all$vec <- c(spa_all$spa_int, spa_all$spa_ext)
-      map <- selectionMap(map, spa_all$spa_ext)
-      edits <- callModule(editMod, leafmap = map, id = "map")
-    })
-  
-  
+    # print(tb_ref)
+    # print(spa)
   
   
     
+    # # spa_all$vec => loaded list of geom
+    # spa_all$vec <- spa_all$spa_ext <- spa_all$spa_int <- NULL
+    # 
+    # sel <- reactive(input$data_src)
+    # edits <- callModule(editMod, leafmap = map, id = "map")
+    # 
+    # # ADD LAYERS 
+    # ## add existing layer(s)
+    # observeEvent(input$data_src, {
+    #     # map <- leafem::addFeatures()
+    #     spa_all$spa_int <- spa[as.numeric(sel())]
+    #     spa_all$vec <- c(spa_all$spa_int, spa_all$spa_ext)
+    #     map <- selectionMap(map, spa_all$vec)
+    #     edits <- callModule(editMod, leafmap = map, id = "map")
+    # })
+    # ## add external layer 
+    # observeEvent(input$spa_ext, {
+    #   spa_all$spa_ext <- c(spa_all$spa_int, list(readSpatial(input$spa_ext$datapath)))
+    #   spa_all$vec <- c(spa_all$spa_int, spa_all$spa_ext)
+    #   map <- selectionMap(map, spa_all$spa_ext)
+    #   edits <- callModule(editMod, leafmap = map, id = "map")
+    # })
+  
+  
+  
+
     # CREATE LAYER 
     observeEvent(input$save, {
         

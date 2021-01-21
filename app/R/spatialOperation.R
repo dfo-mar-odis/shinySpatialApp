@@ -1,5 +1,4 @@
 ls_oper <- c("intersects", "contains", "covers", "within", "extract")
-ls_oper_fun <- 
 
 spatialOperation <- function(slc, x = NULL, y = NULL) {
   
