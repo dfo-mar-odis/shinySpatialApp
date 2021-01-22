@@ -1,7 +1,6 @@
-renderReport <- function(x, fl = "", dir = "output/doc", data) {
+renderReport <- function(x, fl = "", data, dir = "output/doc") {
   msgInfo("Generating report", x)
 
-  
   if (fl == "") {
     fl <- NULL 
   } else {
@@ -21,11 +20,9 @@ renderReport <- function(x, fl = "", dir = "output/doc", data) {
       output_dir = dir, 
       output_file = fl, 
       quiet = TRUE)
-    paste(shiny::icon("info"), x, "has been successfully rendered (see, ", 
-    paste0(dir, "/", fl, "*)."))
+    TRUE
   }, 
-  error = function(x) paste(shiny::icon("info"), "issue")
+  error = function(x) FALSE
   )
-  shiny::HTML(out)
-  # check how to do that properly (err)
+  list(ok = out, fl = flrmd)
 }

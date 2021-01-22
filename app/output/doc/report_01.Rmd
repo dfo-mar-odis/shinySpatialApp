@@ -10,3 +10,8 @@ output:
 # First part 
 
 This is it the report to be used \#1.
+
+
+```{R}
+cool
+```

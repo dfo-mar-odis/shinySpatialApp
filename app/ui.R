@@ -57,10 +57,15 @@ ui <- fluidPage(
               tabPanel(
                 "Bounding box",
                 h4("Enter coordinates of the bounding box"),
-                numericInput("bbox_xmin", label = "Xmin", value = "0", min = -180, max = 180),
-                numericInput("bbox_xmax", label = "Xmax", value = "0", min = -180, max = 180),
-                numericInput("bbox_ymin", label = "Ymin", value = "0", min = -90, max = 90),
-                numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90),
+                div(style="display: inline-block;vertical-align:top;",
+                  numericInput("bbox_xmin", label = "Xmin", value = "0", min = -180, max = 180)),
+                div(style="display: inline-block;vertical-align:top;",
+                  numericInput("bbox_xmax", label = "Xmax", value = "0", min = -180, max = 180)),
+                br(),
+                div(style="display: inline-block;vertical-align:top;",
+                  numericInput("bbox_ymin", label = "Ymin", value = "0", min = -90, max = 90)),
+                div(style="display: inline-block;vertical-align:top;",
+                  numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90)),
                 br(),
                 actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
                 actionButton('save_bbox', 'Save', icon = icon("download"))
@@ -71,8 +76,8 @@ ui <- fluidPage(
                 textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
                 actionButton('save_from_map', 'Save from map', icon = icon("download")),
                 hspace(2),
-                textOutput("created_from_map", inline = TRUE),
-                textOutput("created_from_map_not", inline = TRUE)
+                uiOutput("created_from_map", inline = TRUE),
+                uiOutput("created_from_map_not", inline = TRUE)
               ),
               tabPanel(
                 "Input Shapefile",
@@ -166,32 +171,39 @@ ui <- fluidPage(
               HTML("</h4>"),
               hr(),
               actionButton("generate_rmd", "Generate report", icon("book")),
-              htmlOutput("render_success"),
+              hspace(2),
+              uiOutput("render_success", inline = TRUE),
             )
           ),
             
             
+          br(),
+          br(),
+          hr(),
+          
+          HTML(
+          paste0(
+            "<h5 align = 'center'>This shiny app was built with the ", 
+            a("R package shiny", href = "https://shiny.rstudio.com/"), 
+            ", source code available on ")
+          ),
+          a(icon("github"), href = "https://github.com/inSilecoInc/shinySpatialApp"),
+          HTML("</h5>")
+            
         ),
+        
+
+          
 
 
         # add map
         mainPanel(
             mapedit::editModUI("map")
             # includeHTML("include.html")
-            # restire map 2Bdone
+            # restore map 2Bdone
         )
 
     ), 
     
-    hr(),
-    
-    HTML(
-    paste0(
-      "<h4 align = 'center'>This shiny app was built with the ", 
-      a("R package shiny", href = "https://shiny.rstudio.com/"), 
-      ", source code available on ")
-    ),
-    a(icon("github"), href = "https://github.com/inSilecoInc/shinySpatialApp"),
-    HTML("</h4>")
 )
 

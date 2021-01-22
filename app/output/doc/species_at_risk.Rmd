@@ -1,9 +1,9 @@
 ---
 title: "Reproducible Report for Species in Maritimes Region - for Internal DFO use only"
 author: Synthesis prepared by the MSP Team
-email: lipsum@dfo-mpo.gc.ca
-user: Lorem ipsum
-notes: "ok"
+email: 
+user: 
+notes: ""
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
   html_document:

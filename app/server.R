@@ -57,12 +57,12 @@ server <- function(input, output, session) {
             nm <- glue('output/spatial/{input$name_geom}.geojson')
             if (!file.exists(nm)) {
               sf::write_sf(geom, nm ,delete_layer = TRUE, delete_dsn = TRUE)
-              output$created_from_map <- renderText(glue('{nm}.geojson created'))
+              output$created_from_map <- info_valid(glue('{nm}.geojson created'))
               data_in$geoms <- append(data_in$geoms, 
                 list(list(geom = geom, name = basename(nm), method = "drawn")))
-            } else output$created_from_map_not <- renderText("Cannot overwrite existing file")
+            } else output$created_from_map_not <- info_valid("Cannot overwrite existing file", FALSE)
         } else {
-          output$created_from_map_not <- renderText("Please use the map on the right.")
+          output$created_from_map_not <- info_valid("Please use the map on the right.", FALSE)
         }
 
     })
@@ -82,7 +82,7 @@ server <- function(input, output, session) {
       edits <- callModule(editMod, leafmap = map2, id = "map")
       # spa_ext <- readSpatial(input$spa_ext$datapath)
     })
-    observeEvent(input$save_shp, {             
+    observeEvent(input$save_shp, {
       geom_ext <- readSpatial(input$import_shapefile$datapath)
       data_in$geoms <- append(data_in$geoms, 
             list(list(geom = geom_ext, name = input$import_shapefile$name, method = "external")))
@@ -127,8 +127,6 @@ server <- function(input, output, session) {
 
 
 
-
-    
     # GENERATE REPORT
     values <- reactiveValues()
     values$generate <- 0
@@ -152,11 +150,19 @@ server <- function(input, output, session) {
     ## generate report
     observeEvent(input$generate_rmd, {
       # intermediate var, so that Rmd not being rendered when values$rmd_path changes
-      # but only when we click 
+      # but only when we click
       path <- values$rmd_path
-      output$render_success <- renderText(
-        renderReport(path, fl = input$report_name, data =  data_in)
-      )
+      if (path == "none") {
+        output$render_success <- info_valid("Please select a valid .Rmd file.", FALSE)  
+      } else {
+        chk <- renderReport(path, fl = input$report_name, data =  data_in)
+        if (chk$ok) {
+          output$render_success <- info_valid("All good")
+          shinyjs::hide(id = "map-map")
+          # then show html 2Bdone
+        } else 
+         output$render_success <- info_valid("Issue while rendering", FALSE)  
+      }
     })
     
     
