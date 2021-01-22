@@ -5,18 +5,18 @@ renderReport <- function(x, fl = "", dir = "output/doc", data) {
   if (fl == "") {
     fl <- NULL 
   } else {
-    # nasty trick due to current behavior of makrdown
-    fl <- rep(20)
+    # nasty trick due to current behavior of rmarkdown
+    fl <- rep(fl, 20)
   }
   
+  flrmd <- glue("{dir}/{basename(x)}")
+  
   # fill out rmd file 
-  
   template <- readLines(x)
-  writeLines(whisker::whisker.render(x, data), paste0(dir, basename(x)))
-  
+  writeLines(whisker::whisker.render(template, data), flrmd)
   
   out <- tryCatch({
-    rmarkdown::render(x, 
+    rmarkdown::render(flrmd, 
       output_format = "all", 
       output_dir = dir, 
       output_file = fl, 
@@ -24,7 +24,7 @@ renderReport <- function(x, fl = "", dir = "output/doc", data) {
     paste(shiny::icon("info"), x, "has been successfully rendered (see, ", 
     paste0(dir, "/", fl, "*)."))
   }, 
-  error = function(x) paste(shiny::icon("info"), x)
+  error = function(x) paste(shiny::icon("info"), "issue")
   )
   shiny::HTML(out)
   # check how to do that properly (err)

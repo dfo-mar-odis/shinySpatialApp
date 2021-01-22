@@ -6,11 +6,13 @@
   color: #337ab7;
 }
 
-#valid_details, #created_from_map {
+.valid, #valid_details, #created_from_map {
   color: #34c369;
+  font-size: 1.2em;
 }
 
-#invalid_details, #created_from_map_not {
+.invalid, #invalid_details, #created_from_map_not {
   color: #b83343;
+  font-size: 1.2em;
 }
 

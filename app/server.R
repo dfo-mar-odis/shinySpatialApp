@@ -20,19 +20,21 @@ server <- function(input, output, session) {
       if (check_name(input$user_name)) {
         data_in$user <- input$user_name
         if (check_email(input$user_email)) {
-          data_in$mail <- input$user_mail
+          data_in$email <- input$user_email
           if (input$user_consent) {
-            output$valid_details <- renderText("All good!")
+            output$valid_details <- infoHTML("All good!")
+            data_in$notes <- input$user_notes
             data_in$valid_details <- TRUE
           } else {
-            output$invalid_details <- renderText("You must abide to the terms.")
+            output$invalid_details <- info_valid("You must abide to the terms.", 
+            FALSE)
             data_in$valid_details <- FALSE
           }
         } else {
-          output$invalid_details <- renderText("Please enter a valid email.")
+          output$invalid_details <- info_valid("Please enter a valid email.", FALSE)
         }
       } else {
-        output$invalid_details <- renderText("Please enter a valid name.")
+        output$invalid_details <- info_valid("Please enter a valid name.", FALSE)
       }
     })
     
@@ -152,7 +154,9 @@ server <- function(input, output, session) {
       # intermediate var, so that Rmd not being rendered when values$rmd_path changes
       # but only when we click 
       path <- values$rmd_path
-      output$render_success <- renderText(renderReport(path, fl = input$report_name))
+      output$render_success <- renderText(
+        renderReport(path, fl = input$report_name, data =  data_in)
+      )
     })
     
     

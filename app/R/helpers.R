@@ -36,7 +36,12 @@ msgWarning <- function(..., appendLF = TRUE) {
   invisible(txt)
 }
 
-
 hspace <- function(n) HTML(paste(rep("&nbsp;", n), collapse = ""))
 
-xtc_elmt <- function(x, y) unlist(lapply(x, `[`, y) )
+xtc_elmt <- function(x, y) unlist(lapply(x, `[`, y))
+
+info_valid <- function(x, ok = TRUE) {
+  cls <- ifelse(ok, "valid", "invalid")
+  renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x}</span>")))
+}
+

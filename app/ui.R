@@ -42,8 +42,8 @@ ui <- fluidPage(
               br(),
               actionButton("get_user_details", 'Valid details', icon = icon("pencil")),
               hspace(2),
-              textOutput("valid_details", inline = TRUE),
-              textOutput("invalid_details", inline = TRUE),
+              uiOutput("valid_details", inline = TRUE),
+              uiOutput("invalid_details", inline = TRUE),
             ),
             
             
@@ -177,6 +177,8 @@ ui <- fluidPage(
         # add map
         mainPanel(
             mapedit::editModUI("map")
+            # includeHTML("include.html")
+            # restire map 2Bdone
         )
 
     ), 
