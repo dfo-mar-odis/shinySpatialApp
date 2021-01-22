@@ -172,7 +172,7 @@ ui <- fluidPage(
               hr(),
               actionButton("generate_rmd", "Generate report", icon("book")),
               hspace(2),
-              uiOutput("render_success", inline = TRUE),
+              uiOutput("render_success", inline = TRUE)
             )
           ),
             
@@ -198,12 +198,28 @@ ui <- fluidPage(
 
         # add map
         mainPanel(
-            mapedit::editModUI("map")
-            # includeHTML("include.html")
-            # restore map 2Bdone
-        )
-
-    ), 
+          
+          
+          tabsetPanel(
+            
+            # MAP
+            tabPanel(
+              "Map",
+              icon = icon("map"),
+              mapedit::editModUI("map")
+            ),
+            
+            # REPORT
+            tabPanel(
+              "Report",
+              icon = icon("file-alt"),
+              htmlOutput("report_html"),
+              br()
+            )
+        ),
+      )
+      
+    )
     
 )
 

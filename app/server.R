@@ -22,7 +22,7 @@ server <- function(input, output, session) {
         if (check_email(input$user_email)) {
           data_in$email <- input$user_email
           if (input$user_consent) {
-            output$valid_details <- infoHTML("All good!")
+            output$valid_details <- info_valid("All good!")
             data_in$notes <- input$user_notes
             data_in$valid_details <- TRUE
           } else {
@@ -148,6 +148,7 @@ server <- function(input, output, session) {
     observeEvent(input$ext_rmd, { rmd_ext() })
   
     ## generate report
+    output$report_html <- renderUI(includeHTML("www/empty_report.html"))
     observeEvent(input$generate_rmd, {
       # intermediate var, so that Rmd not being rendered when values$rmd_path changes
       # but only when we click
@@ -158,7 +159,8 @@ server <- function(input, output, session) {
         chk <- renderReport(path, fl = input$report_name, data =  data_in)
         if (chk$ok) {
           output$render_success <- info_valid("All good")
-          shinyjs::hide(id = "map-map")
+          output$report_html <- renderUI(includeHTML(chk$html))
+          # shinyjs::hide(id = "map-map")
           # then show html 2Bdone
         } else 
          output$render_success <- info_valid("Issue while rendering", FALSE)  

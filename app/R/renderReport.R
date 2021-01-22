@@ -24,5 +24,7 @@ renderReport <- function(x, fl = "", data, dir = "output/doc") {
   }, 
   error = function(x) FALSE
   )
-  list(ok = out, fl = flrmd)
+  
+  
+  list(ok = out, fl = flrmd, html = switch_ext(flrmd, "html"))
 }

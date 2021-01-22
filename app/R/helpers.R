@@ -45,3 +45,8 @@ info_valid <- function(x, ok = TRUE) {
   renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x}</span>")))
 }
 
+# do not include dots in new extension as it is added
+switch_ext <- function(x, y) {
+  ext <- tools::file_ext(x)
+  sub(glue(".{ext}$"), glue(".{y}"), x) 
+}

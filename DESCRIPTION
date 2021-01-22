@@ -17,4 +17,5 @@ Imports:
   shinyjs,
   raster,
   rmarkdown,
+  tools,
   whisker

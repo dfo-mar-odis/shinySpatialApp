@@ -1,5 +1,5 @@
 #map-map {
-  height : 95vh !important;
+  height : 90vh !important;
 }
 
 #file_report {
@@ -16,3 +16,16 @@
   font-size: 1.1em;
 }
 
+#img_warning {
+  width: 20%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+#msg_warning {
+  color: #f03561;
+  font-size: 1.8em;
+  text-align: center;
+}
