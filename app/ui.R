@@ -90,34 +90,6 @@ ui <- fluidPage(
           ),
           
           
-          # LAYER ADDITION 
-          # tabPanel(
-          #   "Crete",
-          #   tabsetPanel(
-          #     tabPanel(
-          #       "Identify",
-          #     ),
-          #     tabPanel(
-          #       "Identify2",
-          #     )
-          #   )
-          # ),
-          # tabPanel(
-          #   "Add", 
-          #   icon = icon("database"),
-          #   helpText("This tab allows you to add layers on map."),
-          #   checkboxGroupInput("data_src", 
-          #                     label = "Select the data you need", 
-          #                     choiceNames = tb_ref$layer,
-          #                     choiceValues = tb_ref$id),
-          # 
-          #   h4("Add a spatial file"),
-          #   fileInput("spa_ext", "Choose a file",
-          #   accept = c(".kml", ".tiff", ".shp", ".geojson")
-          #   )
-          # ),
-          
-          
             
             # SPATIAL OPERATION(S) 
             tabPanel(
@@ -199,7 +171,6 @@ ui <- fluidPage(
         # add map
         mainPanel(
           
-          
           tabsetPanel(
             
             # MAP
@@ -212,9 +183,8 @@ ui <- fluidPage(
             # REPORT
             tabPanel(
               "Report",
-              icon = icon("file-alt"),
-              htmlOutput("report_html"),
-              br()
+              icon = icon("book"),
+              htmlOutput("report_html")
             )
         ),
       )

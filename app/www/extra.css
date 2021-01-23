@@ -29,3 +29,11 @@
   font-size: 1.8em;
   text-align: center;
 }
+
+#report_html {
+  max-height: 900px!important;
+}
+
+#iframe_report {
+  height: 90vh;
+}

@@ -17,6 +17,7 @@ server <- function(input, output, session) {
     # VALID AND STORE USER INFO
     valid_details <- reactive({
       output$invalid_details <- output$valid_details <- renderText("")
+      output$consent <- input$user_consent
       if (check_name(input$user_name)) {
         data_in$user <- input$user_name
         if (check_email(input$user_email)) {
@@ -156,14 +157,20 @@ server <- function(input, output, session) {
       if (path == "none") {
         output$render_success <- info_valid("Please select a valid .Rmd file.", FALSE)  
       } else {
-        chk <- renderReport(path, fl = input$report_name, data =  data_in)
-        if (chk$ok) {
-          output$render_success <- info_valid("All good")
-          output$report_html <- renderUI(includeHTML(chk$html))
-          # shinyjs::hide(id = "map-map")
-          # then show html 2Bdone
-        } else 
-         output$render_success <- info_valid("Issue while rendering", FALSE)  
+        if (!input$user_consent) {
+          output$render_success <- info_valid("Please first abide! (Identify tab)", FALSE)  
+        } else {
+          chk <- renderReport(path, fl = input$report_name, data =  data_in)
+          if (chk$ok) {
+            output$render_success <- info_valid("All good")
+            output$report_html <- renderUI({
+              # Use a iframe so that the css of the report does not affect 
+              # the css of the app
+              tags$iframe(id="iframe_report", src=chk$html, width='100%', frameborder='no')
+            })
+          } else 
+           output$render_success <- info_valid("Issue while rendering", FALSE)  
+        }
       }
     })
     

@@ -25,6 +25,19 @@ renderReport <- function(x, fl = "", data, dir = "output/doc") {
   error = function(x) FALSE
   )
   
+  if (out) {
+    # this is done to generate a html preview 
+    # TODO test whether such html was generated 
+    # clear HTML FIRST
+    preview_html <- switch_ext(basename(x), "html")
+    print(preview_html)
+    rmarkdown::render(flrmd, 
+      output_format = "html_document", 
+      output_dir = "www", 
+      quiet = TRUE)
+  } else preview_html <- NULL
   
-  list(ok = out, fl = flrmd, html = switch_ext(flrmd, "html"))
+  
+  
+  list(ok = out, fl = flrmd, html = preview_html)
 }
