@@ -135,7 +135,7 @@ ui <- fluidPage(
               selectInput("int_rmd", "Select one available template", 
                        choices = c(list("none" = "none"), rmd_list), 
                        selected = "none"),
-              fileInput("ext_rmd", "Choose an R Markdown file (.Rmd)", 
+              fileInput("ext_rmd", "Choose an R Markdown file (optional)", 
               accept = c(".Rmd", ".rmd")),
               textInput("report_name", label = "Report name (optional)", value = ""),
               HTML("<h4>File selected: "),

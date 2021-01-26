@@ -1,8 +1,8 @@
 ---
 title: "Reproducible Report for Species in Maritimes Region - for Internal DFO use only"
 author: Synthesis prepared by the MSP Team
-email: lipsum@dfo-mpo.gc.ca
-user: Lorem ipsum
+email: 
+user: 
 notes: ""
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
@@ -16,6 +16,12 @@ output:
     toc: yes
 ---
 
+
+```{R}
+library(sf)
+data_in <- readRDS("data_species_at_risk.rds")
+print(names(data_in))
+```
 
 
 ```{r Define Site, echo = FALSE, include = FALSE, cache = FALSE, eval = FALSE}

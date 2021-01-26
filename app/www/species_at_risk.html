@@ -1558,11 +1558,15 @@ div.tocify {
 
 <h1 class="title toc-ignore">Reproducible Report for Species in Maritimes Region - for Internal DFO use only</h1>
 <h4 class="author">Synthesis prepared by the MSP Team</h4>
-<h4 class="date">24 January, 2021</h4>
+<h4 class="date">26 January, 2021</h4>
 
 </div>
 
 
+<pre class="r"><code>library(sf)
+data_in &lt;- readRDS(&quot;data_species_at_risk.rds&quot;)
+print(names(data_in))</code></pre>
+<pre><code>## [1] &quot;data_src&quot; &quot;geoms&quot;</code></pre>
 <div id="about-this-report" class="section level3">
 <h3><strong>About this report</strong></h3>
 <p>This reproducible report summarizes species that have been reported in specific areas drawing from databases available, both within and outside the Department (<strong>2002 - 2018</strong>). This report if for internal DFO use only. No maps, layers, or data that violate the rule of 5 will be shared outside of the department.</p>

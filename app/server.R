@@ -17,6 +17,7 @@ server <- function(input, output, session) {
     # VALID AND STORE USER INFO
     valid_details <- reactive({
       output$invalid_details <- output$valid_details <- renderText("")
+      data_in$valid_details <- FALSE
       if (check_name(input$user_name)) {
         data_in$user <- input$user_name
         if (check_email(input$user_email)) {
@@ -28,7 +29,6 @@ server <- function(input, output, session) {
           } else {
             output$invalid_details <- info_valid("You must abide to the terms.", 
             FALSE)
-            data_in$valid_details <- FALSE
           }
         } else {
           output$invalid_details <- info_valid("Please enter a valid email.", FALSE)

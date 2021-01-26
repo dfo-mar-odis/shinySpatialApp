@@ -4,6 +4,7 @@ app/output/*/*.tex
 app/output/*/*.pdf
 app/output/*/*.html
 app/output/*/*.docx
+app/output/*/*.rds
 tmp/
 
 # History files

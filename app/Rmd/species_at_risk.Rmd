@@ -17,6 +17,12 @@ output:
 ---
 
 
+```{R}
+library(sf)
+data_in <- readRDS("{{data_path}}")
+print(names(data_in))
+```
+
 
 ```{r Define Site, echo = FALSE, include = FALSE, cache = FALSE, eval = FALSE}
 #HTML output of code is automatically generated in Catalina's computer: RProjects/MSP/SearchPEZ/code

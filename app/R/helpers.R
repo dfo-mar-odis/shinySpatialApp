@@ -40,6 +40,17 @@ hspace <- function(n) HTML(paste(rep("&nbsp;", n), collapse = ""))
 
 xtc_elmt <- function(x, y) unlist(lapply(x, `[`, y))
 
+
+## Check details
+
+check_name <- function(x) {
+  if (x != "") TRUE else FALSE
+}
+
+check_email <- function(x) {
+  if (x != "") TRUE else FALSE
+}
+
 info_valid <- function(x, ok = TRUE) {
   cls <- ifelse(ok, "valid", "invalid")
   renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x}</span>")))
