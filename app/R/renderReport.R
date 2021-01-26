@@ -10,7 +10,7 @@ renderReport <- function(x, fl = "", data, dir = "output/doc") {
   
   # Save data as rds 
   dtrmd <- switch_ext(glue("data_{basename(x)}"), "rds")
-  saveRDS(data, glue("{dir}/dtrmd)"))
+  saveRDS(data, glue("{dir}/{dtrmd}"))
   
   # fill out .Rmd file before rendering
   flrmd <- glue("{dir}/{basename(x)}")
@@ -31,20 +31,19 @@ renderReport <- function(x, fl = "", data, dir = "output/doc") {
   )
   
   if (out) {
-    
-    # this is done to generate a html preview 
-    # TODO test whether such html was generated 
-    # clear HTML FIRST
+    # this is done to generate a html preview (see "report" tab)
     preview_html <- switch_ext(basename(x), "html")
-    # if (file.exists(preview_html)) print("file_do_exist")
-    print(preview_html)
-    rmarkdown::render(flrmd, 
-      output_format = "html_document", 
-      output_dir = "www", 
-      quiet = TRUE)
+    gnr_html <- switch_ext(flrmd, "html")
+    # do not render again if html has already been generated
+    if (file.exists(gnr_html)) {
+      file.copy(gnr_html, glue("www/{preview_html}"))
+    } else {
+      rmarkdown::render(flrmd, 
+        output_format = "html_document", 
+        output_dir = "www", 
+        quiet = TRUE)
+    }
   } else preview_html <- NULL
-    
-  
-  
+      
   list(ok = out, fl = flrmd, html = preview_html)
 }
