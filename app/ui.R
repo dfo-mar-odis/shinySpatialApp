@@ -47,7 +47,6 @@ ui <- fluidPage(
             ),
             
             
-            
             # LAYER CREATION 
             tabPanel(
             "Create", 
@@ -89,43 +88,6 @@ ui <- fluidPage(
             )
           ),
           
-          
-            
-            # SPATIAL OPERATION(S) 
-            tabPanel(
-              "Manipulate", 
-              icon = icon("cog"),
-              helpText("This tab allows you to specify the spatial operation(s) to be performed."),
-              
-              tabsetPanel(
-                tabPanel(
-                  "Data source",
-                  br(),
-                  checkboxGroupInput("data_src", 
-                                      label = "Select the data you need", 
-                                      choiceNames = tb_ref$layer,
-                                      choiceValues = tb_ref$id),
-                ),
-                tabPanel(
-                  "Input Area(s)",
-                  br(),
-                  checkboxGroupInput("check_input_areas", "Select area", 
-                    c("none"))
-                ),
-                tabPanel(
-                  "Perform operation(s)",
-                  br(),
-                  selectInput("oper_slc", "Select one available operation", 
-                           choices = ls_oper, 
-                           selected = "none"),           
-                  numericInput("geom_buffer", label = "Optional buffer (in meters)", value = "0", min = 0),
-              
-                  textInput("name_output", label = "Enter output name (filename)", value = "output_01"),
-                  actionButton("oper_doit", "Perform operation", icon("cog"))
-                )
-              )
-              
-            ),
             
             # REPORT
             tabPanel(
