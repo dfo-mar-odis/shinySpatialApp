@@ -9,7 +9,8 @@ server <- function(input, output, session) {
     
     # INITIATE MAP
     map <- selectionMap()
-    spa_all <- reactiveValues()
+    consent <- spa_all <- reactiveValues()
+    consent <- 0
     edits <- callModule(editMod, leafmap = map, id = "map")  
     
     
@@ -18,13 +19,14 @@ server <- function(input, output, session) {
     valid_details <- reactive({
       output$invalid_details <- output$valid_details <- renderText("")
       data_in$valid_details <- FALSE
-      if (check_name(input$user_name)) {
-        data_in$user <- input$user_name
-        if (check_email(input$user_email)) {
-          data_in$email <- input$user_email
-          if (input$user_consent) {
+      if (check_name(input$u_name)) {
+        data_in$user <- input$u_name
+        if (check_email(input$u_email)) {
+          data_in$email <- input$u_email
+          consent <- length(input$u_consent)
+          if (consent == 3) {
             output$valid_details <- info_valid("All good!")
-            data_in$notes <- input$user_notes
+            data_in$notes <- input$u_notes
             data_in$valid_details <- TRUE
           } else {
             output$invalid_details <- info_valid("You must abide to the terms.", 
@@ -38,7 +40,7 @@ server <- function(input, output, session) {
       }
     })
     
-    observeEvent(input$get_user_details, { valid_details() })
+    observeEvent(input$get_u_details, { valid_details() })
   
   
   
@@ -156,8 +158,8 @@ server <- function(input, output, session) {
       if (path == "none") {
         output$render_success <- info_valid("Please select a valid .Rmd file.", FALSE)  
       } else {
-        if (!input$user_consent) {
-          output$render_success <- info_valid("Please first abide! (Identify tab)", FALSE)  
+        if (consent != 3) {
+          output$render_success <- info_valid("Please first abide to terms and conditions! (first tab)", FALSE)  
         } else {
           chk <- renderReport(path, fl = input$report_name, data =  data_in)
           if (chk$ok) {

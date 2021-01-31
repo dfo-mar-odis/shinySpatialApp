@@ -35,12 +35,19 @@ ui <- fluidPage(
               "Identify", 
               icon = icon("user-check"),
               helpText("This tab allows you to identify yourself."),
-              textInput("user_name", label = "Enter your name", value = "Lorem ipsum"),
-              textInput("user_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
-              textAreaInput("user_notes", label = "Provide the reason/rationale for generating the report", value = ""),
-              checkboxInput("user_consent", label = "By checking this box, you abide to ..."),
+              textInput("u_name", label = "Enter your name", value = "Lorem ipsum"),
+              textInput("u_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
+              textAreaInput("u_notes", label = "Provide the reason/rationale for generating the report", value = ""),
+              checkboxGroupInput("u_consent", label = "Terms and conditions",
+                choiceNames = list(
+                  HTML("I understand this report is for the <a href = 'https://www.dfo-mpo.gc.ca/index-eng.htm'>Department of Fisheries and Oceans Canada (DFO)</a> internal use only, and it shall not be shared with users outside DFO."),
+                  HTML("I will read all the caveats, disclaimers and uncertainty outlined in each section of the report."),
+                  HTML("I will abide to all policies and directives of the Government of Canada, including, and not restricted to, <a href = 'https://www.canada.ca/en/government/publicservice/values.html'>values and ethics of the public service</a>.")
+                ),
+                choiceValues = list(1, 2, 3)
+              ),
               br(),
-              actionButton("get_user_details", 'Valid details', icon = icon("pencil")),
+              actionButton("get_u_details", 'Valid details', icon = icon("pencil")),
               hspace(2),
               uiOutput("valid_details", inline = TRUE),
               uiOutput("invalid_details", inline = TRUE),
@@ -49,7 +56,7 @@ ui <- fluidPage(
             
             # LAYER CREATION 
             tabPanel(
-            "Create", 
+            "Area", 
             icon = icon("pencil"),
             helpText("This tab allows you to create and save layers."),
             tabsetPanel(
@@ -88,6 +95,28 @@ ui <- fluidPage(
             )
           ),
           
+          
+            
+            # SELECT SECTION
+            tabPanel(
+              "Data", 
+              icon = icon("database"),
+              helpText("This tab allows you to specify the spatial operation(s) to be performed."),
+              
+              checkboxGroupInput("report_lang", 
+                      label = "Select lang", 
+                      choiceNames = c("EN", "FR"),
+                      choiceValues = c("en", "fr"), 
+                      inline = TRUE
+                ),
+              
+                checkboxGroupInput("data_src", 
+                      label = "While numerous species have been identified in this region, only those listed by SARA, or assessed by COSEWIC and Wild species listings are summarized in this section:", 
+                      choiceNames = c("National Aquatic Species at Risk", "Fish and Invertebrates", "Sea turtles", "Cetaceans"),
+                      choiceValues = c("nasr", "fish", "stur", "ceta"), 
+                  )
+            
+            ),
             
             # REPORT
             tabPanel(
