@@ -47,3 +47,10 @@ renderReport <- function(x, fl = "", data, dir = "output/doc") {
       
   list(ok = out, fl = flrmd, html = preview_html)
 }
+
+
+add_sections <- function(flnms = NULL) {
+  if (!is.null(flnms)) {
+    glue("```{{r, child = c({glue_collapse(double_quote(flnms), sep = ', ')})}}\n```")
+  } else doc
+}
