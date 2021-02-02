@@ -6,6 +6,7 @@ library(mapedit)
 library(sf)
 library(glue)
 
+## R messages 
 msgInfo <- function(..., appendLF = TRUE) {
   txt <- paste(cli::symbol$info, ...)
   message(crayon::blue(txt), appendLF = appendLF)
@@ -35,6 +36,13 @@ msgWarning <- function(..., appendLF = TRUE) {
   message(crayon::yellow(txt), appendLF = appendLF)
   invisible(txt)
 }
+
+# HTML helper 
+myhelptxt <- function(x) {
+  helpText(HTML(glue('<i class="fas fa-info-circle" aria-hidden="true"></i> 
+  {x}')))
+}
+
 
 hspace <- function(n) HTML(paste(rep("&nbsp;", n), collapse = ""))
 

@@ -19,14 +19,14 @@ ui <- fluidPage(
     tags$link(rel = "stylesheet", type = "text/css", href = "extra.css")
   ),
   
-    # Application title
-    titlePanel(""),
+  # Application title
+  titlePanel("", "DFO Spatial Shiny App"),
 
-    # Sidebar with a ui for grabbing mapedit data
-    sidebarLayout(
+  #
+  sidebarLayout(
 
-        sidebarPanel( 
-          h2(div(img(src="img/bio_logo.jpg", height = 80), "Spatial Shiny App")),
+      sidebarPanel( 
+        h2(div(img(src="img/bio_logo.jpg", height = 78), "Spatial Shiny App")),
           
           tabsetPanel(
             
@@ -34,7 +34,7 @@ ui <- fluidPage(
             tabPanel(
               "Identify", 
               icon = icon("user-check"),
-              helpText("This tab allows you to identify yourself."),
+              myhelptxt("This tab allows you to identify yourself, detail the reason why you are generating the report and abide to terms and conditions."),
               textInput("u_name", label = "Enter your name", value = "Lorem ipsum"),
               textInput("u_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
               textAreaInput("u_notes", label = "Provide the reason/rationale for generating the report", value = ""),
@@ -58,7 +58,7 @@ ui <- fluidPage(
             tabPanel(
             "Area", 
             icon = icon("pencil"),
-            helpText("This tab allows you to create and save layers."),
+            myhelptxt("This tab allows you to create and save layers using one of the three tabs below."),
             tabsetPanel(
               tabPanel(
                 "Bounding box",
@@ -101,37 +101,56 @@ ui <- fluidPage(
             tabPanel(
               "Data", 
               icon = icon("database"),
-              helpText("This tab allows you to specify the spatial operation(s) to be performed."),
+              myhelptxt("This tab allows you to customize the report to be generated."),
               
               checkboxGroupInput("report_lang", 
-                      label = "Select lang", 
+                      label = "Select target language(s) for report", 
                       choiceNames = c("EN", "FR"),
-                      choiceValues = c("en", "fr"), 
+                      choiceValues = c("EN", "FR"),
+                      selected = "EN", 
                       inline = TRUE
                 ),
               
-                checkboxGroupInput("data_src", 
-                      label = "While numerous species have been identified in this region, only those listed by SARA, or assessed by COSEWIC and Wild species listings are summarized in this section:", 
-                      choiceNames = c("National Aquatic Species at Risk", "Fish and Invertebrates", "Sea turtles", "Cetaceans"),
-                      choiceValues = c("nasr", "fish", "stur", "ceta"), 
-                  )
-            
+              checkboxGroupInput("main_sections", 
+                  label = "While numerous species have been identified in this region, only those listed by SARA, or assessed by COSEWIC and Wild species listings are summarized in this section:", 
+                  choiceNames = c(
+                    "National Aquatic Species at Risk", 
+                    "Fish and Invertebrates", 
+                    "Sea turtles", 
+                    "Cetaceans"),
+                    selected = 1:4,
+                    choiceValues = 1:4, 
+                ),
+                
+              checkboxGroupInput("extra_sections", 
+                  label = "The following selection will include additional information, and species not listed by SARA, or assessed by COSEWIC and Wild species:", 
+                  choiceNames = c(
+                    "Ecologically or Biologically Significant Areas", 
+                    "Additional species"),
+                  choiceValues = 1:2, 
+                ),
+    
             ),
             
             # REPORT
             tabPanel(
               "Report", 
               icon = icon("book"),
-              helpText("This tab allows you to generate a report."),
-              selectInput("int_rmd", "Select one available template", 
-                       choices = c(list("none" = "none"), rmd_list), 
-                       selected = "none"),
-              fileInput("ext_rmd", "Choose an R Markdown file (optional)", 
-              accept = c(".Rmd", ".rmd")),
-              textInput("report_name", label = "Report name (optional)", value = ""),
-              HTML("<h4>File selected: "),
-              textOutput("file_report", inline = TRUE),
-              HTML("</h4>"),
+              myhelptxt("This tab allows you to generate a report."),
+              # SUMMARISE THE REPORT 
+              ## MAP APERCU 
+              ## SECTION SELECTED 
+              # uiOutput("warning_tc"),
+              # selectInput("int_rmd", "Select one available template", 
+              #          choices = c(list("none" = "none"), rmd_list), 
+              #          selected = "none"),
+              # fileInput("ext_rmd", "Choose an R Markdown file (optional)", 
+              # accept = c(".Rmd", ".rmd")),
+              textAreaInput("author_text", label = "Subtitle", value = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors."),
+              textInput("report_name", label = "Report filename (optional)", value = ""),
+              # HTML("<h4>File selected: "),
+              # textOutput("file_report", inline = TRUE),
+              # HTML("</h4>"),
               hr(),
               actionButton("generate_rmd", "Generate report", icon("book")),
               hspace(2),

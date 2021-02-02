@@ -6,13 +6,11 @@ server <- function(input, output, session) {
     data_in$data_src <- data_in$geoms <- list()
     
     
-    
     # INITIATE MAP
     map <- selectionMap()
     consent <- spa_all <- reactiveValues()
     consent <- 0
     edits <- callModule(editMod, leafmap = map, id = "map")  
-    
     
     
     # VALID AND STORE USER INFO
@@ -29,7 +27,7 @@ server <- function(input, output, session) {
             data_in$notes <- input$u_notes
             data_in$valid_details <- TRUE
           } else {
-            output$invalid_details <- info_valid("You must abide to the terms.", 
+            output$invalid_details <- info_valid("Please abide to terms and conditions.", 
             FALSE)
           }
         } else {
@@ -97,9 +95,6 @@ server <- function(input, output, session) {
     
     # SPATIAL OPERATION 
     
-    ## Selection of existing data source
-    
-    
     ## Selection of area (previously created)
     observe({
       
@@ -119,19 +114,16 @@ server <- function(input, output, session) {
     })
 
 
-    ## Select operation 
-    observeEvent(input$oper_doit, {
-      # TO DO 
-
-    })
-
-
 
 
 
     # GENERATE REPORT
     values <- reactiveValues()
     values$generate <- 0
+    ##
+    # if (consent != 3) {
+    # output$warning_tc <- info_valid("Please first abide to terms and conditions (first tab).", FALSE)
+    # } else  output$warning_tc <- NULL
     ## select files available
     rmd_int <- reactive({
       output$rmd_path <- renderText(input$int_rmd)
@@ -154,14 +146,14 @@ server <- function(input, output, session) {
     observeEvent(input$generate_rmd, {
       # intermediate var, so that Rmd not being rendered when values$rmd_path changes
       # but only when we click
-      path <- values$rmd_path
-      if (path == "none") {
-        output$render_success <- info_valid("Please select a valid .Rmd file.", FALSE)  
-      } else {
-        if (consent != 3) {
-          output$render_success <- info_valid("Please first abide to terms and conditions! (first tab)", FALSE)  
+      # path <- values$rmd_path
+      # if (path == "none") {
+      #   output$render_success <- info_valid("Please select a valid .Rmd file.", FALSE)  
+      # } else {
+        if (length(input$u_consent) != 3) {
+          output$render_success <- info_valid("Please first abide to terms and conditions (first tab).", FALSE)  
         } else {
-          chk <- renderReport(path, fl = input$report_name, data =  data_in)
+          chk <- renderReport(data_in, reactiveValuesToList(input), fl = input$report_name)
           if (chk$ok) {
             output$render_success <- info_valid("All good")
             output$report_html <- renderUI({
@@ -172,7 +164,7 @@ server <- function(input, output, session) {
           } else 
            output$render_success <- info_valid("Issue while rendering", FALSE)  
         }
-      }
+      # }
     })
     
     

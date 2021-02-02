@@ -1,0 +1,219 @@
+---
+title: "Reproducible Report for Species in Maritimes Region - for Internal DFO use only"
+author: {{author_text}}
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output:
+  html_document:
+    theme: paper
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+
+<!-- Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors. -->
+
+
+```{r Clean up environment for new report, echo=FALSE, include=FALSE, cache=FALSE}
+# rm(list=ls(all=TRUE))
+```
+
+```{r setup, eval=FALSE, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
+library(Mar.datawrangling)
+library(Mar.utils)
+library(knitr)
+library(kableExtra)
+library(rgdal)
+library(maps)
+library(lubridate)
+library(raster)
+library(RCurl)
+library(sf)
+library(stringr)
+library(ggplot2)
+library(data.table)
+library(gridExtra)
+library(dplyr)
+library(stars)
+library(ggspatial)
+#install.packages("remotes")
+#remotes::install_github("terminological/standard-print-output")
+#library(standardPrintOutput)
+#These next two lines are necessary for the generation of the water mark on all plots.
+#install.packages("devtools")
+#devtools::install_github("JosephCrispell/basicPlotteR")
+library(basicPlotteR)
+```
+```{r source functions, eval=FALSE, include=FALSE, cache=FALSE}
+# the .Rmd file sets the working directory based on where it resides and ignores the wd set by the .RProj file
+source("site_map.r")
+source("site_map_new.r")
+source("plot_wsdb.r")
+source("filter_wsdb.r")
+source("plot_narwc.r")
+source("plot_narwc.r")
+source("filter_narwc_new.r")
+# ## Another option is to load directly from the web and read in using Rcurl
+#function_urls <- c("https://raw.githubusercontent.com/AtlanticR/MSP/master/SearchPEZ/code/site_map.r",
+#                    "https://raw.githubusercontent.com/AtlanticR/MSP/master/SearchPEZ/code/plot_wsdb.r",
+#                    "https://raw.githubusercontent.com/AtlanticR/MSP/master/SearchPEZ/code/filter_wsdb.r")
+#for (i in function_urls){eval(parse(text = RCurl::getURL(i, ssl.verifypeer = FALSE)),envir=.GlobalEnv)}
+source("EBSA.R")
+source("plot_EBSA.R")
+source("leatherback.R")
+source("plot_leatherback.R")
+source("plot_obis.R")
+source("plot_cws.R")
+source("plot_crithab.R")
+source("plot_crithab_zoom.R")
+source("plot_inat.R")
+source("cetacean_priority_areas.R")
+source("plot_cetaceans_4grid.R")
+source("Blue_Whale_habitat.R")
+source("plot_bw_hab.R")
+source("plot_bw_hab_zoom.R")
+```
+
+```{r Define Site, eval=FALSE, include=FALSE, cache=FALSE}
+#HTML output of code is automatically generated in Catalina's computer: RProjects/MSP/SearchPEZ/code
+#output of get.data.R should be manually moved to RProjects/MSP/SearchPEZ/outputs/sitenamexkm  
+#AquaSiteName <- "TestGully"
+#PEZversion <- "Polygon"
+AquaSiteName <- "FarmersLedge"
+PEZversion <- "4748m"
+UserComments <- "Example - First search effort for suitability of a site for a project planned for 2025. Project is expected to have positive/negative impacts on surrounding area. It is likely that some kind of monitoring will be required during operations. Make sure to follow up on all sections pertaining to a particular taxonomic group as this seems to be a concern of the stakeholders."
+#make sure you delete all shp.xml files in the folder to be able to run this code
+minYear <- 1970
+maxYear <- 2020
+```
+
+# **Introduction**
+
+### **About this report**
+
+This reproducible report summarizes species that have been reported in specific areas drawing from databases available, both within and outside the Department. This report provides a general list of priority species (listed by SARA, COSEWIC and Wild Species) that have been reported in a given user defined area. This report is for internal DFO use only. No maps, layers, or data that violate the rule of 5 will be shared outside of the department. 
+
+**Species listings reported in this section:**
+
+*SARA* - The Species at Risk Act (SARA) was proclaimed in June 2003, and is one part of a three part Government of Canada strategy for the protection of wildlife species at risk. This three part strategy also includes commitments under the Accord for the Protection of Species at Risk and activities under the Habitat Stewardship Program for Species at Risk. The purposes of SARA are to prevent Canadian indigenous species, subspecies, and distinct populations from becoming extirpated or extinct, to provide for the recovery of endangered or threatened species, and encourage the management of other species to prevent them from becoming at risk. It applies to all federal lands in Canada; all wildlife species listed as being at risk; and their critical habitat.
+For more information on SARA visit <https://www.canada.ca/en/environment-climate-change/services/species-risk-public-registry.html> 
+
+*COSEWIC* - The Committee on the Status of Endangered Wildlife in Canada (COSEWIC) is an independent advisory panel to the Minister of Environment and Climate Change Canada that meets twice a year to assess the status of wildlife species at risk of extinction. Members are wildlife biology experts from academia, government, non-governmental organizations and the private sector responsible for designating wildlife species in danger of disappearing from Canada. COSEWIC determines the national status of wild Canadian species, subspecies, varieties or other designatable units that are suspected of being at risk of extinction or extirpation. COSEWIC uses a process based on science and Aboriginal or community knowledge to assess wildlife species at risk. All native mammals, birds, reptiles, amphibians, fish, arthropods, molluscs, vascular plants, mosses and lichens are included in COSEWIC's current mandate.
+For more information on COSEWIC visit <https://www.cosewic.ca/index.php/en-ca/>
+
+*Wild species* - Every five years the National General Status Working Group (NGSWG), which includes representatives from all provincial and territorial governments in Canada, and from the federal government, publishes a general report on the status of wildlife species in Canada. These reports are meant to inform Canadians about the status of species in the country, and to help prevent species in Canada from becoming extinct as a consequence of human activity.
+For more information about Wild Species reports visit <https://www.wildspecies.ca/home>
+
+### **How to use this report**
+
+Absence of a species in this report should be interpreted as an absence of reporting, not as an absence of the species in the area. The focus of this report is on species presence and not on associated numbers, frequency, or catch information.The aquaculture Science group led by Fred Page works with the Aquaculture site information, including current meter data, to calculate the Potential Exposure Zones (PEZ) of the aquaculture inputs (depositional feed/feces, advective/dispersive fish health treatments, etc.). This PEZ polygon is then used in this document to search regional databases (2002 - 2018) and summarize species that have been recorded. This information is used to determine if other, more site-specific, information is available on species presence for PEZ as a complement to the information provided by the proponent. Species lists generated in this synthesis is subsequently circulated to units in Maritimes Science to verify and compliment the information provided (e.g. spatial and temporal presence/absence of species in the area). 
+
+### **Intent of this report**
+
+The intent of this report for all users is to prompt a circulation of the species list generated in this synthesis to appropriate DFO units and sectors to verify and supplement the information provided (e.g. reported spatial and temporal presence/absence of species in the area).
+
+### **Resources and Sources of Uncertainty**
+
+Coastal and offshore areas of the Scotian Shelf bioregion are generally not adequately sampled, and hence information on these space and time scales is generally not contained within the various data sources available to DFO, including the surveys referred to in this document. Therefore, there is uncertainty as to the exact distribution of species in the search.
+
+### **Tiers of confidence in data sources**
+
+There are various data sources featured in this report, including federal and provincial agencies, non-profit organizations and citizen groups. Below is a framework by which users can assess the confidence with which they can assess the different data sources provided throughout the report.
+
+
+
+# **Search area**
+
+**Site:**
+```{r echo=FALSE, results='asis', eval = FALSE}
+cat(AquaSiteName)
+```
+
+**Potential Exposure Zone (PEZ) radius:**
+```{r echo=FALSE, results='asis', eval = FALSE}
+cat(PEZversion)
+```
+
+**PEZ features/comments from user:**
+```{r echo=FALSE, results='asis', eval = FALSE}
+cat("{{user_comments}}")
+```
+
+
+
+
+
+
+
+<!-- MAIN SECTIONS -->
+# **Search Results for Species at Risk**  
+
+{{add_main_sections}}
+
+
+
+<!-- EBSA -->
+{{add_ebsa_section}}
+
+
+
+<!-- GENERIC END -->
+
+# **Document Notes**
+
+This synthesis is created using Rmarkdown and therefore this document can be reproduced and reused using the code available in <https://github.com/AtlanticR/MSP/tree/master/SearchPEZ>. The full document can be updated rapidly as more or different information becomes available.
+
+This document was prepared by the Science MSP Team: <Gregory.Puncher@dfo-mpo.gc.ca>, <Catalina.Gomez@dfo-mpo.gc.ca>, <Gordana.Lazin@dfo-mpo.gc.ca>, <Brian.Bower@dfo-mpo.gc.ca>, <Philip.Greyson@dfo-mpo.gc.ca>, and <Tana.Worcester@dfo-mpo.gc.ca>
+
+# **Additional sources of information: to be included in future reports**
+
+For information about seabirds please contact Environment and Climate Change Canada. Link: <https://open.canada.ca/data/en/dataset/f612e2b4-5c67-46dc-9a84-1154c649ab4e>
+
+There are sources of data and information that were not included in this report. These include data from past studies/publications, acoustic detections, prey sampling and tagging. While the value of these data in predicting and describing cetacean occurrence is vital, these types of data are not available for all species and are not yet available for data querying. In the future, as information from other data sources becomes available, it too will help to provide a more comprehensive understanding of cetacean use and occurrence in the search areas.
+
+# **Additional Notes**
+Should you receive a request for set-level Observer data (ISDB) and MARFIS, please just forward to Peter Comeau and <XMARComData@dfo-mpo.gc.ca>, respectively. Please feel free to use the email template below. Note that the template includes an attachment which you can download here - Informal Release Guidelines <\\ent.dfo-mpo.ca\ATLShares\Shared\ATIP Information\Informal_Release_Guidelines-eng.docx>.
+
+Hi,
+
+I apologize, but we can not provide you with the level of detail as it has been requested.  Fisheries catch and effort information for an individual licence holder is considered personal information and is protected under section 19 of the Access to Information Act. Fisheries catch and effort information for a corporate licence holder is considered to be sensitive, proprietary information and protected under Section 20 of the Access to Information Act.  Without written consent, DFO is not permitted to release information or data products (e.g., maps and data layers) that might reveal personal or third party information such as catch, landed values, and vessel-specific fishing locations.  All of this is spelled out to DFO staff the attached document (i.e. Appendix B – “Catch and Effort and Quota Information: Do’s and Don’ts for Informal Release”)
+
+# **References**
+
+Gomez, C., Konrad, C.M., Vanderlaan, A., Moors-Murphy, H.B., Marotte, E., Lawson, J., Kouwenberg, A-L., Fuentes-Yaco, C., Buren, A. 2020. Identifying priority areas to enhance monitoring of cetaceans in the Northwest Atlantic Ocean. Can. Tech. Rep.Fish. Aquat. Sci. 3370: vi + 103 p. http://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf
+
+Kennedy R.D. 2019. The North Atlantic Right Whale Consortium Database: A Guide for Users and Contributors. Version 6. North Atlantic Right Whale Consortium Reference Document 2019-02.144 pp. <https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf> 
+
+Lesage, V., Gosselin, J-F., Lawson, J. W., McQuinn, I., Moors-Murphy, H., Plourde, S., Sears. R. et Y. Simard. 2018. Habitats important to blue whales (Balaenoptera musculus) in the Western North Atlantic. DFO Can. Sci. Advis. Sec. Res. Doc. 2016/080: iv + 50 p. <https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>
+
+MacDonald, D., Emery, P., Themelis, D., Smedbol, R.K., Harris, L.E., and McCurdy, Q. 2017. Marine mammal and pelagic animal sightings (Whalesightings) database: a user’s guide. Can. Tech. Rep. Fish. Aquat. Sci. 3244: v + 44 p.<https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf> 
+
+# **Acknowledgments**
+
+<Mike.McMahon@dfo-mpo.gc.ca>! for providing code and advice in the use of `Mar.datawrangling`: A suite of tools for extracting, filtering and aggregating data from the Maritimes fisheries science databases <https://github.com/Maritimes/Mar.datawrangling>
+
+The Atlantic R Learning & Development Initiative <https://github.com/AtlanticR>.  
+
+Cetacean section: Shelley Lang, Hilary Moors-Murphy, Susan Heaslip, Emma Marotte, Amanda Babin, Nick Jeffery, Angelia Vanderlaan
+
+# **Future databases and data products to be included**  
+
+Examples:  
+
+Global Biodiversity Information Facility (GBIF) <https://www.gbif.org/>  
+Intertidal vegetation maps derived from remote sensing.  
+Ecosystem Management interactive ArcGIS maps -developed for 1) Regulatory Review projects and 2) SAR program. Currently, maps are for internal use only by Maritimes SARP.  
+Province's data is openx <https://data.novascotia.ca/w/jgyj-d4fh/default?cur=8JS4clBZaD9&from=l6_um6e8ufx>  
+Tracking data, OTN <https://obis.org/dataset/80997ac3-87cb-411c-ab1f-334adec45050> via ERDDAP and R package rerdda  
+Electrofishing (Jeremy Bloome)  
+eDNA  
+Lobster and scallop programs  
+Salmon  
+
+
+
+
+
+<!-- APPENDIX -->
+{{add_appendix}}
