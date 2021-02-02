@@ -69,3 +69,10 @@ switch_ext <- function(x, y) {
   ext <- tools::file_ext(x)
   sub(glue(".{ext}$"), glue(".{y}"), x) 
 }
+
+
+# clear extra HTML in www
+clear_www_html <- function() {
+  html_fl <- list.files("www", pattern = "*.html$", full.names = TRUE)
+  file.remove(html_fl[html_fl != "www/empty_report.html"])
+}

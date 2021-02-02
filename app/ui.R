@@ -25,72 +25,83 @@ ui <- fluidPage(
   #
   sidebarLayout(
 
-      sidebarPanel( 
-        h2(div(img(src="img/bio_logo.jpg", height = 78), "Spatial Shiny App")),
+    sidebarPanel( 
+      # Title 
+      h2(div(img(src="img/bio_logo.jpg", height = 78), "Spatial Shiny App")),
+      
+      # Panels 
+      tabsetPanel(
           
+        # IDENTIFICATION
+        tabPanel(
+          "Identify", 
+          icon = icon("user-check"),
+          myhelptxt("This tab allows you to identify yourself, detail the reason why you are generating the report and abide to terms and conditions."),
+          # input
+          textInput("u_name", label = "Enter your name", value = "Lorem ipsum"),
+          textInput("u_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
+          textAreaInput("u_notes", label = "Provide the reason/rationale for generating the report", value = ""),
+          # terms and conditions 
+          checkboxGroupInput("u_consent", label = "Terms and conditions",
+          choiceNames = list(
+            HTML("I understand this report is for the <a href = 'https://www.dfo-mpo.gc.ca/index-eng.htm'>Department of Fisheries and Oceans Canada (DFO)</a> internal use only, and it shall not be shared with users outside DFO."),
+            HTML("I will read all the caveats, disclaimers and uncertainty outlined in each section of the report."),
+            HTML("I will abide to all policies and directives of the Government of Canada, including, and not restricted to, <a href = 'https://www.canada.ca/en/government/publicservice/values.html'>values and ethics of the public service</a>.")
+            ),
+            choiceValues = list(1, 2, 3)
+          ),
+          br(),
+          actionButton("get_u_details", 'Validate', icon =icon("pencil")),
+          hspace(2),
+          uiOutput("valid_details", inline = TRUE),
+          uiOutput("invalid_details", inline = TRUE),
+        ),
+            
+        # LAYER CREATION 
+        tabPanel(
+          "Area", 
+          icon = icon("pencil"),
+          myhelptxt("This tab allows you to add or create areas of interest using one of the three tabs below."),
+          
+          # Three selections panels 
           tabsetPanel(
             
-            # IDENTIFICATION
             tabPanel(
-              "Identify", 
-              icon = icon("user-check"),
-              myhelptxt("This tab allows you to identify yourself, detail the reason why you are generating the report and abide to terms and conditions."),
-              textInput("u_name", label = "Enter your name", value = "Lorem ipsum"),
-              textInput("u_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
-              textAreaInput("u_notes", label = "Provide the reason/rationale for generating the report", value = ""),
-              checkboxGroupInput("u_consent", label = "Terms and conditions",
-                choiceNames = list(
-                  HTML("I understand this report is for the <a href = 'https://www.dfo-mpo.gc.ca/index-eng.htm'>Department of Fisheries and Oceans Canada (DFO)</a> internal use only, and it shall not be shared with users outside DFO."),
-                  HTML("I will read all the caveats, disclaimers and uncertainty outlined in each section of the report."),
-                  HTML("I will abide to all policies and directives of the Government of Canada, including, and not restricted to, <a href = 'https://www.canada.ca/en/government/publicservice/values.html'>values and ethics of the public service</a>.")
-                ),
-                choiceValues = list(1, 2, 3)
-              ),
+              "Bounding box",
+              myhelptxt("Use the tex fields below to create a bounding box ."),
+              h4("Enter coordinates of the bounding box"),
+              div(style="display: inline-block;vertical-align:top;",
+                numericInput("bbox_xmin", label = "Xmin", value = "0", min = -180, max = 180)),
+              div(style="display: inline-block;vertical-align:top;",
+                numericInput("bbox_xmax", label = "Xmax", value = "0", min = -180, max = 180)),
               br(),
-              actionButton("get_u_details", 'Valid details', icon = icon("pencil")),
-              hspace(2),
-              uiOutput("valid_details", inline = TRUE),
-              uiOutput("invalid_details", inline = TRUE),
+              div(style="display: inline-block;vertical-align:top;",
+                numericInput("bbox_ymin", label = "Ymin", value = "0", min = -90, max = 90)),
+              div(style="display: inline-block;vertical-align:top;",
+                numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90)),
+              br(),
+              actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
+              actionButton('save_bbox', 'Save', icon = icon("download"))
             ),
             
-            
-            # LAYER CREATION 
             tabPanel(
-            "Area", 
-            icon = icon("pencil"),
-            myhelptxt("This tab allows you to create and save layers using one of the three tabs below."),
-            tabsetPanel(
-              tabPanel(
-                "Bounding box",
-                h4("Enter coordinates of the bounding box"),
-                div(style="display: inline-block;vertical-align:top;",
-                  numericInput("bbox_xmin", label = "Xmin", value = "0", min = -180, max = 180)),
-                div(style="display: inline-block;vertical-align:top;",
-                  numericInput("bbox_xmax", label = "Xmax", value = "0", min = -180, max = 180)),
-                br(),
-                div(style="display: inline-block;vertical-align:top;",
-                  numericInput("bbox_ymin", label = "Ymin", value = "0", min = -90, max = 90)),
-                div(style="display: inline-block;vertical-align:top;",
-                  numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90)),
-                br(),
-                actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
-                actionButton('save_bbox', 'Save', icon = icon("download"))
-              ),
-              tabPanel(
-                "Draw from map",
-                h4("Create geom from map (geojson)"),
-                textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
-                actionButton('save_from_map', 'Save from map', icon = icon("download")),
-                hspace(2),
-                uiOutput("created_from_map", inline = TRUE),
-                uiOutput("created_from_map_not", inline = TRUE)
-              ),
-              tabPanel(
-                "Input Shapefile",
-                h4("Use your own shapefile"),
-                fileInput("import_shapefile", "Choose a file", accept = c(".shp", ".geojson")),
-                actionButton('shp_to_map', 'Add to map', icon = icon("pencil")),
-                actionButton('save_shp', 'Save', icon = icon("download"))
+              "Draw from map",
+              myhelptxt("Use the interactive map on the right side to create a polygon."),
+              h4("Create geom from map (geojson)"),
+              textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
+              actionButton('save_from_map', 'Save from map', icon = icon("download")),
+              hspace(2),
+              uiOutput("created_from_map", inline = TRUE),
+              uiOutput("created_from_map_not", inline = TRUE)
+            ),
+            
+            tabPanel(
+              "Input Shapefile",
+              myhelptxt("Select an existing file (`.shp` or `.geojson`) to import an existing shapefile"),
+              h4("Use your own shapefile"),
+              fileInput("import_shapefile", "Choose a file", accept = c(".shp", ".geojson")),
+              actionButton('shp_to_map', 'Add to map', icon = icon("pencil")),
+              actionButton('save_shp', 'Save', icon = icon("download"))
               )
             )
           ),
@@ -101,7 +112,7 @@ ui <- fluidPage(
             tabPanel(
               "Data", 
               icon = icon("database"),
-              myhelptxt("This tab allows you to customize the report to be generated."),
+              myhelptxt("This tab allows you to select the langague of the report as well as the section to be included in the customized report."),
               
               checkboxGroupInput("report_lang", 
                       label = "Select target language(s) for report", 
@@ -136,8 +147,9 @@ ui <- fluidPage(
             tabPanel(
               "Report", 
               icon = icon("book"),
-              myhelptxt("This tab allows you to generate a report."),
-              # SUMMARISE THE REPORT 
+              myhelptxt("This tab allows you to generate the report."),
+              
+              
               ## MAP APERCU 
               ## SECTION SELECTED 
               # uiOutput("warning_tc"),
@@ -147,6 +159,7 @@ ui <- fluidPage(
               # fileInput("ext_rmd", "Choose an R Markdown file (optional)", 
               # accept = c(".Rmd", ".rmd")),
               textAreaInput("author_text", label = "Subtitle", value = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors."),
+              textAreaInput("author_comments", label = "Comments", value = ""),
               textInput("report_name", label = "Report filename (optional)", value = ""),
               # HTML("<h4>File selected: "),
               # textOutput("file_report", inline = TRUE),
@@ -196,6 +209,7 @@ ui <- fluidPage(
               icon = icon("book"),
               htmlOutput("report_html")
             )
+            
         ),
       )
       

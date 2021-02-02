@@ -4,35 +4,32 @@
 #' @param dir_out output directory
 #' @param dir_in input directory
 # 
-renderReport <- function(data, input, fl = "", dir_out = "output/doc", 
+renderReport <- function(data, input, fl = NULL, dir_out = "output/doc", 
   dir_in = "Rmd") {
     
   msgInfo("Generating report")
+  #
+  clear_www_html()
+  
+  # 
   lang <- input$report_lang
-
-  if (fl == "") {
-    fl <- NULL 
-  } else {
-    # nasty trick due to current behavior of R Markdown
-    fl <- rep(fl, 20)
-  }
+  # nasty trick due to current rmarkdown behavior
+  if (!is.null(fl)) fl <- rep(fl, 20)
   x <- glue("{dir_in}/report_pt1_generic_intro_{lang}.Rmd")
   
   # Save data as rds 
   dtrmd <- switch_ext(glue("data_{basename(x)}"), "rds")
   saveRDS(data, glue("{dir_out}/{dtrmd}"))
   
-  # Section to be added
+  # Section(s) to be added
   s_main <- main_parts(input$main_sections, lang)
-
   s_ebsa <- s_appendix <- NULL
   if (!is.null(input$extra_sections)) {
     s_ebsa <- ebsa_part(any(input$extra_sections == 1), lang)
     s_appendix <- appendix_part(any(input$extra_sections == 2), lang)
   }
 
-
-  # fill out .Rmd file before rendering
+  # fill out .Rmd file before rendering it
   flrmd <- glue("{dir_out}/{basename(x)}")
   template <- readLines(x)
   data_all <- c(

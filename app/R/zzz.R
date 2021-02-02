@@ -14,5 +14,4 @@ spa <- lapply(list.files("data", full.names = TRUE), readSpatial)
 msgInfo("R files loaded")
 
 # clear previous report (if any)
-html_fl <- list.files("www", pattern = "*.html$", full.names = TRUE)
-file.remove(html_fl[html_fl != "www/empty_report.html"])
+clear_www_html()
