@@ -18,8 +18,8 @@ renderReport <- function(data, input, fl = NULL, dir_out = "output/doc",
   x <- glue("{dir_in}/report_pt1_generic_intro_{lang}.Rmd")
   
   # Save data as rds 
-  dtrmd <- switch_ext(glue("data_{basename(x)}"), "rds")
-  saveRDS(data, glue("{dir_out}/{dtrmd}"))
+  # dtrmd <- switch_ext(glue("data_{basename(x)}"), "rds")
+  # saveRDS(data, glue("{dir_out}/{dtrmd}"))
   
   # Section(s) to be added
   s_main <- main_parts(input$main_sections, lang)

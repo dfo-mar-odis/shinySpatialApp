@@ -59,7 +59,7 @@ ui <- fluidPage(
             
         # LAYER CREATION 
         tabPanel(
-          "Area", 
+          "Area(s)", 
           icon = icon("pencil"),
           myhelptxt("This tab allows you to add or create areas of interest using one of the three tabs below."),
           
@@ -79,6 +79,8 @@ ui <- fluidPage(
                 numericInput("bbox_ymin", label = "Ymin", value = "0", min = -90, max = 90)),
               div(style="display: inline-block;vertical-align:top;",
                 numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90)),
+              br(),
+              numericInput("bbox_crs", label = "crs", value = "0", min = -90, max = 90),
               br(),
               actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
               actionButton('save_bbox', 'Save', icon = icon("download"))
@@ -103,74 +105,84 @@ ui <- fluidPage(
               actionButton('shp_to_map', 'Add to map', icon = icon("pencil")),
               actionButton('save_shp', 'Save', icon = icon("download"))
               )
-            )
-          ),
-          
-          
-            
-            # SELECT SECTION
-            tabPanel(
-              "Data", 
-              icon = icon("database"),
-              myhelptxt("This tab allows you to select the langague of the report as well as the section to be included in the customized report."),
-              
-              checkboxGroupInput("report_lang", 
-                      label = "Select target language(s) for report", 
-                      choiceNames = c("EN", "FR"),
-                      choiceValues = c("EN", "FR"),
-                      selected = "EN", 
-                      inline = TRUE
-                ),
-              
-              checkboxGroupInput("main_sections", 
-                  label = "While numerous species have been identified in this region, only those listed by SARA, or assessed by COSEWIC and Wild species listings are summarized in this section:", 
-                  choiceNames = c(
-                    "National Aquatic Species at Risk", 
-                    "Fish and Invertebrates", 
-                    "Sea turtles", 
-                    "Cetaceans"),
-                    selected = 1:4,
-                    choiceValues = 1:4, 
-                ),
-                
-              checkboxGroupInput("extra_sections", 
-                  label = "The following selection will include additional information, and species not listed by SARA, or assessed by COSEWIC and Wild species:", 
-                  choiceNames = c(
-                    "Ecologically or Biologically Significant Areas", 
-                    "Additional species"),
-                  choiceValues = 1:2, 
-                ),
-    
             ),
             
-            # REPORT
+            br(),
+            uiOutput("nb_geoms")
+          ),
+          
+        
+        # SELECT AREAS/ BUFFER
+        tabPanel(
+          "Buffer", 
+          icon = icon("database"),
+          myhelptxt("This tab allows you to validate areas and select an optional buffer for the selected geoms."),
+        ),
+        
+        
+        
+        # REPORT
+        tabPanel(
+          "Report", 
+          icon = icon("book"),
+          myhelptxt("This tab allows you to customize and generate your report."),
+              
+          tabsetPanel(
+                
             tabPanel(
-              "Report", 
-              icon = icon("book"),
-              myhelptxt("This tab allows you to generate the report."),
+              "Select sections",
+              myhelptxt("This tab allows you to select the relevant sections to be included in your final report."),
+              checkboxGroupInput("main_sections", 
+                label = "While numerous species have been identified in this region, only those listed by SARA, or assessed by COSEWIC and Wild species listings are summarized in this section:", 
+                choiceNames = c(
+                  "National Aquatic Species at Risk", 
+                  "Fish and Invertebrates", 
+                  "Sea turtles", 
+                  "Cetaceans"
+                ),
+                selected = 1:4,
+                choiceValues = 1:4, 
+              ),
+              checkboxGroupInput("extra_sections", 
+                label = "The following selection will include additional information, and species not listed by SARA, or assessed by COSEWIC and Wild species:", 
+                choiceNames = c(
+                  "Ecologically or Biologically Significant Areas", 
+                  "Additional species"
+                ),
+                choiceValues = 1:2, 
+              ),
+                
+            ),
               
-              
-              ## MAP APERCU 
-              ## SECTION SELECTED 
-              # uiOutput("warning_tc"),
-              # selectInput("int_rmd", "Select one available template", 
-              #          choices = c(list("none" = "none"), rmd_list), 
-              #          selected = "none"),
-              # fileInput("ext_rmd", "Choose an R Markdown file (optional)", 
-              # accept = c(".Rmd", ".rmd")),
-              textAreaInput("author_text", label = "Subtitle", value = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors."),
+            tabPanel(
+              "Generate report",
+              myhelptxt("This tab allows you to generate your report"),
+              checkboxGroupInput("report_lang", 
+                label = "Select target language(s) for report", 
+                choiceNames = c("English", "French"),
+                choiceValues = c("EN", "FR"),
+                selected = "EN", 
+                inline = TRUE
+              ),
+              textAreaInput(
+                "author_text", 
+                label = "Subtitle", 
+                value = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors."
+              ),
               textAreaInput("author_comments", label = "Comments", value = ""),
-              textInput("report_name", label = "Report filename (optional)", value = ""),
-              # HTML("<h4>File selected: "),
-              # textOutput("file_report", inline = TRUE),
-              # HTML("</h4>"),
+              textInput(
+                "report_name", 
+                label = "Report filename (optional)", 
+                value = ""
+              ),
               hr(),
               actionButton("generate_rmd", "Generate report", icon("book")),
               hspace(2),
               uiOutput("render_success", inline = TRUE)
             )
+            )
+          )
           ),
-            
             
           br(),
           br(),
@@ -188,32 +200,28 @@ ui <- fluidPage(
         ),
         
 
-          
-
-
-        # add map
-        mainPanel(
-          
-          tabsetPanel(
-            
-            # MAP
-            tabPanel(
-              "Map",
-              icon = icon("map"),
-              mapedit::editModUI("map")
-            ),
-            
-            # REPORT
-            tabPanel(
-              "Report",
-              icon = icon("book"),
-              htmlOutput("report_html")
-            )
-            
-        ),
-      )
+    # RIGHT PANEL
+    # add map
+    mainPanel(
       
+      tabsetPanel(
+        # MAP
+        tabPanel(
+          "Map",
+          icon = icon("map"),
+          mapedit::editModUI("map")
+        ),
+        # REPORT
+        tabPanel(
+          "Report",
+          icon = icon("book"),
+          htmlOutput("report_html")
+        )  
+      ),
     )
+    
+    
+  )
     
 )
 
