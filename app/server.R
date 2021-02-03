@@ -112,9 +112,11 @@ server <- function(input, output, session) {
   spa_ext <- reactiveValues()
   # ## add external layer 
   # shinyjs::hide(id = "shp_to_map")
+  shinyjs::hide(id = "import_buffer")
   shinyjs::hide(id = "save_shp")
   observeEvent(input$import_shapefile, {
     # shinyjs::show(id = "shp_to_map")
+    shinyjs::show(id = "import_buffer")
     shinyjs::show(id = "save_shp")
   })
   observeEvent(input$shp_to_map, {

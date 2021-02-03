@@ -80,7 +80,8 @@ ui <- fluidPage(
               div(style="display: inline-block;vertical-align:top;",
                 numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90)),
               br(),
-              numericInput("bbox_crs", label = HTML("EPSG code (see <a href='https://epsg.io/'>https://epsg.io/</a>)"), value = "4326", min = -90, max = 90),
+              numericInput("bbox_crs", label = HTML("EPSG code (see <a href='https://epsg.io/'>https://epsg.io/</a>)"), value = "4326"),
+              numericInput("bbox_buffer", label = "Optional buffer (m)", value = "0", min = 0),
               br(),
               # actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
               actionButton('save_bbox', 'Save', icon = icon("download"))
@@ -95,7 +96,8 @@ ui <- fluidPage(
               div(style="display: inline-block;vertical-align:top;",
                 numericInput("pt_y", label = "Y", value = "0", min = -180, max = 180)),
               br(),
-              numericInput("pt_crs", label = HTML("EPSG code (see <a href='https://epsg.io/'>https://epsg.io/</a>)"), value = "4326", min = -90, max = 90),
+              numericInput("pt_crs", label = HTML("EPSG code (see <a href='https://epsg.io/'>https://epsg.io/</a>)"), value = "4326"),
+              numericInput("pt_buffer", label = "Optional buffer (m)", value = "0", min = 0),
               br(),
               # actionButton('add_point', 'Add to map', icon = icon("pencil")),
               actionButton('save_point', 'Save', icon = icon("download"))
@@ -106,6 +108,7 @@ ui <- fluidPage(
               myhelptxt("Use the interactive map on the right side to create geoms (points, lines or polygons)."),
               h4("Create geom from map (geojson)"),
               # textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
+              numericInput("from_map_buffer", label = "Optional buffer (m)", value = "0", min = 0),
               actionButton('save_from_map', 'Save from map', icon = icon("download")),
               hspace(2),
               uiOutput("created_from_map", inline = TRUE),
@@ -117,6 +120,7 @@ ui <- fluidPage(
               myhelptxt("Import an existing shapefile (`.shp` or `.geojson`) "),
               h4("Use your own shapefile"),
               fileInput("import_shapefile", "Choose a file", accept = c(".shp", ".geojson")),
+              numericInput("import_buffer", label = "Optional buffer (m)", value = "0", min = 0),
               # actionButton('shp_to_map', 'Add to map', icon = icon("pencil")),
               actionButton('save_shp', 'Save', icon = icon("download"))
               )
@@ -133,7 +137,11 @@ ui <- fluidPage(
           icon = icon("check-square"),
           myhelptxt("This tab allows you to validate the selected geoms and add buffer to them,  buffer for the selected geoms."),
           checkboxGroupInput("check_input_areas", "Input ph", c("none")),
-          uiOutput("nb_geoms_selected")
+          uiOutput("nb_geoms_selected"),
+          # hide if not >0
+          actionButton('add_geoms_to_map', 'Add to map', icon = icon("pencil")),
+          actionButton('clear_map', "Clear map", icon = icon("trash-alt")),
+          actionButton('valid_geoms', "Validate", icon = icon("check"))
         ),
         
         
