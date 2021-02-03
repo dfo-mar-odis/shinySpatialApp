@@ -135,10 +135,7 @@ cat(AquaSiteName)
 cat(PEZversion)
 ```
 
-**PEZ features/comments from user:**
-```{r echo=FALSE, results='asis', eval = FALSE}
-cat("{{user_comments}}")
-```
+**PEZ features/comments from user:** {{author_comments}}
 
 
 

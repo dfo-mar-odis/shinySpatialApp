@@ -5,9 +5,6 @@ server <- function(input, output, session) {
   # list of data and areas 
   data_in$data_src <- data_in$geoms <- list()
   
-  
-  # kk <- reactive({data_in$geoms})
-  
   nb_geom <- reactive({
     n <- length(data_in$geoms)
     output$nb_geoms <- info_valid(glue("Number of geoms saved so far: {n}"), n)

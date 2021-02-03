@@ -14,12 +14,15 @@ renderReport <- function(data, input, fl = NULL, dir_out = "output/doc",
   # 
   lang <- input$report_lang
   # nasty trick due to current rmarkdown behavior
-  if (!is.null(fl)) fl <- rep(fl, 20)
+  if (fl != "" & !is.null(fl)) {
+     fl <- rep(fl, 20)
+  } else fl <- NULL
   x <- glue("{dir_in}/report_pt1_generic_intro_{lang}.Rmd")
   
   # Save data as rds 
   # dtrmd <- switch_ext(glue("data_{basename(x)}"), "rds")
   # saveRDS(data, glue("{dir_out}/{dtrmd}"))
+
   
   # Section(s) to be added
   s_main <- main_parts(input$main_sections, lang)
@@ -38,7 +41,7 @@ renderReport <- function(data, input, fl = NULL, dir_out = "output/doc",
     add_main_sections = add_sections(s_main, dir_in, dir_out),
     add_ebsa_section = add_sections(s_ebsa, dir_in, dir_out),
     add_appendix = add_sections(s_appendix, dir_in, dir_out)
-  )
+  )  
   writeLines(whisker::whisker.render(template, data_all), flrmd)
 
   # First rendering
