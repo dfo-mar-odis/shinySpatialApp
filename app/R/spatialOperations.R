@@ -2,7 +2,7 @@ valid_bbox <- function(xmin, xmax, ymin, ymax, crs_in = 4326) {
   out <- st_as_sf(
     st_as_sfc(
       st_bbox(
-        c(xmin = xmin, xmax = xmax , ymin = ymin, ymax = ymax), 
+        c(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), 
         crs = crs_in
       )
     )

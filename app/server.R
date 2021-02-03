@@ -50,9 +50,35 @@ server <- function(input, output, session) {
   
   
   
-  # CREATE LAYER 
+  # CREATE GEOMS
     
-  ## From bbox (2Bdone)
+  ## From bbox
+  observeEvent(input$save_bbox, {
+    geom <- valid_bbox(input$bbox_xmin, input$bbox_xmax, input$bbox_ymin, input$bbox_ymax, input$bbox_crs)
+    if (!is.null(geom)) {
+      data_in$geoms <- append(data_in$geoms, 
+        list(list(
+          geom = geom, 
+          name = glue("bbox_{input$save_bbox}"), 
+          method = "bbox"
+        ))
+      )
+    }
+  })
+  
+  ## From point
+  observeEvent(input$save_point, {
+    geom <- valid_points(input$pt_x, input$pt_y, input$pt_crs)
+    if (!is.null(geom)) {
+      data_in$geoms <- append(data_in$geoms, 
+        list(list(
+          geom = geom, 
+          name = glue("point_{input$save_point}"), 
+          method = "point"
+        ))
+      )
+    }
+  })
     
   ## From map 
   observeEvent(input$save_from_map, {
@@ -60,20 +86,26 @@ server <- function(input, output, session) {
     output$created_from_map_not <- output$created_from_map <- renderText("")
     geom <- edits()$finished
     if (!is.null(geom)) {
-      nm <- glue('output/spatial/{input$name_geom}.geojson')
-      if (!file.exists(nm)) {
-        sf::write_sf(geom, nm ,delete_layer = TRUE, delete_dsn = TRUE)
-        output$created_from_map <- info_valid(glue('{nm}.geojson created'))
-        data_in$geoms <- append(data_in$geoms, 
-          list(list(geom = geom, name = basename(nm), method = "drawn"))
+      data_in$geoms <- append(data_in$geoms, 
+          list(list(
+            geom = geom,
+            name = glue("drawn_{input$save_from_map}"), 
+            method = "drawn"
+          ))
         )
-      } else { 
-        output$created_from_map_not <- info_valid("Cannot overwrite existing file", FALSE)
-      }
     } else {
       output$created_from_map_not <- info_valid("Please use the map on the right.", FALSE)
     }
-
+    #   nm <- glue('output/spatial/{input$name_geom}.geojson')
+    #   if (!file.exists(nm)) {
+    #     sf::write_sf(geom, nm, delete_layer = TRUE, delete_dsn = TRUE)
+    #     output$created_from_map <- info_valid(glue('{nm}.geojson created'))
+    #     data_in$geoms <- append(data_in$geoms, 
+    #       list(list(geom = geom, name = basename(nm), method = "drawn"))
+    #     )
+    #   } else { 
+    #     output$created_from_map_not <- info_valid("Cannot overwrite existing file", FALSE)
+    #   }
   })
     
   ## From external shapefile

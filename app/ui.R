@@ -20,7 +20,7 @@ ui <- fluidPage(
   ),
   
   # Application title
-  titlePanel("", "DFO Spatial Shiny App"),
+  titlePanel("", "BIO Spatial Shiny App"),
 
   #
   sidebarLayout(
@@ -82,7 +82,7 @@ ui <- fluidPage(
               br(),
               numericInput("bbox_crs", label = HTML("EPSG code (see <a href='https://epsg.io/'>https://epsg.io/</a>)"), value = "4326", min = -90, max = 90),
               br(),
-              actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
+              # actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
               actionButton('save_bbox', 'Save', icon = icon("download"))
             ),
             
@@ -91,21 +91,21 @@ ui <- fluidPage(
               myhelptxt("Use the fields below to create a bounding box."),
               h4("Enter coordinates of the bounding box"),
               div(style="display: inline-block;vertical-align:top;",
-                numericInput("pt_xmin", label = "Xmin", value = "0", min = -180, max = 180)),
+                numericInput("pt_x", label = "X", value = "0", min = -180, max = 180)),
               div(style="display: inline-block;vertical-align:top;",
-                numericInput("pt_xmax", label = "Xmax", value = "0", min = -180, max = 180)),
+                numericInput("pt_y", label = "Y", value = "0", min = -180, max = 180)),
               br(),
               numericInput("pt_crs", label = HTML("EPSG code (see <a href='https://epsg.io/'>https://epsg.io/</a>)"), value = "4326", min = -90, max = 90),
               br(),
-              actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
-              actionButton('save_bbox', 'Save', icon = icon("download"))
+              # actionButton('add_point', 'Add to map', icon = icon("pencil")),
+              actionButton('save_point', 'Save', icon = icon("download"))
             ),
             
             tabPanel(
               "Draw from map",
               myhelptxt("Use the interactive map on the right side to create geoms (points, lines or polygons)."),
               h4("Create geom from map (geojson)"),
-              textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
+              # textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
               actionButton('save_from_map', 'Save from map', icon = icon("download")),
               hspace(2),
               uiOutput("created_from_map", inline = TRUE),
@@ -117,7 +117,7 @@ ui <- fluidPage(
               myhelptxt("Import an existing shapefile (`.shp` or `.geojson`) "),
               h4("Use your own shapefile"),
               fileInput("import_shapefile", "Choose a file", accept = c(".shp", ".geojson")),
-              actionButton('shp_to_map', 'Add to map', icon = icon("pencil")),
+              # actionButton('shp_to_map', 'Add to map', icon = icon("pencil")),
               actionButton('save_shp', 'Save', icon = icon("download"))
               )
             ),
@@ -132,6 +132,10 @@ ui <- fluidPage(
           "Check", 
           icon = icon("check-square"),
           myhelptxt("This tab allows you to validate the selected geoms and add buffer to them,  buffer for the selected geoms."),
+          
+          
+          checkboxGroupInput("check_input_areas", "Input checkbox 2",
+          c("Item A", "Item B", "Item C"))
         ),
         
         
