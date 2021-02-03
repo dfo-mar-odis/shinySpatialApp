@@ -26,8 +26,10 @@ valid_points <- function(x, y, crs_in = 4326) {
 
 # use projection 3857 to add buffer
 add_buffer <- function(x, buffer) {
-  st_transform(
-    st_buffer(st_transform(x, crs = 3857), dist = buffer),
-    crs = 4326
-  )
+  if (buffer > 0) {
+    st_transform(
+      st_buffer(st_transform(x, crs = 3857), dist = buffer),
+      crs = 4326
+    )
+  } else x 
 }

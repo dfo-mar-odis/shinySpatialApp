@@ -113,7 +113,7 @@ ui <- fluidPage(
             ),
             
             tabPanel(
-              "Input Shapefile",
+              "Import files",
               myhelptxt("Import an existing shapefile (`.shp` or `.geojson`) "),
               h4("Use your own shapefile"),
               fileInput("import_shapefile", "Choose a file", accept = c(".shp", ".geojson")),
@@ -132,10 +132,8 @@ ui <- fluidPage(
           "Check", 
           icon = icon("check-square"),
           myhelptxt("This tab allows you to validate the selected geoms and add buffer to them,  buffer for the selected geoms."),
-          
-          
-          checkboxGroupInput("check_input_areas", "Input checkbox 2",
-          c("Item A", "Item B", "Item C"))
+          checkboxGroupInput("check_input_areas", "Input ph", c("none")),
+          uiOutput("nb_geoms_selected")
         ),
         
         

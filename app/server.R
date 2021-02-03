@@ -111,10 +111,10 @@ server <- function(input, output, session) {
   ## From external shapefile
   spa_ext <- reactiveValues()
   # ## add external layer 
-  shinyjs::hide(id = "shp_to_map")
+  # shinyjs::hide(id = "shp_to_map")
   shinyjs::hide(id = "save_shp")
   observeEvent(input$import_shapefile, {
-    shinyjs::show(id = "shp_to_map")
+    # shinyjs::show(id = "shp_to_map")
     shinyjs::show(id = "save_shp")
   })
   observeEvent(input$shp_to_map, {
@@ -135,7 +135,7 @@ server <- function(input, output, session) {
     # SPATIAL OPERATION (deprecated)
     
     # Selection of area (previously created)
-    observe({
+    observeEvent(data_in$geoms, {
     
       if (!length(data_in$geoms)) {
         x <- character(0)
@@ -146,12 +146,16 @@ server <- function(input, output, session) {
           )
       }
       updateCheckboxGroupInput(session, "check_input_areas",
-        label = 'Select',
+        label = "Select geoms",
         choices = x,
         selected = x
       )
     })
-
+    
+    observeEvent(input$check_input_areas, {
+        n <- length(input$check_input_areas)
+        output$nb_geoms_selected <- info_valid(glue("Number of geoms selected: {n}"), n)
+    }, ignoreNULL = FALSE)
 
   # GENERATE REPORT
   values <- reactiveValues()
