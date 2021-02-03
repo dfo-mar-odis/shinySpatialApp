@@ -52,6 +52,6 @@ runApp("app")
 - https://github.com/rstudio/shinytableau
 - https://github.com/rstudio/shinyvalidate
 
-
+- https://rstudio.github.io/leaflet/projections.html
 
 <!-- issue https://github.com/rstudio/rmarkdown/pull/572 https://github.com/rstudio/rmarkdown/issues/555 https://yihui.org/issue/-->

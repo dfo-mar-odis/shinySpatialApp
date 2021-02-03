@@ -11,7 +11,10 @@ tb_ref <- data.frame(
          layer = unlist(lay)
        )
 spa <- lapply(list.files("data", full.names = TRUE), readSpatial)
-msgInfo("R files loaded")
 
 # clear previous report (if any)
 clear_www_html()
+
+
+# R log for dev purposes
+msgInfo("R files loaded")

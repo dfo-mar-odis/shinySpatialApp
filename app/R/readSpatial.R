@@ -1,4 +1,4 @@
-readSpatial <- function(con, crs = 3857) { 
+readSpatial <- function(con, crs = 4326) { 
   # rds 
   if (grepl("\\.[Rr]ds", con)) {
     out <- readRDS(con)
@@ -18,7 +18,7 @@ readSpatial <- function(con, crs = 3857) {
 }
   
 
-read_sf_try <- function(con, crs = 3857) {
+read_sf_try <- function(con, crs = 4326) {
   out <- tryCatch(sf::st_read(con, quiet = TRUE), error = function(x) FALSE)
   if ("sf" %in% class(out) & identical(sf::st_crs(out), sf::st_crs(crs))) {
     out <- sf::st_transform(out, crs = crs)
@@ -26,7 +26,7 @@ read_sf_try <- function(con, crs = 3857) {
   out 
 }
 
-read_raster_try <- function(con, crs = 3857) {
+read_raster_try <- function(con, crs = 4326) {
   out <- tryCatch(raste::raster(con), error = function(x) FALSE)
   if (grepl("raster", class(out))) {   
     out <- raster::projectRaster(out, sf::st_crs(crs)$proj4string)

@@ -146,7 +146,7 @@ server <- function(input, output, session) {
   observeEvent(input$generate_rmd, {
       
     if (length(input$u_consent) != 3) {
-      output$render_success <- info_valid("Please first abide to terms an s conditions (first tab).", FALSE)  
+      output$render_success <- info_valid("Please first abide to terms and conditions (first tab).", FALSE)  
     } else {
       chk <- renderReport(data_in, reactiveValuesToList(input), 
         fl = input$report_name)
