@@ -1,6 +1,6 @@
 #' @param data data 
 #' @param input input list (shiny)
-#' @param fl file name 
+#' @param fl file name (optional)
 #' @param dir_out output directory
 #' @param dir_in input directory
 # 

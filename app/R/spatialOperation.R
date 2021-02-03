@@ -1,14 +1,6 @@
-ls_oper <- c("intersects", "contains", "covers", "within", "extract")
-
-spatialOperation <- function(slc, x = NULL, y = NULL) {
-  
-  FUN <- switch(slc,
-    "intersects" = sf::st_intersects, 
-    "contains" = sf::st_contains, 
-    "covers" = sf::st_covers, 
-    "within" = sf::st_within, 
-    "extract" = raster::extract
-  )
-  
-  FUN
-}
+# 
+# valid_bbox <- function(crs = ) {
+# 
+# }
+# 
+# mpv(st_as_sf(st_as_sfc(st_bbox(c(xmin = 0, xmax = 2 , ymin = 0, ymax = 2), crs = 4326))))

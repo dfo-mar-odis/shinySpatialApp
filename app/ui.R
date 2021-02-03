@@ -34,7 +34,7 @@ ui <- fluidPage(
           
         # IDENTIFICATION
         tabPanel(
-          "Identify", 
+          "User", 
           icon = icon("user-check"),
           myhelptxt("This tab allows you to identify yourself, detail the reason why you are generating the report and abide to terms and conditions."),
           # input
@@ -59,7 +59,7 @@ ui <- fluidPage(
             
         # LAYER CREATION 
         tabPanel(
-          "Area(s)", 
+          "Geom(s)", 
           icon = icon("pencil"),
           myhelptxt("This tab allows you to add or create areas of interest using one of the three tabs below."),
           
@@ -68,7 +68,7 @@ ui <- fluidPage(
             
             tabPanel(
               "Bounding box",
-              myhelptxt("Use the tex fields below to create a bounding box ."),
+              myhelptxt("Use the fields below to create a bounding box."),
               h4("Enter coordinates of the bounding box"),
               div(style="display: inline-block;vertical-align:top;",
                 numericInput("bbox_xmin", label = "Xmin", value = "0", min = -180, max = 180)),
@@ -80,7 +80,22 @@ ui <- fluidPage(
               div(style="display: inline-block;vertical-align:top;",
                 numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90)),
               br(),
-              numericInput("bbox_crs", label = "crs", value = "0", min = -90, max = 90),
+              numericInput("bbox_crs", label = HTML("EPSG code (see <a href='https://epsg.io/'>https://epsg.io/</a>)"), value = "4326", min = -90, max = 90),
+              br(),
+              actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
+              actionButton('save_bbox', 'Save', icon = icon("download"))
+            ),
+            
+            tabPanel(
+              "Individual point",
+              myhelptxt("Use the fields below to create a bounding box."),
+              h4("Enter coordinates of the bounding box"),
+              div(style="display: inline-block;vertical-align:top;",
+                numericInput("pt_xmin", label = "Xmin", value = "0", min = -180, max = 180)),
+              div(style="display: inline-block;vertical-align:top;",
+                numericInput("pt_xmax", label = "Xmax", value = "0", min = -180, max = 180)),
+              br(),
+              numericInput("pt_crs", label = HTML("EPSG code (see <a href='https://epsg.io/'>https://epsg.io/</a>)"), value = "4326", min = -90, max = 90),
               br(),
               actionButton('add_bbox', 'Add to map', icon = icon("pencil")),
               actionButton('save_bbox', 'Save', icon = icon("download"))
@@ -88,7 +103,7 @@ ui <- fluidPage(
             
             tabPanel(
               "Draw from map",
-              myhelptxt("Use the interactive map on the right side to create a polygon."),
+              myhelptxt("Use the interactive map on the right side to create geoms (points, lines or polygons)."),
               h4("Create geom from map (geojson)"),
               textInput("name_geom", label = "Enter layer name (also used as file name)", value = "new_geom"),
               actionButton('save_from_map', 'Save from map', icon = icon("download")),
@@ -99,7 +114,7 @@ ui <- fluidPage(
             
             tabPanel(
               "Input Shapefile",
-              myhelptxt("Select an existing file (`.shp` or `.geojson`) to import an existing shapefile"),
+              myhelptxt("Import an existing shapefile (`.shp` or `.geojson`) "),
               h4("Use your own shapefile"),
               fileInput("import_shapefile", "Choose a file", accept = c(".shp", ".geojson")),
               actionButton('shp_to_map', 'Add to map', icon = icon("pencil")),
@@ -114,9 +129,9 @@ ui <- fluidPage(
         
         # SELECT AREAS/ BUFFER
         tabPanel(
-          "Buffer", 
-          icon = icon("database"),
-          myhelptxt("This tab allows you to validate areas and select an optional buffer for the selected geoms."),
+          "Check", 
+          icon = icon("check-square"),
+          myhelptxt("This tab allows you to validate the selected geoms and add buffer to them,  buffer for the selected geoms."),
         ),
         
         
