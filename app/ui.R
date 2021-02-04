@@ -217,14 +217,15 @@ ui <- fluidPage(
           br(),
           hr(),
           
+          
           HTML(
           paste0(
-            "<h5 align = 'center'>This shiny app was built with the ", 
+            "<div id='footer_left'><a href='https://insilecoinc.github.io/'><img src='img/insileco_logo256.png' alt='inSileco logo' width = '100%'/></a></div><div id='footer_right'><h5>This shiny app was built by <a href='https://insilecoinc.github.io/'>inSileco</a> with the ", 
             a("R package shiny", href = "https://shiny.rstudio.com/"), 
-            ", source code available on ")
+            ", the source code available on ")
           ),
           a(icon("github"), href = "https://github.com/inSilecoInc/shinySpatialApp"),
-          HTML("</h5>")
+          HTML(".</h5></div>")
             
         ),
         

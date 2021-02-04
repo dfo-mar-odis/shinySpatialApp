@@ -37,3 +37,18 @@
 #iframe_report {
   height: 90vh;
 }
+
+#footer {
+  width: 100%;
+}
+
+#footer_left {
+  width: 16%;
+  display:inline-table;
+}
+
+#footer_right {
+  width: 84%;
+  display:inline-table;
+  text-align: center;
+}
