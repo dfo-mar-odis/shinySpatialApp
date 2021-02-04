@@ -1,7 +1,7 @@
 Package: placeholder
 Type: ShinyApp 
 Title: BIO's Shiny Spatial App
-Version: 0.0.1
+Version: 0.0.1.9000
 Authors@R: c(
   person("inSileco Inc.", role = c("aut", "cre"), email = "kevin.cazelles@gmail.com")
   )
@@ -9,7 +9,7 @@ Imports:
   cli,
   crayon,
   glue,
-  laeaflet,
+  leaflet,
   leafem,
   mapedit,
   sf,

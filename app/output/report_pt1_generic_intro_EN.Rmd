@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Report for Species in Maritimes Region - for Internal DFO use only"
-author: {{u_text}}
-email: {{u_name}}
+author: Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors.
+email: Lorem ipsum
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
   html_document:
@@ -132,7 +132,7 @@ cat(AquaSiteName)
 ```
 
 ```{r firstplot, echo = FALSE, results = "hide"}
-sf_site <- st_read("{{path_to_geoms}}")
+sf_site <- st_read("geoms_slc.geojson")
 plot(st_geometry(sf_site))
 ```
 
@@ -141,7 +141,7 @@ plot(st_geometry(sf_site))
 cat(PEZversion)
 ```
 
-**PEZ features/comments from user:** {{u_comments}}
+**PEZ features/comments from user:** 
 
 
 
@@ -152,12 +152,13 @@ cat(PEZversion)
 <!-- MAIN SECTIONS -->
 # **Search Results for Species at Risk**  
 
-{{add_main_sections}}
+```{r, child = c('report_pt2_SAR_dist_crithab_EN.Rmd', 'report_pt3_fish_inverts_EN.Rmd', 'report_pt4_seaturtles_EN.Rmd', 'report_pt5_cetaceans_EN.Rmd')}
+```
 
 
 
 <!-- EBSA -->
-{{add_ebsa_section}}
+
 
 
 
@@ -219,4 +220,4 @@ Salmon
 
 
 <!-- APPENDIX -->
-{{add_appendix}}
+

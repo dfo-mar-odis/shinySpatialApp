@@ -137,9 +137,12 @@ server <- function(input, output, session) {
   observeEvent(input$valid_geoms, {
     n <- length(input$check_input_areas)
     output$nb_geoms_selected <- info_valid(glue("Number of geoms selected: {n}"), n, chk = TRUE)
+    geoms$final <- geoms$select
   })
-    
-
+  
+  
+  
+  
   # GENERATE REPORT
   values <- reactiveValues()
   values$generate <- 0
@@ -149,15 +152,15 @@ server <- function(input, output, session) {
   observeEvent(input$generate_rmd, {
       
     if (length(input$u_consent) != 3) {
-      output$render_success <- info_valid("Please first abide to terms and conditions (first tab).", FALSE)  
+      output$render_success <- info_valid("Please abide to terms and conditions.", FALSE)  
     } else {
       chk <- renderReport(
-          reactiveValuesToList(output), 
-          reactiveValuesToList(input), 
+          input = reactiveValuesToList(input), 
+          geoms = geoms$final, 
           fl = input$report_name
         )
       if (chk$ok) {
-        output$render_success <- info_valid("All good")
+        output$render_success <- info_valid(chk$msg, chk$ok)
         output$report_html <- renderUI({
         # NB Use a iframe so that the css of the report does not affect 
         # the css of the app
@@ -165,7 +168,7 @@ server <- function(input, output, session) {
             frameborder = 'no')
         })
       } else 
-         output$render_success <- info_valid("Issue while rendering", FALSE)  
+         output$render_success <- info_valid(chk$msg, FALSE)  
       }
 
     })

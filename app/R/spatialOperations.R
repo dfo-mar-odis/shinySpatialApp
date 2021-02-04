@@ -1,3 +1,4 @@
+# Those fucntions sure that input geoms are properly formatted.
 valid_bbox <- function(xmin, xmax, ymin, ymax, nm, crs_in = 4326) {
   out <- st_sf(
     name = nm,
@@ -15,7 +16,7 @@ valid_bbox <- function(xmin, xmax, ymin, ymax, nm, crs_in = 4326) {
 
 valid_points <- function(x, y, nm, crs_in = 4326) {
   out <- st_as_sf(
-    data.frame(name = nm, x = x , y = y), 
+    data.frame(name = nm, x = x, y = y), 
     coords = c("x", "y"), 
     crs = crs_in
   )  

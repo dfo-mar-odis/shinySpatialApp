@@ -46,7 +46,7 @@ myhelptxt <- function(x) {
 
 hspace <- function(n) HTML(paste(rep("&nbsp;", n), collapse = ""))
 
-xtc_elmt <- function(x, y) lapply(x, `[`, y)
+# xtc_elmt <- function(x, y) lapply(x, `[`, y)
 
 
 ## Check details

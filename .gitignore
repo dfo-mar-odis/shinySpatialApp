@@ -1,12 +1,12 @@
 # Project-specific files 
 *.log
-app/output/spatial/*.geojson
-app/output/*/*.tex
-app/output/*/*.pdf
-app/output/*/*.html
-app/output/*/*.docx
-app/output/*/*.rds
-app/output/*/*.Rmd
+app/output/*.geojson
+app/output/*.tex
+app/output/*.pdf
+app/output/*.html
+app/output/*.docx
+app/output/*.rds
+app/output/*.Rmd
 tmp/
 
 # History files
