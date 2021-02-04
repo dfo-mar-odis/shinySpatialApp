@@ -14,6 +14,7 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
   
   # rm all html 
   clear_www_html()
+  clear_zip()
   # report not generated yet
   ok <- FALSE
   # lang of the report 
@@ -23,7 +24,7 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
   msgInfo("Saving geoms")
   if (is.null(geoms)) {
     msg <- "Please define areas of interest"
-    return(list(msg = msg, fl = NULL, html = NULL))
+    return(list(msg = msg, ok = ok, fl = NULL, html = NULL))
   } else {
     flge <- save_geom(geoms)
   }
@@ -68,12 +69,12 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
       output_dir = dir_out, 
       output_file = fl, 
       quiet = TRUE)
-    ""
   }, 
-    error = function(x) "Issue while rendering"
+    error = function(x) FALSE
   )
   
-  if (msg == "") {
+
+  if (!isFALSE(msg)) {
     # this is done to generate a html preview (see "report" tab)
     preview_html <- switch_ext(basename(x), "html")
     gnr_html <- switch_ext(flrmd, "html")
@@ -86,13 +87,13 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
         output_dir = "www", 
         quiet = TRUE)
     }
-    msg <- "Report successfully generated"
+    msg <- "Report successfully generated."
     ok <- TRUE 
-  } else preview_html <- NULL
-  
-  # create archive to be download
-      
-  
+  } else {
+    msg_error <- "Issue while rendering"
+    flrmd <- preview_html <- NULL
+  }
+
   list(msg = msg, ok = ok, fl = flrmd, html = preview_html)
 }
 

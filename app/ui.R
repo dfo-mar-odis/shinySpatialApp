@@ -201,7 +201,10 @@ ui <- fluidPage(
               hr(),
               actionButton("generate_rmd", "Generate report", icon("book")),
               hspace(2),
-              uiOutput("render_success", inline = TRUE)
+              uiOutput("render_success", inline = TRUE),
+              br(),
+              br(),
+              downloadButton("dl_outputs", "Download outputs")
             )
             )
           )

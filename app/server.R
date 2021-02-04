@@ -116,9 +116,7 @@ server <- function(input, output, session) {
     
     if (!n) {
       shinyjs::hide(id = "add_geoms_to_map")
-      shinyjs::hide(id = "valid_geoms")
-    } else {
-      shinyjs::show(id = "add_geoms_to_map")
+    3
       shinyjs::show(id = "valid_geoms")
     }
     
@@ -146,6 +144,7 @@ server <- function(input, output, session) {
   # GENERATE REPORT
   values <- reactiveValues()
   values$generate <- 0
+  shinyjs::hide(id = "dl_outputs")
   
   ## generate report
   output$report_html <- renderUI(includeHTML("www/empty_report.html"))
@@ -167,10 +166,16 @@ server <- function(input, output, session) {
           tags$iframe(id = "iframe_report", src = chk$html, width = '100%',
             frameborder = 'no')
         })
-      } else 
-         output$render_success <- info_valid(chk$msg, FALSE)  
+        output$dl_outputs <- downloadHandler(
+          filename = "output.zip",
+          content = function(file) zip(file, "./output")
+          )
+        shinyjs::show(id = "dl_outputs")
+      } else {
+        output$render_success <- info_valid(chk$msg, FALSE)  
       }
+    }
 
-    })
+  })
     
 }

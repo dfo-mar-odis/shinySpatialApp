@@ -76,7 +76,6 @@ switch_ext <- function(x, y) {
   sub(glue(".{ext}$"), glue(".{y}"), x) 
 }
 
-
 # clear extra HTML in www
 clear_www_html <- function() {
   html_fl <- list.files("www", pattern = "*.html$", full.names = TRUE)
