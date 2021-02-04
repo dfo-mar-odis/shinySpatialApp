@@ -81,3 +81,8 @@ clear_www_html <- function() {
   html_fl <- list.files("www", pattern = "*.html$", full.names = TRUE)
   file.remove(html_fl[html_fl != "www/empty_report.html"])
 }
+
+clear_output <- function() {
+  html_fl <- list.files("output", full.names = TRUE)
+  file.remove(html_fl[html_fl != "output/.gitkeep"])
+}

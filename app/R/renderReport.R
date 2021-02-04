@@ -14,67 +14,69 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
   
   # rm all html 
   clear_www_html()
-  clear_zip()
-  # report not generated yet
-  ok <- FALSE
+  clear_output()
+
   # lang of the report 
-  lang <- input$report_lang
+  lang <- rev(input$report_lang)
+  nl <- length(lang)
   
   # check and save geom 
   msgInfo("Saving geoms")
   if (is.null(geoms)) {
     msg <- "Please define areas of interest"
-    return(list(msg = msg, ok = ok, fl = NULL, html = NULL))
+    return(list(msg = msg, ok = ok, html = NULL))
   } else {
     flge <- save_geom(geoms)
   }
   
-  
-  msgInfo("Report in ")
-  # for (i in seq_along(lang)) {
-  # 
-  # }
-  
   # nasty trick due to current rmarkdown behavior
-  if (fl != "" & !is.null(fl)) {
-     fl <- rep(fl, 20)
+  if (!is.null(fl) & fl != "") {
+    fl <- rep(fl, 10)
   } else fl <- NULL
-  x <- glue("{dir_in}/report_pt1_generic_intro_{lang}.Rmd")
-
   
-  # Section(s) to be added
-  s_main <- main_parts(input$main_sections, lang)
-  s_ebsa <- s_appendix <- NULL
-  if (!is.null(input$extra_sections)) {
-    s_ebsa <- ebsa_part(any(input$extra_sections == 1), lang)
-    s_appendix <- appendix_part(any(input$extra_sections == 2), lang)
+  # loop over language 
+  ok <- rep(FALSE, nl)
+  for (i in seq_len(nl)) {
+    msgInfo("Report in ", lang[i])
+
+    if (!is.null(fl)) fl2 <- glue("{fl}_{lang}") else fl <- NULL
+    x <- glue("{dir_in}/report_pt1_generic_intro_{lang[i]}.Rmd")
+
+    # Section(s) to be added
+    s_main <- main_parts(input$main_sections, lang[i])
+    s_ebsa <- s_appendix <- NULL
+    if (!is.null(input$extra_sections)) {
+      s_ebsa <- ebsa_part(any(input$extra_sections == 1), lang[i])
+      s_appendix <- appendix_part(any(input$extra_sections == 2), lang[i])
+    }
+    
+    # fill out .Rmd file before rendering
+    flrmd <- glue("{dir_out}/{basename(x)}")
+    template <- readLines(x)
+    data_all <- c(
+      input,
+      path_to_geoms = flge$relrmd,
+      add_main_sections = add_sections(s_main, dir_in, dir_out),
+      add_ebsa_section = add_sections(s_ebsa, dir_in, dir_out),
+      add_appendix = add_sections(s_appendix, dir_in, dir_out)
+    )  
+    writeLines(whisker::whisker.render(template, data_all), flrmd)
+
+    # First rendering
+    ok[i] <- tryCatch({
+      rmarkdown::render(flrmd, 
+        output_format = "all", 
+        output_dir = dir_out, 
+        output_file = fl, 
+        quiet = TRUE)
+      TRUE
+      }, 
+      error = function(x) FALSE
+    )
+  
   }
 
-  # fill out .Rmd file before rendering it
-  flrmd <- glue("{dir_out}/{basename(x)}")
-  template <- readLines(x)
-  data_all <- c(
-    input,
-    path_to_geoms = flge$relrmd,
-    add_main_sections = add_sections(s_main, dir_in, dir_out),
-    add_ebsa_section = add_sections(s_ebsa, dir_in, dir_out),
-    add_appendix = add_sections(s_appendix, dir_in, dir_out)
-  )  
-  writeLines(whisker::whisker.render(template, data_all), flrmd)
-
-  # First rendering
-  msg <- tryCatch({
-    rmarkdown::render(flrmd, 
-      output_format = "all", 
-      output_dir = dir_out, 
-      output_file = fl, 
-      quiet = TRUE)
-  }, 
-    error = function(x) FALSE
-  )
-  
-
-  if (!isFALSE(msg)) {
+  if (all(ok)) {
     # this is done to generate a html preview (see "report" tab)
     preview_html <- switch_ext(basename(x), "html")
     gnr_html <- switch_ext(flrmd, "html")
@@ -87,14 +89,13 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
         output_dir = "www", 
         quiet = TRUE)
     }
-    msg <- "Report successfully generated."
-    ok <- TRUE 
+    msg <- "Successful rendering."
   } else {
-    msg_error <- "Issue while rendering"
+    msg <- "Issue while rendering"
     flrmd <- preview_html <- NULL
   }
 
-  list(msg = msg, ok = ok, fl = flrmd, html = preview_html)
+  list(msg = msg, ok = all(ok), html = preview_html)
 }
 
 

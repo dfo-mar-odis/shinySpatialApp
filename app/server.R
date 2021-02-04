@@ -115,8 +115,7 @@ server <- function(input, output, session) {
     output$nb_geoms_selected <- info_valid(glue("Number of geoms selected: {n}"), n)
     
     if (!n) {
-      shinyjs::hide(id = "add_geoms_to_map")
-    3
+      shinyjs::show(id = "add_geoms_to_map")
       shinyjs::show(id = "valid_geoms")
     }
     

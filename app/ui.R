@@ -195,7 +195,7 @@ ui <- fluidPage(
               textAreaInput("u_comments", label = "Comments", value = ""),
               textInput(
                 "report_name", 
-                label = "Report filename (optional)", 
+                label = "Report filename (optional, do not specify the file extension)", 
                 value = ""
               ),
               hr(),
