@@ -137,7 +137,6 @@ ui <- fluidPage(
           actionButton('add_geoms_to_map', 'Add to map', icon = icon("pencil")),
           actionButton('valid_geoms', "Validate", icon = icon("check")),
           actionButton('clear_map', "Clear map", icon = icon("trash-alt")),
-          
           br(),
           br(),
           uiOutput("nb_geoms_selected")

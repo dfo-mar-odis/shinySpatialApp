@@ -26,6 +26,7 @@ valid_points <- function(x, y, nm, crs_in = 4326) {
 
 # no need for CRS because edit map uses 4326 
 valid_from_map <- function(x, nm) {
+  if (nrow(x) > 1) nm <- paste0(nm, "_", seq_len(nrow(x)))
   x$name <- nm
   x["name"]
 }

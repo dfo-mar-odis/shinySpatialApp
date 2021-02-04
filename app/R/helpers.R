@@ -59,9 +59,15 @@ check_email <- function(x) {
   if (x != "") TRUE else FALSE
 }
 
-info_valid <- function(x, ok = TRUE) {
+info_valid <- function(x, ok = TRUE, chk = FALSE) {
   cls <- ifelse(ok, "valid", "invalid")
-  renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x}</span>")))
+  if (!chk) {
+    renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x}</span>")))
+  } else {
+    renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x} 
+      {shiny::icon('check')}</span>")))
+  }
+
 }
 
 # do not include dots in new extension as it is added
