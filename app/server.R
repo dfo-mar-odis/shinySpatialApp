@@ -9,21 +9,21 @@ server <- function(input, output, session) {
   # VALID AND STORE USER INFO
   valid_details <- reactive({
     # 2Bimproved
-    output$invalid_details <- output$valid_details <- renderText("")
+    output$valid_details <- renderText("")
     if (check_name(input$u_name)) {
       if (check_email(input$u_email)) {
         if (length(input$u_consent) == 3) {
           output$valid_details <- info_valid("All good!")
         } else {
-          output$invalid_details <- info_valid("Please abide to terms and conditions.", 
+          output$valid_details <- info_valid("Please abide to terms and conditions.", 
           FALSE)
         }
       } else {
-        output$invalid_details <- info_valid("Please enter a valid email.",
+        output$valid_details <- info_valid("Please enter a valid email.",
          FALSE)
       }
     } else {
-      output$invalid_details <- info_valid("Please enter a valid name.", 
+      output$valid_details <- info_valid("Please enter a valid name.", 
         FALSE)
       }
   })
@@ -110,13 +110,17 @@ server <- function(input, output, session) {
     )
   }, ignoreNULL = FALSE)
     
+
   observeEvent(input$check_input_areas, {
     n <- length(input$check_input_areas)
     output$nb_geoms_selected <- info_valid(glue("Number of geoms selected: {n}"), n)
     
-    if (!n) {
+    if (n) {
       shinyjs::show(id = "add_geoms_to_map")
       shinyjs::show(id = "valid_geoms")
+    } else {
+      shinyjs::hide(id = "add_geoms_to_map")
+      shinyjs::hide(id = "valid_geoms")
     }
     
   }, ignoreNULL = FALSE)

@@ -36,7 +36,8 @@ ui <- fluidPage(
         tabPanel(
           "User", 
           icon = icon("user-check"),
-          myhelptxt("This tab allows you to identify yourself, detail the reason why you are generating the report and abide to terms and conditions."),
+          myhelptxt("This tab allows you to identify yourself, detail the reason(s) 
+          why you are generating the report and abide to terms and conditions."),
           # input
           textInput("u_name", label = "Enter your name", value = "Lorem ipsum"),
           textInput("u_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
@@ -53,8 +54,7 @@ ui <- fluidPage(
           br(),
           actionButton("get_u_details", 'Validate', icon =icon("pencil")),
           hspace(2),
-          uiOutput("valid_details", inline = TRUE),
-          uiOutput("invalid_details", inline = TRUE),
+          uiOutput("valid_details", inline = TRUE)
         ),
             
         # LAYER CREATION 
@@ -114,9 +114,12 @@ ui <- fluidPage(
             
             tabPanel(
               "Import files",
-              myhelptxt("Import an existing shapefile (`.shp` or `.geojson`) "),
+              myhelptxt("Import your own file. The file will be read by 
+              <a href='https://www.rdocumentation.org/packages/sf/versions/0.2-2/topics/st_read'>
+              <code>sf::st_read()</code></a>
+              which supports a vast variety of vector formats."),
               h4("Use your own shapefile"),
-              fileInput("import_shapefile", "Choose a file", accept = c(".shp", ".geojson")),
+              fileInput("import_shapefile", "Choose a file"),
               numericInput("import_buffer", label = "Optional buffer (m)", value = "0", min = 0),
               actionButton('save_import', 'Save', icon = icon("download"))
               )
