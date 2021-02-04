@@ -1,6 +1,7 @@
 ---
 title: "Reproducible Report for Species in Maritimes Region - for Internal DFO use only"
-author: {{author_text}}
+author: {{u_text}}
+email: {{u_name}}
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
   html_document:
@@ -135,7 +136,7 @@ cat(AquaSiteName)
 cat(PEZversion)
 ```
 
-**PEZ features/comments from user:** {{author_comments}}
+**PEZ features/comments from user:** {{u_comments}}
 
 
 

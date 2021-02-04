@@ -1,26 +1,43 @@
-valid_bbox <- function(xmin, xmax, ymin, ymax, crs_in = 4326) {
-  out <- st_as_sf(
-    st_as_sfc(
+valid_bbox <- function(xmin, xmax, ymin, ymax, nm, crs_in = 4326) {
+  out <- st_sf(
+    name = nm,
+    geometry = st_as_sfc(
       st_bbox(
         c(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), 
-        crs = crs_in
       )
-    )
+    ),
+    crs = crs_in
   )
   if (crs_in != 4326) {
     st_transform(out, 4326)
   } else out
 }
 
-valid_points <- function(x, y, crs_in = 4326) {
+valid_points <- function(x, y, nm, crs_in = 4326) {
   out <- st_as_sf(
-    data.frame(x = x , y = y), 
+    data.frame(name = nm, x = x , y = y), 
     coords = c("x", "y"), 
     crs = crs_in
   )  
   if (crs_in != 4326) {
     st_transform(out, 4326)
   } else out
+}
+
+# no need for CRS because edit map uses 4326 
+valid_from_map <- function(x, nm) {
+  x$name <- nm
+  x["name"]
+}
+
+# no need for CRS because edit map uses 4326 
+valid_import <- function(x, nm) {
+  out <- st_read(x)
+  out["name"] <- nm
+  if (!identical(st_crs(out), st_crs(4326))) {
+    out <- st_transform(out, crs = 4326)
+  }
+  out["name"]
 }
 
 
@@ -32,4 +49,10 @@ add_buffer <- function(x, buffer) {
       crs = 4326
     )
   } else x 
+}
+
+# function to append/stack sf object and add buffer
+append_geom <- function(geoms, x, buffer) {
+  tmp <- add_buffer(x, buffer)
+  if (is.null(geoms)) tmp else rbind(geoms, tmp)
 }
