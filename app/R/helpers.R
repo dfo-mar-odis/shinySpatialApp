@@ -38,15 +38,15 @@ msgWarning <- function(..., appendLF = TRUE) {
 }
 
 # HTML helper 
+
+# Save formating for different help text 
 myhelptxt <- function(x) {
   helpText(HTML(glue('<i class="fas fa-info-circle" aria-hidden="true"></i> 
   {x}')))
 }
 
-
+# horizontal space
 hspace <- function(n) HTML(paste(rep("&nbsp;", n), collapse = ""))
-
-# xtc_elmt <- function(x, y) lapply(x, `[`, y)
 
 
 ## Check details

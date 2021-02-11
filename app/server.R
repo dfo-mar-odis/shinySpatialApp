@@ -83,10 +83,21 @@ server <- function(input, output, session) {
     shinyjs::show(id = "save_import")
   })
   observeEvent(input$save_import, {
-    geom <- valid_import(
-      input$import_shapefile$datapath,
-      glue("imported_{input$save_import}")
+    # print(input$import_shapefile)
+    # print(dirname(input$import_shapefile$datapath))
+    newnames <- paste0(
+      dirname(input$import_shapefile$datapath), "/", 
+      input$import_shapefile$name
     )
+    # for shapefiles, more than 1 file is uploaded
+    # as we don't know the order of upload the following ensures `filename.shp` 
+    # will be read by sf (NB only 1 file will be read)
+    detect_shp <- which(grepl("\\.shp$", newnames))
+    if (!length(detect_shp)) detect_shp <- 1
+    # file are renamed on upload so I renamed them cause sf need different file 
+    # component of a shapefile to have the same name
+    file.rename(input$import_shapefile$datapath, newnames)
+    geom <- valid_import(newnames[detect_shp[1]], glue("imported_{input$save_import}"))
     if (!is.null(geom)) {
       geoms$select <- append_geom(geoms$select, geom, input$import_buffer)
     }
@@ -109,7 +120,6 @@ server <- function(input, output, session) {
       selected = seq_along(x)
     )
   }, ignoreNULL = FALSE)
-
 
   observeEvent(input$check_input_areas, {
     n <- length(input$check_input_areas)
