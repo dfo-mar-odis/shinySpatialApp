@@ -152,14 +152,14 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$add_geoms_to_map, {
-    map <- selectionMap(geoms$select[input$check_input_areas,])
+    map <- selectionMap(geoms$select[input$check_input_areas, ])
     callModule(editMod, leafmap = map, id = "map")
   }, ignoreNULL = FALSE)
 
   observeEvent(input$valid_geoms, {
     n <- length(input$check_input_areas)
     output$nb_geoms_selected <- info_valid(glue("Number of geoms selected: {n}"), n, chk = TRUE)
-    geoms$final <- geoms$select
+    geoms$final <- geoms$select[input$check_input_areas, ]
   })
 
 
