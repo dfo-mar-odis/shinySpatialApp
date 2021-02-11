@@ -35,3 +35,4 @@ runApp("app")
 
 ## Demo 
 
+See [demo.webm](https://github.com/inSilecoInc/shinySpatialApp/tree/main/app/data)
