@@ -33,25 +33,5 @@ runApp("app")
 ```
 
 
-<!-- add screencast? -->
+## Demo 
 
-
-# Resources
-
-## Data 
-
-- https://open.canada.ca/data/en/dataset/c094782e-0d6f-4cc0-b5a3-58908493a433
-
-
-## How to use `shiny`
-
-- https://shiny.rstudio.com/tutorial/written-tutorial/
-- https://github.com/r-spatial/mapedit/issues/95
-- https://stackoverflow.com/questions/53016404/advantages-of-reactive-vs-observe-vs-observeevent
-- https://github.com/dreamRs/shinyWidgets/
-- https://github.com/rstudio/shinytableau
-- https://github.com/rstudio/shinyvalidate
-
-- https://rstudio.github.io/leaflet/projections.html
-
-<!-- issue https://github.com/rstudio/rmarkdown/pull/572 https://github.com/rstudio/rmarkdown/issues/555 https://yihui.org/issue/-->

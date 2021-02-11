@@ -4,6 +4,9 @@ server <- function(input, output, session) {
   # INITIATE MAP
   map <- selectionMap()
   edits <- callModule(editMod, leafmap = map, id = "map")
+  
+  # EMPTY REPORT 
+  output$report_html <- renderUI(includeHTML("www/empty_report.html"))
 
   # SWTCH MAIN TAB FROM MAP TO REPORT WHEN SIDE TAB IS REPORT
   observeEvent(input$active_panel, {
@@ -163,17 +166,14 @@ server <- function(input, output, session) {
 
 
   # GENERATE REPORT
-  values <- reactiveValues()
-  values$generate <- 0
   shinyjs::hide(id = "dl_outputs")
-
-  ## generate report
-  output$report_html <- renderUI(includeHTML("www/empty_report.html"))
+  
   observeEvent(input$generate_rmd, {
 
     if (length(input$u_consent) != 3) {
       output$render_success <- info_valid("Please abide to terms and conditions in the User tab.", FALSE)
     } else {
+      showNotification("Rendering")
       chk <- renderReport(
           input = reactiveValuesToList(input),
           geoms = geoms$final,
@@ -191,8 +191,10 @@ server <- function(input, output, session) {
           filename = "output.zip",
           content = function(file) zip(file, "./output")
           )
+        showNotification("Success", type = "message")
         shinyjs::show(id = "dl_outputs")
       } else {
+        showNotification("Abort rendering", type = "error")
         output$render_success <- info_valid(chk$msg, FALSE)
       }
     }

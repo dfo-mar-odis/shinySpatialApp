@@ -20,25 +20,29 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
   nl <- length(lang)
   ok <- rep(FALSE, nl)
   
+  if (is.null(lang)) {
+    msg <- "Please select at least one language"
+    return(list(msg = msg, ok = FALSE, html = "empty_report.html"))
+  }
+  
   # check and save geom 
   msgInfo("Saving geoms")
   if (is.null(geoms)) {
     msg <- "Please define areas of interest"
-    return(list(msg = msg, ok = all(ok), html = NULL))
+    return(list(msg = msg, ok = FALSE, html = "empty_report.html"))
   } else {
     flge <- save_geom(geoms)
   }
   
-  # nasty trick due to current rmarkdown behavior
+  # nasty trick (due to current rmarkdown behavior) to name final file properly 
   if (!is.null(fl) & fl != "") {
     fl <- rep(fl, 10)
-  } else fl <- NULL
+  } else fl <- rep("report_SMR", 10)
   
   # loop over language 
   for (i in seq_len(nl)) {
     msgInfo(paste0("Creating report (", lang[i], ")"))
-
-    if (!is.null(fl)) fl2 <- glue("{fl}_{lang}") else fl2 <- NULL
+    fl2 <- paste0(fl, "_", lang[i]) 
     x <- glue("{dir_in}/report_pt1_generic_intro_{lang[i]}.Rmd")
 
     # Section(s) to be added
@@ -88,7 +92,7 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
         output_dir = "www", 
         quiet = TRUE)
     }
-    msg <- "Successful rendering."
+    msg <- "Successfully rendered."
   } else {
     msg <- "Issue while rendering"
     flrmd <- preview_html <- NULL
@@ -131,6 +135,6 @@ appendix_part <- function(x, lang = c("EN", "FR")) {
 }
 
 save_geom <- function(geoms, dir_out = "output", flnm ="geoms_slc.geojson") {
-  st_write(geoms, glue("{dir_out}/{flnm}"), delete_dsn = TRUE)
+  st_write(geoms, glue("{dir_out}/{flnm}"), delete_dsn = TRUE, quiet = TRUE)
   list(relroot = glue("{dir_out}/{flnm}"), relrmd = flnm)
 }

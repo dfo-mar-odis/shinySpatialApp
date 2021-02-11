@@ -217,9 +217,8 @@ ui <- fluidPage(
           )
         ),
 
-          br(),
           hr(),
-
+          # FOOTER 
           HTML(
           paste0(
             "<div id='footer_left'><a href='https://insilecoinc.github.io/' target='_blank'><img src='img/insileco_logo256.png' alt='inSileco logo' width = '100%'/></a></div><div id='footer_right'><h5>This shiny app was built by <a href='https://insilecoinc.github.io/' target='_blank'>inSileco</a> with the ",

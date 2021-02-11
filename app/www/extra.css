@@ -6,6 +6,11 @@
   color: #337ab7;
 }
 
+.pending{
+  color: #ccc;
+  font-size: 1.1em;
+}
+
 .valid{
   color: #34c369;
   font-size: 1.1em;
@@ -14,20 +19,6 @@
 .invalid {
   color: #f03561;
   font-size: 1.1em;
-}
-
-#img_warning {
-  width: 20%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-
-#msg_warning {
-  color: #f03561;
-  font-size: 1.8em;
-  text-align: center;
 }
 
 #report_html {
