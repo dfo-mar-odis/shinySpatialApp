@@ -1,5 +1,6 @@
 Package: placeholder
 Type: ShinyApp 
+Date: 2021-02-11
 Title: BIO's Shiny Spatial App
 Version: 0.0.1.9000
 Authors@R: c(

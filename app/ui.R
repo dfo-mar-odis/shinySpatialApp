@@ -70,7 +70,6 @@ ui <- fluidPage(
             tabPanel(
               "Bounding box",
               myhelptxt("Use the fields below to create a bounding box."),
-              h4("Enter coordinates of the bounding box"),
               div(style="display: inline-block;vertical-align:top;",
                 numericInput("bbox_xmin", label = "Xmin", value = "0", min = -180, max = 180)),
               div(style="display: inline-block;vertical-align:top;",
@@ -91,7 +90,6 @@ ui <- fluidPage(
             tabPanel(
               "Individual point",
               myhelptxt("Use the fields below to create a bounding box centered on an individual point with a buffer."),
-              h4("Enter coordinates of the bounding box"),
               div(style="display: inline-block;vertical-align:top;",
                 numericInput("pt_x", label = "X", value = "0", min = -180, max = 180)),
               div(style="display: inline-block;vertical-align:top;",
@@ -107,7 +105,6 @@ ui <- fluidPage(
             tabPanel(
               "Draw from map",
               myhelptxt("Use the interactive map on the right side to create geometries (points, lines or polygons)."),
-              h4("Create geometries from map"),
               numericInput("from_map_buffer", label = "Optional buffer (m)", value = "0", min = 0),
               myhelptxt("Save created geometry for use when generating report."),
               actionButton('save_from_map', 'Save from map', icon = icon("download")),
@@ -122,7 +119,6 @@ ui <- fluidPage(
               <a href='https://www.rdocumentation.org/packages/sf/versions/0.2-2/topics/st_read' target='_blank'>
               <code>sf::st_read()</code></a>
               which supports a vast variety of vector formats. Note that for ESRI Shapfiles, several files need to be uploaded, that is why the file selection below allow for multiple files to be uploaded at once."),
-              h4("Use your own shapefile"),
               fileInput("import_shapefile", "Choose a file", multiple = TRUE),
               numericInput("import_buffer", label = "Optional buffer (m)", value = "0", min = 0),
               actionButton('save_import', 'Save', icon = icon("download"))
