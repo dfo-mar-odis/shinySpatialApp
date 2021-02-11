@@ -10,7 +10,6 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
   dir_in = "Rmd") {
   
   # dev help  
-  msgInfo("Generating report")
   
   # rm all html 
   clear_www_html()
@@ -19,12 +18,13 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
   # lang of the report 
   lang <- rev(input$report_lang)
   nl <- length(lang)
+  ok <- rep(FALSE, nl)
   
   # check and save geom 
   msgInfo("Saving geoms")
   if (is.null(geoms)) {
     msg <- "Please define areas of interest"
-    return(list(msg = msg, ok = ok, html = NULL))
+    return(list(msg = msg, ok = all(ok), html = NULL))
   } else {
     flge <- save_geom(geoms)
   }
@@ -35,11 +35,10 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
   } else fl <- NULL
   
   # loop over language 
-  ok <- rep(FALSE, nl)
   for (i in seq_len(nl)) {
-    msgInfo("Report in ", lang[i])
+    msgInfo(paste0("Creating report (", lang[i], ")"))
 
-    if (!is.null(fl)) fl2 <- glue("{fl}_{lang}") else fl <- NULL
+    if (!is.null(fl)) fl2 <- glue("{fl}_{lang}") else fl2 <- NULL
     x <- glue("{dir_in}/report_pt1_generic_intro_{lang[i]}.Rmd")
 
     # Section(s) to be added
@@ -67,7 +66,7 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
       rmarkdown::render(flrmd, 
         output_format = "all", 
         output_dir = dir_out, 
-        output_file = fl, 
+        output_file = fl2, 
         quiet = TRUE)
       TRUE
       }, 
