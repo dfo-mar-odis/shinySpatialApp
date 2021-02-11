@@ -10,38 +10,3 @@ Ecologically and Biologically Significant Areas (EBSAs) are areas within Canada'
 Failure to define an area as an EBSA does not mean that it is unimportant ecologically. All areas serve ecological functions to some extent and require sustainable management. Rather, areas identified as EBSAs should be viewed as the most important areas where, with existing knowledge, regulators and marine users should be particularly risk averse to ensure ecosystems remain healthy and productive.
 
 #### **EBSA search results**
-
-<!-- ```{r read other species database files for other species, echo=FALSE, include=FALSE, cache=FALSE}
-EBSA <- st_read("../../../Data/Zones/DFO_EBSA/DFO_EBSA.shp", quiet=TRUE)
-EBSA_shp <- st_transform(EBSA, crs = 4326)
-```
-
-```{r echo=FALSE, results='asis'}
-#function for overlap
-EBSA_overlap(EBSA_shp=EBSA_shp, PEZ_poly_st= PEZ_poly_st)
-```
-
-```{r echo=FALSE, results='asis'}
-#function for report
-EBSA_report(EBSA_shp=EBSA_shp, PEZ_poly_st= PEZ_poly_st)
-```
-
-```{r echo=FALSE, results='asis'}
-#function for report url
-EBSA_reporturl(EBSA_shp=EBSA_shp, PEZ_poly_st= PEZ_poly_st)
-```
-
-```{r echo=FALSE, results='asis'}
-#function for location
-EBSA_location(EBSA_shp=EBSA_shp, PEZ_poly_st= PEZ_poly_st)
-```
-
-```{r echo=FALSE, results='asis'}
-#function for bioregion
-EBSA_bioregion(EBSA_shp=EBSA_shp, PEZ_poly_st= PEZ_poly_st)
-```
-
-```{r Fig X PEZ polygon with all maritime EBSA polygons, fig.height=8, fig.width=11}
-plot_EBSA(EBSA_shp, PEZ_poly_st, land_sf)
-```
-**Fig. 12:** Map showing Ecologically and Biologically Significant Areas (EBSA; pink) relative to the defined Potential Exposure Zone (PEZ; blue) and proposed project polygon (yellow). -->

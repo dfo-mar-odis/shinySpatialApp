@@ -12,9 +12,7 @@ selectionMap <- function(geoms = NULL) {
       baseGroups = c('OpenStreetMap', 'Ocean Basemap', 'OpenTopoMap'),
       position = 'bottomleft')
     
-  if (!is.null(geoms)) {
-    out <- leafem::addFeatures(out, geoms)
-  } 
+  if (!is.null(geoms)) out <- leafem::addFeatures(out, geoms)
 
   out
 }

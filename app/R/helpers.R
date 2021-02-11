@@ -38,15 +38,15 @@ msgWarning <- function(..., appendLF = TRUE) {
 }
 
 # HTML helper 
+
+# Save formating for different help text 
 myhelptxt <- function(x) {
   helpText(HTML(glue('<i class="fas fa-info-circle" aria-hidden="true"></i> 
   {x}')))
 }
 
-
+# horizontal space
 hspace <- function(n) HTML(paste(rep("&nbsp;", n), collapse = ""))
-
-# xtc_elmt <- function(x, y) lapply(x, `[`, y)
 
 
 ## Check details
@@ -67,8 +67,13 @@ info_valid <- function(x, ok = TRUE, chk = FALSE) {
     renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x} 
       {shiny::icon('check')}</span>")))
   }
-
 }
+
+info_pending <- function(x) {
+  cls <- "pending"
+  renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x}</span>")))
+}
+
 
 # do not include dots in new extension as it is added
 switch_ext <- function(x, y) {
@@ -83,6 +88,6 @@ clear_www_html <- function() {
 }
 
 clear_output <- function() {
-  html_fl <- list.files("output", full.names = TRUE)
-  file.remove(html_fl[html_fl != "output/.gitkeep"])
+  fls <- list.files("output", full.names = TRUE)
+  file.remove(fls[fls != "output/.gitkeep"])
 }

@@ -1,4 +1,5 @@
-# Those fucntions sure that input geoms are properly formatted.
+# The following functions ensure that input geoms are properly formatted.
+
 valid_bbox <- function(xmin, xmax, ymin, ymax, nm, crs_in = 4326) {
   out <- st_sf(
     name = nm,
