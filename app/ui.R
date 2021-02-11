@@ -215,12 +215,10 @@ ui <- fluidPage(
             )
             )
           )
-          ),
+        ),
 
-          br(),
           br(),
           hr(),
-
 
           HTML(
           paste0(

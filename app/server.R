@@ -5,7 +5,7 @@ server <- function(input, output, session) {
   map <- selectionMap()
   edits <- callModule(editMod, leafmap = map, id = "map")
 
-  # Change panel 
+  # SWTCH MAIN TAB FROM MAP TO REPORT WHEN SIDE TAB IS REPORT
   observeEvent(input$active_panel, {
     if (input$active_panel == "Report") {
       slc <- "Report"

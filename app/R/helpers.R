@@ -83,6 +83,6 @@ clear_www_html <- function() {
 }
 
 clear_output <- function() {
-  html_fl <- list.files("output", full.names = TRUE)
-  file.remove(html_fl[html_fl != "output/.gitkeep"])
+  fls <- list.files("output", full.names = TRUE)
+  file.remove(fls[fls != "output/.gitkeep"])
 }
