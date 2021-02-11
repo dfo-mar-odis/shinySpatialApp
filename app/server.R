@@ -5,9 +5,17 @@ server <- function(input, output, session) {
   map <- selectionMap()
   edits <- callModule(editMod, leafmap = map, id = "map")
 
+  # Change panel 
+  observeEvent(input$active_panel, {
+    if (input$active_panel == "Report") {
+      slc <- "Report"
+    } else slc <- "Map"
+    updateTabsetPanel(session, "map_or_report", selected = slc)
+  })
 
   # VALID AND STORE USER INFO
   valid_details <- reactive({
+    
     # 2Bimproved
     output$valid_details <- renderText("")
     if (check_name(input$u_name)) {

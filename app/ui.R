@@ -31,6 +31,7 @@ ui <- fluidPage(
 
       # Panels
       tabsetPanel(
+        id = "active_panel",
 
         # IDENTIFICATION
         tabPanel(
@@ -238,6 +239,7 @@ ui <- fluidPage(
     mainPanel(
 
       tabsetPanel(
+        id = "map_or_report",
         # MAP
         tabPanel(
           "Map",
