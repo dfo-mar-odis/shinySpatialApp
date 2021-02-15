@@ -1,7 +1,3 @@
-# load template
-names(rmd_list) <- rmd_list <- list.files("Rmd",
-  pattern = "\\.[Rr]md$", full.names = TRUE)
-
 # Read Spatial Data
 fl <- list.files("data/", full.names = TRUE)
 lay <- lapply(fl, function(x) sf::st_layers(x)$name)

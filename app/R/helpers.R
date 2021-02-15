@@ -69,11 +69,6 @@ info_valid <- function(x, ok = TRUE, chk = FALSE) {
   }
 }
 
-info_pending <- function(x) {
-  cls <- "pending"
-  renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x}</span>")))
-}
-
 
 # do not include dots in new extension as it is added
 switch_ext <- function(x, y) {

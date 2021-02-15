@@ -1,11 +1,15 @@
-# shinySpatialApp
+# DFO Spatial Shiny App
 
-Shiny Spatial Application for DFO.
 
 
 # Description 
 
-> The objective of the contract is to assemble a spatial interactive (R Shiny) tool and reproducible reporting (R Markdown) output in support of the project “Reproducible Reports for Species at Risk: Development of a tool to produce consistent reports on Species at Risk within Predicted Exposure Zones (PEZ) for a variety of threats and activities, focusing on Maritimes Region as a pilot”.
+> The objective of the contract is to assemble a spatial interactive (R Shiny)
+> tool and reproducible reporting (R Markdown) output in support of the project
+> “Reproducible Reports for Species at Risk: Development of a tool to produce
+> consistent reports on Species at Risk within Predicted Exposure Zones (PEZ)
+> for a variety of threats and activities, focusing on Maritimes Region as a
+> pilot”.
 
 Resources : 
 - https://docs.google.com/document/d/1oH7z7jITqjPfd2cncf8s0VL83GdWlucd/edit

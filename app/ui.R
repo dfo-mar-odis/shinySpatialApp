@@ -1,15 +1,6 @@
 # load packages and R scripts
 lapply(list.files("R/", pattern = ".[Rr]$", full.names = TRUE), source)
 
-# create table dsn/layer
-
-lay <- lapply(fl, function(x) sf::st_layers(x)$name)
-tb_ref <- data.frame(
-         id = seq_len(sum(lengths(lay))),
-         dsn = rep(unlist(fl), lengths(lay)),
-         layer = unlist(lay)
-       )
-
 
 ui <- fluidPage(
 
@@ -70,14 +61,14 @@ ui <- fluidPage(
             tabPanel(
               "Bounding box",
               myhelptxt("Use the fields below to create a bounding box."),
-              div(style="display: inline-block;vertical-align:top;",
+              div(style="display: inline-block; vertical-align:top;",
                 numericInput("bbox_xmin", label = "Xmin", value = "0", min = -180, max = 180)),
-              div(style="display: inline-block;vertical-align:top;",
+              div(style="display: inline-block; vertical-align:top;",
                 numericInput("bbox_xmax", label = "Xmax", value = "0", min = -180, max = 180)),
               br(),
-              div(style="display: inline-block;vertical-align:top;",
+              div(style="display: inline-block; vertical-align:top;",
                 numericInput("bbox_ymin", label = "Ymin", value = "0", min = -90, max = 90)),
-              div(style="display: inline-block;vertical-align:top;",
+              div(style="display: inline-block; vertical-align:top;",
                 numericInput("bbox_ymax", label = "Ymax", value = "0", min = -90, max = 90)),
               br(),
               numericInput("bbox_crs", label = HTML("Spatial projection (see EPSG code: <a href='https://epsg.io/' target='_blank'>https://epsg.io/</a>)"), value = "4326"),
@@ -146,7 +137,6 @@ ui <- fluidPage(
         ),
 
 
-
         # REPORT
         tabPanel(
           "Report",
@@ -213,18 +203,18 @@ ui <- fluidPage(
           )
         ),
 
-          hr(),
-          # FOOTER 
-          HTML(
-          paste0(
-            "<div id='footer_left'><a href='https://insilecoinc.github.io/' target='_blank'><img src='img/insileco_logo256.png' alt='inSileco logo' width = '100%'/></a></div><div id='footer_right'><h5>This shiny app was built by <a href='https://insilecoinc.github.io/' target='_blank'>inSileco</a> with the ",
-            a("R package shiny", href = "https://shiny.rstudio.com/", target = "_blank"),
-            ", the source code available on ")
-          ),
-          a(icon("github"), href = "https://github.com/inSilecoInc/shinySpatialApp", target = "_blank"),
-          HTML(".</h5></div>")
-
+        hr(),
+        # FOOTER 
+        HTML(
+        paste0(
+          "<div id='footer_left'><a href='https://insilecoinc.github.io/' target='_blank'><img src='img/insileco_logo256.png' alt='inSileco logo' width = '100%'/></a></div><div id='footer_right'><h5>This shiny app was built by <a href='https://insilecoinc.github.io/' target='_blank'>inSileco</a> with the ",
+          a("R package shiny", href = "https://shiny.rstudio.com/", 
+            target = "_blank"), ", the source code available on ")
         ),
+        a(icon("github"), href = "https://github.com/inSilecoInc/shinySpatialApp", target = "_blank"),
+        HTML(".</h5></div>")
+
+      ),
 
 
     # RIGHT PANEL

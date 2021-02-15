@@ -1,4 +1,5 @@
-# Functions to generate the Rmd report
+#' Generate the Rmd reproducible report
+#'
 #' @param data data 
 #' @param input input list (from app)
 #' @param geoms sf object selected (from app)
@@ -100,7 +101,6 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
 
   list(msg = msg, ok = all(ok), html = preview_html)
 }
-
 
 # add rmd code chunk to add section (using child documents)
 add_sections <- function(flnms = NULL, dir_in, dir_out) {

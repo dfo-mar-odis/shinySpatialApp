@@ -8,7 +8,7 @@ server <- function(input, output, session) {
   # EMPTY REPORT 
   output$report_html <- renderUI(includeHTML("www/empty_report.html"))
 
-  # SWTCH MAIN TAB FROM MAP TO REPORT WHEN SIDE TAB IS REPORT
+  # SWITCH MAIN TAB FROM MAP TO REPORT WHEN SIDE TAB IS REPORT
   observeEvent(input$active_panel, {
     if (input$active_panel == "Report") {
       slc <- "Report"
@@ -94,8 +94,6 @@ server <- function(input, output, session) {
     shinyjs::show(id = "save_import")
   })
   observeEvent(input$save_import, {
-    # print(input$import_shapefile)
-    # print(dirname(input$import_shapefile$datapath))
     newnames <- paste0(
       dirname(input$import_shapefile$datapath), "/", 
       input$import_shapefile$name
@@ -196,6 +194,7 @@ server <- function(input, output, session) {
       } else {
         showNotification("Abort rendering", type = "error")
         output$render_success <- info_valid(chk$msg, FALSE)
+        shinyjs::hide(id = "dl_outputs")
       }
     }
 
