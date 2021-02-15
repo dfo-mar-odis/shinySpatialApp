@@ -47,8 +47,10 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
     x <- glue("{dir_in}/report_pt1_generic_intro_{lang[i]}.Rmd")
 
     # Section(s) to be added
-    s_main <- main_parts(input$main_sections, lang[i])
-    s_ebsa <- s_appendix <- NULL
+    s_main <- s_ebsa <- s_appendix <- NULL
+    if (!is.null(input$main_sections)) {
+      s_main <- main_parts(input$main_sections, lang[i])
+    } 
     if (!is.null(input$extra_sections)) {
       s_ebsa <- ebsa_part(any(input$extra_sections == 1), lang[i])
       s_appendix <- appendix_part(any(input$extra_sections == 2), lang[i])
@@ -118,7 +120,6 @@ main_parts <- function(x, lang = c("EN", "FR")) {
   vc <- c(
     "report_pt2_SAR_dist_crithab",
     "report_pt3_fish_inverts",
-    "report_pt4_seaturtles",
     "report_pt5_cetaceans"
   )[as.numeric(x)]
   paste0(vc, "_", lang, ".Rmd")

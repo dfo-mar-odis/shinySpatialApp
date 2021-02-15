@@ -29,7 +29,7 @@ ui <- fluidPage(
           "User",
           icon = icon("user-check"),
           myhelptxt("This tab allows you to identify yourself, detail the reason(s)
-          why you are generating the report and abide to terms and conditions."),
+          why you are generating the report and abide by terms and conditions."),
           # input
           textInput("u_name", label = "Enter your name", value = "Lorem ipsum"),
           textInput("u_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
@@ -38,8 +38,8 @@ ui <- fluidPage(
           checkboxGroupInput("u_consent", label = "Terms and conditions",
           choiceNames = list(
             HTML("I understand this report is for the <a href = 'https://www.dfo-mpo.gc.ca/index-eng.htm' target='_blank'>Department of Fisheries and Oceans Canada (DFO)</a> internal use only, and it shall not be shared with users outside DFO."),
-            HTML("I will read all the caveats, disclaimers and uncertainty outlined in each section of the report."),
-            HTML("I will abide to all policies and directives of the Government of Canada, including, and not restricted to, <a href = 'https://www.canada.ca/en/government/publicservice/values.html' target='_blank'>values and ethics of the public service</a>.")
+            HTML("I will read all the caveats, disclaimers and uncertainties outlined in each section of the report."),
+            HTML("I will abide by all policies and directives of the Government of Canada, including, and not restricted to, <a href = 'https://www.canada.ca/en/government/publicservice/values.html' target='_blank'>values and ethics of the public service</a>.")
             ),
             choiceValues = list(1, 2, 3)
           ),
@@ -153,11 +153,10 @@ ui <- fluidPage(
                 choiceNames = c(
                   "National Aquatic Species at Risk",
                   "Fish and Invertebrates",
-                  "Sea turtles",
                   "Cetaceans"
                 ),
-                selected = 1:4,
-                choiceValues = 1:4,
+                selected = 1:3,
+                choiceValues = 1:3,
               ),
               checkboxGroupInput("extra_sections",
                 label = "The following selection will include additional information, and species not listed by SARA, or assessed by COSEWIC and Wild species:",

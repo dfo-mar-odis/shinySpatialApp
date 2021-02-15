@@ -26,7 +26,7 @@ server <- function(input, output, session) {
         if (length(input$u_consent) == 3) {
           output$valid_details <- info_valid("All good!")
         } else {
-          output$valid_details <- info_valid("Please abide to terms and conditions in the User tab.",
+          output$valid_details <- info_valid("Please abide by terms and conditions in the User tab.",
           FALSE)
         }
       } else {
@@ -169,7 +169,7 @@ server <- function(input, output, session) {
   observeEvent(input$generate_rmd, {
 
     if (length(input$u_consent) != 3) {
-      output$render_success <- info_valid("Please abide to terms and conditions in the User tab.", FALSE)
+      output$render_success <- info_valid("Please abide by terms and conditions in the User tab.", FALSE)
     } else {
       showNotification("Rendering")
       chk <- renderReport(
