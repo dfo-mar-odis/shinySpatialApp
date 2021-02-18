@@ -1,4 +1,5 @@
-# Interactive map
+# Interactive map created with `leaflet` and called in `mapedit::callModule`.
+
 selectionMap <- function(geoms = NULL) {
   
   out <- leaflet::leaflet(height = 2000) %>% 

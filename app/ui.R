@@ -1,4 +1,4 @@
-# load packages and R scripts
+# load R scripts (including packages)
 lapply(list.files("R/", pattern = ".[Rr]$", full.names = TRUE), source)
 
 

@@ -1,16 +1,13 @@
 #' Generate the Rmd reproducible report
 #'
-#' @param data data 
-#' @param input input list (from app)
-#' @param geoms sf object selected (from app)
-#' @param fl file name (optional)
-#' @param dir_out output directory
-#' @param dir_in input directory
+#' @param input list of inputs.
+#' @param geoms sf object selected.
+#' @param fl file name (optional).
+#' @param dir_out output directory.
+#' @param dir_in input directory.
 # 
-renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output", 
-  dir_in = "Rmd") {
-  
-  # dev help  
+renderReport <- function(input, geoms, fl = NULL, dir_out = "output", 
+  dir_in = "Rmd") { 
   
   # rm all html 
   clear_www_html()
@@ -108,7 +105,7 @@ renderReport <- function(data, input, geoms, fl = NULL, dir_out = "output",
 add_sections <- function(flnms = NULL, dir_in, dir_out) {
   if (!is.null(flnms)) {
     vc_nm <- paste0("'", flnms, "'") 
-    # copy/paste file
+    # copy/paste files
     file.copy(paste0(dir_in, "/", flnms), dir_out)
     #
     glue("```{{r, child = c({glue_collapse(vc_nm, sep = ', ')})}}\n```")
