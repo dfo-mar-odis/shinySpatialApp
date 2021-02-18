@@ -11,15 +11,15 @@ ui <- fluidPage(
   ),
 
   # Application title
-  titlePanel("", "BIO Spatial Shiny App"),
+  titlePanel("", "Spatial Reproducible Reporting"),
 
   #
   sidebarLayout(
 
     sidebarPanel(
       # Title
-      h2(div(img(src="img/bio_logo.jpg", height = 78), "Spatial Shiny App")),
-
+      img(src="img/canada_c.png", height = 40),
+      h3(tags$b("Spatial Reproducible Reporting")),
       # Panels
       tabsetPanel(
         id = "active_panel",
