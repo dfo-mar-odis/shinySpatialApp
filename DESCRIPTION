@@ -1,8 +1,8 @@
-Package: DFO spatial Shiny app
+Package: placeholder
 Type: ShinyApp 
 Date: 2021-02-18
 Title: BIO's Shiny Spatial App
-Version: 0.0.1.9000
+Version: 1.0.0
 Authors@R: c(
   person("inSileco Inc.", role = c("aut", "cre"), email = "kevin.cazelles@gmail.com")
   )
