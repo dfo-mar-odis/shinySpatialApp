@@ -14,82 +14,85 @@ output:
 ---
 
 
-<!-- Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors. -->
+<!-- FROM DUMMY.Rmd -->
 
-
-```{r Clean up environment for new report, echo=FALSE, include=FALSE, cache=FALSE}
-# rm(list=ls(all=TRUE))
+```{r Define Site, echo=FALSE, include=FALSE, cache=FALSE}
+# KC: This should not be done as this removes objects (including function) used
+# in the app and that may be used in the Rmd. Unless you have a specific reason
+# to do so I would argue against using this  here. 
+# rm(list=ls(all=TRUE)) 
+AquaSiteName <- "FarmersLedge"
+PEZversion <- "4748m"
+minYear <- 2002
+cat(AquaSiteName)
 ```
 
-```{r setup, eval=FALSE, include=FALSE, cache=FALSE}
+```{r setup, echo=FALSE, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
-library(Mar.datawrangling)
-library(Mar.utils)
 library(knitr)
-library(kableExtra)
 library(rgdal)
 library(maps)
 library(lubridate)
-library(raster)
-library(RCurl)
-library(sf)
-library(stringr)
-library(ggplot2)
-library(data.table)
-library(gridExtra)
-library(dplyr)
-library(stars)
-library(ggspatial)
-#install.packages("remotes")
-#remotes::install_github("terminological/standard-print-output")
-#library(standardPrintOutput)
-#These next two lines are necessary for the generation of the water mark on all plots.
-#install.packages("devtools")
-#devtools::install_github("JosephCrispell/basicPlotteR")
-library(basicPlotteR)
-```
-```{r source functions, eval=FALSE, include=FALSE, cache=FALSE}
-# the .Rmd file sets the working directory based on where it resides and ignores the wd set by the .RProj file
-source("site_map.r")
-source("site_map_new.r")
-source("plot_wsdb.r")
-source("filter_wsdb.r")
-source("plot_narwc.r")
-source("plot_narwc.r")
-source("filter_narwc_new.r")
-# ## Another option is to load directly from the web and read in using Rcurl
-#function_urls <- c("https://raw.githubusercontent.com/AtlanticR/MSP/master/SearchPEZ/code/site_map.r",
-#                    "https://raw.githubusercontent.com/AtlanticR/MSP/master/SearchPEZ/code/plot_wsdb.r",
-#                    "https://raw.githubusercontent.com/AtlanticR/MSP/master/SearchPEZ/code/filter_wsdb.r")
-#for (i in function_urls){eval(parse(text = RCurl::getURL(i, ssl.verifypeer = FALSE)),envir=.GlobalEnv)}
-source("EBSA.R")
-source("plot_EBSA.R")
-source("leatherback.R")
-source("plot_leatherback.R")
-source("plot_obis.R")
-source("plot_cws.R")
-source("plot_crithab.R")
-source("plot_crithab_zoom.R")
-source("plot_inat.R")
-source("cetacean_priority_areas.R")
-source("plot_cetaceans_4grid.R")
-source("Blue_Whale_habitat.R")
-source("plot_bw_hab.R")
-source("plot_bw_hab_zoom.R")
 ```
 
-```{r Define Site, eval=FALSE, include=FALSE, cache=FALSE}
-#HTML output of code is automatically generated in Catalina's computer: RProjects/MSP/SearchPEZ/code
-#output of get.data.R should be manually moved to RProjects/MSP/SearchPEZ/outputs/sitenamexkm  
-#AquaSiteName <- "TestGully"
-#PEZversion <- "Polygon"
-AquaSiteName <- "FarmersLedge"
-PEZversion <- "4748m"
-UserComments <- "Example - First search effort for suitability of a site for a project planned for 2025. Project is expected to have positive/negative impacts on surrounding area. It is likely that some kind of monitoring will be required during operations. Make sure to follow up on all sections pertaining to a particular taxonomic group as this seems to be a concern of the stakeholders."
-#make sure you delete all shp.xml files in the folder to be able to run this code
-minYear <- 1970
-maxYear <- 2020
+<!-- KC: this is done on application load  -->
+<!-- ```{r source functions, echo=FALSE, include=FALSE, cache=FALSE}
+source("../R/site_map.r")
+source("../R/plot_wsdb.r")
+source("../R/filter_wsdb.r")
+``` -->
+
+```{r Set up paths, echo=FALSE, include=FALSE, cache=FALSE}
+# KC: paths were modified 
+dataPath <- file.path("../data/Zones/", paste0(AquaSiteName, PEZversion))
+polyPath <- "../data/Zones/"
+site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName))
+wsdbFile <- "../data/MarWSDBSightingsForCGomez_27Oct2020.csv"
 ```
+
+```{r read baseline data for maps, echo=FALSE, include=FALSE, cache=FALSE}
+landGDB <- "../data/Boundaries/Coast50K/Coastline50k.gdb"
+land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)
+```
+
+```{r Define PEZ!, echo=FALSE, include=FALSE, cache=FALSE}
+# KC: I did so minor edits here 
+pl <- list.files(polyPath, paste0(PEZversion, ".shp$"), full.names = TRUE)
+# KC: not 100% what was meant with the line below
+pl <- pl[!grepl("xml", pl)]
+PEZ_poly <- readOGR(pl)
+```
+
+```{r echo=FALSE, results='asis'}
+cat(AquaSiteName)
+```
+
+```{r Fig 1 PEZ polygon, fig.height=8, fig.width=11}
+site_map(PEZ_poly,site,land,40)
+```
+
+```{r read wsdb and filter SARA & COSEWIC cetacean spp, echo=FALSE, include=FALSE, cache=FALSE}
+wsdb <- read.csv(wsdbFile)
+wsdb <- wsdb[which(wsdb$YEAR>=minYear),]
+wsdb_filter <- filter_wsdb(wsdb)
+```
+```{r Fig 4 Whale Sightings Database, fig.height=8, fig.width=11}
+par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
+site_map(PEZ_poly,site,land,5)
+plot_wsdb(PEZ_poly,wsdb_filter,5)
+```
+
+
+<!-- END  -->
+
+
+
+
+
+
+
+
+
 
 # **Introduction**
 
