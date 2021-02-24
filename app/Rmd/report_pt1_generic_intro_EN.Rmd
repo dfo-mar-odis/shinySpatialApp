@@ -46,7 +46,9 @@ source("../R/filter_wsdb.r")
 # KC: paths were modified 
 dataPath <- file.path("../data/Zones/", paste0(AquaSiteName, PEZversion))
 polyPath <- "../data/Zones/"
-site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName))
+# KC: That's the studyArea
+studyArea <- as(st_read("{{path_to_geoms}}"), "Spatial")
+# site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName))
 wsdbFile <- "../data/MarWSDBSightingsForCGomez_27Oct2020.csv"
 ```
 
@@ -56,11 +58,11 @@ land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)
 ```
 
 ```{r Define PEZ!, echo=FALSE, include=FALSE, cache=FALSE}
-# KC: I did so minor edits here 
-pl <- list.files(polyPath, paste0(PEZversion, ".shp$"), full.names = TRUE)
-# KC: not 100% what was meant with the line below
-pl <- pl[!grepl("xml", pl)]
-PEZ_poly <- readOGR(pl)
+# KC: no longer needed
+# pl <- list.files(polyPath, paste0(PEZversion, ".shp$"), full.names = TRUE)
+# # KC: not 100% what was meant with the line below
+# pl <- pl[!grepl("xml", pl)]
+# PEZ_poly <- readOGR(pl)
 ```
 
 ```{r echo=FALSE, results='asis'}
@@ -68,18 +70,22 @@ cat(AquaSiteName)
 ```
 
 ```{r Fig 1 PEZ polygon, fig.height=8, fig.width=11}
-site_map(PEZ_poly,site,land,40)
+# KC: this is a way of getting the center of a searching area and make it a sp object
+site <- SpatialPoints(coordinates(studyArea), studyArea@proj4string)
+# KC: this is your map but note that site is no longer used in code
+site_map(studyArea, site, land, 40)
 ```
 
-```{r read wsdb and filter SARA & COSEWIC cetacean spp, echo=FALSE, include=FALSE, cache=FALSE}
+```{r read wsdb and filter SARA & COSEWIC cetacean spp, include=FALSE, cache=FALSE}
 wsdb <- read.csv(wsdbFile)
-wsdb <- wsdb[which(wsdb$YEAR>=minYear),]
+wsdb <- wsdb[which(wsdb$YEAR>=minYear), ]
 wsdb_filter <- filter_wsdb(wsdb)
 ```
+
 ```{r Fig 4 Whale Sightings Database, fig.height=8, fig.width=11}
 par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
-site_map(PEZ_poly,site,land,5)
-plot_wsdb(PEZ_poly,wsdb_filter,5)
+site_map(studyArea, site, land, 5)
+plot_wsdb(studyArea, wsdb_filter, 5)
 ```
 
 
@@ -134,11 +140,6 @@ There are various data sources featured in this report, including federal and pr
 **Site:**
 ```{r echo=FALSE, results='asis', eval = FALSE}
 cat(AquaSiteName)
-```
-
-```{r firstplot, echo = FALSE, results = "hide"}
-sf_site <- st_read("{{path_to_geoms}}")
-plot(st_geometry(sf_site))
 ```
 
 **Potential Exposure Zone (PEZ) radius:**

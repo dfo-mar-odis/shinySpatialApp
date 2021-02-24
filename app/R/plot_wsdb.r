@@ -16,14 +16,15 @@
 # Written for MSP, Gordana Lazin, September 13, 2019
 
 
-plot_wsdb <- function(studyArea,wsdb,buf) {
+plot_wsdb <- function(studyArea, wsdb, buf) {
   
   
   # data frame for the whale sightings database
   df=wsdb
   
   # bounding box for studyArea
-  bb=as.data.frame(summary(studyArea)$bbox)
+  # KC: did a minor tweak here
+  bb=as.data.frame(bbox(studyArea))
   
   # buffer around bounding box
   buf=buf/100

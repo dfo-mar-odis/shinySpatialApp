@@ -20,3 +20,4 @@ Imports:
   rmarkdown,
   tools,
   whisker
+RoxygenNote: 7.1.1

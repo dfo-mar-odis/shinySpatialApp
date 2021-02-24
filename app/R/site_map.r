@@ -7,7 +7,7 @@
 # 2. site- aquaculture site polygon
 # 3. land- landmask
 # 
-# Input parameteras:
+# Input parameters:
 # buf - distance in km from the study area to be plotted on the map
 # this controls the "zoom" of the plot
 #
@@ -16,14 +16,15 @@
 # Written for MSP, Gordana Lazin, September 13, 2019
 
 
-site_map <- function(studyArea,site,land,buf) {
+site_map <- function(studyArea, site, land, buf) {
 
   # buf is in km, and now converted to degrees
   buf=buf/100
   #png("pez_and_site.png", width=1616, height=1410)
   
   # bounding box
-  bb=as.data.frame(summary(studyArea)$bbox)
+  # KC: did a minor tweak here
+  bb=as.data.frame(bbox(studyArea))
   
   # buffer around bounding box
   #buf=0.05
@@ -37,10 +38,8 @@ site_map <- function(studyArea,site,land,buf) {
   map(studyArea,fill=T, col="deepskyblue",xlim=lonLim, ylim=latLim)
   
   # ADD LAND
-  map(land,fill=TRUE,col="lightgrey",add=T) 
+  map(land, fill=TRUE, col="lightgrey", add = TRUE) 
   
-  # ADD SITE
-  map(site,fill=TRUE,col="yellow",add=T)
   
   # ADD AXES
   map.axes(las=1, cex.axis=0.8)
@@ -48,10 +47,14 @@ site_map <- function(studyArea,site,land,buf) {
   # add axis labels - does not want to add y label???
   title(xlab="Longitude [deg]",ylab="Latitude [deg]")
   
+  # ADD SITE 
+  # KC : I used the plot() function to add a point 
+  # note I do it at the end otherwise axes would be affected
+  plot(site, col="yellow", pch = 20, cex =3, add = TRUE)
+  
   #watermark
   # watermark("For Internal Use Only", col="grey")
   #watermark(show = TRUE, lab = "DFO Internal Use Only")
   
 
- 
 }
