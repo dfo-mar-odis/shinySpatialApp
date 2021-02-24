@@ -1,4 +1,7 @@
 # Project-specific files 
+app/data/*
+!app/data/.gitkeep
+
 *.log
 app/output/*.geojson
 app/output/*.tex
