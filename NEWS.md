@@ -1,5 +1,9 @@
 # devel
 
+* includes DFO functions to create map and extract data. 
+* includes `app/data/` folder where data should be included. 
+* `report_pt1_generic_intro_EN.Rmd` includes a example of extraction and map.
+
 # Version 1.0.0 
 
 The application have been completed on February 18th, 2021. The application
