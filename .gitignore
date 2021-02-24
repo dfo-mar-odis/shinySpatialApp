@@ -1,5 +1,6 @@
 # Project-specific files 
 app/data/*
+data/
 !app/data/.gitkeep
 
 *.log
@@ -11,7 +12,6 @@ app/output/*.docx
 app/output/*.rds
 app/output/*.Rmd
 tmp/
-data/
 
 # History files
 .Rhistory
