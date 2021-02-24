@@ -8,6 +8,7 @@ app/output/*.docx
 app/output/*.rds
 app/output/*.Rmd
 tmp/
+data/
 
 # History files
 .Rhistory
