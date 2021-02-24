@@ -3,6 +3,7 @@ app/data/*
 data/
 *.html
 *.csv
+*.tiff
 
 !app/data/.gitkeep
 
