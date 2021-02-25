@@ -1,9 +1,9 @@
 # Project-specific files 
 app/data/*
 data/
+*.tiff
 *.html
 *.csv
-*.tiff
 
 !app/data/.gitkeep
 
@@ -38,7 +38,7 @@ tmp/
 
 # RStudio files
 .Rproj.user/
-.Rproj
+*.Rproj
 
 # produced vignettes
 vignettes/*.html

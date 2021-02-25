@@ -226,3 +226,19 @@ Salmon
 
 <!-- APPENDIX -->
 {{add_appendix}}
+
+```{r read wsdb and filter SARA & COSEWIC cetacean spp, echo=FALSE, include=FALSE, cache=FALSE}
+wsdb <- read.csv(wsdbFile)
+wsdb <- wsdb[which(wsdb$YEAR>=minYear),]
+wsdb_filter <- filter_wsdb(wsdb)
+```
+```{r Fig 4 Whale Sightings Database, fig.height=8, fig.width=11}
+par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
+site_map(PEZ_poly,site,land,5)
+plot_wsdb(PEZ_poly,wsdb_filter,5)
+```
+
+<!-- END  -->
+
+<!-- APPENDIX -->
+{{add_appendix}}
