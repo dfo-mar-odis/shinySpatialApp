@@ -6,6 +6,8 @@ data/
 *.csv
 
 !app/data/.gitkeep
+app/www/*.html
+!app/www/empty_report.html
 
 *.log
 app/output/*.geojson
