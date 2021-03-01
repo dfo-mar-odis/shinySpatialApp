@@ -149,9 +149,9 @@ ui <- fluidPage(
               "Select sections",
               myhelptxt("This tab allows you to select the sections you wish to include to your report."),
               checkboxGroupInput("main_sections",
-                label = "While numerous species have been identified in this region, only those listed by SARA, or assessed by COSEWIC and Wild species listings are summarized in this section:",
+                label = "Species",
                 choiceNames = c(
-                  "National Aquatic Species at Risk",
+                  "National Aquatic Species at Risk Program",
                   "Fish and Invertebrates",
                   "Cetaceans"
                 ),
@@ -159,10 +159,10 @@ ui <- fluidPage(
                 choiceValues = 1:3,
               ),
               checkboxGroupInput("extra_sections",
-                label = "The following selection will include additional information, and species not listed by SARA, or assessed by COSEWIC and Wild species:",
+                label = "Context",
                 choiceNames = c(
-                  "Ecologically or Biologically Significant Areas",
-                  "Additional species"
+                  "Areas designated for spatial planning",
+                  "Habitat"
                 ),
                 choiceValues = 1:2,
               ),
@@ -182,7 +182,7 @@ ui <- fluidPage(
               textAreaInput(
                 "u_text",
                 label = "Subtitle",
-                value = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors."
+                value = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors in Maritimes Region."
               ),
               textAreaInput("u_comments", label = "Comments", value = ""),
               textInput(
@@ -208,7 +208,7 @@ ui <- fluidPage(
         paste0(
           "<div id='footer_left'><a href='https://insilecoinc.github.io/' target='_blank'><img src='img/insileco_logo256.png' alt='inSileco logo' width = '100%'/></a></div><div id='footer_right'><h5>This shiny app was built by <a href='https://insilecoinc.github.io/' target='_blank'>inSileco</a> with the ",
           a("R package shiny", href = "https://shiny.rstudio.com/", 
-            target = "_blank"), ", the source code available on ")
+            target = "_blank"), ", the content of the report is being developed by DFO Maritimes Region, and the source code is available on ")
         ),
         a(icon("github"), href = "https://github.com/inSilecoInc/shinySpatialApp", target = "_blank"),
         HTML(".</h5></div>")

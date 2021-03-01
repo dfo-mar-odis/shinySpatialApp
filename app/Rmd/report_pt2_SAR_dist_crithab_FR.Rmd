@@ -1,5 +1,5 @@
-## **National Aquatic Species at Risk Section**  
+## **INFORMATION FROM NATIONAL AQUATIC SPECIES AT RISK PROGRAM**  
 **Contact:** Carolyn Bakelaar  
-**URL:** <http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US#>  
+**URL:** <http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US#> 
 
-The information below is derived from the *National Aquatic Species at Risk tool* (URL provided above) which uses a Geographic Information System (GIS) to display the distribution, residences and Critical Habitats for aquatic species listed under the Species at Risk Act (SARA). This tool has been developed primarily to facilitate project assessments under the Fisheries Act and the SARA. Here we provide some of the outputs of that tool; however, the optimal source for these open data records is the original tool, which also creates reports.
+Translation and outputs under-development
