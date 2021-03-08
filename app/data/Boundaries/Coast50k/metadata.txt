@@ -1,0 +1,23 @@
+Title: Landmass and Ocean mask, scale - 1:50,000, WGS84
+
+Land_AtlCanada_ESeaboardUS - Landmass for NE North America derived from the CanVec 1:50,000 coastline (Canada) and GADM.ORG for the NE US States (ME, NH, MA, RI)
+Ocean_AtlCanada_ESeaboardUS - Ocean mask for NE North America
+
+Land50k_Maritimes - Landmass for Maritimes Region (NS, NB, PE) derived from CanVec 1:50,000 coastline
+Ocean50k_Maritimes - Ocean mask for Maritimes Region (NS, NB, PE) derived from CanVec 1:50,000 coastline
+ 
+Land50k_Atl - Landmass for Atlantic Canada derived from CanVec 1:50,000 coastline.
+Ocean50k_Atl - Ocean mask for Atlantic Canada derived from CanVec 1:50,000 coastline.  This includes the 100 m bathymetric contour to select nearshore/offshore
+
+
+
+Source of underlying data: CanVec 1:50,000 coastline
+https://open.canada.ca/data/en/dataset/be0165a8-ad5d-4adb-a27a-2d4117c3967c
+
+
+Usage: 
+- Reproducible reporting (2020-2021, Greg Puncher et al.)
+- Marine Planning and Conservation (Kasia et al.)
+- A version of this layer edited by Phil Greyson is used to calculate fetch (Ryan Stanley, 2020-2021) (same as this and added State of Maine)
+
+

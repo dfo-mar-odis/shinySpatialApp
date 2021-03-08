@@ -1,6 +1,6 @@
 # Project-specific files 
-app/data/*
-data/
+app/data2/*
+data2/
 *.tiff
 *.html
 *.csv
