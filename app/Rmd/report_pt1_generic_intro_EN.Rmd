@@ -66,7 +66,14 @@ studyArea <- as(st_read("{{path_to_geoms}}"), "Spatial")
 ```{r read baseline data for maps, echo=FALSE, include=FALSE, cache=FALSE}
 landGDB <- "../data/Boundaries/Coast50k/Coastline50k.gdb"
 #landGDB <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\Boundaries\\Coast50K\\Coastline50k.gdb"
+#land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)
 land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)
+
+#test <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\mar.wrangling\\isdb.RData"
+#test <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\mar.wrangling\\marfis.RData"
+#landGDB <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\Boundaries\\Coast50K\\Coastline50k.gdb"
+#load(test)
+#head(isdb1)
 ```
 
 ```{r Fig 4 INTERACTIVE TEST Plot Whale Sightings Database - interactive test!, fig.height=8, fig.width=11}
@@ -140,7 +147,15 @@ _Table x. Definitions relevant for species listed by Species At Risk Act (SARA),
 
 # **CONTRIBUTORS**
 
-...
+```{r read contributors, echo=FALSE, cache=FALSE, include = FALSE}
+people <- read.csv("../data/misc/contributors.csv")
+people <- people$list
+sort(people)
+```
+List of contributors (listed in alphabetical order): `r knitr::combine_words(people)`. 
+
+For more information about this report, please contact Tana.Worcester@dfo-mpo.gc.ca, Gordana.Lazin@dfo-mpo.gc.ca, or Catalina.Gomez@dfo-mpo.gc.ca.
+
 
 
 
