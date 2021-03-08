@@ -44,17 +44,17 @@ source("../R/filter_wsdb.r")
 
 ```{r Set up paths, echo=FALSE, include=FALSE, cache=FALSE}
 ### Paths modified for local set up
-dataPath <- file.path("../data/Zones", paste0(AquaSiteName, PEZversion))
-polyPath <- "../data/Zones/"
+#dataPath <- file.path("../data/Zones", paste0(AquaSiteName, PEZversion))
+#polyPath <- "../data/Zones/"
 ### Paths modified for network set up
 #dataPath <- file.path("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting/data/Zones", paste0(AquaSiteName, PEZversion))
 #polyPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting/data/Zones"
 #wsdbFile <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\MarWSDBSightingsForCGomez_27Oct2020.csv"
 
-wsdbFile <- file.path("../data/NaturalResources/Species/Cetaceans/WSDB","MarWSDBSightingsForCGomez_27Oct2020.csv")
-wsdb <- read.csv(wsdbFile)
-wsdb <- wsdb[which(wsdb$YEAR>=minYear),]
-wsdb_filter <- filter_wsdb(wsdb)
+#wsdbFile <- file.path("../data/NaturalResources/Species/Cetaceans/WSDB","MarWSDBSightingsForCGomez_27Oct2020.csv")
+#wsdb <- read.csv(wsdbFile)
+#wsdb <- wsdb[which(wsdb$YEAR>=minYear),]
+#wsdb_filter <- filter_wsdb(wsdb)
 ```
 
 ```{r Select Search Area, echo=FALSE, include=FALSE, cache=FALSE}
