@@ -12,7 +12,7 @@ This section does not endeavor to describe every source of information available
 
 Contact: <XMARWhaleSightings@dfo-mpo.gc.ca>  
 URL: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>  
-Last retrieved on: October 27 2020  
+Last retrieved on: October 27 2020  by Shelley Lang
 Quality Tier: Low  
 Search year: 2002-2020  
 Security level: none  
@@ -43,7 +43,7 @@ Please note the following important disclaimers and caveats associated with sigh
 
 ### **The Whitehead Lab, Dalhousie University**
 URL: <https://whiteheadlab.weebly.com/contact.html>  
-Last retrieved on: January 12 2021  
+Last retrieved on: January 12 2021  by Laura Feyrer
 Quality Tier: High  
 Search year: 2002-2019  
 Security level: none 
