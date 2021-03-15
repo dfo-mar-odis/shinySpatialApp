@@ -18,3 +18,7 @@ Dataset description from the Open Data record [@OpenData_ebsa]: Ecologically and
 #### ***Area-specific EBSA search results***  
 
 **under-development**
+
+```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA; pink) relative to the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue.'}
+#plot_EBSA(EBSA_sf, studyArea, land10m_sf, 300)
+```
