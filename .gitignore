@@ -1,7 +1,5 @@
 # Project-specific files 
 app/data/Boundaries/*
-app/data2/*
-data2/
 data/Boundaries/
 *.tiff
 *.html

@@ -41,7 +41,7 @@ renderReport <- function(input, geoms, fl = NULL, dir_out = "output",
   for (i in seq_len(nl)) {
     msgInfo(paste0("Creating report (", lang[i], ")"))
     fl2 <- paste0(fl, "_", lang[i]) 
-    x <- glue("{dir_in}/report_pt1_generic_intro_{lang[i]}.Rmd")
+    x <- glue("{dir_in}/intro_{lang[i]}.Rmd")
 
     # Section(s) to be added
     s_main <- s_ebsa <- s_appendix <- NULL
@@ -115,21 +115,21 @@ add_sections <- function(flnms = NULL, dir_in, dir_out) {
 main_parts <- function(x, lang = c("EN", "FR")) {
   lang <- match.arg(lang)
   vc <- c(
-    "report_pt2_SAR_dist_crithab",
-    "report_pt3_fish_inverts",
-    "report_pt5_cetaceans"
+    "report_SARA",
+    "report_fish",
+    "report_cetaceans"
   )[as.numeric(x)]
   paste0(vc, "_", lang, ".Rmd")
 }
 
 ebsa_part <- function(x, lang = c("EN", "FR")) {
   lang <- match.arg(lang)
-  ifelse(x, glue("report_pt6_EBSA_{lang}.Rmd"), NULL)
+  ifelse(x, glue("report_planning_{lang}.Rmd"), NULL)
 }
 
 appendix_part <- function(x, lang = c("EN", "FR")) {
   lang <- match.arg(lang)
-  ifelse(x, glue("report_pt8_Appendix_{lang}.Rmd"), NULL)
+  ifelse(x, glue("report_habitat_{lang}.Rmd"), NULL)
 }
 
 save_geom <- function(geoms, dir_out = "output", flnm ="geoms_slc.geojson") {

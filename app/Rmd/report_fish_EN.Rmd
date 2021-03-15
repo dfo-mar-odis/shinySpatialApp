@@ -10,7 +10,7 @@ Quality Tier: High
 Search year: 1970-2020  
 Security level: none  
 
-Dataset description (from the Open Data record): The Fisheries and Oceans Canada ecosystem Research Vessel (RV) surveys are conducted annually (since 1970) and are a source of integrated ecosystem monitoring data. These survey data are the primary data source for monitoring trends in species distribution, abundance, and biological condition within the region, and also provide data to the Atlantic Zonal Monitoring Program (AZMP) for monitoring hydrographic conditions, along with zooplankton and phytoplankton. The surveys follow a stratified random sampling design, and include sampling using a bottom otter trawl, CTD rosette and vertical plankton tows. Data from the bottom trawl catch are used to monitor the distribution and abundance of fish and invertebrates throughout the Scotian Shelf, Bay of Fundy and Georges Bank. 
+Dataset description from the Open Data record [@OpenData_MAR_RV]: The Fisheries and Oceans Canada ecosystem Research Vessel (RV) surveys are conducted annually (since 1970) and are a source of integrated ecosystem monitoring data. These survey data are the primary data source for monitoring trends in species distribution, abundance, and biological condition within the region, and also provide data to the Atlantic Zonal Monitoring Program (AZMP) for monitoring hydrographic conditions, along with zooplankton and phytoplankton. The surveys follow a stratified random sampling design, and include sampling using a bottom otter trawl, CTD rosette and vertical plankton tows. Data from the bottom trawl catch are used to monitor the distribution and abundance of fish and invertebrates throughout the Scotian Shelf, Bay of Fundy and Georges Bank. 
 
 #### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
 
@@ -50,7 +50,7 @@ Quality Tier: Medium
 Search year: 2002-2020  
 Security level: none  
 
-OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS searches were conducted to find additional relevant records for species listed by SARA, assessed by COSEWIC, or included in the Wild Species listing. Future iterations of this reporting tool will aim at expanding our quality checks of the OBIS database.
+OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS searches were conducted to find additional relevant records for species listed by SARA, assessed by COSEWIC, or included in the Wild Species listing. Future iterations of this reporting tool will aim at expanding our quality checks of the OBIS database.
 
 #### ***Area-specific OBIS fish and invertebrate search results***
 
