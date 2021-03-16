@@ -55,13 +55,6 @@ landGDB <- "../data/Boundaries/Coast50k/Coastline50k.gdb"
 land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)
 ```
 
-```{r Fig 4 INTERACTIVE TEST Plot Whale Sightings Database - interactive test!, fig.height=8, fig.width=11}
-#interactivity! 
-#par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
-#site_map(studyArea, site, land, 5)
-#plot_wsdb(studyArea, wsdb_filter, 5)
-```
-
 <!-- END  -->
 
 <!-- MAIN SECTIONS -->
