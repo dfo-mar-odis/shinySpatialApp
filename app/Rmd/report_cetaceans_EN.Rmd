@@ -10,9 +10,9 @@ This section does not endeavor to describe every source of information available
 
 ### **Whale Sightings Database (WSDB)**  
 
-Contact: <XMARWhaleSightings@dfo-mpo.gc.ca>  
-URL: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>  
-Last retrieved on: October 27 2020  by Shelley Lang
+Contact: <XMARWhaleSightings@dfo-mpo.gc.ca>
+URL: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>    
+Last retrieved on: October 27 2020  by Shelley Lang  
 Quality Tier: Low  
 Search year: 2002-2020  
 Security level: none  
@@ -43,10 +43,10 @@ Please note the following important disclaimers and caveats associated with sigh
 
 ### **The Whitehead Lab, Dalhousie University**
 URL: <https://whiteheadlab.weebly.com/contact.html>  
-Last retrieved on: January 12 2021  by Laura Feyrer
-Quality Tier: High  
-Search year: 2002-2019  
-Security level: none 
+Last retrieved on: January 12 2021  by Laura Feyrer    
+Quality Tier: High    
+Search year: 2002-2019    
+Security level: none   
 
 The following information is summarized in this website (https://whiteheadlab.weebly.com/). The Whitehead Lab is based out of the Dalhousie University Department of Biology (Halifax, Nova Scotia). Since its inception in 1987, the Whitehead Lab has been home to over 75 postdoctoral, Ph.D., M.Sc., and undergraduate students. These students primarily conduct conservation-based research on the behavior, ecology, and population biology of cetacean species (primarily, Sperm Whales, Northern Bottlenose Whales, and Long-Finned Pilot Whales), with many studies focused on species in eastern Canadian waters. 
 
@@ -80,11 +80,11 @@ The NARWC Sightings Database contains records of thousands of sightings of Right
 
 ### **Ocean Biodiversity Information System (OBIS) [for cetaceans]**  
 Contact: <helpdesk@obis.org>  
-URL: <https://obis.org/>  
-Last retrieved on: January 27 2021 from OBIS  
-Quality Tier: Medium  
-Search year: 2002-2020  
-Security level: none  
+URL: <https://obis.org/>    
+Last retrieved on: January 27 2021 by Gregory Puncher from OBIS      
+Quality Tier: Medium    
+Search year: 2002-2020    
+Security level: none    
 
 An OBIS search [@OBIS] was conducted to find additional relevant records for cetacean listed by SARA, assessed by COSEWIC,  or included in the Wild Species listings. A first level QC process was performed by removing duplicate reports that are also present in WSDB. Subsequent versions of this report will aim at expanding our QC efforts for this source of information.
 
@@ -97,12 +97,12 @@ An OBIS search [@OBIS] was conducted to find additional relevant records for cet
 
 ### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans**  
 
-Contact: <Hilary.Moors-Murphy@dfo-mpo.gc.ca>  
-Site: <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>  
-Last retrieved on: April 1 2020 from Open Data <https://open.canada.ca/data/en/dataset/c094782e-0d6f-4cc0-b5a3-58908493a433>  
-Quality Tier: Medium  
-Search year: 1975-2015  
-Security level: none.
+Contact: <Hilary.Moors-Murphy@dfo-mpo.gc.ca>      
+URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>        
+Last retrieved on: April 1 2020 from Open Data <https://open.canada.ca/data/en/dataset/c094782e-0d6f-4cc0-b5a3-58908493a433>      
+Quality Tier: Medium        
+Search year: 1975-2015        
+Security level: none      
 
 Dataset description from the Open Data record [@OpenData_cetacean_imp]:  Species Distribution Models (SDM) were used to predict and identify priority areas for enhanced monitoring of cetaceans in eastern Canadian waters off Nova Scotia, Newfoundland and Labrador. This data set represents information presented in @Gomez2020SDM and includes sighting records and SDM outputs for ten cetacean species with sufficient records (n > 450), as well as sightings only for an additional six species. Gomez et al. (2020) used a compilation of aerial- and vessel-based cetacean sightings data from 1975-2015, assembled in @Gomez2017SDM from a variety of sources. Note that sightings data from many of these sources were not effort-corrected, and apparent distribution patterns based on these opportunistic sightings data are biased by when and where survey activities were conducted. Unfavorable weather and reduced visual effort in winter, spring, and autumn likely account for the fewer sighting records in these seasons compared to summer. The dataset did not include dead animal, stranding, entanglement, or entrapment data. While some of the databases included records obtained during the whaling period (catches or sightings recorded prior to 1975), for all analyses/modelling conducted in that study, only sightings of free-swimming whales obtained during the post-whaling period (1975-2015) were used. Quality control checks included discarding all records outside of our study area and removing redundant records (identical species, day, month, latitude and longitude). The data used did not reflect any updates or corrections to the databases that have occurred since the data were compiled in 2016. Sightings are not available for download here; please contact the original data sources listed below to obtain raw sightings data. Gomez et al. (2020) represented an important initiative in eastern Canada to highlight key areas for cetacean monitoring in waters off Nova Scotia, Newfoundland and Labrador. Habitats with high suitability were interpreted as areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Model outputs used cetacean sightings from several decades and dynamic environmental predictors that used seasonal averages across multiple years. As proxies for prey availability, five predictor environmental variables were selected for the SDM: ocean depth, compound topographic index, sea surface temperature, areas of persistently high chlorophyll-a concentration, and regional chlorophyll-a magnitude. See Gomez et al. (2020) for further details on modelling methods. Persistent patterns over time (between 1975-2015) are the main patterns expected to be captured by these models. Further, SDM results presented were not the same as species density maps; rather, they portrayed predicted suitable habitat based on environmental characteristics and sightings data that were not always derived from effort-based surveys. Consequently, the use of these models in marine spatial planning processes should be accompanied by complimentary approaches, such as acoustic and visual validation of the SDM results, as well as additional monitoring and modeling efforts. Please refer to Gomez et al. (2020) for examples on how to best use these data outputs. Future efforts will focus on using more recent data and improving these models to facilitate the inclusion of cetaceans in marine spatial planning processes that are currently underway. 
 
@@ -116,12 +116,12 @@ Important usage considerations: model predictions in this section should not be 
 ```
 
 ### **Blue Whale Important Habitat**  
-Blue Whale Important Habitat in the Western North Atlantic  
-Contact: <gddaiss-dmsaisb@dfo-mpo.gc.ca>  
-URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>  
-Last retrieved on: October 30 2020 from Open Data <https://open.canada.ca/data/en/dataset/8fafd919-fcbe-43a3-a911-3d9461273441>  
-Quality Tier: High  
-Security level: none.  
+Blue Whale Important Habitat in the Western North Atlantic    
+Contact: <gddaiss-dmsaisb@dfo-mpo.gc.ca>    
+URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>    
+Last retrieved on: October 30 2020 from Open Data <https://open.canada.ca/data/en/dataset/8fafd919-fcbe-43a3-a911-3d9461273441>    
+Quality Tier: High    
+Security level: none  
 
 Dataset description from the Open Data record [@OpenData_blue_imphabitat]: The distribution of Blue Whales (_Balaenoptera musculus_) is mainly dictated by key environmental drivers such as food requirements and availability, sea ice, and sometimes predation risks. It is common to find Blue Whales in upwelling regions, depending on topography (banks, slopes and shallow water) and thermal fronts, which are actually related to krill aggregations. Blue Whales feed almost exclusively on euphausiids (krill) and have the highest absolute metabolic demands. A shapefile on the distribution of significant perennial areas of krill aggregation is available (DFO-ECCC). Important habitats for Blue Whales have therefore been identified by combining information on their distribution with krill aggregation areas (observed or predicted). In the waters of the St. Lawrence estuary, the presence of Blue Whales for foraging, feeding and migration has been observed throughout the year, with increased activity during the summer. It has been observed that feeding rates of Blue Whales are higher in shallow waters and during nocturnal periods (krill at surface), confirming that foraging near the surface is beneficial when possible. Their presence, their great fidelity to this important habitat for their activities and their behavior in the waters of the St. Lawrence in all seasons, show that Blue Whales are vulnerable to oil spills. They are vulnerable, not only indirectly through the reduction of prey and loss of suitable habitat, but also by their behavior requiring active activity on the surface and near the coast. The data used to create the polygons using the bounding box method comes from multiple sources of information: hunting records, photo-identification, coastal, airborne and boat surveys, passive acoustic monitoring, radio and satellite telemetry, ice trapping, anecdotal observations and modeling.
 
@@ -138,11 +138,11 @@ Please see a list of all sources of information used in @Lesage2018 and the Open
 
 ### **Northern Bottlenose Whale Important Habitat**  
 Northern bottlenose whales important habitat in inter-canyon areas on the eastern Scotian Shelf  
-Contact: <MaritimesRAP.XMAR@dfo-mpo.gc.ca>  
-URL: <http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf>  
-Last retrieved on: February 17 2021 from Maritimes Region   
-Quality Tier: High  
-Security level: none.  
+Contact: <MaritimesRAP.XMAR@dfo-mpo.gc.ca>   
+URL: <http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf>    
+Last retrieved on: February 17 2021 from Maritimes Region     
+Quality Tier: High    
+Security level: none  
 
 The following text is summarized in [@DFO2020NBW_imphabitat]: The inter-canyon areas located between the existing Gully, Shortland Canyon, and Haldimand Canyon critical habitat areas are important habitat for Scotian Shelf Northern Bottlenose Whales. Similar to canyon critical habitat, Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. The suggested delineation of Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf is presented in this section. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. The analyses presented in DFO 2020 was designed to assess the importance of inter-canyon areas located between designated critical habitat, but additional important habitat for the population may exist outside these areas. Further research is needed to ensure that all important habitat required to support recovery of the population has been identified, as well as to improve our understanding of the habitat requirements of the species. Passive acoustic monitoring efforts have recently been expanded to include other areas along the Scotian Shelf. When available, these datasets will provide new insight into the seasonal presence and foraging activities of Northern Bottlenose Whales. In addition to the Scotian Shelf population, a distinct population of Northern Bottlenose Whales inhabits the Davis Strait-Baffin Bay-Labrador Sea region. Documented sightings have recently occurred off Newfoundland. No clear genetic links or photo-identification matches have been made between the Scotian Shelf population and Northern Bottlenose Whales off Newfoundland or in more northern waters, and the population structure of Northern Bottlenose Whales off eastern Canada is not fully understood. Further studies are underway to address broader questions regarding population structure and connectivity.
 

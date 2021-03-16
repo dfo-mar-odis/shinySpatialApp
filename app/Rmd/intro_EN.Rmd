@@ -102,7 +102,22 @@ The output from the search includes the following sections:
 -	The focus of this report is on available observations of species presence and not on absences, quantities (e.g., species abundance or biomass), frequency, or catch information. 
 -	Because coastal areas of the Scotian Shelf bioregion are generally not adequately sampled to characterize fine-scale ecological characteristics (i.e., species, habitat composition and variability within a sub-regional focal area), the distribution of (some) species featured within the report, when the focal area is near to the coast, should be used as a first-order estimate limited by the spatial-temporal resolution of available data.
 
-This report incorporates information from a variety of sources with differing levels of quality control. Consequently, data sources in the report are categorized into tiers of data quality, and associated usage recommendations (Table x). 
+This report incorporates information from a variety of sources with differing levels of quality control. Consequently, data sources in the report are categorized into tiers of data quality, and associated usage recommendations.
+
+<br><br>
+```{r table tiers read, echo=FALSE, cache=FALSE, include = FALSE}
+library(kableExtra)
+table_tier <- read.csv("../data/misc/table_tiers_EN.csv")
+```
+```{r}
+kable(table_tier,align="l",
+      caption = "Quality Tiers defined to describe sources of information queried and summarized in this report.")
+```
+
+#```{r}
+kable(table_tier, align="l",booktabs = T,   
+      caption = "Quality Tiers defined to describe sources of information queried and summarized in this report.") #%>%  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+#```
 
 # **SEARCH RESULTS**  
 
