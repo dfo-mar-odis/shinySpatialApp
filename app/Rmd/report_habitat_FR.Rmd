@@ -1,4 +1,27 @@
-## **HABITAT INFORMATION**
+## **INFORMATION SUR L’HABITAT**
 
-Translation and outputs under-development
+### **Végétation intertidale et fucus**
+Cartes satellitaires de la végétation intertidale et des polygones de présence de fucus  
+Personne-ressource : <Gordana.Lazin@dfo-mpo.gc.ca>  
+Consulté le : 17 février 2021  
+Niveau de qualité : Moyennem  
+Niveau de sécurité : Aucun. 
+
+Le fucus (Ascophyllum nodosum) est une algue brune intertidale d’eau froide commune dont les crampons de longue durée s’agrippent à des substrats rocheux. Il domine la zone intertidale rocheuse du Canada atlantique et fournit un habitat pour les poissons, les invertébrés et les oiseaux. Il y a peu d’information disponible sur la répartition spatiale du fucus et de la végétation intertidale dans la région des Maritimes. Les données d’enquête existantes de l’industrie sont considérées comme exclusives et ne sont pas disponibles. Par conséquent, des cartes satellitaires à l’échelle régionale ont été élaborées pour indiquer l’emplacement, la densité relative de la végétation intertidale et les polygones qui délimitent les zones probablement occupées par le fucus (Lazin et al., en préparation).
+
+Les cartes sont produites à l’aide de données satellitaires Sentinel-2 de ciel dégagé à une résolution au sol de 10 mètres, en appliquant un indice de végétation par différence normalisée (IVDN) bien établi pour détecter la végétation intertidale exposée à marée basse. Les parcelles de végétation sont délimitées à l’aide de seuils, et la probabilité de présence de fucus est attribuée en fonction de la classification du substrat riverain, des archives photographiques/vidéo aériennes et des données des bases de données sur la biodiversité en libre accès. Les produits finaux seront conservés sur le portail des données ouvertes du gouvernement du Canada et seront continuellement améliorés à mesure que de nouvelles données de terrain seront disponibles. 
+
+Remarques sur les données :
+
+- Les valeurs de l’IVDN sur la carte matricielle indiquent la densité relative de la végétation intertidale (biomasse) et ne sont PAS étalonnées (à titre indicatif seulement). Les valeurs de l’IVDN sur les cartes vont de 0,4 à 1; des valeurs plus élevées indiquent une végétation plus dense.
+- La probabilité de présence de fucus dans les polygones est classée comme suit : Non présent, Présent, Probablement présent et Présence inconnue. La classification « Probablement présent » est attribuée aux rivages associés au substrat rocheux, tandis que la classification « Présent » est attribuée en fonction des données de terrain. La classification « Présence inconnue » est attribuée aux types de rivages de sable et de boue, et n’exclut pas nécessairement la présence de fucus.
+- La carte régionale représente une mosaïque d’images quotidiennes recueillies à différentes périodes de l’année de 2016 à 2019. Ces cartes ne représentent pas une moyenne à long terme, bien que les parcelles de végétation intertidales aient tendance à être stationnaires et persistantes.
+- En raison de la résolution spatiale de 10 mètres des données satellitaires, les valeurs de l’IVDN pour chaque pixel représentent une moyenne spatiale sur une surface de 10 m2, de sorte que la végétation clairsemée pourrait ne pas être capturée sur la carte.
+
+#### ***Résultats de la recherche sur la végétation intertidale et le fucus, par zone***  
+
+**under-development**
+
+```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
+```
 
