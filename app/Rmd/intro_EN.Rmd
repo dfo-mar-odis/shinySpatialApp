@@ -24,39 +24,42 @@ a:visited {color: #008040;}
 a:hover {color: #006080;}
 </style>
 
-
-```{r setup and libraries, echo=FALSE, include=FALSE, cache=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
-library(knitr)
-library(rgdal)
-library(maps)
-library(lubridate)
-library(sp)
-library(kableExtra)
-library(dplyr)
-```
-
-<!-- KC: this is done on application load  -->
-<!-- ```{r source functions, echo=FALSE, include=FALSE, cache=FALSE}
-source("../R/site_map.r")
-source("../R/plot_wsdb.r")
-source("../R/filter_wsdb.r")
-``` -->
-```{r Select Search Area, echo=FALSE, include=FALSE, cache=FALSE}
-# Search Area generated interactively by the app!
-studyArea <- as(st_read("{{path_to_geoms}}"), "Spatial")
-# site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName)) #old, static selection
-```
-
 ```{r , include=FALSE}
-# source("../R/setup.R", local = knitr::knit_global())
-# minYear <- 2010
-wsdbFile <- "../data/MarWSDBSightingsForCGomez_27Oct2020.csv"
 load("../data/SecureData.RData")
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
 # load("data/MARFISSCI.SPECIES.RData")
 # ISDB_info<-file.info("data/ISDB.ISSETTYPECODES.RData")
 # MARFIS_info<-file.info("data/MARFISSCI.SPECIES.RData")
+```
+
+```{r setup and libraries, echo=FALSE, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
+library(knitr) # reproducible reports from R Markdown 
+library(rgdal) # read geospatial data files into report
+library(maps) # uncouple lat/lon coordinates in sf objects
+library(lubridate) # extract YEAR from columns containing dates
+library(sp)
+library(kableExtra) # build and manipulate tables
+library(dplyr)
+#library(tidyverse) # a set of packages required for general data manipulation, including ggplot2 for plotting and dplyr
+# library(raster) # needed for manipulation of raster files
+# library(sf) # manipulation of simple features and to determine overlap of studyArea and databases
+# library(stringr) # manipulation of individual characters within strings in character vectors.
+# library(data.table) # manipulation of dataframes
+# library(gridExtra) # plot a grid of plots (priority cetacean habitat)
+# library(stars) # transform features and assign or modify coordinate reference systems in objects
+# library(ggspatial) #required for mapping
+#next lines are necessary for the generation of the water mark on plots
+#install.packages("remotes")
+#remotes::install_github("terminological/standard-print-output")
+#library(standardPrintOutput) # required for watermarks on maps
+```
+
+```{r Select Search Area, echo=FALSE, include=FALSE, cache=FALSE}
+# Search Area generated interactively by the app!
+#studyArea <- as(st_read("{{path_to_geoms}}"), "Spatial")
+studyArea <- st_read("{{path_to_geoms}}")
+# site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName)) #old, static selection
 ```
 
 ```{r read baseline data for maps, echo=FALSE, include=FALSE, cache=FALSE}
@@ -82,9 +85,10 @@ This document is developed as a reproducible reporting tool, supported by the R 
 
 ````{r Fig 1 search polygon, fig.height=8, fig.width=11, fig.cap='Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area is used by this tool to query information and automatically generate a report. '}
 # KC: this is a way of getting the center of a searching area and make it a sp object
-site <- SpatialPoints(coordinates(studyArea), studyArea@proj4string)
+#site <- SpatialPoints(coordinates(studyArea), studyArea@proj4string)
 # KC: this is your map but note that site is no longer used in code
-site_map(studyArea, site, land, 40)
+#site_map(studyArea, site, land, 40)
+plot(st_geometry(studyArea))
 ```
 
 Species that have been listed by the _Species At Risk Act_ (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild Species listings, are the current focus of this reproducible reporting framework. Recognizing the importance of considering ecosystem-based approaches for management, this report also includes information on other (e.g., commercial, recreational, ecologically significant) species, ecosystem components (e.g., coastal habitat), and areas designated for spatial planning (e.g., Ecologically and Biologically Significant Areas) for each user-defined area. 
