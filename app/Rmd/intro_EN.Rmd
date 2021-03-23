@@ -25,7 +25,7 @@ a:hover {color: #006080;}
 </style>
 
 ```{r , include=FALSE}
-load("../data/SecureData.RData")
+load("../data/OpenData.RData")
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
 # load("data/MARFISSCI.SPECIES.RData")
 # ISDB_info<-file.info("data/ISDB.ISSETTYPECODES.RData")
