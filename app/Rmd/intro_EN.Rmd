@@ -42,7 +42,6 @@ source("../R/site_map.r")
 source("../R/plot_wsdb.r")
 source("../R/filter_wsdb.r")
 ``` -->
-
 ```{r Select Search Area, echo=FALSE, include=FALSE, cache=FALSE}
 # Search Area generated interactively by the app!
 studyArea <- as(st_read("{{path_to_geoms}}"), "Spatial")
@@ -50,7 +49,6 @@ studyArea <- as(st_read("{{path_to_geoms}}"), "Spatial")
 ```
 
 ```{r read baseline data for maps, echo=FALSE, include=FALSE, cache=FALSE}
-#load("../data/RData/OpenData.RData")
 landGDB <- "../data/Boundaries/Coast50k/Coastline50k.gdb"
 land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)
 ```
