@@ -48,6 +48,17 @@ studyArea <- as(st_read("{{path_to_geoms}}"), "Spatial")
 # site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName)) #old, static selection
 ```
 
+```{r , include=FALSE}
+# source("../R/setup.R", local = knitr::knit_global())
+# minYear <- 2010
+wsdbFile <- "../data/MarWSDBSightingsForCGomez_27Oct2020.csv"
+load("../data/SecureData.RData")
+#load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
+# load("data/MARFISSCI.SPECIES.RData")
+# ISDB_info<-file.info("data/ISDB.ISSETTYPECODES.RData")
+# MARFIS_info<-file.info("data/MARFISSCI.SPECIES.RData")
+```
+
 ```{r read baseline data for maps, echo=FALSE, include=FALSE, cache=FALSE}
 landGDB <- "../data/Boundaries/Coast50k/Coastline50k.gdb"
 land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)

@@ -5,11 +5,11 @@
 # 
 # intersect_dist <- st_intersection(sardist_sf,studyArea)
 # #intersect_dist$Common_Nam[intersect_dist$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
-# dist_table<-intersect_dist %>% 
+# dist_table<-intersect_dist %>%
 #   select(Scientific, Common_Nam, Population, Waterbody)
 # dist_table<- dist_table %>% rename("Scientific_Name"=Scientific)
 # dist_table<-merge(dist_table, listed_species, by='Scientific_Name')
-# dist_table<-dist_table %>% 
+# dist_table<-dist_table %>%
 #   select(Common_Name, Scientific_Name, Population, Waterbody, Schedule.status, COSEWIC.status, Wild_Species)
 # st_geometry(dist_table)<-NULL
 # dist_table<- dist_table %>% rename("SARA status"=Schedule.status,
