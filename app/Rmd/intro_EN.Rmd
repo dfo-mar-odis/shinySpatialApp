@@ -63,6 +63,10 @@ studyArea <- st_read("{{path_to_geoms}}")
 # site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName)) #old, static selection
 ```
 
+```{r}
+plot(st_geometry(studyArea))
+```
+
 <!-- END  -->
 
 <!-- MAIN SECTIONS -->
@@ -83,8 +87,7 @@ This document is developed as a reproducible reporting tool, supported by the R 
 #site <- SpatialPoints(coordinates(studyArea), studyArea@proj4string)
 # KC: this is your map but note that site is no longer used in code
 #site_map(studyArea, site, land, 40)
-plot(st_geometry(studyArea))
-#site_map(studyArea,site_sf,land10m_sf,10)
+#site_map(studyArea, site, land10m_sf, 40)
 ```
 
 Species that have been listed by the _Species At Risk Act_ (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild Species listings, are the current focus of this reproducible reporting framework. Recognizing the importance of considering ecosystem-based approaches for management, this report also includes information on other (e.g., commercial, recreational, ecologically significant) species, ecosystem components (e.g., coastal habitat), and areas designated for spatial planning (e.g., Ecologically and Biologically Significant Areas) for each user-defined area. 
