@@ -1,3 +1,51 @@
-## **FISH AND INVERTEBRATES**
+## **POISSONS ET INVERTÉBRÉS**
 
-Translation and outputs under-development
+La présente section décrit les résultats tirés des sources de données suivantes : Enquête sur les navires de recherche (NR) dans les Maritimes, Base de données des relevés de l’industrie (BDRI), Système d’information sur les pêches des Maritimes (SIPMAR) et Système d’information sur la biodiversité des océans (SIBO). Les extrants propres à une zone sont fournis dans des sous-sections marquées selon la source de données. Des descriptions des données sources et des références et personnes-ressources appropriées sont fournis au début de chaque sous-section.
+
+### **Enquête sur les navires de recherche dans les Maritimes**   
+
+Personne-ressource : <DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca>   
+Consulté le : 21 janvier 2021 sur le Portail de données ouvertes  <https://ouvert.canada.ca/data/fr/dataset/8ddcaeea-b806-4958-a79f-ba9ab645f53b>    
+Niveau de qualité : Élevée  
+Année de recherche : de 1970 à 2020 
+Niveau de sécurité : Aucun  
+
+Description de l’ensemble de données (tirée du dossier des données ouvertes) : …  
+
+```{r table RV read, echo=FALSE, cache=FALSE, include = FALSE}
+table_RV <- read.csv("../data/misc/table_RV_EN.csv")
+```
+```{r}
+kable(table_RV, align="l", 
+      caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.")
+```
+
+
+#### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes***
+<br><br>
+**under-development**
+
+```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area was used to query information from the Maritimes Research Vessel (RV) Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample.'}
+```
+
+### **Enquête sur l’industrie et bases de données sur les pêches dans les Maritimes**  
+
+#### ***Base de données des relevés de l’industrie (BDRI)***  
+
+Personne-ressource :  <Claire.Mussells@dfo-mpo.gc.ca>  
+Consulté le : 2019   
+Niveau de qualité : Moyenne  
+Année de recherche : de 2002 à 2019  
+Niveau de sécurité : Protégé B  
+
+La base de données des relevés de l’industrie (BDRI) est une base de données ministérielle qui contient des observations des prises en mer de bateaux de pêche commerciale exploités dans l’Atlantique Nord-Ouest. Les relevés de l’industrie ne sont pas spatialement ou temporellement synoptiques et, par conséquent, il est fortement recommandé d’intégrer des renseignements supplémentaires sur la présence et/ou l’utilisation de l’habitat (c.-à-d. frai, migration, aires d’alimentation) provenant d’études à plus grande échelle. Les renseignements sur les prises et l’effort de pêche pour un titulaire de permis individuel constituent des renseignements personnels protégés en vertu de l’article 19 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-12) et, pour un titulaire de permis d’entreprise, est considéré comme un renseignement de nature délicate, exclusif et protégé en vertu de l’article 20 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-13).
+
+Sans consentement écrit, Pêches et Océans Canada n’est pas autorisé à communiquer des renseignements ou des produits de données de la BDRI (comme des cartes et des couches de données) qui pourraient révéler des renseignements personnels ou de tiers comme les prises, les valeurs au débarquement et les lieux de pêche propres aux navires, car ces renseignements sont considérés comme confidentiels. Des renseignements sur la politique de protection des renseignements personnels sont disponibles dans les lignes directrices sur la diffusion informelle à l’intention du personnel du MPO (c.-à-d. Annexe B – « Renseignements sur les prises et l’effort et sur les quotas : À faire et à ne pas faire lors de la diffusion informelle »<\ent.dfo-mpo.caInformation_Release_Guidelines-eng.docx>). Si vous souhaitez inclure des données d’observateurs dans une publication, n’oubliez pas de les agréger (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r). 
+
+#### ***Système d’information sur les pêches des Maritimes (SIPMAR)***  
+
+Personne-ressource :  <XMARComData@dfo-mpo.gc.ca>    
+Consulté le : 2019  
+Niveau de qualité : Moyenne    
+Année de recherche : de 2002 à 2019    
+Niveau de sécurité : Protégé B
