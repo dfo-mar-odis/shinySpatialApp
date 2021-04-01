@@ -36,16 +36,30 @@ Please note the following important disclaimers and caveats associated with sigh
 
 #### ***Area-specific WSDB search results***
 <br><br>
-**under-development**
+
+```{r wsdb, include=FALSE, cache=FALSE}
+wsdb_filter <- filter_wsdb(wsdb, listed_cetacean_species)
+wsdb_intersect_points <- intersect_points_wsdb(wsdb_filter, studyArea)
+Total_number_records_WSDB <- nrow(wsdb_intersect_points)
+```
+*
+```{r wsdb result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+ Query_output_wsdb <- if(Total_number_records_WSDB < 1){
+   "There are no relevant records in the WSDB for this search area."
+ } else {
+   "There are relevant records in the WSDB for this search area."
+ }
+ writeLines(Query_output_wsdb)
+```
+
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild Species listings. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
-# test for interactivity!
-#wsdbFile <- "../data/MarWSDBSightingsForCGomez_27Oct2020.csv"
-#wsdb <- read.csv(wsdbFile)
-#wsdb <- wsdb[which(wsdb$YEAR>=minYear), ]
-#wsdb_filter <- filter_wsdb(wsdb)
-#par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
-#site_map(studyArea, site, land, 5)
-#plot_wsdb(studyArea, wsdb_filter, 5)
+par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)
+wsdb_plot <- site_map(studyArea, site, land10m_sf, 5 , bounds_sf)+
+  geom_point(data = wsdb_intersect_points, aes(x = long, y = lat, color=Common_Name), 
+              size = 3.5)
+# the scale_colour_manual() command FAILS.  Not reading whale_col? (which are set in intro_EN)
+#if(Total_number_records_WSDB > 1){print(wsdb_plot + scale_colour_manual(values=whale_col))}
+if(Total_number_records_WSDB > 1){print(wsdb_plot)}
 ```
 
 ### **The Whitehead Lab, Dalhousie University**
@@ -60,10 +74,33 @@ The following information is summarized in this website (https://whiteheadlab.we
 The following description of cetacean sightings data collection methods used by the Whitehead Lab is summarized from @Whitehead2013: cetacean sightings data include sightings of species of research focus as well as incidental sightings of cetaceans during studies of Northern Bottlenose Whales and, to a lesser extent, Sperm Whales in the northwest Atlantic, primarily in the Gully MPA, and adjacent canyons along the edge of the eastern Scotian Shelf (the Shortland and Haldimand canyons). Data collection was carried out in a comparable manner, from two similar research vessels: a 10 m auxiliary sailing vessel (used in earlier efforts), and a 13 m auxiliary sailing vessel (used in later efforts). All cetaceans sighted were recorded, together with time of sighting, species (where ascertainable), and position. As definitions of group size changed over the course of the study, group size estimates may be inaccurate and can be biased by factors such as the behaviour of the animals and weather. Consequently, sightings locations represent groups sightings, which could be one or more animals, rather than numbers of individuals. The Whitehead Lab provides cetacean sightings to the Whale Sightings Database (WSDB). However, due to its high Quality Tier, this database is summarized independently in this section of the report.
 
 #### ***Area-specific Whitehead Lab search results***
-<br><br>
-**under-development**
+
+```{r whitehead, include=FALSE, cache=FALSE}
+whitehead_filter <- filter_whitehead(whitehead, listed_cetacean_species)
+whitehead_intersect_points <-intersect_points_whitehead(whitehead_filter, studyArea)
+Total_number_records_whitehead <- nrow(whitehead_intersect_points)
+```
+
+```{r whitehead result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Query_output_whitehead<-if(Total_number_records_whitehead < 1){
+  "There are no relevant records in the Whitehead Lab database for this search area."
+} else {
+  "There are relevant records in the Whitehead Lab database for this search area."
+}
+writeLines(Query_output_whitehead)
+```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the Whitehead Lab, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. Field efforts were primarily conducted in the Gully Marine Protected Area, and adjacent canyons along the edge of the eastern Scotian Shelf, during good weather conditions (for example, see Whitehead 2013 for a map of effort between 1988-2011), though some data from surveys along the shelf edge off Nova Scotia, Newfoundland and Labrador are included. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. This map also does not include acoustic detections. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. For more information, please visit: <https://whiteheadlab.weebly.com/contact.html>'}
+par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
+whitehead_plot <- site_map(studyArea,site,land10m_sf,5, bounds_sf) +
+  geom_point(data = whitehead_intersect_points, aes(x = long, y = lat, color=Common_Name), 
+              size = 3.5)
+# whitehead_plot<-site_map(studyArea,site_sf,land50k_sf,5, bounds_sf)+
+#   geom_point(data = whitehead_intersect_points, aes(x = long, y = lat, color=Common_Name), 
+#              size = 3.5)+
+#   theme(legend.text=element_text(size=rel(1.2)))
+# if(Total_number_records_whitehead > 1){print(whitehead_plot + scale_colour_manual(values=whale_col))}
+if(Total_number_records_whitehead > 1){print(whitehead_plot)}
 ```
 
 ### **North Atlantic Right Whale Consortium (NARWC) Sightings Database**  

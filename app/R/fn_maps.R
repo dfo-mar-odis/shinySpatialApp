@@ -1,22 +1,23 @@
 # #site map
 # 
-site_map <- function(studyArea,site_sf,land_layer,buf) {
-
+site_map <- function(studyArea,site_sf,land_layer,buf, bound) {
+  
   # buf is in km, and now converted to degrees
   buf=buf/100
-
+  
   # bounding box
   bbox=st_bbox(studyArea)
-
+  
   # longitude and latitude limits for the map
   longmin<-(bbox$xmin)-buf
   longmax<-bbox$xmax+buf
   latmin<-bbox$ymin-buf
   latmax<-bbox$ymax+buf
-
+  
   ggplot()+
     geom_sf(data=studyArea,fill="deepskyblue", col="black", size=0.6, alpha=0.4)+
     geom_sf(data=site_sf,fill="yellow",col="black", size=0.6)+
+    geom_sf(data=bound, col = "red")+
     geom_sf(data=land_layer,fill=c("lightgrey"), col="black", size=0.7)+
     watermark(show = TRUE, lab = "DFO Internal Use Only")+
     annotation_scale(location="bl")+
@@ -25,8 +26,9 @@ site_map <- function(studyArea,site_sf,land_layer,buf) {
     labs(x="Longitude", y="Latitude", col="")+
     theme(axis.title.y = element_text(size = 13))+
     theme(axis.title.x = element_text(size = 13))
-
+  
 }
+
 
 # #critical habitat
 # plot_crithab<-function(ClippedCritHab_sf, studyArea, land_layer, buf) {

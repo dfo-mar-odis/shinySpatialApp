@@ -20,6 +20,15 @@
 # 
 # }
 # 
+
+#SAR distribution
+table_distPRG <- function(sardist_sf,studyArea) {
+  
+  intersect_dist <- st_intersection(sardist_sf,studyArea)
+  return(intersect_dist)
+}
+
+
 # #SAR critical habitat
 # table_crit <- function(ClippedCritHab_sf,studyArea, leatherback_sf) {
 #   
@@ -221,75 +230,100 @@
 # ###Cetacean section###
 # 
 # #Whale Sightings Database (WSDB)
-# filter_wsdb <- function(wsdb) {
+filter_wsdb <- function(wsdb, listed_cetacean_species) {
+  
+  wsdb_filt <- wsdb[wsdb$COMMONNAME %in% c('PORPOISE-HARBOUR', 'WHALE-SEI','WHALE-FIN', 'WHALE-NORTH ATLANTIC RIGHT',
+                                           'WHALE-NORTHERN BOTTLENOSE', 'WHALE-KILLER', 'WHALE-BLUE', "WHALE-SOWERBY'S BEAKED"), ]
+  
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="PORPOISE-HARBOUR")]= "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-FIN")]= "Fin Whale: Special Concern (SARA & COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-NORTH ATLANTIC RIGHT")]= "North Atlantic Right Whale: Endangered (SARA & COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-NORTHERN BOTTLENOSE")]= "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-KILLER")]= "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-BLUE")]= "Blue Whale: Endangered (SARA & COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-SEI")]= "Sei Whale: No Status (SARA) & Endangered (COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-SOWERBY'S BEAKED")]= "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)"
+  wsdb_filt<-dplyr::rename(wsdb_filt,c("Scientific_Name" = "SCIENTIFICNAME"))
+  wsdb_filt<-merge(wsdb_filt, listed_cetacean_species, by='Scientific_Name')
+  
+  return(wsdb_filt)
+}
+
+filter_wsdbPRG <- function(wsdb, listed_cetacean_species) {
+  wsdb_filt <- wsdb %>% dplyr::filter(YEAR <= 2009)
+  wsdb_filt <- wsdb_filt[wsdb_filt$COMMONNAME %in% c('PORPOISE-HARBOUR', 'WHALE-SEI','WHALE-FIN', 'WHALE-NORTH ATLANTIC RIGHT',
+                                                     'WHALE-NORTHERN BOTTLENOSE', 'WHALE-KILLER', 'WHALE-BLUE', "WHALE-SOWERBY'S BEAKED"), ]
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="PORPOISE-HARBOUR")]= "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-FIN")]= "Fin Whale: Special Concern (SARA & COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-NORTH ATLANTIC RIGHT")]= "North Atlantic Right Whale: Endangered (SARA & COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-NORTHERN BOTTLENOSE")]= "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-KILLER")]= "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-BLUE")]= "Blue Whale: Endangered (SARA & COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-SEI")]= "Sei Whale: No Status (SARA) & Endangered (COSEWIC)"
+  wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-SOWERBY'S BEAKED")]= "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)"
+  wsdb_filt<-dplyr::rename(wsdb_filt,c("Scientific_Name" = "SCIENTIFICNAME"))
+  wsdb_filt<-merge(wsdb_filt, listed_cetacean_species, by='Scientific_Name')
+  # wsdb_filt <- st_as_sf(wsdb_filt, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+  
+  return(wsdb_filt)
+}
+
 # 
-#   wsdb_filt <- wsdb[wsdb$COMMONNAME %in% c('PORPOISE-HARBOUR', 'WHALE-SEI','WHALE-FIN', 'WHALE-NORTH ATLANTIC RIGHT',
-#                                            'WHALE-NORTHERN BOTTLENOSE', 'WHALE-KILLER', 'WHALE-BLUE', "WHALE-SOWERBY'S BEAKED"), ]
 # 
-#   wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="PORPOISE-HARBOUR")]= "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)"
-#   wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-FIN")]= "Fin Whale: Special Concern (SARA & COSEWIC)"
-#   wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-NORTH ATLANTIC RIGHT")]= "North Atlantic Right Whale: Endangered (SARA & COSEWIC)"
-#   wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-NORTHERN BOTTLENOSE")]= "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)"
-#   wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-KILLER")]= "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)"
-#   wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-BLUE")]= "Blue Whale: Endangered (SARA & COSEWIC)"
-#   wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-SEI")]= "Sei Whale: No Status (SARA) & Endangered (COSEWIC)"
-#   wsdb_filt$COMMONNAME[which(wsdb_filt$COMMONNAME=="WHALE-SOWERBY'S BEAKED")]= "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)"
-#   wsdb_filt<-wsdb_filt %>% rename(Scientific_Name = SCIENTIFICNAME)
-#   wsdb_filt<-merge(wsdb_filt, listed_cetacean_species, by='Scientific_Name')
+intersect_points_wsdb <- function(wsdb_filter, studyArea) {
+  
+  wsdb_sf<-st_as_sf(wsdb_filter, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+  intersect_wsdb <- st_intersection(wsdb_sf,studyArea)
+  wsdb_intersect_points <- intersect_wsdb %>%
+    mutate(long = unlist(map(intersect_wsdb$geometry,1)),
+           lat = unlist(map(intersect_wsdb$geometry,2)))
+  
+  return(wsdb_intersect_points)
+}
+
+table_wsdb <- function(wsdb_filter, studyArea) {
+  wsdb_sf<-st_as_sf(wsdb_filter, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+  intersect_wsdb <- st_intersection(wsdb_sf,studyArea)
+  wsdb_table<-merge(intersect_wsdb, listed_cetacean_species, by='Scientific_Name')
+  wsdb_table<-wsdb_table %>%
+    transmute(Common_Name.x, Scientific_Name, Schedule.status.x, COSEWIC.status.x, Wild_Species.x)
+  wsdb_table<- wsdb_table %>% rename("SARA status"=Schedule.status.x,
+                                     "COSEWIC listing"=COSEWIC.status.x,
+                                     "Wild Species listing"=Wild_Species.x,
+                                     "Scientific Name"=Scientific_Name,
+                                     "Common Name"=Common_Name.x)
+}
 # 
-#   return(wsdb_filt)
-# }
-# 
-# 
-# intersect_points_wsdb <- function(wsdb_filter, studyArea) {
-# 
-#   wsdb_sf<-st_as_sf(wsdb_filter, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
-#   intersect_wsdb <- st_intersection(wsdb_sf,studyArea)
-#   wsdb_intersect_points <- intersect_wsdb %>%
-#     mutate(long = unlist(map(intersect_wsdb$geometry,1)),
-#            lat = unlist(map(intersect_wsdb$geometry,2)))
-# }
-# 
-# table_wsdb <- function(wsdb_filter, studyArea) {
-#   wsdb_sf<-st_as_sf(wsdb_filter, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
-#   intersect_wsdb <- st_intersection(wsdb_sf,studyArea)
-#   wsdb_table<-merge(intersect_wsdb, listed_cetacean_species, by='Scientific_Name')
-#   wsdb_table<-wsdb_table %>%
-#     transmute(Common_Name.x, Scientific_Name, Schedule.status.x, COSEWIC.status.x, Wild_Species.x)
-#   wsdb_table<- wsdb_table %>% rename("SARA status"=Schedule.status.x,
-#                                    "COSEWIC listing"=COSEWIC.status.x,
-#                                    "Wild Species listing"=Wild_Species.x,
-#                                    "Scientific Name"=Scientific_Name,
-#                                    "Common Name"=Common_Name.x)
-# }
-# 
-# #Whitehead Lab database
-# 
-# filter_whitehead <- function(whitehead) {
-#   whitehead <- whitehead %>% rename(Scientific_Name = species.name)
-#   whitehead_filter <- merge(whitehead, listed_cetacean_species, by='Scientific_Name')
-# }
-# 
-# intersect_points_whitehead <- function(whitehead_filter, studyArea) {
-#   whitehead_sf<-st_as_sf(whitehead_filter, coords = c("Long", "Lat"), crs = 4326)
-#   intersect_whitehead <- st_intersection(whitehead_sf,studyArea)
-#   whitehead_intersect_points <- intersect_whitehead %>%
-#     mutate(long = unlist(map(intersect_whitehead$geometry,1)),
-#            lat = unlist(map(intersect_whitehead$geometry,2)))
-# }
-# 
-# table_whitehead <- function(whitehead_filter, studyArea) {
-#   whitehead_sf<-st_as_sf(whitehead_filter, coords = c("Long", "Lat"), crs = 4326)
-#   intersect_whitehead <- st_intersection(whitehead_sf,studyArea)
-#   whitehead_table<-merge(intersect_whitehead, listed_species, by='Scientific_Name')
-#   whitehead_table<-whitehead_table %>% 
-#     transmute(Common_Name.x, Scientific_Name, Schedule.status.x, COSEWIC.status.x, Wild_Species.x)
-#   whitehead_table<- whitehead_table %>% rename("SARA status"=Schedule.status.x,
-#                                                "COSEWIC listing"=COSEWIC.status.x,
-#                                                "Wild Species listing"=Wild_Species.x,
-#                                                "Scientific Name"=Scientific_Name,
-#                                                "Common Name"=Common_Name.x)
-# }
+# Whitehead Lab database
+
+filter_whitehead <- function(whitehead, listed_cetacean_species) {
+  whitehead <- whitehead %>% rename(Scientific_Name = species.name)
+  whitehead_filter <- merge(whitehead, listed_cetacean_species, by='Scientific_Name')
+  return(whitehead_filter)
+}
+
+intersect_points_whitehead <- function(whitehead_filter, studyArea) {
+  whitehead_filter$Long <- whitehead_filter$Long *-1
+  whitehead_sf<-st_as_sf(whitehead_filter, coords = c("Long", "Lat"), crs = 4326)
+  intersect_whitehead <- st_intersection(whitehead_sf,studyArea)
+  whitehead_intersect_points <- intersect_whitehead %>%
+    mutate(long = unlist(map(intersect_whitehead$geometry,1)),
+           lat = unlist(map(intersect_whitehead$geometry,2)))
+  return(whitehead_intersect_points)
+}
+
+table_whitehead <- function(whitehead_filter, studyArea) {
+  whitehead_sf<-st_as_sf(whitehead_filter, coords = c("Long", "Lat"), crs = 4326)
+  intersect_whitehead <- st_intersection(whitehead_sf,studyArea)
+  whitehead_table<-merge(intersect_whitehead, listed_species, by='Scientific_Name')
+  whitehead_table<-whitehead_table %>%
+    transmute(Common_Name.x, Scientific_Name, Schedule.status.x, COSEWIC.status.x, Wild_Species.x)
+  whitehead_table<- whitehead_table %>% rename("SARA status"=Schedule.status.x,
+                                               "COSEWIC listing"=COSEWIC.status.x,
+                                               "Wild Species listing"=Wild_Species.x,
+                                               "Scientific Name"=Scientific_Name,
+                                               "Common Name"=Common_Name.x)
+}
 # 
 # 
 # #North Atlantic Right Whale Consortium (NARWC) database
