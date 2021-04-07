@@ -48,15 +48,12 @@ library(standardPrintOutput) # required for watermarks on maps
 ```{r load data, echo=FALSE, include=FALSE, cache=FALSE}
 minYear <- 2002
 load("../data/OpenData.RData")
+load("../data/OpenData_sardist.RData")
 load("../data/SecureData.RData")
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
 load("../data/MARFISSCI.SPECIES.RData")
 ISDB_info<-file.info("../data/ISDB.ISSETTYPECODES.RData")
 MARFIS_info<-file.info("../data/MARFISSCI.SPECIES.RData")
-rockweed_sf<-st_read("../data/MAR_rockweed_presence_validated.shp")
-rockweed_sf<-st_transform(rockweed_sf, 4326)
-land50k_sf <- st_read("../data/Coastline50k_SHP/Land_AtlCanada_ESeaboardUS.shp")
-listed_species<-read.csv("../data/MAR_listed_species.csv")
 ```
 
 ```{r Test outside app, echo=FALSE, include=FALSE, cache=FALSE}

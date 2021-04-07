@@ -17,7 +17,7 @@ site_map <- function(studyArea,site_sf,land_layer,buf, bound) {
   ggplot()+
     geom_sf(data=studyArea,fill="deepskyblue", col="black", size=0.6, alpha=0.4)+
     geom_sf(data=site_sf,fill="yellow",col="black", size=0.6)+
-    geom_sf(data=bound, col = "red")+
+    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("lightgrey"), col="black", size=0.7)+
     watermark(show = TRUE, lab = "DFO Internal Use Only")+
     annotation_scale(location="bl")+
