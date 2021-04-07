@@ -236,36 +236,37 @@ plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
 # 
 # #EBSA
 # 
-# plot_EBSA<-function(EBSA_shp, studyArea, land_layer, buf) {
-#   
-#   # buf is in km, and now converted to degrees
-#   buf=buf/100
-#   buf_lat=buf*0.72
-#   #png("pez_and_site.png", width=1616, height=1410)
-#   
-#   # bounding box
-#   bbox=st_bbox(studyArea)
-#   
-#   # longitude and latitude limits for the map
-#   longmin<-(bbox$xmin)-buf
-#   longmax<-bbox$xmax+buf
-#   latmin<-bbox$ymin-buf_lat
-#   latmax<-bbox$ymax+buf_lat
-#   
-#   ggplot()+
-#     geom_sf(data=EBSA_shp, fill="plum",col="black")+
-#     geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
-#     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
-#     annotation_scale(location="br")+
-#     theme_bw()+
-#     coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
-#     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
-#          y=expression(paste("Latitude ",degree,"N",sep="")),
-#          col="")+
-#     watermark(show = TRUE, lab = "DFO Internal Use Only")
-#   
-# }
-# 
+plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
+  
+  # buf is in km, and now converted to degrees
+  buf=buf/100
+  buf_lat=buf*0.72
+  #png("pez_and_site.png", width=1616, height=1410)
+  
+  # bounding box
+  bbox=st_bbox(studyArea)
+  
+  # longitude and latitude limits for the map
+  longmin<-(bbox$xmin)-buf
+  longmax<-bbox$xmax+buf
+  latmin<-bbox$ymin-buf_lat
+  latmax<-bbox$ymax+buf_lat
+  
+  ggplot()+
+    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
+    geom_sf(data=EBSA_sf, fill="plum",col="black")+
+    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    geom_sf(data=site,fill="yellow",col="black", size=0.6)+
+    annotation_scale(location="br")+
+    theme_bw()+
+    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    labs(x=expression(paste("Longitude ",degree,"W",sep="")),
+         y=expression(paste("Latitude ",degree,"N",sep="")),
+         col="")+
+    watermark(show = TRUE, lab = "DFO Internal Use Only")
+  
+}
 # 
 # ####The following functions are not currently integrated into the Reproducible Report but may be in the future.####
 # 

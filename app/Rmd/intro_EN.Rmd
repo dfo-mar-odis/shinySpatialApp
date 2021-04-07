@@ -67,8 +67,12 @@ studyArea <- st_read("../Rmd/geoms_slc_test.geojson")
 #studyArea <- st_read("geoms_slc.geojson")
 site <- sf::st_centroid(studyArea)  
 ```
-```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')}
+#```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', #'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')}
+#```
+
+```{r child = c('../Rmd/report_habitat_EN.Rmd', 'report_planning_EN.Rmd')}
 ```
+
 
 <!-- END  -->
 
