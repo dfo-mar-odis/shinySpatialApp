@@ -31,65 +31,68 @@ site_map <- function(studyArea,site_sf,land_layer,buf, bound) {
 
 
 # #critical habitat
-# plot_crithab<-function(ClippedCritHab_sf, studyArea, land_layer, buf) {
-#   
-#   # buf is in km, and now converted to degrees
-#   buf=buf/100
-#   buf_lat=buf*0.72
-#   
-#   # bounding box
-#   bbox <- st_bbox(studyArea)
-#   
-#   # longitude and latitude limits for the map
-#   longmin<-(bbox$xmin)-buf
-#   longmax<-bbox$xmax+buf
-#   latmin<-bbox$ymin-buf_lat
-#   latmax<-bbox$ymax+buf_lat
-#   
-#   ggplot()+
-#     geom_sf(data=ClippedCritHab_sf,fill="red",col="black")+
-#     geom_sf(data=leatherback_sf,fill="lightgreen",col="black")+
-#     geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
-#     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
-#     annotation_scale(location="br")+
-#     theme_bw()+
-#     coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
-#     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
-#          y=expression(paste("Latitude ",degree,"N",sep="")),
-#          col="")+
-#     watermark(show = TRUE, lab = "DFO Internal Use Only")
-#   
-# }
+plot_crithab<-function(ClippedCritHab_sf, studyArea, land_layer, buf, bound) {
+  
+  # buf is in km, and now converted to degrees
+  buf=buf/100
+  buf_lat=buf*0.72
+  
+  # bounding box
+  bbox <- st_bbox(studyArea)
+  
+  # longitude and latitude limits for the map
+  longmin<-(bbox$xmin)-buf
+  longmax<-bbox$xmax+buf
+  latmin<-bbox$ymin-buf_lat
+  latmax<-bbox$ymax+buf_lat
+  
+  ggplot()+
+    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
+    geom_sf(data=leatherback_sf,fill="lightgreen",col="black")+
+    geom_sf(data=ClippedCritHab_sf,fill="red",col="black")+
+    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    annotation_scale(location="br")+
+    theme_bw()+
+    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    labs(x=expression(paste("Longitude ",degree,"W",sep="")),
+         y=expression(paste("Latitude ",degree,"N",sep="")),
+         col="")+
+    watermark(show = TRUE, lab = "DFO Internal Use Only")
+  
+}
+
 # 
-# #SAR distribution
-# plot_sardist<-function(sardist_sf, studyArea, land_layer, buf) {
-#   
-#   # buf is in km, and now converted to degrees
-#   buf=buf/100
-#   buf_lat=buf*0.72
-# 
-#   # bounding box
-#   bbox=st_bbox(studyArea)
-#   
-#   # longitude and latitude limits for the map
-#   longmin<-(bbox$xmin)-buf
-#   longmax<-bbox$xmax+buf
-#   latmin<-bbox$ymin-buf_lat
-#   latmax<-bbox$ymax+buf_lat
-#   
-#   ggplot()+
-#     geom_sf(data=sardist_sf,fill="orange", col="black", size=0.6)+    
-#     geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
-#     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
-#     annotation_scale(location="br")+
-#     theme_bw()+
-#     coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
-#     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
-#          y=expression(paste("Latitude ",degree,"N",sep="")),
-#          col="")+
-#     watermark(show = TRUE, lab = "DFO Internal Use Only")
-#   
-# }
+#SAR distribution
+plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
+  
+  # buf is in km, and now converted to degrees
+  buf=buf/100
+  buf_lat=buf*0.72
+  
+  # bounding box
+  bbox=st_bbox(studyArea)
+  
+  # longitude and latitude limits for the map
+  longmin<-(bbox$xmin)-buf
+  longmax<-bbox$xmax+buf
+  latmin<-bbox$ymin-buf_lat
+  latmax<-bbox$ymax+buf_lat
+  
+  ggplot()+
+    geom_sf(data=sardist_sf,fill="orange", col="black", size=0.6)+    
+    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
+    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    annotation_scale(location="br")+
+    theme_bw()+
+    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    labs(x=expression(paste("Longitude ",degree,"W",sep="")),
+         y=expression(paste("Latitude ",degree,"N",sep="")),
+         col="")+
+    watermark(show = TRUE, lab = "DFO Internal Use Only")
+  
+}
 # 
 # #Grid of 4 cetacean priority habitat
 # 

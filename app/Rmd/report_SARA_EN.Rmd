@@ -35,13 +35,70 @@ Critical habitat presented in this section are available in the Government of Ca
 
 #### ***Area-specific SAR distribution and critical habitat search results***
 
-**under-development**
-
-```{r, fig.height=6, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with distribution (range) of Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i>. This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report.'}
-dist_table<-table_distPRG(ClippedCritHab_sf,studyArea)
-site <- dist_table
-site_map(studyArea, site, land10m_sf, 40, bounds_sf)
+```{r echo=FALSE, results='asis'}
+dist_table<-table_dist(sardist_sf,studyArea)
+```
+*
+```{r dist result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Dist_overlap_result<-nrow(dist_table)
+Query_output_dist<-if(Dist_overlap_result < 1){
+  "The search area does not overlap with Species at Risk distribution range."
+} else {
+  "The search area overlaps with Species at Risk distribution range."
+}
+writeLines(Query_output_dist)
 ```
 
+```{r echo=FALSE, results='asis'}
+crit_table<-table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
+```
+*
+```{r crit result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+ crit_result<-nrow(crit_table)
+ Query_output_crit<-if(crit_result < 1){
+   "The search area does not overlap with defined Species at Risk Critical Habitat."
+ } else {
+   "The search area overlaps with defined Species at Risk Critical Habitat."
+ }
+ writeLines(Query_output_crit)
+```
+
+```{r echo=FALSE, results='asis'}
+sardist_wide<-plot_sardist(sardist_sf, studyArea, land10m_sf, 500, bounds_sf)
+sardist_zoom<-plot_sardist(sardist_sf, studyArea, land50k_sf, 50, bounds_sf)
+crithab_wide<-plot_crithab(ClippedCritHab_sf, studyArea, land10m_sf, 500, bounds_sf)
+crithab_zoom<-plot_crithab(ClippedCritHab_sf, studyArea, land50k_sf, 50, bounds_sf)
+```
+
+```{r, fig.height=6, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with distribution (range) of Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i>. This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report.'}
+grid.arrange(sardist_wide, sardist_zoom,
+             bottom = expression(paste("Longitude ",degree,"N",sep="")),
+             left = expression(paste("Latitude ",degree,"N",sep="")),
+             nrow = 1,
+             widths = c(2.5/5, 2.5/5))
+```
+<br><br>
+```{r echo=FALSE, results='asis'}
+Dist_query_output_table<-if(Dist_overlap_result < 1){
+  ""
+} else {
+  kable(dist_table[!duplicated(dist_table),], align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="")
+}
+if(Dist_overlap_result > 1){Dist_query_output_table}
+```
 ```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with critical habitat of Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA). Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.', fig.height=6, fig.width=11}
+grid.arrange(crithab_wide, crithab_zoom,
+             bottom = expression(paste("Longitude ",degree,"N",sep="")),
+             left = expression(paste("Latitude ",degree,"N",sep="")),
+             nrow = 1,
+             widths = c(2.5/5, 2.5/5))
+```
+<br><br>
+
+```{r echo=FALSE, results='asis'}
+Crithab_query_output_table<-if(crit_result <= 1){
+  ""
+} else {
+  kable(crit_table, caption="Quality Tier: High. Security level: none. Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA) for which the search polygon overlaps with their critical habitat. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is <b>not</b> the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report.", booktabs = T, escape = F, linesep="")}
+if(crit_result > 0){Crithab_query_output_table}
 ```
