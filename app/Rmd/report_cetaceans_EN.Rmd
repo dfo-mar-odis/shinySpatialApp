@@ -44,7 +44,7 @@ Total_number_records_WSDB <- nrow(wsdb_intersect_points)
 ```
 *
 ```{r wsdb result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
- Query_output_wsdb <- if(Total_number_records_WSDB < 1){
+Query_output_wsdb <- if(Total_number_records_WSDB < 1){
    "There are no relevant records in the WSDB for this search area."
  } else {
    "There are relevant records in the WSDB for this search area."
@@ -54,12 +54,11 @@ Total_number_records_WSDB <- nrow(wsdb_intersect_points)
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild Species listings. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
 par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)
-wsdb_plot <- site_map(studyArea, site, land10m_sf, 5 , bounds_sf)+
-  geom_point(data = wsdb_intersect_points, aes(x = long, y = lat, color=Common_Name), 
-              size = 3.5)
-# the scale_colour_manual() command FAILS.  Not reading whale_col? (which are set in intro_EN)
-#if(Total_number_records_WSDB > 1){print(wsdb_plot + scale_colour_manual(values=whale_col))}
-if(Total_number_records_WSDB > 1){print(wsdb_plot)}
+wsdb_plot <- site_map(studyArea,site,land50k_sf,5, bounds_sf)+
+  geom_point(data = wsdb_intersect_points, aes(x = long, y = lat, color=CommonName_status), 
+             size = 3.5)+
+  theme(legend.text=element_text(size=rel(0.9)))
+if(Total_number_records_WSDB > 1){print(wsdb_plot + ggplot2::scale_colour_manual(values=whale_col))}
 ```
 
 ### **The Whitehead Lab, Dalhousie University**
@@ -80,7 +79,7 @@ whitehead_filter <- filter_whitehead(whitehead, listed_cetacean_species)
 whitehead_intersect_points <-intersect_points_whitehead(whitehead_filter, studyArea)
 Total_number_records_whitehead <- nrow(whitehead_intersect_points)
 ```
-
+*
 ```{r whitehead result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Query_output_whitehead<-if(Total_number_records_whitehead < 1){
   "There are no relevant records in the Whitehead Lab database for this search area."
@@ -91,16 +90,12 @@ writeLines(Query_output_whitehead)
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the Whitehead Lab, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. Field efforts were primarily conducted in the Gully Marine Protected Area, and adjacent canyons along the edge of the eastern Scotian Shelf, during good weather conditions (for example, see Whitehead 2013 for a map of effort between 1988-2011), though some data from surveys along the shelf edge off Nova Scotia, Newfoundland and Labrador are included. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. This map also does not include acoustic detections. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. For more information, please visit: <https://whiteheadlab.weebly.com/contact.html>'}
-par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
-whitehead_plot <- site_map(studyArea,site,land10m_sf,5, bounds_sf) +
-  geom_point(data = whitehead_intersect_points, aes(x = long, y = lat, color=Common_Name), 
-              size = 3.5)
-# whitehead_plot<-site_map(studyArea,site_sf,land50k_sf,5, bounds_sf)+
-#   geom_point(data = whitehead_intersect_points, aes(x = long, y = lat, color=Common_Name), 
-#              size = 3.5)+
-#   theme(legend.text=element_text(size=rel(1.2)))
-# if(Total_number_records_whitehead > 1){print(whitehead_plot + scale_colour_manual(values=whale_col))}
-if(Total_number_records_whitehead > 1){print(whitehead_plot)}
+par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2) #it goes c(bottom, left, top, right)
+whitehead_plot <- site_map(studyArea,site,land50k_sf,5,bounds_sf)+
+  geom_point(data = whitehead_intersect_points, aes(x = long, y = lat, color=CommonName_status), 
+             size = 3.5)+
+  theme(legend.text=element_text(size=rel(0.9)))
+ if(Total_number_records_whitehead > 1){print(whitehead_plot + ggplot2::scale_colour_manual(values=whale_col))}
 ```
 
 ### **North Atlantic Right Whale Consortium (NARWC) Sightings Database**  
@@ -117,9 +112,27 @@ The NARWC Sightings Database contains records of thousands of sightings of Right
 
 #### ***Area-specific NARWC search results***
 <br><br>
-**under-development**
-
+```{r narwc, include=FALSE, cache=FALSE}
+narwc_filter <- filter_narwc(narwc)
+narwc_intersect_points <-intersect_points_narwc(narwc_filter, studyArea)
+Total_number_records_narwc <- nrow(narwc_intersect_points)
+```
+*
+```{r narwc result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Query_output_narwc<-if(Total_number_records_narwc < 1){
+  "There are no relevant records in the NARWC data base for the defiend search area."
+} else {
+  "There are relevant records in the NARWC data base for the defiend search area."
+}
+writeLines(Query_output_narwc)
+```
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the North Atlantic Right Whale Consortium (NARWC) Sightings Database, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. <b>Absence of a species in the map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area</b> since survey effort is biased towards the Northeast US, and data on species presence from acoustic detections is not included. For more information, please visit: <https://www.narwc.org/sightings-database.html>'}
+par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
+narwc_plot<-site_map(studyArea,site,land50k_sf,5, bounds_sf)+
+  geom_point(data = narwc_intersect_points, aes(x = long, y = lat, color=CommonName_status), 
+             size = 3.5)+
+  theme(legend.text=element_text(size=rel(0.9)))
+if(Total_number_records_narwc > 1){print(narwc_plot + ggplot2::scale_colour_manual(values=whale_col))}
 ```
 
 ### **Ocean Biodiversity Information System (OBIS) [for cetaceans]**  
@@ -134,9 +147,28 @@ An OBIS search [@OBIS] was conducted to find additional relevant records for cet
 
 #### ***Area-specific OBIS cetacean search results***
 <br><br>
-**under-development**
+```{r obis, include=FALSE, cache=FALSE}
+obis_sf_filter <- filter_obis_cet(obis_sf)
+obis_intersect_points_cet <-intersect_points_obis_cet(obis_sf_filter, studyArea)
+Total_number_cet_records_obis <- nrow(obis_intersect_points_cet)
+```
+*
+```{r obis result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Query_output_obis<-if(Total_number_cet_records_obis < 1){
+  "There are no relevant records of cetaceans in the Ocean Biodiversity Information System (OBIS) for this search area."
+} else {
+  "There are relevant records of cetaceans in the Ocean Biodiversity Information System (OBIS) for this search area."
+}
+writeLines(Query_output_obis)
+```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the Ocean Biodiversity Information System (OBIS), for cetacean species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
+par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
+obis_plot<-site_map(studyArea,site,land50k_sf,5,bounds_sf)+
+  geom_point(data = obis_intersect_points_cet, aes(x = long, y = lat, color=CommonName_status), 
+             size = 3.5)+
+  theme(legend.text=element_text(size=rel(0.9)))
+if(Total_number_cet_records_obis > 1){print(obis_plot + ggplot2::scale_colour_manual(values=whale_col))}
 ```
 
 ### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans**  
@@ -154,9 +186,15 @@ Important usage considerations: model predictions in this section should not be 
 
 #### ***Area-specific SDM cetacean search results***
 <br><br>
-**under-development**
+```{r sdm, include=FALSE, cache=FALSE}
+table_sdm <- sdm_table(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea)
+```
+```{r}
+kable(table_sdm, align="cccc", caption="Quality Tier: Low. Security level: none. Results showing if the search area overlap with predicted Priority Areas to Enhance Monitoring of several species of cetaceans (Fin Whale, Harbour Porpoise, Humpback Whale and Sei Whale). TRUE = polygon does overlap with priority area; FALSE = polygon does NOT overlap with priority area.", booktabs = T, escape = F, linesep="")
+```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map shows consolidated Species Distribution Modelling outputs (60-100% relative predicted occurrence rate). Yellow polygons (habitats with high suitability) are to be interpreted as areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Due to the many reasons listed in the discussion section in Gomez et al. (2020), these cetacean modelling outputs do not represent a complete and current distribution of cetaceans in the region. They represent priority areas to direct cetacean monitoring efforts. Their use in marine spatial planning processes should be accompanied by complementary approaches such as the process summarized in the section below. The data product summarized in the section below (Blue Whale Important Habitat in the Western North Atlantic) represents an excellent framework in which to properly use the outputs of this figure.'}
+plot_cetaceans_4grid(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea, land10m_sf, 200, bounds_sf)
 ```
 
 ### **Blue Whale Important Habitat**  
@@ -173,14 +211,26 @@ Please see a list of all sources of information used in @Lesage2018 and the Open
 
 #### ***Area-specific Blue Whale Important Habitat search results***
 <br><br>
-**under-development**
 
-```{r, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Blue Whale Important Habitat in the Western North Atlantic. Polygons delimit areas in Canadian waters that are important to Blue Whales for foraging and migration. These areas identified in the report by Lesage et al. (2018) are considered important for the survival and recovery of Blue Whales from the western North Atlantic population. Blue Whales most likely need to use several of these important habitats to fulfill their biological needs. As a result, access corridors and habitat they connect need to be considered equally important for the population.'}
+```{r bw result, echo=FALSE, results='asis'}
+BW<-blue_whale_habitat_overlap(Blue_Whale_sf, studyArea)
+writeLines(BW)
+```
+```{r bw plots, echo=FALSE, results='asis'}
+BW_wide<-plot_bw_hab(Blue_Whale_sf, studyArea, land10m_sf, bounds_sf)
+BW_zoom<-plot_bw_hab_zoom(Blue_Whale_sf, studyArea, land50k_sf, 100, bounds_sf)
 ```
 
+```{r, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Blue Whale Important Habitat in the Western North Atlantic. Polygons delimit areas in Canadian waters that are important to Blue Whales for foraging and migration. These areas identified in the report by Lesage et al. (2018) are considered important for the survival and recovery of Blue Whales from the western North Atlantic population. Blue Whales most likely need to use several of these important habitats to fulfill their biological needs. As a result, access corridors and habitat they connect need to be considered equally important for the population.'}
+grid.arrange(BW_wide, BW_zoom,
+             bottom = expression(paste("Longitude ",degree,"N",sep="")),
+             left = expression(paste("Latitude ",degree,"N",sep="")),
+             nrow = 1,
+             widths = c(4.1/10, 5.9/10))
+```
 <br><br>
 
-### **Northern Bottlenose Whale Important Habitat**  
+### **Northern bottlenose whale important habitat in inter-canyon areas on the eastern Scotian Shelf**  
 Northern bottlenose whales important habitat in inter-canyon areas on the eastern Scotian Shelf  
 Contact: <MaritimesRAP.XMAR@dfo-mpo.gc.ca>   
 URL: <http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf>    
@@ -188,10 +238,28 @@ Last retrieved on: February 17 2021 from Maritimes Region
 Quality Tier: High    
 Security level: none  
 
-The following text is summarized in [@DFO2020NBW_imphabitat]: The inter-canyon areas located between the existing Gully, Shortland Canyon, and Haldimand Canyon critical habitat areas are important habitat for Scotian Shelf Northern Bottlenose Whales. Similar to canyon critical habitat, Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. The suggested delineation of Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf is presented in this section. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. The analyses presented in DFO 2020 was designed to assess the importance of inter-canyon areas located between designated critical habitat, but additional important habitat for the population may exist outside these areas. Further research is needed to ensure that all important habitat required to support recovery of the population has been identified, as well as to improve our understanding of the habitat requirements of the species. Passive acoustic monitoring efforts have recently been expanded to include other areas along the Scotian Shelf. When available, these datasets will provide new insight into the seasonal presence and foraging activities of Northern Bottlenose Whales. In addition to the Scotian Shelf population, a distinct population of Northern Bottlenose Whales inhabits the Davis Strait-Baffin Bay-Labrador Sea region. Documented sightings have recently occurred off Newfoundland. No clear genetic links or photo-identification matches have been made between the Scotian Shelf population and Northern Bottlenose Whales off Newfoundland or in more northern waters, and the population structure of Northern Bottlenose Whales off eastern Canada is not fully understood. Further studies are underway to address broader questions regarding population structure and connectivity.
+The Scotian Shelf population of northern bottlenose whales (__Hyperoodon ampullatus__) is listed as Endangered under Canada’s Species at Risk Act. Partial critical habitat was identified for this population in the Recovery Strategy first published in 2010 [@DFO2016_recoverynbw], and three critical habitat areas were designated along the eastern Scotian Shelf, encompassing the Gully, Shortland Canyon, and Haldimand Canyon (shapefile available online: https://open.canada.ca/data/en/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c). However, the Recovery Strategy recognized that additional areas may constitute critical habitat for the population and recommended further studies based on acoustic and visual monitoring to assess the importance of inter-canyon areas as foraging habitat and transit corridors for northern bottlenose whales.
+In a subsequent study of the distribution, movements, and habitat use of northern bottlenose whales on the eastern Scotian Shelf [@Stanistreet2021], several sources of data were assessed and additional important habitat was identified in the inter-canyon areas located between the Gully, Shortland Canyon, and Haldimand Canyon [@DFO2020NBW_imphabitat]. A summary of the data inputs, analyses, and limitations is provided below.
 
-#### ***Area-specific Northern Bottlenose Whale Important Habitat search results*** <br><br> 
-**under-development**
+Year-round passive acoustic monitoring conducted with bottom-mounted recorders at two inter-canyon sites from 2012-2014 revealed the presence and foraging activity of northern bottlenose whales in these areas throughout much of the year, with a seasonal peak in acoustic detections during the spring. Detections from acoustic recordings collected during vessel-based surveys provided additional evidence of species occurrence in inter-canyon areas during the summer months. Photo-identification data collected in the Gully, Shortland, and Haldimand canyons between 2001 and 2017 were used to model the residency and movement patterns of northern bottlenose whales within and between the canyons, and demonstrated that individuals regularly moved between the three canyons as well as to and from outside areas. Together, these results indicated a strong degree of connectivity between the Gully, Shortland, and Haldimand canyons, and provided evidence that the inter-canyon areas function as important foraging habitat and movement corridors for Scotian Shelf northern bottlenose whales. 
+
+The inter-canyon habitat area polygon was delineated using the 500 m depth contour and straight lines connecting the southeast corners of the existing critical habitat areas, but these boundaries are based on limited spatial information on the presence of northern bottlenose whales in deeper waters. More data are needed to determine whether this area fully encompasses important inter-canyon habitat, particularly in regard to the deeper southeastern boundary. Similarly, the full extent of important habitat for Scotian Shelf northern bottlenose whales remains unknown, and potential critical habitat areas outside the canyons and inter-canyon areas on the eastern Scotian Shelf have not been fully assessed. See [@DFO2020NBW_imphabitat] for further information.
+
+
+#### ***Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results*** <br><br> 
+```{r nbnw result, echo=FALSE, results='asis'}
+NBNW<-intersect_NBNW_overlap(NBNW_CritHab_sf, studyArea)
+writeLines(NBNW)
+```
+```{r nbnw plots, echo=FALSE, results='asis'}
+NBNW_wide<-plot_NBNW_hab(NBNW_CritHab_sf, studyArea, land10m_sf, bounds_sf)
+NBNW_zoom<-plot_NBNW_hab_zoom(NBNW_CritHab_sf, studyArea, land50k_sf, 100, bounds_sf)
+```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
+grid.arrange(NBNW_wide, NBNW_zoom,
+             bottom = expression(paste("Longitude ",degree,"N",sep="")),
+             left = expression(paste("Latitude ",degree,"N",sep="")),
+             nrow = 1,
+             widths = c(4.1/10, 5.9/10))
 ```

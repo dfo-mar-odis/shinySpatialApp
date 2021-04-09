@@ -1,4 +1,4 @@
-# ###Species At Risk distribution and Critical Habitat data###
+########## Species At Risk distribution and Critical Habitat data ##########
 # 
 # #SAR distribution
 table_dist <- function(sardist_sf,studyArea) {
@@ -46,7 +46,7 @@ table_crit <- function(ClippedCritHab_sf,studyArea, leatherback_sf) {
 }
 
 # 
-# ###Fish and Invertebrate section###
+########### Fish and Invertebrate section ##########
 # 
 # #Create table of RV records of SAR species caught in studyArea
 # 
@@ -222,10 +222,8 @@ table_crit <- function(ClippedCritHab_sf,studyArea, leatherback_sf) {
 #   obis_whale_table<-unique(obis_whale_table)
 # 
 # }
-# 
-# 
-# 
-# ###Cetacean section###
+
+###### Cetacean section ##########
 # 
 # #Whale Sightings Database (WSDB)
 filter_wsdb <- function(wsdb, listed_cetacean_species) {
@@ -247,8 +245,6 @@ filter_wsdb <- function(wsdb, listed_cetacean_species) {
   return(wsdb_filt)
 }
 
-# 
-# 
 intersect_points_wsdb <- function(wsdb_filter, studyArea) {
   
   wsdb_sf<-st_as_sf(wsdb_filter, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
@@ -272,8 +268,8 @@ table_wsdb <- function(wsdb_filter, studyArea) {
                                      "Scientific Name"=Scientific_Name,
                                      "Common Name"=Common_Name.x)
 }
-# 
-# Whitehead Lab database
+ 
+# # Whitehead Lab database
 
 filter_whitehead <- function(whitehead, listed_cetacean_species) {
   whitehead <- whitehead %>% rename(Scientific_Name = species.name)
@@ -282,7 +278,7 @@ filter_whitehead <- function(whitehead, listed_cetacean_species) {
 }
 
 intersect_points_whitehead <- function(whitehead_filter, studyArea) {
-  whitehead_filter$Long <- whitehead_filter$Long *-1
+  whitehead_filter$Long <- whitehead_filter$Long *-1 #Longitude values in Whitehead data should be negative
   whitehead_sf<-st_as_sf(whitehead_filter, coords = c("Long", "Lat"), crs = 4326)
   intersect_whitehead <- st_intersection(whitehead_sf,studyArea)
   whitehead_intersect_points <- intersect_whitehead %>%
@@ -303,32 +299,33 @@ table_whitehead <- function(whitehead_filter, studyArea) {
                                                "Scientific Name"=Scientific_Name,
                                                "Common Name"=Common_Name.x)
 }
-# 
-# 
+ 
+ 
 # #North Atlantic Right Whale Consortium (NARWC) database
-# 
-# filter_narwc <- function(narwc) {
-#   narwc_filt <- narwc[narwc$SPECCODE %in% c('HAPO', 'SEWH', 'FIWH','RIWH', 'NBWH','KIWH', 'BLWH',  "SOBW"), ]
-#   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="HAPO")]= "Phocoena phocoena"
-#   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="FIWH")]= "Balaenoptera physalus"
-#   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="RIWH")]= "Eubalaena glacialis"
-#   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="NBWH")]= "Hyperoodon ampullatus"
-#   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="KIWH")]= "Orcinus orca"
-#   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="BLWH")]= "Balaenoptera musculus"
-#   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="SEWH")]= "Balaenoptera borealis"
-#   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="SOBW")]= "Mesoplodon bidens"
-#   narwc_filter <- narwc_filt %>% rename(Scientific_Name = SPECCODE)
-#   narwc_filter <- merge(narwc_filter, listed_cetacean_species, by='Scientific_Name')
-# }
-# 
-# intersect_points_narwc <- function(narwc_filter, studyArea) {
-#   narwc_sf<-st_as_sf(narwc_filter, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
-#   intersect_narwc <- st_intersection(narwc_sf,studyArea)
-#   narwc_intersect_points <- intersect_narwc %>%
-#     mutate(long = unlist(map(intersect_narwc$geometry,1)),
-#            lat = unlist(map(intersect_narwc$geometry,2)))
-# }
-# 
+filter_narwc <- function(narwc) {
+  narwc_filt <- narwc[narwc$SPECCODE %in% c('HAPO', 'SEWH', 'FIWH','RIWH', 'NBWH','KIWH', 'BLWH',  "SOBW"), ]
+  narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="HAPO")]= "Phocoena phocoena"
+  narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="FIWH")]= "Balaenoptera physalus"
+  narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="RIWH")]= "Eubalaena glacialis"
+  narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="NBWH")]= "Hyperoodon ampullatus"
+  narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="KIWH")]= "Orcinus orca"
+  narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="BLWH")]= "Balaenoptera musculus"
+  narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="SEWH")]= "Balaenoptera borealis"
+  narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="SOBW")]= "Mesoplodon bidens"
+  narwc_filter <- narwc_filt %>% rename(Scientific_Name = SPECCODE)
+  narwc_filter <- merge(narwc_filter, listed_cetacean_species, by='Scientific_Name')
+  return(narwc_filter)
+}
+ 
+intersect_points_narwc <- function(narwc_filter, studyArea) {
+  narwc_sf<-st_as_sf(narwc_filter, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+  intersect_narwc <- st_intersection(narwc_sf,studyArea)
+  narwc_intersect_points <- intersect_narwc %>%
+    mutate(long = unlist(map(intersect_narwc$geometry,1)),
+           lat = unlist(map(intersect_narwc$geometry,2)))
+  return(narwc_intersect_points)
+}
+
 # table_narwc <- function(narwc_filter, studyArea) {
 #   narwc_sf<-st_as_sf(narwc_filter, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 #   intersect_narwc <- st_intersection(narwc_sf,studyArea)
@@ -342,22 +339,24 @@ table_whitehead <- function(whitehead_filter, studyArea) {
 #                                        "Common Name"=Common_Name.x)
 # }
 # 
-# #Ocean Biodiversity Information System - CETACEANS
-# 
-# filter_obis_cet <- function(obis_sf) {
-#   obis_sf<-obis_sf %>%
-#     filter(! collectionCode =="WHALESITINGS")
-#   obis_sf_filter <- obis_sf %>% rename(Scientific_Name=scientificName)
-# }
-# 
-# intersect_points_obis_cet <- function(obis_sf_filter, studyArea) {
-#   intersect_obis <- st_intersection(obis_sf_filter,studyArea)
-#   intersect_obis <- merge(intersect_obis, listed_cetacean_species, by='Scientific_Name')
-#   obis_intersect_points <- intersect_obis %>%
-#     mutate(long = unlist(map(intersect_obis$geometry,1)),
-#            lat = unlist(map(intersect_obis$geometry,2)))
-# }
-# 
+# Ocean Biodiversity Information System - CETACEANS
+
+filter_obis_cet <- function(obis_sf) {
+  obis_sf<-obis_sf %>%
+    dplyr::filter(! collectionCode =="WHALESITINGS")
+  obis_sf_filter <- obis_sf %>% rename(Scientific_Name=scientificName)
+  return(obis_sf_filter)
+}
+
+intersect_points_obis_cet <- function(obis_sf_filter, studyArea) {
+  intersect_obis <- st_intersection(obis_sf_filter,studyArea)
+  intersect_obis <- merge(intersect_obis, listed_cetacean_species, by='Scientific_Name')
+  obis_intersect_points <- intersect_obis %>%
+    mutate(long = unlist(map(intersect_obis$geometry,1)),
+           lat = unlist(map(intersect_obis$geometry,2)))
+  return(obis_intersect_points)
+}
+ 
 # table_obis_cet <- function(obis_sf_filter, studyArea) {
 #   intersect_obis <- st_intersection(obis_sf_filter,studyArea)
 #   obis_whale_table<-merge(intersect_obis, listed_cetacean_species, by='Scientific_Name')
@@ -371,71 +370,82 @@ table_whitehead <- function(whitehead_filter, studyArea) {
 #   obis_whale_table$geometry<-NULL
 #   obis_whale_table<-unique(obis_whale_table)
 # }
-# 
+
 # #Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans
-# 
-# sdm_table <- function(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea) {
-# 
-# fin_intersect <- st_intersection(fin_whale_sf,studyArea)
-# x<-as.numeric(nrow(fin_intersect))
-# fin_area<-if(x < 1){
-#   FALSE
-# } else {
-#   TRUE
-# }
-# 
-# harbour_intersect <- st_intersection(harbour_porpoise_sf,studyArea)
-# x<-as.numeric(nrow(harbour_intersect))
-# harbour_area<-if(x < 1){
-#   FALSE
-# } else {
-#   TRUE
-# }
-# 
-# humpback_intersect <- st_intersection(humpback_whale_sf,studyArea)
-# x<-as.numeric(nrow(humpback_intersect))
-# humpback_area<-if(x < 1){
-#   FALSE
-# } else {
-#   TRUE
-# }
-# 
-# sei_intersect <- st_intersection(sei_whale_sf,studyArea)
-# x<-as.numeric(nrow(sei_intersect))
-# sei_area<-if(x < 1){
-#   FALSE
-# } else {
-#   TRUE
-# }
-# 
-# table_sdm<-data.frame(Fin_Whale="",Habour_Porpoise="", Humpback_Whale="", Sei_Whale="")
-# table_sdm[1,1]<-fin_area
-# table_sdm[1,2]<-harbour_area
-# table_sdm[1,3]<-humpback_area
-# table_sdm[1,4]<-sei_area
-# table_sdm<- table_sdm %>% rename("Fin Whale"=Fin_Whale,
-#                                  "Habour Porpoise"=Habour_Porpoise,
-#                                  "Humpback Whale"=Humpback_Whale,
-#                                  "Sei Whale"=Sei_Whale)
-# 
-# }
-# 
+sdm_table <- function(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea) {
+  
+  fin_intersect <- st_intersection(fin_whale_sf,studyArea)
+  x<-as.numeric(nrow(fin_intersect))
+  fin_area<-if(x < 1){
+    FALSE
+  } else {
+    TRUE
+  }
+  
+  harbour_intersect <- st_intersection(harbour_porpoise_sf,studyArea)
+  x<-as.numeric(nrow(harbour_intersect))
+  harbour_area<-if(x < 1){
+    FALSE
+  } else {
+    TRUE
+  }
+  
+  humpback_intersect <- st_intersection(humpback_whale_sf,studyArea)
+  x<-as.numeric(nrow(humpback_intersect))
+  humpback_area<-if(x < 1){
+    FALSE
+  } else {
+    TRUE
+  }
+  
+  sei_intersect <- st_intersection(sei_whale_sf,studyArea)
+  x<-as.numeric(nrow(sei_intersect))
+  sei_area<-if(x < 1){
+    FALSE
+  } else {
+    TRUE
+  }
+  
+  table_sdm<-data.frame(Fin_Whale="",Habour_Porpoise="", Humpback_Whale="", Sei_Whale="")
+  table_sdm[1,1]<-fin_area
+  table_sdm[1,2]<-harbour_area
+  table_sdm[1,3]<-humpback_area
+  table_sdm[1,4]<-sei_area
+  table_sdm<- table_sdm %>% rename("Fin Whale"=Fin_Whale,
+                                   "Habour Porpoise"=Habour_Porpoise,
+                                   "Humpback Whale"=Humpback_Whale,
+                                   "Sei Whale"=Sei_Whale)
+  return(table_sdm)
+  
+}
+
 # #Blue Whale Important Habitat
-# 
-# blue_whale_habitat_overlap <- function(Blue_Whale_sf, studyArea) {
-#   
-#   intersect <- st_intersection(Blue_Whale_sf,studyArea)
-#   x<-as.numeric(nrow(intersect))
-#   Query_output_crit<-if(x < 1){
-#     "Search area does not overlaps with Blue Whale Important Habitat in the Western North Atlantic."
-#   } else {
-#     "Search area overlaps with Blue Whale Important Habitat in the Western North Atlantic."
-#   }
-# 
-# }
-# 
+blue_whale_habitat_overlap <- function(Blue_Whale_sf, studyArea) {
+  
+  intersect <- st_intersection(Blue_Whale_sf,studyArea)
+  x <- as.numeric(nrow(intersect))
+  Query_output_crit <- if(x < 1){
+    "Search area does not overlaps with Blue Whale Important Habitat in the Western North Atlantic."
+  } else {
+    "Search area overlaps with Blue Whale Important Habitat in the Western North Atlantic."
+  }
+  
+}
+
+# Northern Bottlenose Whale critical habitat
+intersect_NBNW_overlap <- function(NBNW, studyArea) {
+  intersect <- st_intersection(NBNW,studyArea)
+  y <- as.numeric(nrow(intersect))
+  Query_output_criteria <- if(y < 1){
+    "Search area does not overlaps with Northern Bottlenose Whale Critical Habitat in the Western North Atlantic."
+  } else {
+    "Search area overlaps with Northern Bottlenose Whale Critical Habitat in the Western North Atlantic."
+  }
+}
+ 
+########## Spatial Planning Section ##########
+
 # #Ecologically and Biologically Significant Areas (EBSA)
-# 
 EBSA_overlap <- function(EBSA_sf, studyArea) {
   
   EBSA_intersect <- st_intersection(EBSA_sf,studyArea)
@@ -452,8 +462,7 @@ EBSA_overlap <- function(EBSA_sf, studyArea) {
   
 }
 
-
-#EBSA report
+# # EBSA report
 EBSA_report <- function(EBSA_sf, studyArea) {
   
   EBSA_intersect <- st_intersection(EBSA_sf,studyArea)
@@ -470,8 +479,7 @@ EBSA_report <- function(EBSA_sf, studyArea) {
   
 }
 
-#EBSA report URL
-
+# # EBSA report URL
 EBSA_reporturl <- function(EBSA_sf, studyArea) {
   
   intersect <- st_intersection(EBSA_sf,studyArea)
@@ -488,7 +496,7 @@ EBSA_reporturl <- function(EBSA_sf, studyArea) {
   
 }
 
-#Location intersect
+# # Location intersect
 EBSA_location <- function(EBSA_sf, studyArea) {
   
   intersect <- st_intersection(EBSA_sf,studyArea)
@@ -501,7 +509,6 @@ EBSA_location <- function(EBSA_sf, studyArea) {
   
   writeLines(Location_result, sep="\n")
 }
-
 
 #Bioregion intersect
 EBSA_bioregion <- function(EBSA_sf, studyArea) {
