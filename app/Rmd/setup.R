@@ -27,9 +27,6 @@ whale_col=values=c("Blue Whale: Endangered (SARA & COSEWIC)"="darkgoldenrod1",
                    "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)"="#F5A4E7"
                    )
 
-######## Habitat Information########
 
-rockweed_sf$RWP[which(rockweed_sf$RWP=="1")]= "Present"
-rockweed_sf$RWP[which(rockweed_sf$RWP=="2")]= "Likely Present"
-rockweed_sf$RWP[which(rockweed_sf$RWP=="5")]= "Unknown"
+
 

@@ -299,7 +299,6 @@ plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
 ########## Habitat Section ##########
 
 # Rockweed presence
-
 plot_rockweed<-function(rockweed_sf, studyArea, land_layer, buf, bound) {
   
   # buf is in km, and now converted to degrees
@@ -316,9 +315,14 @@ plot_rockweed<-function(rockweed_sf, studyArea, land_layer, buf, bound) {
   latmin<-bbox$ymin-buf_lat
   latmax<-bbox$ymax+buf_lat
   
+  # define legends
+  rockweed_sf$RWP[which(rockweed_sf$RWP=="1")]= "Present"
+  rockweed_sf$RWP[which(rockweed_sf$RWP=="2")]= "Likely Present"
+  rockweed_sf$RWP[which(rockweed_sf$RWP=="5")]= "Unknown"
+  
   ggplot()+
     geom_sf(data=rockweed_sf, aes(fill=RWP), lwd=0)+
-    scale_fill_manual(values=c("darkgreen", "orange", "blue"))+
+    scale_fill_manual(values=c("orange", "darkgreen", "blue"))+
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
