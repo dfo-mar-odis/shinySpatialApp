@@ -1,6 +1,6 @@
 # #site map
 # 
-site_map <- function(studyArea,site_sf,land_layer,buf, bound) {
+site_map <- function(studyArea,site,land_layer,buf, bound) {
   
   # buf is in km, and now converted to degrees
   buf=buf/100
@@ -16,7 +16,7 @@ site_map <- function(studyArea,site_sf,land_layer,buf, bound) {
   
   ggplot()+
     geom_sf(data=studyArea,fill="deepskyblue", col="black", size=0.6, alpha=0.4)+
-    geom_sf(data=site_sf,fill="yellow",col="black", size=0.6)+
+    geom_sf(data=site,fill="yellow",col="black", size=0.6)+
     geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("lightgrey"), col="black", size=0.7)+
     watermark(show = TRUE, lab = "DFO Internal Use Only")+
@@ -233,7 +233,45 @@ plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
 #     watermark(show = TRUE, lab = "DFO Internal Use Only")
 #   
 # }
-# 
+
+#Rockweed presence
+
+plot_rockweed<-function(rockweed_sf, studyArea, land_layer, buf, bound) {
+  
+  # buf is in km, and now converted to degrees
+  buf=buf/100
+  buf_lat=buf*0.72
+  #png("pez_and_site.png", width=1616, height=1410)
+  
+  # bounding box
+  bbox=st_bbox(studyArea)
+  
+  # longitude and latitude limits for the map
+  longmin<-(bbox$xmin)-buf
+  longmax<-bbox$xmax+buf
+  latmin<-bbox$ymin-buf_lat
+  latmax<-bbox$ymax+buf_lat
+  
+  ggplot()+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
+    geom_sf(data=rockweed_sf, aes(fill=RWP), lwd=0)+
+    scale_fill_manual(values=c("darkgreen", "orange", "blue"))+
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed") + # creates US boundary line, 200 nm limit
+    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    geom_sf(data=site,fill="yellow",col="black", size=0.6)+
+    annotation_scale(location="br")+
+    theme_bw()+
+    theme(legend.title = element_blank())+
+    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    labs(x=expression(paste("Longitude ",degree,"W",sep="")),
+         y=expression(paste("Latitude ",degree,"N",sep="")),
+         col="")+
+    watermark(show = TRUE, lab = "DFO Internal Use Only")
+  
+}
+
+
+
 # #EBSA
 # 
 plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
@@ -268,113 +306,3 @@ plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
   
 }
 # 
-# ####The following functions are not currently integrated into the Reproducible Report but may be in the future.####
-# 
-# #iNaturalist
-# 
-# plot_inat<-function(studyArea,studyArea_st,site,land_layer,intersect_inat,buf) {
-#   
-#   # buf is in km, and now converted to degrees
-#   buf=buf/100
-#   
-#   # bounding box
-#   bbox <- st_bbox(studyArea)
-#   
-#   # buffer around bounding box
-#   #buf=0.05
-#   
-#   # longitude and latitude limits for the map
-#   lonLim=c(bb$min[1]-buf, bb$max[1]+buf)
-#   latLim=c(bb$min[2]-buf, bb$max[2]+buf)
-#   longmin<-bb$min[1]-buf
-#   longmax<-bb$max[1]+buf
-#   latmin<-bb$min[2]-buf
-#   latmax<-bb$max[2]+buf
-#   
-#   ggplot()+
-#     geom_sf(data=site,fill="yellow",col="black", size=0.6)+
-#     geom_sf(data=studyArea_st,fill="#74ECFB", col="black", size=0.6)+
-#     geom_sf(data=land_layer,fill=c("lightgrey"), col="black", size=0.7)+
-#     geom_sf(data=intersect_inat, size = 3, shape = 16, fill = "black")+
-#     annotation_scale(location="bl")+
-#     theme_bw()+
-#     coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
-#     labs(x="Longitude", y="Latitude", col="")+
-#     theme(axis.title.y = element_text(size = 13))+
-#     theme(axis.title.x = element_text(size = 13))+
-#     watermark(show = TRUE, lab = "DFO Internal Use Only")
-#   
-# }
-# 
-# #GBIF
-# 
-# plot_gbif<-function(studyArea,studyArea_st,site,land_layer,intersect_gbif,buf) {
-#   
-#   # buf is in km, and now converted to degrees
-#   buf=buf/100
-# 
-#   # bounding box
-#   bbox <- st_bbox(studyArea)
-#   
-#   # buffer around bounding box
-#   #buf=0.05
-#   
-#   # longitude and latitude limits for the map
-#   lonLim=c(bb$min[1]-buf, bb$max[1]+buf)
-#   latLim=c(bb$min[2]-buf, bb$max[2]+buf)
-#   longmin<-bb$min[1]-buf
-#   longmax<-bb$max[1]+buf
-#   latmin<-bb$min[2]-buf
-#   latmax<-bb$max[2]+buf
-#   
-#   ggplot()+
-#     geom_sf(data=site,fill="yellow",col="black", size=0.6)+
-#     geom_sf(data=studyArea_st,fill="#74ECFB", col="black", size=0.6)+
-#     geom_sf(data=land_layer,fill=c("lightgrey"), col="black", size=0.7)+
-#     geom_sf(data=intersect_gbif, size = 3, shape = 16, fill = "black")+
-#     annotation_scale(location="bl")+
-#     theme_bw()+
-#     coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
-#     labs(x="Longitude", y="Latitude", col="")+
-#     theme(axis.title.y = element_text(size = 13))+
-#     theme(axis.title.x = element_text(size = 13))+
-#     watermark(show = TRUE, lab = "DFO Internal Use Only")
-#   
-# }
-# 
-# 
-# #CWS
-# 
-# plot_cws<-function(studyArea,studyArea_st,site,land_layer,intersect_cws,buf) {
-#   
-#   # buf is in km, and now converted to degrees
-#   buf=buf/100
-# 
-#   # bounding box
-#   bbox <- st_bbox(studyArea)
-#   
-#   # buffer around bounding box
-#   #buf=0.05
-#   
-#   # longitude and latitude limits for the map
-#   lonLim=c(bb$min[1]-buf, bb$max[1]+buf)
-#   latLim=c(bb$min[2]-buf, bb$max[2]+buf)
-#   longmin<-bb$min[1]-buf
-#   longmax<-bb$max[1]+buf
-#   latmin<-bb$min[2]-buf
-#   latmax<-bb$max[2]+buf
-#   
-#   ggplot()+
-#     geom_sf(data=site,fill="yellow",col="black", size=0.6)+
-#     geom_sf(data=studyArea_st,fill="#74ECFB", col="black", size=0.6)+
-#     geom_sf(data=land_layer,fill=c("lightgrey"), col="black", size=0.7)+
-#     geom_sf(data=intersect_cws, size = 3, shape = 16, fill = "black")+
-#     annotation_scale(location="bl")+
-#     theme_bw()+
-#     coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
-#     labs(x="Longitude", y="Latitude", col="")+
-#     theme(axis.title.y = element_text(size = 13))+
-#     theme(axis.title.x = element_text(size = 13))+
-#     watermark(show = TRUE, lab = "DFO Internal Use Only")
-#   
-# }
