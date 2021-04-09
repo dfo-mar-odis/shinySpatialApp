@@ -317,11 +317,11 @@ plot_rockweed<-function(rockweed_sf, studyArea, land_layer, buf, bound) {
   latmax<-bbox$ymax+buf_lat
   
   ggplot()+
-    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     geom_sf(data=rockweed_sf, aes(fill=RWP), lwd=0)+
     scale_fill_manual(values=c("darkgreen", "orange", "blue"))+
-    geom_sf(data=bound, col = "darkgrey", linetype = "dashed") + # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     geom_sf(data=site,fill="yellow",col="black", size=0.6)+
     annotation_scale(location="br")+
     theme_bw()+

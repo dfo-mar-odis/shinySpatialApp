@@ -64,8 +64,8 @@ lapply(list.files("../R", pattern = ".[Rr]$", full.names = TRUE),source)
 ```{r Select Search Area interactively, echo=FALSE, include=FALSE, cache=FALSE}
 #studyArea <- st_read("{{path_to_geoms}}")
 #studyArea <- st_read("geoms_slc.geojson")
-studyArea <- st_read("../Rmd/geoms_slc_test.geojson") #test offshore area outside app
-#studyArea <- st_read("../Rmd/geoms_slc_coastal_test.geojson") #test coastal area outside app
+#studyArea <- st_read("../Rmd/geoms_slc_test.geojson") #test offshore area outside app
+studyArea <- st_read("../Rmd/geoms_slc_coastal_test.geojson") #test coastal area outside app
 site <- sf::st_centroid(studyArea)  
 ```
 #```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', #'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')}
