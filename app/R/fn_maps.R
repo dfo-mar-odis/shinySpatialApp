@@ -15,11 +15,11 @@ site_map <- function(studyArea,site,land_layer,buf, bound) {
   latmax<-bbox$ymax+buf
   
   ggplot()+
-    geom_sf(data=studyArea,fill="deepskyblue", col="black", size=0.6, alpha=0.4)+
     geom_sf(data=site,fill="yellow",col="black", size=0.6)+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("lightgrey"), col="black", size=0.7)+
     watermark(show = TRUE, lab = "DFO Internal Use Only")+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="bl")+
     theme_bw()+
     coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
@@ -48,11 +48,11 @@ plot_crithab<-function(ClippedCritHab_sf, studyArea, land_layer, buf, bound) {
   latmax<-bbox$ymax+buf_lat
   
   ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
     geom_sf(data=leatherback_sf,fill="lightgreen",col="black")+
     geom_sf(data=ClippedCritHab_sf,fill="red",col="black")+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1)+  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
     coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
@@ -82,9 +82,9 @@ plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
   
   ggplot()+
     geom_sf(data=sardist_sf,fill="orange", col="black", size=0.6)+    
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
     coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
@@ -118,10 +118,10 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   #Fin Whale
   
   fin_whale_plot <- ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
     geom_sf(data=fin_whale_sf,fill="#F3E73B",col="#F3E73B")+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
     ggtitle("Fin Whale")+
@@ -134,10 +134,10 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   #Harbour Porpoise
   
   harbour_porpoise_plot <- ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
     geom_sf(data=harbour_porpoise_sf,fill="#F3E73B",col="#F3E73B")+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
     ggtitle("Harbour Porpoise")+
@@ -150,10 +150,10 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   #humpback whale
   
   humpback_whale_plot <- ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
     geom_sf(data=humpback_whale_sf,fill="#F3E73B",col="#F3E73B")+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
     ggtitle("Humpback Whale")+
@@ -166,10 +166,10 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   #Sei Whale
   
   sei_whale_plot <- ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
     geom_sf(data=sei_whale_sf,fill="#F3E73B",col="#F3E73B")+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
     ggtitle("Sei Whale")+
@@ -193,10 +193,10 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
 plot_bw_hab <- function(Blue_Whale_sf, studyArea, land_layer, bound) {
   
   ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     geom_sf(data=Blue_Whale_sf,aes(fill=Activity), col="black")+
     scale_fill_manual(values=c("#195B01","#1EA31E","chartreuse2","#C5FDC5","blue1"))+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     annotation_scale(location="br")+
     theme_bw()+
@@ -228,10 +228,10 @@ plot_bw_hab_zoom <- function(Blue_Whale_sf, studyArea, land_layer, buf, bound) {
   latmax<-bbox$ymax+buf_lat
   
   ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     geom_sf(data=Blue_Whale_sf,aes(fill=Activity),col="black")+
     scale_fill_manual(values=c("#195B01","#1EA31E","chartreuse2","#C5FDC5","blue1"))+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     annotation_scale(location="br")+
     theme_bw()+
@@ -248,9 +248,9 @@ plot_bw_hab_zoom <- function(Blue_Whale_sf, studyArea, land_layer, buf, bound) {
 plot_NBNW_hab <- function(critHab, studyArea, land_layer, bound) {
   
   ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     geom_sf(data=critHab,aes(fill='green'),col="black")+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     annotation_scale(location="br")+
     theme_bw()+
@@ -282,9 +282,9 @@ plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
   latmax<-bbox$ymax+buf_lat
   
   ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     geom_sf(data=critHab,aes(fill='green'),col="black")+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     annotation_scale(location="br")+
     theme_bw()+
@@ -322,7 +322,7 @@ plot_rockweed<-function(rockweed_sf, studyArea, land_layer, buf, bound) {
   
   ggplot()+
     geom_sf(data=rockweed_sf, aes(fill=RWP), lwd=0)+
-    scale_fill_manual(values=c("orange", "darkgreen", "blue"))+
+    scale_fill_manual(values=c("orange","green", "blue"))+
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+

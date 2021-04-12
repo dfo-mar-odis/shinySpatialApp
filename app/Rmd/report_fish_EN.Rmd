@@ -14,16 +14,33 @@ Dataset description from the Open Data record [@OpenData_MAR_RV]: The Fisheries 
 
 ```{r table RV read, echo=FALSE, cache=FALSE, include = FALSE}
 table_RV <- read.csv("../data/misc/table_RV_EN.csv")
+table_RV<- table_RV %>% dplyr::rename("Season/Months"=Season.Months,
+                                   "Description of Geographic Range"=Description.of.Geographic.Range)
 ```
 ```{r}
-kable(table_RV, align="l", 
-      caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.")
+knitr::kable(table_RV, align="l", 
+      caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.", booktabs = T, escape = F, linesep="") %>%
+    kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
-
 #### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
-<br><br>
-**under-development**
+```{r, include=FALSE, cache=FALSE}
+# RVCatch_sf <- RVCatch_sf %>% dplyr::filter(YEAR >= minYear)
+# RVCatch_intersect <- sf::st_intersection(RVCatch_sf,studyArea)
+# Total_number_sets_RV<-length(unique(RVCatch_intersect$SETNO))
+# rv_SAR_table<-table_rv_SAR(RVCatch_intersect)
+# rv_table <- table_rv(RVCatch_intersect)
+```
+*
+```{r, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+# Report_RV<-if(length(rv_SAR_table) < 1){
+#     "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+#   } else {
+#     "There are relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+#   }
+# Report_RV<-noquote(Report_RV)
+# writeLines(Report_RV)
+```
 
 ```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area was used to query information from the Maritimes Research Vessel (RV) Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample.'}
 ```
