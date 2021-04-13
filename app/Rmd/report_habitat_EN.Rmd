@@ -33,6 +33,8 @@ rockweed_result<-as.numeric(nrow(rockweed_intersect))
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
-rockweed_plot<-plot_rockweed(rockweed_sf, studyArea, land50k_sf, 5, bounds_sf)
-if(rockweed_result > 1){print(rockweed_plot)} else {NULL}
+#rockweed_plot<-plot_rockweed(rockweed_sf, studyArea, land50k_sf, 5, bounds_sf)
+#if(rockweed_result > 1){print(rockweed_plot)} else {NULL}
+# rwMap<-plot_rockweed(rockweed_sf, areaMap, bboxMap)
+# if(rwMap > 1){print(rockweed_plot)} else {NULL}
 ```

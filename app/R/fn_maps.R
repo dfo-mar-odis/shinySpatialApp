@@ -298,43 +298,56 @@ plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
 
 ########## Habitat Section ##########
 
-# Rockweed presence
-plot_rockweed<-function(rockweed_sf, studyArea, land_layer, buf, bound) {
+# Rockweed presence [by Gordana Lazin]
+plot_rockweed<-function(rockweed_sf, areaMap, bboxMap) {
   
-  # buf is in km, and now converted to degrees
-  buf=buf/100
-  buf_lat=buf*0.72
-  #png("pez_and_site.png", width=1616, height=1410)
+  # crop rockweed layer to the map area to speed up plotting
+  rockweed=st_crop(st_make_valid(rockweed_sf),bboxMap)
   
-  # bounding box
-  bbox=st_bbox(studyArea)
+  # define axis limit
+  axLim=coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]), ylim = c(bboxMap["ymin"], bboxMap["ymax"]),expand=FALSE)
   
-  # longitude and latitude limits for the map
-  longmin<-(bbox$xmin)-buf
-  longmax<-bbox$xmax+buf
-  latmin<-bbox$ymin-buf_lat
-  latmax<-bbox$ymax+buf_lat
+  # replace codes with words
+  rockweed$Rockweed=""
+  rockweed$Rockweed[which(rockweed$RWP==1)]="1-Present"
+  rockweed$Rockweed[which(rockweed$RWP==2)]="2-Likely Present"
+  rockweed$Rockweed[which(rockweed$RWP==5)]="5-Unknown"
+  rockweed$Rockweed[which(rockweed$RWP==0)]="Not Present"
   
-  # define legends
-  rockweed_sf$RWP[which(rockweed_sf$RWP=="1")]= "Present"
-  rockweed_sf$RWP[which(rockweed_sf$RWP=="2")]= "Likely Present"
-  rockweed_sf$RWP[which(rockweed_sf$RWP=="5")]= "Unknown"
+  rockweedMap <- areaMap+
+    geom_sf(data=rockweed, aes(fill=Rockweed), colour=NA)+
+    scale_fill_manual(values=c("#009E73", "#E69F00", "#0072B2","#999999"))+
+    studyBox_geom+
+    axLim
   
-  ggplot()+
-    geom_sf(data=rockweed_sf, aes(fill=RWP), lwd=0)+
-    scale_fill_manual(values=c("orange","green", "blue"))+
-    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
-    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
-    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
-    geom_sf(data=site,fill="yellow",col="black", size=0.6)+
-    annotation_scale(location="br")+
-    theme_bw()+
-    theme(legend.title = element_blank())+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
-    labs(x=expression(paste("Longitude ",degree,"W",sep="")),
-         y=expression(paste("Latitude ",degree,"N",sep="")),
-         col="")+
-    watermark(show = TRUE, lab = "DFO Internal Use Only")
+  return(rockweedMap)
+  
+}
+
+rockweedStats<- function(rockweed_sf, studyArea) {
+  
+  # clip rockweed to study area
+  rw=st_crop(st_make_valid(rockweed_sf),studyArea)
+  rw$area=st_area(rw) # add column with areas of the polygons
+  
+  # make a table, sum the areas for different presences
+  noRecords=as.data.frame(table(rw$RWP))
+  noRecords$Var1=as.numeric(noRecords$Var1)
+  totalArea=aggregate(as.numeric(rw$area), list(rw$RWP), sum)
+  stats=merge(noRecords,totalArea, by.x="Var1",by.y="Group.1")
+  stats=rbind(stats,colSums(stats))
+  names(stats)=c("RWP","noPolygons","Area_m2")
+  stats$Category=""
+  stats$Category[stats$RWP==1]="Rockweed present"
+  stats$Category[stats$RWP==2]="Rockweed likely present"
+  stats$Category[stats$RWP==5]="Unknown vegetation"
+  stats$Category[stats$RWP==0]="Rockweed not present"
+  stats$Category[nrow(stats)]="Total intertidal vegetation"
+  
+  stats=stats[,c("Category","noPolygons","Area_m2")]
+  stats$Area_km2=round(stats$Area_m2/1000)/1000
+  
+  return(stats)
   
 }
 
