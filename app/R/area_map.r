@@ -18,15 +18,13 @@
 # Written by Gordana Lazin for reproducibble reporting project, April 12, 2021
 # ggplot map developed by Greg Puncher, winter/spring 2021
 
-
-
 area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
   
   # buf is in km, and now converted to degrees
   buf=buf/100
   
   # bounding box for study area
-  bbox=st_bbox(studyArea)
+  bbox=sf::st_bbox(studyArea)
   
   # create bounding box for buffer (plot area)
   bboxBuf=bbox
@@ -41,11 +39,11 @@ area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
  
   
   # subset land to plot area to speed up plotting
-  land=st_crop(land_layer,bboxBuf)
+  land=sf::st_crop(land_layer,bboxBuf)
  
   # subset US-Canad boundary to plot area to speed up plotting
-  bound=st_transform(CANborder,crs=4326) # to fix: currently the projection is NAD83
-  bound=st_crop(bound,bboxBuf)
+  bound=sf::st_transform(CANborder,crs=4326) # to fix: currently the projection is NAD83
+  bound=sf::st_crop(bound,bboxBuf)
   
   # make a plot and write it to m
   m<-ggplot()+

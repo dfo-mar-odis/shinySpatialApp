@@ -22,7 +22,7 @@ site_map <- function(studyArea,site,land_layer,buf, bound) {
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="bl")+
     theme_bw()+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x="Longitude", y="Latitude", col="")+
     theme(axis.title.y = element_text(size = 13))+
     theme(axis.title.x = element_text(size = 13))
@@ -55,7 +55,7 @@ plot_crithab<-function(ClippedCritHab_sf, studyArea, land_layer, buf, bound) {
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -87,7 +87,7 @@ plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -125,7 +125,7 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
     annotation_scale(location="br")+
     theme_bw()+
     ggtitle("Fin Whale")+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -141,7 +141,7 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
     annotation_scale(location="br")+
     theme_bw()+
     ggtitle("Harbour Porpoise")+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -157,7 +157,7 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
     annotation_scale(location="br")+
     theme_bw()+
     ggtitle("Humpback Whale")+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -173,7 +173,7 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
     annotation_scale(location="br")+
     theme_bw()+
     ggtitle("Sei Whale")+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -201,7 +201,7 @@ plot_bw_hab <- function(Blue_Whale_sf, studyArea, land_layer, bound) {
     annotation_scale(location="br")+
     theme_bw()+
     theme(legend.position = "none")+
-    coord_sf(xlim = c(-71, -52), ylim = c(41, 51))+
+    ggplot2::coord_sf(xlim = c(-71, -52), ylim = c(41, 51))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -235,7 +235,7 @@ plot_bw_hab_zoom <- function(Blue_Whale_sf, studyArea, land_layer, buf, bound) {
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     annotation_scale(location="br")+
     theme_bw()+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -255,7 +255,7 @@ plot_NBNW_hab <- function(critHab, studyArea, land_layer, bound) {
     annotation_scale(location="br")+
     theme_bw()+
     theme(legend.position = "none")+
-    coord_sf(xlim = c(-71, -52), ylim = c(41, 51))+
+    ggplot2::coord_sf(xlim = c(-71, -52), ylim = c(41, 51))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -288,7 +288,7 @@ plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     annotation_scale(location="br")+
     theme_bw()+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
@@ -302,10 +302,10 @@ plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
 plot_rockweed<-function(rockweed_sf, areaMap, bboxMap) {
   
   # crop rockweed layer to the map area to speed up plotting
-  rockweed=st_crop(st_make_valid(rockweed_sf),bboxMap)
+  rockweed=sf::st_crop(sf::st_make_valid(rockweed_sf),bboxMap)
   
   # define axis limit
-  axLim=coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]), ylim = c(bboxMap["ymin"], bboxMap["ymax"]),expand=FALSE)
+  axLim=ggplot2::coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]), ylim = c(bboxMap["ymin"], bboxMap["ymax"]),expand=FALSE)
   
   # replace codes with words
   rockweed$Rockweed=""
@@ -327,8 +327,8 @@ plot_rockweed<-function(rockweed_sf, areaMap, bboxMap) {
 rockweedStats<- function(rockweed_sf, studyArea) {
   
   # clip rockweed to study area
-  rw=st_crop(st_make_valid(rockweed_sf),studyArea)
-  rw$area=st_area(rw) # add column with areas of the polygons
+  rw=sf::st_crop(sf::st_make_valid(rockweed_sf),studyArea)
+  rw$area=sf::st_area(rw) # add column with areas of the polygons
   
   # make a table, sum the areas for different presences
   noRecords=as.data.frame(table(rw$RWP))
@@ -344,8 +344,9 @@ rockweedStats<- function(rockweed_sf, studyArea) {
   stats$Category[stats$RWP==0]="Rockweed not present"
   stats$Category[nrow(stats)]="Total intertidal vegetation"
   
-  stats=stats[,c("Category","noPolygons","Area_m2")]
   stats$Area_km2=round(stats$Area_m2/1000)/1000
+  stats=stats[,c("Category","noPolygons","Area_km2")]
+  
   
   return(stats)
   
@@ -379,7 +380,7 @@ plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
     geom_sf(data=site,fill="yellow",col="black", size=0.6)+
     annotation_scale(location="br")+
     theme_bw()+
-    coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
+    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
     labs(x=expression(paste("Longitude ",degree,"W",sep="")),
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+

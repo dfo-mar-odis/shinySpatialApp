@@ -1,20 +1,12 @@
-###### Layouts, Gordana Lazin, April 13, 2021 ###### 
-
-# # Define studyBox geometry "look". 
-# studyBox_geom is input into area_map.R, or can be added to any map later
-studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1)
-
-# Usage:
-# plot area map using function, output is a list
-# areaMapList=area_map(studyArea,site,land_layer,5, bounds_sf,studyBox_geom)
-
+###### studyArea ######
+# define studyBox geometry "look". 
+# studyBox_geom is input into area map or can be added to any map later
+land_layer<-land50k_sf
+studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1) # Define studyBox geometry "look".
+areaMapList<-area_map(studyArea,site,land_layer, 5, bounds_sf,studyBox_geom)
 # separate items in the output list: first item is a map and second is a bounding box of the map
-# areaMap=areaMapList[[1]]
-# bboxMap=areaMapList[[2]]
-
-# areaMap can be plotted once and then reused for other plots
-
-
+areaMap=areaMapList[[1]]
+bboxMap=areaMapList[[2]]
 
 ###### Set up requirements for the report, Gregory Puncher, Winter 2021 ######
 
