@@ -25,24 +25,40 @@ knitr::kable(table_RV, align="l",
 
 #### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
 ```{r, include=FALSE, cache=FALSE}
-# RVCatch_sf <- RVCatch_sf %>% dplyr::filter(YEAR >= minYear)
-# RVCatch_intersect <- sf::st_intersection(RVCatch_sf,studyArea)
-# Total_number_sets_RV<-length(unique(RVCatch_intersect$SETNO))
-# rv_SAR_table<-table_rv_SAR(RVCatch_intersect)
-# rv_table <- table_rv(RVCatch_intersect)
+ RVCatch_sf <- RVCatch_sf %>% dplyr::filter(YEAR >= minYear)
+ RVCatch_intersect <- sf::st_intersection(RVCatch_sf,studyArea)
+ Total_number_sets_RV<-length(unique(RVCatch_intersect$SETNO))
+ rv_SAR_table<-table_rv_SAR(RVCatch_intersect)
+ rv_table <- table_rv(RVCatch_intersect)
 ```
 *
 ```{r, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-# Report_RV<-if(length(rv_SAR_table) < 1){
-#     "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
-#   } else {
-#     "There are relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
-#   }
-# Report_RV<-noquote(Report_RV)
-# writeLines(Report_RV)
+Report_RV<-if(length(rv_SAR_table) < 1){
+    "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+  } else {
+    "There are relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+  }
+Report_RV<-noquote(Report_RV)
+writeLines(Report_RV)
+```
+```{r}
+#Convert geometry to latitude and longitude
+RVCatch_intersect <- RVCatch_intersect %>% tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
+rv_start_sites<-data.frame(unique(cbind(longitude=RVCatch_intersect$lon, latitude=RVCatch_intersect$lat)))
+rv_end_sites<-data.frame(unique(cbind(longitude=RVCatch_intersect$ELONG, latitude=RVCatch_intersect$ELAT)))
+startx <- rv_start_sites$longitude
+starty <- rv_start_sites$latitude
+endx <- rv_end_sites$longitude
+endy <- rv_end_sites$latitude
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area was used to query information from the Maritimes Research Vessel (RV) Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample.'}
+site_map(studyArea,site,land50k_sf,10,bounds_sf)+
+  geom_point(data = rv_start_sites, aes(x = longitude, y = latitude), size = 3, 
+        shape = 16, colour = "darkgreen")+
+  geom_point(data = rv_end_sites, aes(x = longitude, y = latitude), size = 3, 
+        shape = 16, colour = "firebrick4")+
+  geom_segment(aes(x = startx, y = starty, xend = endx, yend = endy),arrow=arrow(length = unit(0.2,"cm")), size = 1)
 ```
 
 ### **Industry Survey and Maritimes Fishery Databases**  

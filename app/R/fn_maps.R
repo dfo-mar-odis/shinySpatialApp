@@ -302,27 +302,33 @@ plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
 plot_rockweed<-function(rockweed_sf, areaMap, bboxMap) {
   
   # crop rockweed layer to the map area to speed up plotting
-  rockweed=sf::st_crop(sf::st_make_valid(rockweed_sf),bboxMap)
+  rockweed=st_crop(st_make_valid(rockweed_sf),bboxMap)
   
-  # define axis limit
-  axLim=ggplot2::coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]), ylim = c(bboxMap["ymin"], bboxMap["ymax"]),expand=FALSE)
-  
-  # replace codes with words
-  rockweed$Rockweed=""
-  rockweed$Rockweed[which(rockweed$RWP==1)]="1-Present"
-  rockweed$Rockweed[which(rockweed$RWP==2)]="2-Likely Present"
-  rockweed$Rockweed[which(rockweed$RWP==5)]="5-Unknown"
-  rockweed$Rockweed[which(rockweed$RWP==0)]="Not Present"
-  
-  rockweedMap <- areaMap+
-    geom_sf(data=rockweed, aes(fill=Rockweed), colour=NA)+
-    scale_fill_manual(values=c("#009E73", "#E69F00", "#0072B2","#999999"))+
-    studyBox_geom+
-    axLim
+  if (dim(rockweed)[1]==0){
+    rockweedMap=NULL
+  }else{
+    
+    # define axis limit
+    axLim=coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]), ylim = c(bboxMap["ymin"], bboxMap["ymax"]),expand=FALSE)
+    
+    # replace codes with words
+    rockweed$Rockweed=""
+    rockweed$Rockweed[which(rockweed$RWP==1)]="1-Present"
+    rockweed$Rockweed[which(rockweed$RWP==2)]="2-Likely Present"
+    rockweed$Rockweed[which(rockweed$RWP==5)]="5-Unknown"
+    rockweed$Rockweed[which(rockweed$RWP==0)]="Not Present"
+    
+    rockweedMap <- areaMap+
+      geom_sf(data=rockweed, aes(fill=Rockweed), colour=NA)+
+      scale_fill_manual(values=c("#009E73", "#E69F00", "#0072B2","#999999"))+
+      studyBox_geom+
+      axLim
+  }
   
   return(rockweedMap)
   
 }
+
 
 rockweedStats<- function(rockweed_sf, studyArea) {
   
