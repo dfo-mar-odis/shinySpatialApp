@@ -113,35 +113,40 @@ table_rv <- function(RVCatch_intersect) {
  
 # #Create table of of ISDB records of all species caught in studyArea
 # 
-# table_isdb <- function(isdb_intersect) {
-#   
-#   isdb_table <- aggregate(
-#     x = list(Records = isdb_intersect$SCIENTIFIC),
-#     by = list(SCIENTIFIC_NAME = isdb_intersect$SCIENTIFIC, COMMON_NAME = isdb_intersect$COMMON),length)
-#    isdb_table <- isdb_table %>% dplyr::transmute(isdb_table, Scientific_Name=stringr::str_to_sentence(SCIENTIFIC_NAME))
-#    isdb_table <- isdb_table %>% dplyr::transmute(isdb_table, Common_Name=stringr::str_to_sentence(COMMON_NAME))
-#    isdb_table <- isdb_table %>% dplyr::select(Scientific_Name, Common_Name, Records)
-#    isdb_table <- arrange(isdb_table, Scientific_Name)
-#    isdb_table <- isdb_table %>% dplyr::rename("Scientific Name"=Scientific_Name,"Common Name"=Common_Name)
-#   return(isdb_table)
-# }
+table_isdb <- function(isdb_intersect) {
+
+isdb_table <- aggregate(
+  x = list(Records = isdb_intersect$SCIENTIFIC),
+  by = list(SCIENTIFIC_NAME = isdb_intersect$SCIENTIFIC, 
+            COMMON_NAME = isdb_intersect$COMMON),length)
+isdb_table <- isdb_table %>% 
+  transmute(isdb_table, Scientific_Name=str_to_sentence(SCIENTIFIC_NAME))
+isdb_table <- isdb_table %>% 
+  dplyr::transmute(isdb_table, Common_Name=str_to_sentence(COMMON_NAME))
+isdb_table <- isdb_table %>% 
+  dplyr::select(Scientific_Name, Common_Name, Records)
+isdb_table <- dplyr::arrange(isdb_table, Scientific_Name)
+isdb_table <- isdb_table %>% 
+  dplyr::rename("Scientific Name"=Scientific_Name,"Common Name"=Common_Name)
+#return(isdb_table)
+}
 
 table_isdb_SAR <- function(isdb_intersect, listed_fish_invert_species) {
   
   isdb_SAR_table <- aggregate(
     x = list(Records = isdb_intersect$SCIENTIFIC),
     by = list(Scientific_Name = isdb_intersect$SCIENTIFIC, Common_Name = isdb_intersect$COMMON),length)
-  # isdb_SAR_table <- isdb_SAR_table %>% 
-  #   dplyr::rename("Scientific_Name_upper"=Scientific_Name)
-  # isdb_SAR_table <- merge(isdb_SAR_table, listed_fish_invert_species, by='Scientific_Name_upper')
-  # isdb_SAR_table <- isdb_SAR_table %>%
-  #  dplyr::select(Scientific_Name, Common_Name.y, Schedule.status, COSEWIC.status, Wild_Species, Records)
-  # isdb_SAR_table <- isdb_SAR_table %>%
-  #  dplyr::rename("SARA status"=Schedule.status,"COSEWIC listing"=COSEWIC.status,
-  #                                          "Wild Species listing"=Wild_Species,
-  #                                          "Scientific Name"=Scientific_Name,
-  #                                          "Common Name"=Common_Name.y)
-  # isdb_SAR_table<-dplyr::arrange(isdb_SAR_table, "Scientific Name")
+   isdb_SAR_table <- isdb_SAR_table %>% 
+     dplyr::rename("Scientific_Name_upper"=Scientific_Name)
+   isdb_SAR_table <- merge(isdb_SAR_table, listed_fish_invert_species, by='Scientific_Name_upper')
+   isdb_SAR_table <- isdb_SAR_table %>%
+    dplyr::select(Scientific_Name, Common_Name.y, Schedule.status, COSEWIC.status, Wild_Species, Records)
+   isdb_SAR_table <- isdb_SAR_table %>%
+    dplyr::rename("SARA status"=Schedule.status,"COSEWIC listing"=COSEWIC.status,
+                                            "Wild Species listing"=Wild_Species,
+                                            "Scientific Name"=Scientific_Name,
+                                            "Common Name"=Common_Name.y)
+   isdb_SAR_table<-dplyr::arrange(isdb_SAR_table, "Scientific Name")
 
   return(isdb_SAR_table)
 }

@@ -101,31 +101,10 @@ The Maritimes Fishery Information System (MARFIS) is a DFO database, managed by 
 isdb1 <- isdb1 %>% dplyr::filter(YEAR >= minYear)
 isdb_sf <- sf::st_as_sf(isdb1, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 isdb_intersect <- sf::st_intersection(isdb_sf,studyArea)
-isdb_intersect <- isdb_intersect %>%
-  tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
+isdb_intersect <- isdb_intersect %>% tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
 isdb_sites <- data.frame(longitude=isdb_intersect$long,latitude=isdb_intersect$lat)
 
-#table_isdb <- function(isdb_intersect) {
-  
-  # isdb_table <- aggregate(
-  #   x = list(Records = isdb_intersect$SCIENTIFIC),
-  #   by = list(SCIENTIFIC_NAME = isdb_intersect$SCIENTIFIC, 
-  #             COMMON_NAME = isdb_intersect$COMMON),length)
-   # isdb_table <- isdb_table %>% 
-   #   transmute(isdb_table, Scientific_Name=str_to_sentence(SCIENTIFIC_NAME))
-   # isdb_table <- isdb_table %>% 
-   #   dplyr::transmute(isdb_table, Common_Name=str_to_sentence(COMMON_NAME))
-   # isdb_table <- isdb_table %>% 
-   #   dplyr::select(Scientific_Name, Common_Name, Records)
-   # isdb_table <- arrange(isdb_table, Scientific_Name)
-   # isdb_table <- isdb_table %>% 
-   #   dplyr::rename("Scientific Name"=Scientific_Name,"Common Name"=Common_Name)
-   # return(isdb_table)
-#}
-
-#isdb_table <- table_isdb(isdb_intersect)
-
-#isdb_SAR_table <- table_isdb_SAR(isdb_intersect)
+isdb_table <- table_isdb(isdb_intersect)
 #isdb_SAR_table <- table_isdb_SAR(isdb_intersect, listed_fish_invert_species)
 ```
 ```{r}
