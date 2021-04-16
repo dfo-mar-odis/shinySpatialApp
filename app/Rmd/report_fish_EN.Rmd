@@ -105,27 +105,27 @@ isdb_intersect <- isdb_intersect %>% tidyr::extract(geometry, c('long', 'lat'), 
 isdb_sites <- data.frame(longitude=isdb_intersect$long,latitude=isdb_intersect$lat)
 
 isdb_table <- table_isdb(isdb_intersect)
-#isdb_SAR_table <- table_isdb_SAR(isdb_intersect, listed_fish_invert_species)
+isdb_SAR_table <- table_isdb_SAR(isdb_intersect, listed_fish_invert_species)
 ```
 ```{r}
-# Total_number_records_isdb <- sum(isdb_table$Records)
-# Total_number_SAR_records_isdb<-sum(isdb_SAR_table$Records)
-# isdb_summary_table<-data.frame(Total_organisms_recorded_in_polygon="", LISTED_organisms_recorded_in_polygon="")
-# isdb_summary_table[1,1]<-Total_number_records_isdb
-# isdb_summary_table[1,2]<-Total_number_SAR_records_isdb
-# isdb_summary_table<- isdb_summary_table %>% 
-#   dplyr::rename("Total organisms recorded in polygon"=Total_organisms_recorded_in_polygon,"Listed organisms recorded in polygon"=LISTED_organisms_recorded_in_polygon)
+Total_number_records_isdb <- sum(isdb_table$Records)
+Total_number_SAR_records_isdb<-sum(isdb_SAR_table$Records)
+isdb_summary_table<-data.frame(Total_organisms_recorded_in_polygon="", LISTED_organisms_recorded_in_polygon="")
+isdb_summary_table[1,1]<-Total_number_records_isdb
+isdb_summary_table[1,2]<-Total_number_SAR_records_isdb
+isdb_summary_table<- isdb_summary_table %>%
+  dplyr::rename("Total organisms recorded in polygon"=Total_organisms_recorded_in_polygon,"Listed organisms recorded in polygon"=LISTED_organisms_recorded_in_polygon)
 ```
 ```{r, include=FALSE, cache=FALSE}
 # marfis1$YEAR <- lubridate::year(marfis1$DATE_FISHED)
 # marfis1 <- marfis1 %>% dplyr::filter(YEAR >= minYear)
 # marfis_sf <- sf::st_as_sf(marfis1, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 # marfis_intersect <- sf::st_intersection(marfis_sf,studyArea)
-# marfis_intersect <- marfis_intersect %>% 
+# marfis_intersect <- marfis_intersect %>%
 #   tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
 # marfis_sites<-data.frame(longitude=marfis_intersect$long,latitude=marfis_intersect$lat)
 # marfis_table<-table_marfis(marfis_intersect)
-# marfis_SAR_table<-table_marfis_SAR(marfis_intersect)
+# marfis_SAR_table<-table_marfis_SAR(marfis_intersect, listed_fish_invert_species)
 ```
 
 ```{r}
@@ -134,7 +134,7 @@ isdb_table <- table_isdb(isdb_intersect)
 # marfis_summary_table<-data.frame(Total_organisms_recorded_in_polygon="", LISTED_organisms_recorded_in_polygon="")
 # marfis_summary_table[1,1] <- Total_number_records_marfis
 # marfis_summary_table[1,2] <- Total_number_SAR_records_marfis
-# marfis_summary_table <- marfis_summary_table %>% 
+# marfis_summary_table <- marfis_summary_table %>%
 #   dplyr::rename("Total organisms recorded in polygon"=Total_organisms_recorded_in_polygon, "Listed organisms recorded in polygon"=LISTED_organisms_recorded_in_polygon)
 ```
 *
