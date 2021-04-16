@@ -6,7 +6,7 @@ site_map <- function(studyArea,site,land_layer,buf, bound) {
   buf=buf/100
   
   # bounding box
-  bbox=st_bbox(studyArea)
+  bbox=sf::st_bbox(studyArea)
   
   # longitude and latitude limits for the map
   longmin<-(bbox$xmin)-buf
@@ -32,20 +32,20 @@ site_map <- function(studyArea,site,land_layer,buf, bound) {
 ########## Species At Risk distribution and Critical Habitat data ##########
 
 # critical habitat
-plot_crithab<-function(ClippedCritHab_sf, studyArea, land_layer, buf, bound) {
+plot_crithab <- function(ClippedCritHab_sf, leatherback_sf, studyArea, land_layer, buf, bound) {
   
   # buf is in km, and now converted to degrees
   buf=buf/100
   buf_lat=buf*0.72
   
   # bounding box
-  bbox <- st_bbox(studyArea)
+  bbox <- sf::st_bbox(studyArea)
   
   # longitude and latitude limits for the map
-  longmin<-(bbox$xmin)-buf
-  longmax<-bbox$xmax+buf
-  latmin<-bbox$ymin-buf_lat
-  latmax<-bbox$ymax+buf_lat
+  longmin <- (bbox$xmin)-buf
+  longmax <- bbox$xmax+buf
+  latmin <- bbox$ymin-buf_lat
+  latmax <- bbox$ymax+buf_lat
   
   ggplot()+
     geom_sf(data=leatherback_sf,fill="lightgreen",col="black")+
@@ -72,13 +72,13 @@ plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
   buf_lat=buf*0.72
   
   # bounding box
-  bbox=st_bbox(studyArea)
+  bbox=sf::st_bbox(studyArea)
   
   # longitude and latitude limits for the map
-  longmin<-(bbox$xmin)-buf
-  longmax<-bbox$xmax+buf
-  latmin<-bbox$ymin-buf_lat
-  latmax<-bbox$ymax+buf_lat
+  longmin <- (bbox$xmin)-buf
+  longmax <- bbox$xmax+buf
+  latmin <- bbox$ymin-buf_lat
+  latmax <- bbox$ymax+buf_lat
   
   ggplot()+
     geom_sf(data=sardist_sf,fill="orange", col="black", size=0.6)+    
@@ -309,7 +309,7 @@ plot_rockweed<-function(rockweed_sf, areaMap, bboxMap) {
   }else{
     
     # define axis limit
-    axLim=coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]), ylim = c(bboxMap["ymin"], bboxMap["ymax"]),expand=FALSE)
+    axLim=ggplot2::coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]), ylim = c(bboxMap["ymin"], bboxMap["ymax"]),expand=FALSE)
     
     # replace codes with words
     rockweed$Rockweed=""
@@ -379,9 +379,9 @@ plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
   latmax<-bbox$ymax+buf_lat
   
   ggplot()+
-    geom_sf(data=studyArea, fill="#74ECFB", col="black", size=0.6)+
     geom_sf(data=EBSA_sf, fill="plum",col="black")+
-    geom_sf(data=bound, col = "red")+ # creates US boundary line, 200 nm limit
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=site,fill="yellow",col="black", size=0.6)+
     annotation_scale(location="br")+

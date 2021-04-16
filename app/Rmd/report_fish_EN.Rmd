@@ -13,52 +13,63 @@ Security level: none
 Dataset description from the Open Data record [@OpenData_MAR_RV]: The Fisheries and Oceans Canada ecosystem Research Vessel (RV) surveys are conducted annually (since 1970) and are a source of integrated ecosystem monitoring data. These survey data are the primary data source for monitoring trends in species distribution, abundance, and biological condition within the region, and also provide data to the Atlantic Zonal Monitoring Program (AZMP) for monitoring hydrographic conditions, along with zooplankton and phytoplankton. The surveys follow a stratified random sampling design, and include sampling using a bottom otter trawl, CTD rosette and vertical plankton tows. Data from the bottom trawl catch are used to monitor the distribution and abundance of fish and invertebrates throughout the Scotian Shelf, Bay of Fundy and Georges Bank. 
 
 ```{r table RV read, echo=FALSE, cache=FALSE, include = FALSE}
-table_RV <- read.csv("../data/misc/table_RV_EN.csv")
-table_RV<- table_RV %>% dplyr::rename("Season/Months"=Season.Months,
-                                   "Description of Geographic Range"=Description.of.Geographic.Range)
+# table_RV <- read.csv("../data/misc/table_RV_EN.csv")
+# table_RV<- table_RV %>% dplyr::rename("Season/Months"=Season.Months,
+#                                    "Description of Geographic Range"=Description.of.Geographic.Range)
 ```
 ```{r}
-knitr::kable(table_RV, align="l", 
-      caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.", booktabs = T, escape = F, linesep="") %>%
-    kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+# knitr::kable(table_RV, align="l",
+#       caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.", booktabs = T, escape = F, linesep="") 
+#%>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
 #### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
 ```{r, include=FALSE, cache=FALSE}
- RVCatch_sf <- RVCatch_sf %>% dplyr::filter(YEAR >= minYear)
- RVCatch_intersect <- sf::st_intersection(RVCatch_sf,studyArea)
- Total_number_sets_RV<-length(unique(RVCatch_intersect$SETNO))
- rv_SAR_table<-table_rv_SAR(RVCatch_intersect)
- rv_table <- table_rv(RVCatch_intersect)
+  # RVCatch_sf <- RVCatch_sf %>% dplyr::filter(YEAR >= minYear)
+  # RVCatch_intersect <- sf::st_intersection(RVCatch_sf,studyArea)
+  # Total_number_sets_RV <- length(unique(RVCatch_intersect$SETNO))
+  # rv_SAR_table <- table_rv_SAR(RVCatch_intersect, listed_fish_invert_species)
+  # rv_table <- table_rv(RVCatch_intersect)
 ```
 *
 ```{r, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_RV<-if(length(rv_SAR_table) < 1){
-    "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
-  } else {
-    "There are relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
-  }
-Report_RV<-noquote(Report_RV)
-writeLines(Report_RV)
+# Report_RV<-if(length(rv_SAR_table) < 1){
+#     "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+#   } else {
+#     "There are relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+#   }
+# Report_RV<-noquote(Report_RV)
+# writeLines(Report_RV)
 ```
 ```{r}
 #Convert geometry to latitude and longitude
-RVCatch_intersect <- RVCatch_intersect %>% tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
-rv_start_sites<-data.frame(unique(cbind(longitude=RVCatch_intersect$lon, latitude=RVCatch_intersect$lat)))
-rv_end_sites<-data.frame(unique(cbind(longitude=RVCatch_intersect$ELONG, latitude=RVCatch_intersect$ELAT)))
-startx <- rv_start_sites$longitude
-starty <- rv_start_sites$latitude
-endx <- rv_end_sites$longitude
-endy <- rv_end_sites$latitude
+# RVCatch_intersect <- RVCatch_intersect %>% tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
+# rv_start_sites <- data.frame(unique(cbind(longitude=RVCatch_intersect$lon,latitude=RVCatch_intersect$lat)))
+# rv_end_sites <- data.frame(unique(cbind(longitude=RVCatch_intersect$ELONG, latitude=RVCatch_intersect$ELAT)))
+# startx <- rv_start_sites$longitude
+# starty <- rv_start_sites$latitude
+# endx <- rv_end_sites$longitude
+# endy <- rv_end_sites$latitude
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area was used to query information from the Maritimes Research Vessel (RV) Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample.'}
-site_map(studyArea,site,land50k_sf,10,bounds_sf)+
-  geom_point(data = rv_start_sites, aes(x = longitude, y = latitude), size = 3, 
-        shape = 16, colour = "darkgreen")+
-  geom_point(data = rv_end_sites, aes(x = longitude, y = latitude), size = 3, 
-        shape = 16, colour = "firebrick4")+
-  geom_segment(aes(x = startx, y = starty, xend = endx, yend = endy),arrow=arrow(length = unit(0.2,"cm")), size = 1)
+# site_map(studyArea,site,land50k_sf,10,bounds_sf)+
+#   geom_point(data = rv_start_sites, aes(x = longitude, y = latitude), size = 3,shape = 16, colour = "darkgreen")+ geom_point(data = rv_end_sites, aes(x = longitude, y = latitude), size = 3, shape = 16, colour = "firebrick4")+
+#   geom_segment(aes(x = startx, y = starty, xend = endx, yend = endy),arrow=arrow(length = unit(0.2,"cm")), size = 0.5)
+```
+<br><br>
+```{r}
+#if( Total_number_sets_RV>= 1){
+# knitr::kable(rv_SAR_table, align="l", caption="\\label{tab:rv_SAR_table}Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), species assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or species included in the Wild species listing (B=Breeding, N=non-breeding, M=migratory). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")
+  #%>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+#}
+```
+<br><br>
+```{r}
+# if( Total_number_sets_RV>= 1){
+# knitr::kable(rv_table, align="l", caption="\\label{tab:rv_freq_table}Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")
+#   #%>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+# }
 ```
 
 ### **Industry Survey and Maritimes Fishery Databases**  
@@ -86,12 +97,116 @@ Security level: Protected B
 The Maritimes Fishery Information System (MARFIS) is a DFO database, managed by the Policy & Economics Branch. MARFIS contains catch and effort, quota, and licensing information for the Maritimes Region. Log information for all commercial fisheries that land within this region is associated with this data. If a Maritimes Region commercial vessel makes landings in another DFO region or outside of Canadian waters, information is not included in the MARFIS database, irrespective if that vessel originated in the Maritimes Region. The majority of catch information is related to commercial offloads. Reported information contained within MARFIS is not considered spatially or temporally synoptic and, therefore, integrating additional information on presence and/or habitat use (i.e., spawning, migration, feeding) from larger-scale studies is strongly recommended. There is also more limited data related to discards and the Species At Risk data logs. Not all catch records have associated lat/long coordinates. Depending on the structure or completeness of the log, some records may not have associated geographic coordinates. However, generally all records are associated with a NAFO Division and NAFO Unit Area, even if no coordinates have been provided. Production data (<4 years old) are considered preliminary and subject to change without notice. Changes to archived data (>4 years old) may also occur but are generally limited. Ongoing qa/qc work is done on the MARFIS database, but not all errors are corrected. If you have data errors, questions, or corrections, you can send them to our data quality inbox: CDDDataQuality@dfo-mpo.gc.ca. This information about MARFIS was provided by Colin.O'Neil@dfo-mpo.gc.ca (July 2020, Policy & Economics Branch). If you are interested in including observer data in a publication, please remember to aggregate it (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r). 
 
 #### ***Area-specific MARFIS & ISDB search results***
-<br><br>
-**under-development**
+```{r, include=FALSE, cache=FALSE}
+isdb1 <- isdb1 %>% dplyr::filter(YEAR >= minYear)
+isdb_sf <- sf::st_as_sf(isdb1, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+isdb_intersect <- sf::st_intersection(isdb_sf,studyArea)
+isdb_intersect <- isdb_intersect %>%
+  tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
+isdb_sites <- data.frame(longitude=isdb_intersect$long,latitude=isdb_intersect$lat)
 
-```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: Protected B. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area was used to query aggregated information from Maritimes Fishery Information System (MARFIS) and/or Industry Survey Database (ISDB) observation records shown as black points, for all species. Rule of five was not applied.'}
+#table_isdb <- function(isdb_intersect) {
+  
+  # isdb_table <- aggregate(
+  #   x = list(Records = isdb_intersect$SCIENTIFIC),
+  #   by = list(SCIENTIFIC_NAME = isdb_intersect$SCIENTIFIC, 
+  #             COMMON_NAME = isdb_intersect$COMMON),length)
+   # isdb_table <- isdb_table %>% 
+   #   transmute(isdb_table, Scientific_Name=str_to_sentence(SCIENTIFIC_NAME))
+   # isdb_table <- isdb_table %>% 
+   #   dplyr::transmute(isdb_table, Common_Name=str_to_sentence(COMMON_NAME))
+   # isdb_table <- isdb_table %>% 
+   #   dplyr::select(Scientific_Name, Common_Name, Records)
+   # isdb_table <- arrange(isdb_table, Scientific_Name)
+   # isdb_table <- isdb_table %>% 
+   #   dplyr::rename("Scientific Name"=Scientific_Name,"Common Name"=Common_Name)
+   # return(isdb_table)
+#}
+
+#isdb_table <- table_isdb(isdb_intersect)
+
+#isdb_SAR_table <- table_isdb_SAR(isdb_intersect)
+#isdb_SAR_table <- table_isdb_SAR(isdb_intersect, listed_fish_invert_species)
+```
+```{r}
+# Total_number_records_isdb <- sum(isdb_table$Records)
+# Total_number_SAR_records_isdb<-sum(isdb_SAR_table$Records)
+# isdb_summary_table<-data.frame(Total_organisms_recorded_in_polygon="", LISTED_organisms_recorded_in_polygon="")
+# isdb_summary_table[1,1]<-Total_number_records_isdb
+# isdb_summary_table[1,2]<-Total_number_SAR_records_isdb
+# isdb_summary_table<- isdb_summary_table %>% 
+#   dplyr::rename("Total organisms recorded in polygon"=Total_organisms_recorded_in_polygon,"Listed organisms recorded in polygon"=LISTED_organisms_recorded_in_polygon)
+```
+```{r, include=FALSE, cache=FALSE}
+# marfis1$YEAR <- lubridate::year(marfis1$DATE_FISHED)
+# marfis1 <- marfis1 %>% dplyr::filter(YEAR >= minYear)
+# marfis_sf <- sf::st_as_sf(marfis1, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+# marfis_intersect <- sf::st_intersection(marfis_sf,studyArea)
+# marfis_intersect <- marfis_intersect %>% 
+#   tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
+# marfis_sites<-data.frame(longitude=marfis_intersect$long,latitude=marfis_intersect$lat)
+# marfis_table<-table_marfis(marfis_intersect)
+# marfis_SAR_table<-table_marfis_SAR(marfis_intersect)
 ```
 
+```{r}
+# Total_number_records_marfis <- sum(marfis_table$Records)
+# Total_number_SAR_records_marfis <- sum(marfis_SAR_table$Records)
+# marfis_summary_table<-data.frame(Total_organisms_recorded_in_polygon="", LISTED_organisms_recorded_in_polygon="")
+# marfis_summary_table[1,1] <- Total_number_records_marfis
+# marfis_summary_table[1,2] <- Total_number_SAR_records_marfis
+# marfis_summary_table <- marfis_summary_table %>% 
+#   dplyr::rename("Total organisms recorded in polygon"=Total_organisms_recorded_in_polygon, "Listed organisms recorded in polygon"=LISTED_organisms_recorded_in_polygon)
+```
+*
+```{r, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+# Report_isdb<-if(Total_number_SAR_records_isdb < 1){
+#     "There are no relevant records in the Industry Survey Database (ISDB) for this search area."
+#   } else {
+#     "There are relevant records in the Industry Survey Database (ISDB) for this search area."
+#   }
+# Report_isdb<-noquote(Report_isdb)
+# writeLines(Report_isdb)
+```
+
+*
+```{r, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+# Report_marfis<-if(Total_number_SAR_records_marfis < 1){
+#     "There are no relevant records in the Maritimes Fishery Information System (MARFIS) for this search area."
+#   } else {
+#     "There are relevant records in the Maritimes Fishery Information System (MARFIS) for this search area."
+#   }
+# Report_marfis<-noquote(Report_marfis)
+# writeLines(Report_marfis)
+```
+
+```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: Protected B. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area was used to query aggregated information from Maritimes Fishery Information System (MARFIS) and/or Industry Survey Database (ISDB) observation records shown as black points, for all species. Rule of five was not applied.'}
+# site_map(studyArea,site,land50k_sf,10,bounds_sf)+
+#   geom_point(data = isdb_sites, aes(x = longitude, y = latitude), size = 2, 
+#         shape = 16, fill = "black")+
+#   geom_point(data = marfis_sites, aes(x = longitude, y = latitude), size = 2, 
+#         shape = 16, fill = "black")
+```
+```{r}
+# knitr::kable(isdb_SAR_table, align="l", caption="Quality Tier: Medium. Security level: Protected B. Industry Survey Database (ISDB) observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listings (B=Breeding, N=non-breeding, M=migratory). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")%>%
+#   kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+<br><br>
+```{r}
+# knitr::kable(isdb_table, align="l", caption="Quality Tier: Medium. Security level: Protected B. Industry Survey Database (ISDB) observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")%>%
+#   kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+<br><br>
+
+```{r}
+# knitr::kable(marfis_SAR_table, align="l", caption="Quality Tier: Medium. Security level: Protected B. Maritimes Fishery Information System (MARFIS) observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listings (B=Breeding, N=non-breeding, M=migratory). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")%>%
+#   kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+<br><br>
+```{r}
+# knitr::kable(marfis_table, caption="Quality Tier: Medium. Security level: Protected B. Maritimes Fishery Information System (MARFIS) observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% column_spec(1, width="15cm")%>%
+#   kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
 ### **Ocean Biodiversity Information System (OBIS)**  
 Contact: helpdesk@obis.org  
 URL: <https://obis.org/>    
@@ -103,11 +218,37 @@ Security level: none
 OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS searches were conducted to find additional relevant records for species listed by SARA, assessed by COSEWIC, or included in the Wild Species listing. Future iterations of this reporting tool will aim at expanding our quality checks of the OBIS database.
 
 #### ***Area-specific OBIS fish and invertebrate search results***
-<br><br>
-**under-development**
 
-```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area was used to query information from Ocean Biodiversity Information System (OBIS) observation records, for species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC) and Wild species. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.'}
+```{r, include=FALSE, cache=FALSE}
+# obis_sf_filter <- filter_obis_fish(obis_sf)
+# obis_intersect_points_fish <-intersect_points_obis_fish(obis_sf_filter, studyArea)
+# obis_fish_table <- table_obis_fish(obis_sf_filter, studyArea)
+# Total_number_fish_records_obis <- nrow(obis_fish_table)
 ```
-
+*
+```{r, echo=FALSE, results='asis',}
+# Report_obis<-if(Total_number_fish_records_obis < 1){
+#   "There are no relevant records in the Ocean Biodiversity Information System (OBIS) for this search area."
+# } else {
+#   "There are relevant records in the Ocean Biodiversity Information System (OBIS) for this search area."
+# }
+# Report_obis<-noquote(Report_obis)
+# writeLines(c(Report_obis), sep = "\n")
+```
+```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area was used to query information from Ocean Biodiversity Information System (OBIS) observation records, for species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC) and Wild species. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.'}
+# par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)
+# obis_plot<-site_map(studyArea, site, land50k_sf, 10, bounds_sf)+
+#   geom_point(data = obis_intersect_points_fish, aes(x = long, y = lat), size = 3, 
+#         shape = 16, fill = "black") 
+# if(Total_number_fish_records_obis > 1){print(obis_plot)}
+```
+```{r echo=FALSE, results='asis', caption="Priority species with observations contained in the OBIS database within the search polygon area."}
+# OBIS_query_output_table<-if(Total_number_fish_records_obis < 1){
+#   ""
+# } else {
+# knitr::kable(obis_fish_table, align="l", row.names = F, caption="Quality Tier: Medium. Security level: none. Ocean Biodiversity Information System (OBIS) observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild Species listing (B=Breeding, N=non-breeding, M=migratory). <b>The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")%>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+#   }
+# if(Total_number_fish_records_obis > 1){OBIS_query_output_table}
+```
 
 
