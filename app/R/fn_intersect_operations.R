@@ -113,6 +113,10 @@ table_rv <- function(RVCatch_intersect) {
 # #Create table of of ISDB records of all species caught in studyArea
 # 
 table_isdb <- function(isdb_intersect) {
+  
+  if (dim(isdb_intersect)[1]==0){
+    isdb_table <- NULL
+  }else{
 
 isdb_table <- aggregate(
   x = list(Records = isdb_intersect$SCIENTIFIC),
@@ -127,14 +131,17 @@ isdb_table <- isdb_table %>%
 isdb_table <- dplyr::arrange(isdb_table, Scientific_Name)
 isdb_table <- isdb_table %>% 
   dplyr::rename("Scientific Name"=Scientific_Name,"Common Name"=Common_Name)
-#return(isdb_table)
+  
+  }
+  return(isdb_table)
 }
+
 
 table_isdb_SAR <- function(isdb_intersect, listed_fish_invert_species) {
   
-#  if (dim(isdb_intersect)[1]==0){
-#    isdb_SAR_table <- NULL
-#  }else{
+  if (dim(isdb_intersect)[1]==0){
+    isdb_SAR_table <- NULL
+  }else{
   
   isdb_SAR_table <- aggregate(
     x = list(Records = isdb_intersect$SCIENTIFIC),
@@ -150,8 +157,8 @@ table_isdb_SAR <- function(isdb_intersect, listed_fish_invert_species) {
                                             "Scientific Name"=Scientific_Name,
                                             "Common Name"=Common_Name.y)
    isdb_SAR_table<-dplyr::arrange(isdb_SAR_table, "Scientific Name")
-#}
-  #return(isdb_SAR_table)
+  }
+  return(isdb_SAR_table)
 }
 
 # #Create table of of MARFIS records of all species caught in studyArea
@@ -176,6 +183,10 @@ table_marfis <- function(marfis_intersect) {
 
 table_marfis_SAR <- function(marfis_intersect, listed_fish_invert_species) {
   
+  if (dim(marfis_intersect)[1]==0){
+    marfis_SAR_table <- NULL
+  }else{
+    
   marfis_SAR_table <- aggregate(
     x = list(Records = marfis_intersect$SPECIES_CODE),
     by = list(SPECIES_CODE = marfis_intersect$SPECIES_CODE),
@@ -192,7 +203,10 @@ table_marfis_SAR <- function(marfis_intersect, listed_fish_invert_species) {
                                                  "Common Name"=Common_Name)
   marfis_SAR_table<-dplyr::arrange(marfis_SAR_table, "Scientific Name")
   
+  }
+  return(marfis_SAR_table)
 }
+
 # 
 # #Ocean Biodiversity Information System - FISH
 filter_obis_fish <- function(obis_sf) {
