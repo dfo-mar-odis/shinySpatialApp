@@ -32,7 +32,7 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="lef
 ```{r load data and functions, echo=FALSE, include=FALSE, cache=FALSE}
 minYear <- 2010
 load("../data/OpenData.RData")
-#load("../data/OpenData_sardist.RData")
+load("../data/OpenData_sardist.RData")
 load("../data/SecureData.RData")
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
 load("../data/MARFISSCI.SPECIES.RData")
@@ -60,8 +60,14 @@ site <- sf::st_centroid(studyArea)
 
 ```{r parameters for area_map.r, echo=FALSE, include=FALSE, cache=FALSE}
 land_layer<-land50k_sf
-studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1) # Define studyBox geometry "look".
+
+# The following defines studyBox geometry "look". studyBox_geom is input into area map or can be added to any map later
+studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1) 
+
+# The following plots area map using function (output is a list)
 areaMapList<-area_map(studyArea,site,land_layer, 5, bounds_sf,studyBox_geom)
+
+# The following separates items in the output list: first item is a map and second is a bounding box of the map
 areaMap=areaMapList[[1]] # map
 bboxMap=areaMapList[[2]] #bounding box of the map
 ```
