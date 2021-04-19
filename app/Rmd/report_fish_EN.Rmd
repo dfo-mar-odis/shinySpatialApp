@@ -104,11 +104,11 @@ isdb_intersect <- isdb_intersect %>%
   tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
 isdb_sites <- data.frame(longitude=isdb_intersect$long,latitude=isdb_intersect$lat)
 
-if(isdb_intersect$YEAR > 1){
+if(isdb_intersect$YEAR > 0){
 isdb_table <- table_isdb(isdb_intersect)
 } else {NULL}
 
-if(isdb_intersect$YEAR > 1){
+if(isdb_intersect$YEAR > 0){
 isdb_SAR_table <- table_isdb_SAR(isdb_intersect, listed_fish_invert_species)
 } else {NULL}
 ```
@@ -130,13 +130,10 @@ marfis_intersect <- marfis_intersect %>%
   tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
 marfis_sites <- data.frame(longitude=marfis_intersect$long,latitude=marfis_intersect$lat)
 
-# if(marfis_intersect$YEAR > 1){
- marfis_table <- table_marfis(marfis_intersect)
-# } else {NULL}
+marfis_table <- table_marfis(marfis_intersect)
 
-# if(marfis_intersect$YEAR > 1){
  marfis_SAR_table <- table_marfis_SAR(marfis_intersect, listed_fish_invert_species)
-# } else {NULL}
+
 ```
 
 ```{r}

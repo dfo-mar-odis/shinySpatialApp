@@ -132,6 +132,10 @@ isdb_table <- isdb_table %>%
 
 table_isdb_SAR <- function(isdb_intersect, listed_fish_invert_species) {
   
+#  if (dim(isdb_intersect)[1]==0){
+#    isdb_SAR_table <- NULL
+#  }else{
+  
   isdb_SAR_table <- aggregate(
     x = list(Records = isdb_intersect$SCIENTIFIC),
     by = list(Scientific_Name = isdb_intersect$SCIENTIFIC, Common_Name = isdb_intersect$COMMON),length)
@@ -146,13 +150,17 @@ table_isdb_SAR <- function(isdb_intersect, listed_fish_invert_species) {
                                             "Scientific Name"=Scientific_Name,
                                             "Common Name"=Common_Name.y)
    isdb_SAR_table<-dplyr::arrange(isdb_SAR_table, "Scientific Name")
-
+#}
   #return(isdb_SAR_table)
 }
 
 # #Create table of of MARFIS records of all species caught in studyArea
 table_marfis <- function(marfis_intersect) {
   
+  if (dim(marfis_intersect)[1]==0){
+    marfis_table <- NULL
+  }else{
+    
   marfis_table <- aggregate(
     x = list(Records = marfis_intersect$SPECIES_CODE),
     by = list(SPECIES_CODE = marfis_intersect$SPECIES_CODE),length)
@@ -162,6 +170,8 @@ table_marfis <- function(marfis_intersect) {
   marfis_table <- dplyr::arrange(marfis_table, Common_Name)
   marfis_table <- marfis_table %>% dplyr::rename("Common Name"=Common_Name)
   
+  }
+  return(marfis_table)
 }
 
 table_marfis_SAR <- function(marfis_intersect, listed_fish_invert_species) {
