@@ -299,7 +299,7 @@ plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
 ########## Habitat Section ##########
 
 # Rockweed presence [by Gordana Lazin]
-plot_rockweed<-function(rockweed_sf, areaMap, bboxMap) {
+plot_rockweed <- function(rockweed_sf, areaMap, bboxMap) {
   
   # crop rockweed layer to the map area to speed up plotting
   rockweed=st_crop(st_make_valid(rockweed_sf),bboxMap)
@@ -318,10 +318,10 @@ plot_rockweed<-function(rockweed_sf, areaMap, bboxMap) {
     rockweed$Rockweed[which(rockweed$RWP==5)]="5-Unknown"
     rockweed$Rockweed[which(rockweed$RWP==0)]="Not Present"
     
-    rockweedMap <- areaMap+
+    rockweedMap <- areaMap +
       geom_sf(data=rockweed, aes(fill=Rockweed), colour=NA)+
       scale_fill_manual(values=c("#009E73", "#E69F00", "#0072B2","#999999"))+
-      studyBox_geom+
+      studyBox_geom +
       axLim
   }
   
@@ -378,7 +378,7 @@ plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
   latmin<-bbox$ymin-buf_lat
   latmax<-bbox$ymax+buf_lat
   
-  ggplot()+
+  EBSAmap <- ggplot()+
     geom_sf(data=EBSA_sf, fill="plum",col="black")+
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
@@ -391,6 +391,6 @@ plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
          y=expression(paste("Latitude ",degree,"N",sep="")),
          col="")+
     watermark(show = TRUE, lab = "DFO Internal Use Only")
-  
+  return(EBSAmap)
 }
  

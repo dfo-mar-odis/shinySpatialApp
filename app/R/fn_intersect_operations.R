@@ -271,7 +271,7 @@ intersect_points_wsdb <- function(wsdb_filter, studyArea) {
   return(wsdb_intersect_points)
 }
 
-table_wsdb <- function(wsdb_filter, studyArea) {
+table_wsdb <- function(wsdb_filter, studyArea, listed_cetacean_species) {
   wsdb_sf<-st_as_sf(wsdb_filter, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
   intersect_wsdb <- sf::st_intersection(wsdb_sf,studyArea)
   wsdb_table<-merge(intersect_wsdb, listed_cetacean_species, by='Scientific_Name')
@@ -317,7 +317,7 @@ table_whitehead <- function(whitehead_filter, studyArea) {
  
  
 # #North Atlantic Right Whale Consortium (NARWC) database
-filter_narwc <- function(narwc) {
+filter_narwc <- function(narwc, listed_cetacean_species) {
   narwc_filt <- narwc[narwc$SPECCODE %in% c('HAPO', 'SEWH', 'FIWH','RIWH', 'NBWH','KIWH', 'BLWH',  "SOBW"), ]
   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="HAPO")]= "Phocoena phocoena"
   narwc_filt$SPECCODE[which(narwc_filt$SPECCODE=="FIWH")]= "Balaenoptera physalus"
@@ -363,7 +363,7 @@ filter_obis_cet <- function(obis_sf) {
   return(obis_sf_filter)
 }
 
-intersect_points_obis_cet <- function(obis_sf_filter, studyArea) {
+intersect_points_obis_cet <- function(obis_sf_filter, studyArea, listed_cetacean_species) {
   intersect_obis <- sf::st_intersection(obis_sf_filter,studyArea)
   intersect_obis <- merge(intersect_obis, listed_cetacean_species, by='Scientific_Name')
   obis_intersect_points <- intersect_obis %>%

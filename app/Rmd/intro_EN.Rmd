@@ -55,6 +55,9 @@ site <- sf::st_centroid(studyArea)
 #```{r child = '../Rmd/report_fish_EN.Rmd'}
 #```
 
+#```{r child = '../Rmd/report_planning_EN.Rmd'}
+#```
+
 ```{r parameters for area_map.r, echo=FALSE, include=FALSE, cache=FALSE}
 land_layer<-land50k_sf
 

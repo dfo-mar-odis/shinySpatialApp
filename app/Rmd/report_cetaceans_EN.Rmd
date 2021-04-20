@@ -133,7 +133,7 @@ The NARWC Sightings Database contains records of thousands of sightings of Right
 
 #### ***Area-specific NARWC search results***
 ```{r narwc, include=FALSE, cache=FALSE}
- narwc_filter <- filter_narwc(narwc)
+ narwc_filter <- filter_narwc(narwc, listed_cetacean_species)
  narwc_intersect_points <-intersect_points_narwc(narwc_filter, studyArea)
  Total_number_records_narwc <- nrow(narwc_intersect_points)
 ```
@@ -167,7 +167,7 @@ An OBIS search [@OBIS] was conducted to find additional relevant records for cet
 #### ***Area-specific OBIS cetacean search results***
 ```{r obis, include=FALSE, cache=FALSE}
  obis_sf_filter <- filter_obis_cet(obis_sf)
- obis_intersect_points_cet <-intersect_points_obis_cet(obis_sf_filter, studyArea)
+ obis_intersect_points_cet <-intersect_points_obis_cet(obis_sf_filter, studyArea, listed_cetacean_species)
  Total_number_cet_records_obis <- nrow(obis_intersect_points_cet)
 ```
 *
