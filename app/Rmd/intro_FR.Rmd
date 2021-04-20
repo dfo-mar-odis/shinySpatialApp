@@ -6,7 +6,7 @@ date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
   bookdown::html_document2:
     number_sections: FALSE
-    theme: journal
+    theme: paper
     toc: true
     toc_depth: 5
   pdf_document:
@@ -26,46 +26,43 @@ a:hover {color: #006080;}
 
 ```{r setup and libraries, echo=FALSE, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
-library(knitr) # reproducible reports from R Markdown 
-library(rgdal) # read geospatial data files into report
-library(maps) # uncouple lat/lon coordinates in sf objects
-library(lubridate) # extract YEAR from columns containing dates
-#library(sp)
-library(kableExtra) # build and manipulate tables
-library(tidyverse) # a set of packages required for general data manipulation, including ggplot2 for plotting and dplyr
-library(raster) # needed for manipulation of raster files
-library(sf) # manipulation of simple features and to determine overlap of studyArea and databases
-library(stringr) # manipulation of individual characters within strings in character vectors.
-library(data.table) # manipulation of dataframes
-library(gridExtra) # plot a grid of plots (priority cetacean habitat)
-library(stars) # transform features and assign or modify coordinate reference systems in objects
-library(ggspatial) #required for mapping
-#next lines are necessary for the generation of the water mark on plots
-#install.packages("remotes")
-#remotes::install_github("terminological/standard-print-output")
-library(standardPrintOutput) # required for watermarks on maps
 ```
-```{r load data, echo=FALSE, include=FALSE, cache=FALSE}
+
+```{r load data and functions, echo=FALSE, include=FALSE, cache=FALSE}
+minYear <- 2010
 load("../data/OpenData.RData")
-#load("../data/SecureData.RData")
+load("../data/OpenData_sardist.RData")
+load("../data/SecureData.RData")
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
-# load("data/MARFISSCI.SPECIES.RData")
-# ISDB_info<-file.info("data/ISDB.ISSETTYPECODES.RData")
-# MARFIS_info<-file.info("data/MARFISSCI.SPECIES.RData")
-#landGDB <- "../data/Boundaries/Coast50k/Coastline50k.gdb"
-#land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)
+load("../data/MARFISSCI.SPECIES.RData")
+lapply(list.files("../R", pattern = ".[Rr]$", full.names = TRUE),source)
+# check helpers.R for a list of packages
 ```
 
-```{r Select Search Area, echo=FALSE, include=FALSE, cache=FALSE}
-# Search Area generated interactively by the app!
-#studyArea <- as(st_read("{{path_to_geoms}}"), "Spatial")
-studyArea <- st_read("{{path_to_geoms}}")
-# site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName)) #old, static selection
+```{r Search Area and setup.R, echo=FALSE, include=FALSE, cache=FALSE}
+studyArea <- sf::st_read("{{path_to_geoms}}")
+#studyArea <- sf::st_read("geoms_slc.geojson")
+
+# Uncomment the following to test fixed polygon:
+# studyArea <- st_read("../studyAreaTest/geoms_slc_test.geojson")#Offshore
+# studyArea <- st_read("../studyAreaTest/geoms_slc_coastal_test.geojson")#coastal 
+# studyArea <- st_read("../studyAreaTest/geoms_slc_no_land.geojson")#no land
+
+site <- sf::st_centroid(studyArea) 
 ```
 
-```{r}
-plot(st_geometry(studyArea))
-#site_map(studyArea, site, land10m_sf, 40)
+```{r parameters for area_map.r, echo=FALSE, include=FALSE, cache=FALSE}
+land_layer<-land50k_sf
+
+# The following defines studyBox geometry "look". studyBox_geom is input into area map or can be added to any map later
+studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1) 
+
+# The following plots area map using function (output is a list)
+areaMapList<-area_map(studyArea,site,land_layer, 5, bounds_sf,studyBox_geom)
+
+# The following separates items in the output list: first item is a map and second is a bounding box of the map
+areaMap=areaMapList[[1]] # map
+bboxMap=areaMapList[[2]] #bounding box of the map
 ```
 
 <!-- END  -->
@@ -83,11 +80,9 @@ plot(st_geometry(studyArea))
 Ce document résume les données régionales, y compris les renseignements sur les espèces et les habitats, disponibles au moment de la création du rapport. Les résumés de données et les produits (p. ex., graphiques et tableaux) sont présentés accompagnés de descriptions des sources, de mises en garde, d’avis de non-responsabilité, de sources d’incertitude, de références à la documentation et de coordonnées des membres du personnel pertinents qui peuvent fournir une interprétation plus poussée. Ce rapport simplifie le processus de production d’information et de conseils scientifiques pertinents pour diverses évaluations interministérielles, examens réglementaires et activités de production de rapports.
 
 Le présent document est conçu comme un outil de rapport reproductible, appuyé par le langage de balisage R et généré par une interface d’application R-Shiny hébergée sur le réseau du MPO. Les résumés et les résultats des rapports sont basés sur des données extraites d’une zone de recherche fournie par l’utilisateur (un polygone d’intérêt focal) avec un tampon défini par l’utilisateur (figure x). Les instructions d’utilisation de l’interface R-Shiny sont fournies dans le manuel technique. En raison du caractère sensible potentiel de certaines données et informations, l’accès aux données de l’application doit être accordé, et le rapport est destiné à un usage interne uniquement.  
-````{r Fig 1 search polygon, fig.height=8, fig.width=11, fig.cap='Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area is used by this tool to query information and automatically generate a report. '}
-# KC: this is a way of getting the center of a searching area and make it a sp object
-#site <- SpatialPoints(coordinates(studyArea), studyArea@proj4string)
-# KC: this is your map but note that site is no longer used in code
-#site_map(studyArea, site, land, 40)
+
+```{r Fig 1 search polygon, fig.height=8, fig.width=11, fig.cap='Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area is used by this tool to query information and automatically generate a report. '}
+areaMap
 ```
 
 Les espèces qui ont été inscrites aux termes de la Loi sur les espèces en péril (LEP), évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC), ou qui figurent sur la liste des espèces sauvages, sont actuellement visées par ce cadre de rapport reproductible. Reconnaissant l’importance de tenir compte des approches écosystémiques de gestion, le présent rapport comprend également de l’information sur d’autres espèces (p. ex., commerciales, récréatives, importantes sur le plan écologique), les composantes écosystémiques (p. ex., l’habitat côtier) et les zones désignées pour l’aménagement du territoire (p. ex., zones d’importance écologique et biologique) pour chaque zone définie par l’utilisateur. 

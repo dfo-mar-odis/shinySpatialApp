@@ -26,7 +26,6 @@ a:hover {color: #006080;}
 
 ```{r setup and libraries, echo=FALSE, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
-# check helpers.R for a list of packages
 ```
 
 ```{r load data and functions, echo=FALSE, include=FALSE, cache=FALSE}
@@ -36,23 +35,21 @@ load("../data/OpenData_sardist.RData")
 load("../data/SecureData.RData")
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
 load("../data/MARFISSCI.SPECIES.RData")
-#ISDB_info<-file.info("../data/ISDB.ISSETTYPECODES.RData")
-#MARFIS_info<-file.info("../data/MARFISSCI.SPECIES.RData")
 lapply(list.files("../R", pattern = ".[Rr]$", full.names = TRUE),source)
+# check helpers.R for a list of packages
 ```
 
 ```{r Search Area and setup.R, echo=FALSE, include=FALSE, cache=FALSE}
-#studyArea <- sf::st_read("{{path_to_geoms}}")
+studyArea <- sf::st_read("{{path_to_geoms}}")
 #studyArea <- sf::st_read("geoms_slc.geojson")
 
-# Uncomment the following to Test Outside the App:
- studyArea <- st_read("../studyAreaTest/geoms_slc_test.geojson")#Offshore
+# Uncomment the following to test fixed polygon:
+# studyArea <- st_read("../studyAreaTest/geoms_slc_test.geojson")#Offshore
 # studyArea <- st_read("../studyAreaTest/geoms_slc_coastal_test.geojson")#coastal 
 # studyArea <- st_read("../studyAreaTest/geoms_slc_no_land.geojson")#no land
 
 site <- sf::st_centroid(studyArea) 
 ```
-
 # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', #'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')}
 # ```
 #```{r child = '../Rmd/report_fish_EN.Rmd'}

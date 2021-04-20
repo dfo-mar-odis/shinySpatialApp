@@ -52,8 +52,8 @@ endy <- rv_end_sites$latitude
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Buffer area was used to query information from the Maritimes Research Vessel (RV) Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample.'}
-site_map(studyArea,site,land50k_sf,10,bounds_sf)+
-  geom_point(data = rv_start_sites, aes(x = longitude, y = latitude), size = 3,shape = 16, colour = "darkgreen")+ geom_point(data = rv_end_sites, aes(x = longitude, y = latitude), size = 3, shape = 16, colour = "firebrick4")+
+site_map(studyArea, site, land50k_sf, 10, bounds_sf) +
+  geom_point(data = rv_start_sites, aes(x = longitude, y = latitude), size = 3,shape = 16, colour = "darkgreen")+ geom_point(data = rv_end_sites, aes(x = longitude, y = latitude), size = 2, shape = 16, colour = "firebrick4")+
   geom_segment(aes(x = startx, y = starty, xend = endx, yend = endy),arrow=arrow(length = unit(0.2,"cm")), size = 0.5)
 ```
 <br><br>
@@ -117,13 +117,14 @@ isdb_summary_table<- isdb_summary_table %>%
   dplyr::rename("Total organisms recorded in polygon"=Total_organisms_recorded_in_polygon,"Listed organisms recorded in polygon"=LISTED_organisms_recorded_in_polygon)
 ```
 ```{r, include=FALSE, cache=FALSE}
+marfis1 <- marfis1 %>% dplyr::filter(DATE_FISHED >= minYear)
 marfis1$YEAR <- lubridate::year(marfis1$DATE_FISHED)
-marfis1 <- marfis1 %>% dplyr::filter(YEAR >= minYear)
 marfis_sf <- sf::st_as_sf(marfis1, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 marfis_intersect <- sf::st_intersection(marfis_sf,studyArea)
-marfis_intersect <- marfis_intersect %>%
-  tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
-marfis_sites <- data.frame(longitude=marfis_intersect$long,latitude=marfis_intersect$lat)
+
+# marfis_intersect <- marfis_intersect %>%
+#   tidyr::extract(geometry, c('long', 'lat'), '\\((.*), (.*)\\)', convert = TRUE)
+marfis_sites <- data.frame(longitude = marfis_intersect$long, latitude = marfis_intersect$lat)
 
 marfis_table <- table_marfis(marfis_intersect)
 marfis_SAR_table <- table_marfis_SAR(marfis_intersect, listed_fish_invert_species)
@@ -164,8 +165,7 @@ writeLines(Report_marfis)
 site_map(studyArea,site,land50k_sf,10,bounds_sf)+
   geom_point(data = isdb_sites, aes(x = longitude, y = latitude), size = 2,
         shape = 16, fill = "black")+
-  geom_point(data = marfis_sites, aes(x = longitude, y = latitude), size = 2,
-        shape = 16, fill = "black")
+  geom_sf(data = marfis_sites, size = 2, shape = 16, fill = "black")
 ```
 ```{r}
  knitr::kable(isdb_SAR_table, align="l", caption="Quality Tier: Medium. Security level: Protected B. Industry Survey Database (ISDB) observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listings (B=Breeding, N=non-breeding, M=migratory). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")
