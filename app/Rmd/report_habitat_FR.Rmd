@@ -62,21 +62,19 @@ plot_rockweed <- function(rockweed_sf, areaMap, bboxMap) {
   return(rockweedMap)
   
 }
- if(rockweed_result > 1){
- plot_rockweed(rockweed_sf, areaMap, bboxMap)
- } else {NULL}
+if(rockweed_result > 1){print(
+  plot_rockweed(rockweed_sf, areaMap, bboxMap))}
 ```
 
 ```{r table rockweed, echo=FALSE, cache=FALSE, include = FALSE}
 if(rockweed_result > 1){
-rwTable <- rockweedStats(rockweed_sf, studyArea)
-} else {NULL}
+  rwTable <- rockweedStats(rockweed_sf, studyArea)}
 ```
 ```{r}
 if(rockweed_result > 1){
 knitr::kable(rwTable,align="l",
              caption = "Number of vegetation polygons and surface area occupied by each category for the study area. Total intertidal vegetations is a sum of all categories.", booktabs = T, escape = F, linesep="") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
-} else {NULL}
+} 
 ```
 
