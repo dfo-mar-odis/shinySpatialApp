@@ -5,6 +5,7 @@ library(leafem)
 library(mapedit)
 library(sf)
 library(glue)
+library(callr)
 library(knitr) # reproducible reports from R Markdown 
 library(rgdal) # read geospatial data files into report
 library(maps) # uncouple lat/lon coordinates in sf objects

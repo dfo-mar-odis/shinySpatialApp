@@ -67,11 +67,16 @@ renderReport <- function(input, geoms, fl = NULL, dir_out = "output",
 
     # First rendering
     ok[i] <- tryCatch({
-      rmarkdown::render(flrmd, 
-        output_format = "all", 
-        output_dir = dir_out, 
-        output_file = fl2, 
-        quiet = TRUE)
+#      callr::r(
+#        function() {     
+        rmarkdown::render(flrmd,
+         output_format = "all",
+         output_dir = dir_out,
+         output_file = fl2,
+         quiet = TRUE)
+#        }
+#      )
+      
       TRUE
       }, 
       error = function(x) FALSE
@@ -87,10 +92,13 @@ renderReport <- function(input, geoms, fl = NULL, dir_out = "output",
     if (file.exists(gnr_html)) {
       file.copy(gnr_html, glue("www/{preview_html}"))
     } else {
-      rmarkdown::render(flrmd, 
-        output_format = "html_document", 
-        output_dir = "www", 
+#      callr::r(
+#        function() {
+      rmarkdown::render(flrmd,
+        output_format = "html_document",
+        output_dir = "www",
         quiet = TRUE)
+ #         })
     }
     msg <- "Successfully rendered."
   } else {

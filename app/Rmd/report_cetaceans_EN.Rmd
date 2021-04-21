@@ -23,7 +23,7 @@ narwc <- narwc %>% dplyr::filter(YEAR >= minYear)
 
 whale_col=values=c("Blue Whale: Endangered (SARA & COSEWIC)"="black",
                    "Fin Whale: Special Concern (SARA & COSEWIC)"="chartreuse4",
-                   "Harbour Porpoise: Threatened (SARA) Special Concern   (COSEWIC)"="darkgoldenrod1",
+                   "Harbour Porpoise: Threatened (SARA) Special Concern   (COSEWIC)"="gray",
                    "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)"="#00AFBB",
                    "North Atlantic Right Whale: Endangered (SARA & COSEWIC)"="darkorchid4",
                    "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)"="#0827EF",
