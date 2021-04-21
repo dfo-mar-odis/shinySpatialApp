@@ -9,6 +9,7 @@ app/www/*.html
 !app/www/empty_report.html
 
 *.log
+app/output/report_SMR_EN_files/
 app/output/*.geojson
 app/output/*.tex
 app/output/*.pdf
