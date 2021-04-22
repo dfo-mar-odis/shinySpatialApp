@@ -3,6 +3,7 @@ app/data/*
 *.tiff
 *.html
 *.csv
+app/shinySpatialApp - Shortcut.lnk
 
 !app/data/.gitkeep
 app/www/*.html
