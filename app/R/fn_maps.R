@@ -1,5 +1,5 @@
 # #site map
- 
+
 site_map <- function(studyArea,site,land_layer,buf, bound) {
   
   # buf is in km, and now converted to degrees
@@ -63,7 +63,7 @@ plot_crithab <- function(ClippedCritHab_sf, leatherback_sf, studyArea, land_laye
   
 }
 
- 
+
 #SAR distribution
 plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
   
@@ -94,11 +94,11 @@ plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
     watermark(show = TRUE, lab = "DFO Internal Use Only")
   
 }
- 
+
 ###### Cetacean section ##########
 
 # #Grid of 4 cetacean priority habitat
- 
+
 plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
                                humpback_whale_sf, sei_whale_sf, studyArea,
                                land_layer,buf, bound) {
@@ -181,15 +181,15 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   
   #Arrange all 4 cetaceans into grid
   gridExtra::grid.arrange(fin_whale_plot, harbour_porpoise_plot, humpback_whale_plot,
-               sei_whale_plot,
-               bottom = expression(paste("Longitude ",degree,"N",sep="")),
-               left = expression(paste("Latitude ",degree,"N",sep="")),
-               nrow = 2)
+                          sei_whale_plot,
+                          bottom = expression(paste("Longitude ",degree,"N",sep="")),
+                          left = expression(paste("Latitude ",degree,"N",sep="")),
+                          nrow = 2)
 }
- 
- 
+
+
 # Blue whale important habitat
- 
+
 plot_bw_hab <- function(Blue_Whale_sf, studyArea, land_layer, bound) {
   
   ggplot()+
@@ -210,7 +210,7 @@ plot_bw_hab <- function(Blue_Whale_sf, studyArea, land_layer, bound) {
 }
 
 # Blue whale important habitat zoom
- 
+
 plot_bw_hab_zoom <- function(Blue_Whale_sf, studyArea, land_layer, buf, bound) {
   
   # buf is in km, and now converted to degrees
@@ -283,7 +283,8 @@ plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
   
   ggplot()+
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
-    geom_sf(data=critHab,aes(fill='green'),col="black")+
+    # geom_sf(data=critHab,aes(fill='green'),col="black")+
+    geom_sf(data=critHab,col="black", fill = "red")+
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
     geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     annotation_scale(location="br")+
@@ -361,7 +362,7 @@ rockweedStats<- function(rockweed_sf, studyArea) {
 ########## Spatial Planning Section ##########
 
 # EBSA
- 
+
 plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
   
   # buf is in km, and now converted to degrees
@@ -393,4 +394,4 @@ plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
     watermark(show = TRUE, lab = "DFO Internal Use Only")
   return(EBSAmap)
 }
- 
+

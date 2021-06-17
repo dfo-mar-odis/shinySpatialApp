@@ -6,30 +6,10 @@ Data sources/products used in this section include: Whale Sightings Database (WS
 
 Please refer to WHALEMAP [@whalemap] https://whalemap.ocean.dal.ca for additional information on observations (sightings and acoustic detections) of North Atlantic Right Whales. WHALEMAP primarily reflects results for areas that are being monitored; therefore, the absence of North Atlantic Right Whales in an area should be interpreted as an absence of reporting, not necessarily an absence of the species in the search area. In addition, sightings on WHALEMAP are preliminary and subject to change once quality control checks have been completed.
 
-This section does not endeavor to describe every source of information available; the data presented does not represent all available cetacean sightings data within the search area and additional sightings may be available from other sources, or more recent data may be available than what is presented here. In addition to the presence-only data, there may be data available that can be used to support species-specific conclusions about habitat preferences and possible or known occurrence near and within the search area. Please refer to the cited publications for additional information and contact Angelia Vanderlaan (North Atlantic Right Whales) and Hilary Moors-Murphy (other cetacean species) to discuss additional sources of information (e.g., acoustic detections). Data and sources not explicitly included in this report include information from past studies/publications, acoustic detections, prey sampling and tagging. While the value of these data in predicting and describing cetacean occurrence is vital, these types of data are not available for all species and are not yet available for data querying. In the future, as information from other data sources becomes available, these new data will help to provide a more comprehensive understanding of cetacean habitat use and occurrence in the search areas.
+This section does not endeavor to describe every source of information available; the data presented does not represent all available cetacean sightings data within the search area and additional sightings may be available from other sources, or more recent data may be available than what is presented here. In addition to the presence-only data, there may be data available that can be used to support species-specific conclusions about habitat preferences and possible or known occurrence near and within the search area. Please refer to the cited publications for additional information and contact Angelia Vanderlaan (North Atlantic Right Whales) and Hilary Moors-Murphy (other cetacean species) to discuss additional sources of information (e.g., acoustic detections). Data and sources not explicitly included in this report include information from past studies/publications, acoustic detections, prey sampling and tagging. While the value of these data in predicting and describing cetacean occurrences is vital, these types of data are not available for all species and are not yet available for data querying. In the future, as information from other data sources becomes available, these new data will help to provide a more comprehensive understanding of cetacean habitat use and occurrence in the search areas.
 
 ```{r cetacean setup, echo=FALSE, include=FALSE, cache=FALSE}
-fin_whale_sf<-stars::st_as_stars(fin_whale)%>%sf::st_as_sf()
-harbour_porpoise_sf<-stars::st_as_stars(harbour_porpoise)%>%sf::st_as_sf()
-humpback_whale_sf<-stars::st_as_stars(humpback_whale)%>%sf::st_as_sf()
-sei_whale_sf<-stars::st_as_stars(sei_whale)%>%sf::st_as_sf()
-
-## Filter files used in multiple sections by minYeardefined in intro Rmd
-obis_sf <- obis_sf %>% dplyr::filter(year >= minYear)
-wsdb <- wsdb %>% dplyr::filter(YEAR >= minYear)
-whitehead$YEAR<-lubridate::year(whitehead$Date)
-whitehead <- whitehead %>% dplyr::filter(YEAR >= minYear)
-narwc <- narwc %>% dplyr::filter(YEAR >= minYear)
-
-whale_col=values=c("Blue Whale: Endangered (SARA & COSEWIC)"="black",
-                   "Fin Whale: Special Concern (SARA & COSEWIC)"="chartreuse4",
-                   "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)"="red",
-                   "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)"="#00AFBB",
-                   "North Atlantic Right Whale: Endangered (SARA & COSEWIC)"="darkorchid4",
-                   "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)"="#0827EF",
-                   "Sei Whale: No Status (SARA) & Endangered (COSEWIC)"="#EF6408",
-                   "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)"="#F5A4E7"
-                   )
+whale_col=values=c("Beluga Whale: Endangered (SARA & COSEWIC)"="cyan3","Blue Whale: Endangered (SARA & COSEWIC)"="black", "Fin Whale: Special Concern (SARA & COSEWIC)"="chartreuse4", "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)"="red","Killer Whale: No Status (SARA) & Special Concern (COSEWIC)"="#00AFBB", "North Atlantic Right Whale: Endangered (SARA & COSEWIC)"="darkorchid4", "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)"="#0827EF", "Sei Whale: No Status (SARA) & Endangered (COSEWIC)"="#EF6408",  "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)"="#F5A4E7")
 ```
 
 ### **Whale Sightings Database (WSDB)**  
@@ -51,7 +31,7 @@ This database does not actively seek to store information on marine mammal incid
 
 Please note the following important disclaimers and caveats associated with sightings from the WSDB:
 
-- The data represent an amalgamation of sightings across years and seasons. The sighting data are biased by when and where activities were conducted; thus, the sighting effort is unequal across months, years or areas. Therefore, apparent differences in seasonal or annual distribution patterns in the sighting data should not be considered definitive. Unfavorable weather and reduced visual effort in winter, spring, and autumn likely account for the fewer sighting records in these seasons compared to summer. 
+- The data represent an amalgamation of sightings across years and seasons. The sighting data are biased towards where and when activities were conducted; thus, sighting effort is unequal across months, years or areas. Therefore, apparent differences in seasonal or annual distribution patterns in the sighting data should not be considered definitive. Unfavorable weather and reduced visual effort in winter, spring, and autumn likely account for the fewer sighting records in these seasons compared to summer. 
 - Sighting effort has not been quantified (i.e., the data cannot be used to estimate true/relative species density or abundance for an area, or species absence). Species absence in an area should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.
 - The sighting data have not been completely error-checked and may contain duplicate records. Sightings may also include sightings of the same animals reported by multiple platforms/vessels.
 - The quality of some of the sighting data is unknown. Most sightings were collected on an opportunistic basis and observations come from individuals with a wide range of expertise and experience in marine-mammal identification. 
@@ -61,26 +41,27 @@ Please note the following important disclaimers and caveats associated with sigh
 #### ***Area-specific WSDB search results***
 
 ```{r wsdb, include=FALSE, cache=FALSE}
- wsdb_filter <- filter_wsdb(wsdb, listed_cetacean_species)
- wsdb_intersect_points <- intersect_points_wsdb(wsdb_filter, studyArea)
- Total_number_records_WSDB <- nrow(wsdb_intersect_points)
+outputList <- main_intersect(wsdb_sf, studyArea, Bbox = bboxMap)
+
+if (!is.null(outputList)) {
+wsdb_points <- sfcoords_as_cols(outputList[[2]])
+}
 ```
 *
 ```{r wsdb result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Query_output_wsdb <- if(Total_number_records_WSDB < 1){
+Report_wsdb <- if (is.null(outputList)) {
    "There are no relevant records in the WSDB for this search area."
  } else {
    "There are relevant records in the WSDB for this search area."
  }
- writeLines(Query_output_wsdb)
+ writeLines(Report_wsdb)
 ```
 
-```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild Species listings. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
-par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)
-wsdb_plot <- site_map(studyArea,site,land50k_sf,5, bounds_sf)+
-  geom_point(data = wsdb_intersect_points, aes(x = long, y = lat, color=CommonName_status), size = 2, shape = 20)+
-  theme(legend.text=element_text(size=rel(0.9)))
-if(Total_number_records_WSDB > 1){print(wsdb_plot + ggplot2::scale_colour_manual(values=whale_col))}
+```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild Species listings. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
+if (!is.null(outputList)) {
+  areaMap + geom_point(data = wsdb_points, aes(x = long, y = lat, color=Legend), size = 2, shape = 20) +
+    ggplot2::scale_colour_manual(values=whale_col)
+}
 ```
 
 ### **The Whitehead Lab, Dalhousie University**
@@ -92,31 +73,30 @@ Security level: none
 
 The following information is summarized in this website (https://whiteheadlab.weebly.com/). The Whitehead Lab is based out of the Dalhousie University Department of Biology (Halifax, Nova Scotia). Since its inception in 1987, the Whitehead Lab has been home to over 75 postdoctoral, Ph.D., M.Sc., and undergraduate students. These students primarily conduct conservation-based research on the behavior, ecology, and population biology of cetacean species (primarily, Sperm Whales, Northern Bottlenose Whales, and Long-Finned Pilot Whales), with many studies focused on species in eastern Canadian waters. 
 
-The following description of cetacean sightings data collection methods used by the Whitehead Lab is summarized from @Whitehead2013: cetacean sightings data include sightings of species of research focus as well as incidental sightings of cetaceans during studies of Northern Bottlenose Whales and, to a lesser extent, Sperm Whales in the northwest Atlantic, primarily in the Gully MPA, and adjacent canyons along the edge of the eastern Scotian Shelf (the Shortland and Haldimand canyons). Data collection was carried out in a comparable manner, from two similar research vessels: a 10 m auxiliary sailing vessel (used in earlier efforts), and a 13 m auxiliary sailing vessel (used in later efforts). All cetaceans sighted were recorded, together with time of sighting, species (where ascertainable), and position. As definitions of group size changed over the course of the study, group size estimates may be inaccurate and can be biased by factors such as the behaviour of the animals and weather. Consequently, sightings locations represent groups sightings, which could be one or more animals, rather than numbers of individuals. The Whitehead Lab provides cetacean sightings to the Whale Sightings Database (WSDB). However, due to its high Quality Tier, this database is summarized independently in this section of the report.
+The following description of cetacean sightings data collection methods used by the Whitehead Lab is summarized from @Whitehead2013: cetacean sightings data include sightings of species of research focus as well as incidental sightings of cetaceans during studies of Northern Bottlenose Whales and, to a lesser extent, Sperm Whales in the northwest Atlantic, primarily in the Gully MPA, and adjacent canyons along the edge of the eastern Scotian Shelf (the Shortland and Haldimand canyons). Data collection was carried out in a comparable manner, from two similar research vessels: a 10 m auxiliary sailing vessel (used in earlier efforts), and a 13 m auxiliary sailing vessel (used in later efforts). All cetaceans sighted were recorded, together with time of sighting, species (where ascertainable), and position. As definitions of group size changed over the course of the study, group size estimates may be inaccurate and can be biased by factors such as the behaviour of the animals and weather. Consequently, sighting locations represent groups sightings, which could be one or more animals, rather than numbers of individuals. The Whitehead Lab provides cetacean sightings to the Whale Sightings Database (WSDB). However, due to its high Quality Tier, this database is summarized independently in this section of the report.
 
 #### ***Area-specific Whitehead Lab search results***
 
 ```{r whitehead, include=FALSE, cache=FALSE}
-whitehead_filter <- filter_whitehead(whitehead, listed_cetacean_species)
-whitehead_intersect_points <-intersect_points_whitehead(whitehead_filter, studyArea)
-Total_number_records_whitehead <- nrow(whitehead_intersect_points)
+outputList <- main_intersect(whitehead_sf, studyArea, Bbox = bboxMap)
+if (!is.null(outputList)) {
+  whitehead_points <- sfcoords_as_cols(outputList[[2]])
+}
 ```
 *
 ```{r whitehead result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Query_output_whitehead<-if(Total_number_records_whitehead < 1){
-  "There are no relevant records in the Whitehead Lab database for this search area."
-} else {
-  "There are relevant records in the Whitehead Lab database for this search area."
-}
-writeLines(Query_output_whitehead)
+Report_whitehead <-  if (is.null(outputList)) {
+   "There are no relevant records in the Whitehead Lab database for this search area."
+ } else {
+   "There are relevant records in the Whitehead Lab database for this search area."
+ }
+writeLines(Report_whitehead)
 ```
 
-```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the Whitehead Lab, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. Field efforts were primarily conducted in the Gully Marine Protected Area, and adjacent canyons along the edge of the eastern Scotian Shelf, during good weather conditions (for example, see Whitehead 2013 for a map of effort between 1988-2011), though some data from surveys along the shelf edge off Nova Scotia, Newfoundland and Labrador are included. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. This map also does not include acoustic detections. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. For more information, please visit: <https://whiteheadlab.weebly.com/contact.html>'}
-par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2) #it goes c(bottom, left, top, right)
-whitehead_plot <- site_map(studyArea,site,land50k_sf,5,bounds_sf)+
-  geom_point(data = whitehead_intersect_points, aes(x = long, y = lat, color=CommonName_status), size = 2, shape = 20)+
-  theme(legend.text=element_text(size=rel(0.9)))
- if(Total_number_records_whitehead > 1){print(whitehead_plot + ggplot2::scale_colour_manual(values=whale_col))}
+```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whitehead Lab, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. Field efforts were primarily conducted in the Gully Marine Protected Area, and adjacent canyons along the edge of the eastern Scotian Shelf, during good weather conditions (for example, see Whitehead 2013 for a map of effort between 1988-2011), though some data from surveys along the shelf edge off Nova Scotia, Newfoundland and Labrador are included. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. This map also does not include acoustic detections. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. For more information, please visit: <https://whiteheadlab.weebly.com/contact.html>'}
+if (!is.null(outputList)) {
+  areaMap + geom_point(data = whitehead_points, aes(x = long, y = lat, color=Legend), size = 2, shape = 20) + ggplot2::scale_colour_manual(values=whale_col)
+}
 ```
 
 ### **North Atlantic Right Whale Consortium (NARWC) Sightings Database**  
@@ -133,25 +113,25 @@ The NARWC Sightings Database contains records of thousands of sightings of Right
 
 #### ***Area-specific NARWC search results***
 ```{r narwc, include=FALSE, cache=FALSE}
- narwc_filter <- filter_narwc(narwc, listed_cetacean_species)
- narwc_intersect_points <-intersect_points_narwc(narwc_filter, studyArea)
- Total_number_records_narwc <- nrow(narwc_intersect_points)
+outputList <- main_intersect(narwc_sf, studyArea, Bbox = bboxMap)
+
+if (!is.null(outputList)) {
+  narwc_points <- sfcoords_as_cols(outputList[[2]])
+}
 ```
 *
 ```{r narwc result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Query_output_narwc<-if(Total_number_records_narwc < 1){
-  "There are no relevant records in the NARWC data base for the defiend search area."
-} else {
-  "There are relevant records in the NARWC data base for the defiend search area."
-}
-writeLines(Query_output_narwc)
+Report_narwc <-  if (is.null(outputList)) {
+   "There are no relevant records in the NARWC database for this search area."
+ } else {
+   "There are relevant records in the NARWC database for this search area."
+ }
+writeLines(Report_narwc)
 ```
-```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the North Atlantic Right Whale Consortium (NARWC) Sightings Database, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. <b>Absence of a species in the map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area</b> since survey effort is biased towards the Northeast US, and data on species presence from acoustic detections is not included. For more information, please visit: <https://www.narwc.org/sightings-database.html>'}
-par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
-narwc_plot<-site_map(studyArea,site,land50k_sf,5, bounds_sf)+
-  geom_point(data = narwc_intersect_points, aes(x = long, y = lat, color=CommonName_status), size = 2, shape = 20)+
-  theme(legend.text=element_text(size=rel(0.9)))
-if(Total_number_records_narwc > 1){print(narwc_plot + ggplot2::scale_colour_manual(values=whale_col))}
+```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the North Atlantic Right Whale Consortium (NARWC) Sightings Database, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. <b>Absence of a species in the map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area</b> since survey effort is biased towards the Northeast US, and data on species presence from acoustic detections is not included. For more information, please visit: <https://www.narwc.org/sightings-database.html>'}
+if (!is.null(outputList)) {
+  areaMap + geom_point(data = narwc_points, aes(x = long, y = lat, color = Legend), size = 2, shape = 20) + ggplot2::scale_colour_manual(values=whale_col)
+}
 ```
 
 ### **Ocean Biodiversity Information System (OBIS) [for cetaceans]**  
@@ -162,30 +142,30 @@ Quality Tier: Medium
 Search year: 2002-2020    
 Security level: none    
 
-An OBIS search [@OBIS] was conducted to find additional relevant records for cetacean listed by SARA, assessed by COSEWIC,  or included in the Wild Species listings. A first level QC process was performed by removing duplicate reports that are also present in WSDB. Subsequent versions of this report will aim at expanding our QC efforts for this source of information.
+An OBIS search [@OBIS] was conducted to find additional relevant records for cetaceans listed by SARA, assessed by COSEWIC,  or included in the Wild Species listings. A first level QC process was performed by removing duplicate reports that are also present in WSDB. Subsequent versions of this report will aim at expanding our QC efforts for this source of information.
 
 #### ***Area-specific OBIS cetacean search results***
 ```{r obis, include=FALSE, cache=FALSE}
- obis_sf_filter <- filter_obis_cet(obis_sf)
- obis_intersect_points_cet <-intersect_points_obis_cet(obis_sf_filter, studyArea, listed_cetacean_species)
- Total_number_cet_records_obis <- nrow(obis_intersect_points_cet)
+outputList <- main_intersect(obis_cet_sf, studyArea, Bbox = bboxMap)
+
+if (!is.null(outputList)) {
+  obis_cet_points <- sfcoords_as_cols(outputList[[2]])
+}
 ```
 *
 ```{r obis result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Query_output_obis<-if(Total_number_cet_records_obis < 1){
+Report_obis_cet <-  if (is.null(outputList)) {
   "There are no relevant records of cetaceans in the Ocean Biodiversity Information System (OBIS) for this search area."
 } else {
   "There are relevant records of cetaceans in the Ocean Biodiversity Information System (OBIS) for this search area."
 }
-writeLines(Query_output_obis)
+writeLines(Report_obis_cet)
 ```
 
-```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Map displays information from the Ocean Biodiversity Information System (OBIS), for cetacean species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
-par(mfrow = c(1,2), mar=c(0, 0, 5.5, 0) + 2)#it goes c(bottom, left, top, right)
-obis_plot<-site_map(studyArea,site,land50k_sf,5,bounds_sf)+
-  geom_point(data = obis_intersect_points_cet, aes(x = long, y = lat, color=CommonName_status), size = 2, shape = 20)+
-  theme(legend.text=element_text(size=rel(0.9)))
-if(Total_number_cet_records_obis > 1){print(obis_plot + ggplot2::scale_colour_manual(values=whale_col))}
+```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Ocean Biodiversity Information System (OBIS), for cetacean species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild species listing. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
+if (!is.null(outputList)) {
+  areaMap + geom_point(data = obis_cet_points, aes(x = long, y = lat, color = Legend), size = 2, shape = 20) + ggplot2::scale_colour_manual(values=whale_col)
+}
 ```
 
 ### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans**  
@@ -197,21 +177,25 @@ Quality Tier: Medium
 Search year: 1975-2015        
 Security level: none      
 
-Dataset description from the Open Data record [@OpenData_cetacean_imp]:  Species Distribution Models (SDM) were used to predict and identify priority areas for enhanced monitoring of cetaceans in eastern Canadian waters off Nova Scotia, Newfoundland and Labrador. This data set represents information presented in @Gomez2020SDM and includes sighting records and SDM outputs for ten cetacean species with sufficient records (n > 450), as well as sightings only for an additional six species. Gomez et al. (2020) used a compilation of aerial- and vessel-based cetacean sightings data from 1975-2015, assembled in @Gomez2017SDM from a variety of sources. Note that sightings data from many of these sources were not effort-corrected, and apparent distribution patterns based on these opportunistic sightings data are biased by when and where survey activities were conducted. Unfavorable weather and reduced visual effort in winter, spring, and autumn likely account for the fewer sighting records in these seasons compared to summer. The dataset did not include dead animal, stranding, entanglement, or entrapment data. While some of the databases included records obtained during the whaling period (catches or sightings recorded prior to 1975), for all analyses/modelling conducted in that study, only sightings of free-swimming whales obtained during the post-whaling period (1975-2015) were used. Quality control checks included discarding all records outside of our study area and removing redundant records (identical species, day, month, latitude and longitude). The data used did not reflect any updates or corrections to the databases that have occurred since the data were compiled in 2016. Sightings are not available for download here; please contact the original data sources listed below to obtain raw sightings data. Gomez et al. (2020) represented an important initiative in eastern Canada to highlight key areas for cetacean monitoring in waters off Nova Scotia, Newfoundland and Labrador. Habitats with high suitability were interpreted as areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Model outputs used cetacean sightings from several decades and dynamic environmental predictors that used seasonal averages across multiple years. As proxies for prey availability, five predictor environmental variables were selected for the SDM: ocean depth, compound topographic index, sea surface temperature, areas of persistently high chlorophyll-a concentration, and regional chlorophyll-a magnitude. See Gomez et al. (2020) for further details on modelling methods. Persistent patterns over time (between 1975-2015) are the main patterns expected to be captured by these models. Further, SDM results presented were not the same as species density maps; rather, they portrayed predicted suitable habitat based on environmental characteristics and sightings data that were not always derived from effort-based surveys. Consequently, the use of these models in marine spatial planning processes should be accompanied by complimentary approaches, such as acoustic and visual validation of the SDM results, as well as additional monitoring and modeling efforts. Please refer to Gomez et al. (2020) for examples on how to best use these data outputs. Future efforts will focus on using more recent data and improving these models to facilitate the inclusion of cetaceans in marine spatial planning processes that are currently underway. 
+Dataset description from the Open Data record [@OpenData_cetacean_imp]:  Species Distribution Models (SDM) were used to predict and identify priority areas for enhanced monitoring of cetaceans in eastern Canadian waters off Nova Scotia, Newfoundland and Labrador. This data set represents information presented in @Gomez2020SDM and includes sighting records and SDM outputs for ten cetacean species with sufficient records (n > 450), as well as sightings only for an additional six species. Gomez et al. (2020) used a compilation of aerial- and vessel-based cetacean sightings data from 1975-2015, assembled in @Gomez2017SDM from a variety of sources. Note that sightings data from many of these sources were not effort-corrected, and apparent distribution patterns based on these opportunistic sightings data are biased by when and where survey activities were conducted. Unfavorable weather and reduced visual effort in winter, spring, and autumn likely account for the fewer sighting records in these seasons compared to summer. The dataset did not include dead animal, stranding, entanglement, or entrapment data. While some of the databases included records obtained during the whaling period (catches or sightings recorded prior to 1975), for all analyses/modelling conducted in that study, only sightings of free-swimming whales obtained during the post-whaling period (1975-2015) were used. Quality control checks included discarding all records outside of our study area and removing redundant records (identical species, day, month, latitude and longitude). The data used did not reflect any updates or corrections to the databases that have occurred since the data were compiled in 2016. Sightings are not available for download here; please contact the original data sources listed below to obtain raw sightings data. Gomez et al. (2020) represented an important initiative in eastern Canada to highlight key areas for cetacean monitoring in waters off Nova Scotia, Newfoundland and Labrador. Habitats with high suitability were interpreted as areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Model outputs used cetacean sightings from several decades and dynamic environmental predictors that used seasonal averages across multiple years. As proxies for prey availability, five predictor environmental variables were selected for the SDM: ocean depth, compound topographic index, sea surface temperature, areas of persistently high chlorophyll-a concentration, and regional chlorophyll-a magnitude. See Gomez et al. (2020) for further details on modelling methods. Persistent patterns over time (between 1975-2015) are the main patterns expected to be captured by these models. Further, SDM results presented were not the same as species density maps; rather, they portrayed predicted suitable habitat based on environmental characteristics and sightings data that were not always derived from effort-based surveys. Consequently, the use of these models in marine spatial planning processes should be accompanied by complementary approaches, such as acoustic and visual validation of the SDM results, as well as additional monitoring and modeling efforts. Please refer to Gomez et al. (2020) for examples on how to best use these data outputs. Future efforts will focus on using more recent data and improving these models to facilitate the inclusion of cetaceans in marine spatial planning processes that are currently underway. 
 
-Important usage considerations: model predictions in this section should not be used on their own for this report, marine spatial planning purposes, and/or to delineate important habitat for cetacean species. Rather, outputs should be used together with other sources of information such as prey distribution, tagging data, detections from acoustic monitoring, other data on cetacean occurrence, and other modeling efforts already available for the area. In fact, the data product summarized in the section below (Blue Whale important habitat in the Western North Atlantic) represents an excellent framework in which to properly use the outputs of this section.  
+Important usage considerations: model predictions in this section should not be used on their own for this report, marine spatial planning purposes, and/or to delineate important habitat for cetacean species. Rather, outputs should be used together with other sources of information such as prey distribution, tagging data, detections from acoustic monitoring, other data on cetacean occurrence, and other modeling efforts already available for the area. The data product summarized in the section below (Blue Whale important habitat in the Western North Atlantic) represents an excellent framework in which to properly use the outputs of this section.  
 
 #### ***Area-specific SDM cetacean search results***
 ```{r sdm, include=FALSE, cache=FALSE}
+fin_whale_sf<-stars::st_as_stars(fin_whale)%>%sf::st_as_sf()
+harbour_porpoise_sf<-stars::st_as_stars(harbour_porpoise)%>%sf::st_as_sf()
+humpback_whale_sf<-stars::st_as_stars(humpback_whale)%>%sf::st_as_sf()
+sei_whale_sf<-stars::st_as_stars(sei_whale)%>%sf::st_as_sf()
+
 table_sdm <- sdm_table(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea)
 ```
 ```{r}
- knitr::kable(table_sdm, align="cccc", caption="Quality Tier: Low. Security level: none. Results showing if the search area overlap with predicted Priority Areas to Enhance Monitoring of several species of cetaceans (Fin Whale, Harbour Porpoise, Humpback Whale and Sei Whale). TRUE = polygon does overlap with priority area; FALSE = polygon does NOT overlap with priority area.", booktabs = T, escape = F, linesep="")
-# %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+ knitr::kable(table_sdm, align="cccc", caption="Quality Tier: Low. Security level: none. Results showing if the search area overlap with predicted Priority Areas to Enhance Monitoring of several species of cetaceans (Fin Whale, Harbour Porpoise, Humpback Whale and Sei Whale). TRUE = polygon does overlap with priority area; FALSE = polygon does NOT overlap with priority area.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map shows consolidated Species Distribution Modelling outputs (60-100% relative predicted occurrence rate). Yellow polygons (habitats with high suitability) are to be interpreted as areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Due to the many reasons listed in the discussion section in Gomez et al. (2020), these cetacean modelling outputs do not represent a complete and current distribution of cetaceans in the region. They represent priority areas to direct cetacean monitoring efforts. Their use in marine spatial planning processes should be accompanied by complementary approaches such as the process summarized in the section below. The data product summarized in the section below (Blue Whale Important Habitat in the Western North Atlantic) represents an excellent framework in which to properly use the outputs of this figure.'}
- plot_cetaceans_4grid(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea, land10m_sf, 200, bounds_sf)
+plot_cetaceans_4grid(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea, land10m_sf, 200, bounds_sf)
 ```
 
 ### **Blue Whale Important Habitat**  
@@ -229,18 +213,17 @@ Please see a list of all sources of information used in @Lesage2018 and the Open
 #### ***Area-specific Blue Whale Important Habitat search results***
 *
 ```{r bw result, echo=FALSE, results='asis'}
-  BW <- blue_whale_habitat_overlap(Blue_Whale_sf, studyArea)
-  writeLines(BW)
+BW <- blue_whale_habitat_overlap(BlueWhale_ImpHab_sf, studyArea)
+writeLines(BW)
 ```
 ```{r bw plots, echo=FALSE, results='asis'}
-  BW_wide <- plot_bw_hab(Blue_Whale_sf, studyArea, land10m_sf, bounds_sf)
-  BW_zoom <- plot_bw_hab_zoom(Blue_Whale_sf, studyArea, land50k_sf, 100, bounds_sf)
+BW_wide <- plot_bw_hab(BlueWhale_ImpHab_sf, studyArea, land10m_sf, bounds_sf)
+BW_zoom <- plot_bw_hab_zoom(BlueWhale_ImpHab_sf, studyArea, land50k_sf, 100, bounds_sf)
 ```
 
 ```{r, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Blue Whale Important Habitat in the Western North Atlantic. Polygons delimit areas in Canadian waters that are important to Blue Whales for foraging and migration. These areas identified in the report by Lesage et al. (2018) are considered important for the survival and recovery of Blue Whales from the western North Atlantic population. Blue Whales most likely need to use several of these important habitats to fulfill their biological needs. As a result, access corridors and habitat they connect need to be considered equally important for the population.'}
-grid.arrange(BW_wide, BW_zoom,
-             bottom = expression(paste("Longitude ",degree,"N",sep="")),
-             left = expression(paste("Latitude ",degree,"N",sep="")),
+grid.arrange(BW_wide, BW_zoom, bottom = expression(paste("Longitude ",degree,"N",sep="")),
+             left = expression(paste("Latitude",degree,"N",sep="")),
              nrow = 1,
              widths = c(4.1/10, 5.9/10))
 ```
@@ -249,33 +232,29 @@ grid.arrange(BW_wide, BW_zoom,
 Northern bottlenose whales important habitat in inter-canyon areas on the eastern Scotian Shelf  
 Contact: <MaritimesRAP.XMAR@dfo-mpo.gc.ca>   
 URL: <http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf>    
-Last retrieved on: February 17 2021 from Maritimes Region     
+Last retrieved on: June 15 2021 from Open Data <https://open.canada.ca/data/en/dataset/9fd7d004-970c-11eb-a2f3-1860247f53e3>     
 Quality Tier: High    
 Security level: none  
 
-The Scotian Shelf population of northern bottlenose whales (_Hyperoodon ampullatus_) is listed as Endangered under Canada’s Species at Risk Act. Partial critical habitat was identified for this population in the Recovery Strategy first published in 2010 [@DFO2016_recoverynbw], and three critical habitat areas were designated along the eastern Scotian Shelf, encompassing the Gully, Shortland Canyon, and Haldimand Canyon (shapefile available online: https://open.canada.ca/data/en/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c). However, the Recovery Strategy recognized that additional areas may constitute critical habitat for the population and recommended further studies based on acoustic and visual monitoring to assess the importance of inter-canyon areas as foraging habitat and transit corridors for northern bottlenose whales.
-In a subsequent study of the distribution, movements, and habitat use of northern bottlenose whales on the eastern Scotian Shelf [@Stanistreet2021], several sources of data were assessed and additional important habitat was identified in the inter-canyon areas located between the Gully, Shortland Canyon, and Haldimand Canyon [@DFO2020NBW_imphabitat]. A summary of the data inputs, analyses, and limitations is provided below.
+The Scotian Shelf population of Northern Bottlenose Whales (_Hyperoodon ampullatus_) is listed as Endangered under Canada’s Species at Risk Act. Partial critical habitat was identified for this population in the Recovery Strategy first published in 2010 [@DFO2016_recoverynbw], and three critical habitat areas were designated along the eastern Scotian Shelf, encompassing the Gully, Shortland Canyon, and Haldimand Canyon (shapefile available online: https://open.canada.ca/data/en/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c). However, the Recovery Strategy recognized that additional areas may constitute critical habitat for the population and recommended further studies based on acoustic and visual monitoring to assess the importance of inter-canyon areas as foraging habitat and transit corridors for Northern Bottlenose Whales.
 
-Year-round passive acoustic monitoring conducted with bottom-mounted recorders at two inter-canyon sites from 2012-2014 revealed the presence and foraging activity of northern bottlenose whales in these areas throughout much of the year, with a seasonal peak in acoustic detections during the spring. Detections from acoustic recordings collected during vessel-based surveys provided additional evidence of species occurrence in inter-canyon areas during the summer months. Photo-identification data collected in the Gully, Shortland, and Haldimand canyons between 2001 and 2017 were used to model the residency and movement patterns of northern bottlenose whales within and between the canyons, and demonstrated that individuals regularly moved between the three canyons as well as to and from outside areas. Together, these results indicated a strong degree of connectivity between the Gully, Shortland, and Haldimand canyons, and provided evidence that the inter-canyon areas function as important foraging habitat and movement corridors for Scotian Shelf northern bottlenose whales. 
+In a subsequent study of the distribution, movements, and habitat use of Northern Bottlenose Whales on the eastern Scotian Shelf [@Stanistreet2021], several sources of data were assessed and additional important habitat was identified in the inter-canyon areas located between the Gully, Shortland Canyon, and Haldimand Canyon [@DFO2020NBW_imphabitat]. A summary of the data inputs, analyses, and limitations is provided below.
 
-The inter-canyon habitat area polygon was delineated using the 500 m depth contour and straight lines connecting the southeast corners of the existing critical habitat areas, but these boundaries are based on limited spatial information on the presence of northern bottlenose whales in deeper waters. More data are needed to determine whether this area fully encompasses important inter-canyon habitat, particularly in regard to the deeper southeastern boundary. Similarly, the full extent of important habitat for Scotian Shelf northern bottlenose whales remains unknown, and potential critical habitat areas outside the canyons and inter-canyon areas on the eastern Scotian Shelf have not been fully assessed. See [@DFO2020NBW_imphabitat] for further information.
+Year-round passive acoustic monitoring conducted with bottom-mounted recorders at two inter-canyon sites from 2012-2014 revealed the presence and foraging activity of Northern Bottlenose Whales in these areas throughout much of the year, with a seasonal peak in acoustic detections during the spring. Detections from acoustic recordings collected during vessel-based surveys provided additional evidence of species occurrence in inter-canyon areas during the summer months. Photo-identification data collected in the Gully, Shortland, and Haldimand canyons between 2001 and 2017 were used to model the residency and movement patterns of Northern Bottlenose Whales within and between the canyons, and demonstrated that individuals regularly moved between the three canyons as well as to and from outside areas. Together, these results indicated a strong degree of connectivity between the Gully, Shortland, and Haldimand canyons, and provided evidence that the inter-canyon areas function as important foraging habitat and movement corridors for Scotian Shelf Northern Bottlenose Whales.
 
+The inter-canyon habitat area polygon was delineated using the 500 m depth contour and straight lines connecting the southeast corners of the existing critical habitat areas, but these boundaries are based on limited spatial information on the presence of Northern Bottlenose Whales in deeper waters. More data are needed to determine whether this area fully encompasses important inter-canyon habitat, particularly in regard to the deeper southeastern boundary. Similarly, the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown, and potential critical habitat areas outside the canyons and inter-canyon areas on the eastern Scotian Shelf have not been fully assessed. See [@DFO2020NBW_imphabitat] for further information.
 
 #### ***Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results*** 
 *
 ```{r nbnw result, echo=FALSE, results='asis'}
-  NBNW<-intersect_NBNW_overlap(NBNW_CritHab_sf, studyArea)
+  NBNW<-intersect_NBNW_overlap(NBNW_ImpHab_sf, studyArea)
   writeLines(NBNW)
 ```
 ```{r nbnw plots, echo=FALSE, results='asis'}
-  NBNW_wide<-plot_NBNW_hab(NBNW_CritHab_sf, studyArea, land10m_sf, bounds_sf)
-  NBNW_zoom<-plot_NBNW_hab_zoom(NBNW_CritHab_sf, studyArea, land50k_sf, 100, bounds_sf)
+  NBNW_wide<-plot_NBNW_hab(NBNW_ImpHab_sf, studyArea, land10m_sf, bounds_sf)
+  NBNW_zoom<-plot_NBNW_hab_zoom(NBNW_ImpHab_sf, studyArea, land50k_sf, 100, bounds_sf)
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
-grid.arrange(NBNW_wide, NBNW_zoom,
-             bottom = expression(paste("Longitude ",degree,"N",sep="")),
-             left = expression(paste("Latitude ",degree,"N",sep="")),
-             nrow = 1,
-             widths = c(4.1/10, 5.9/10))
+grid.arrange(NBNW_wide, NBNW_zoom, bottom = expression(paste("Longitude ",degree,"N",sep="")), left = expression(paste("Latitude ",degree,"N",sep="")), nrow = 1, widths = c(4.1/10, 5.9/10))
 ```

@@ -1,45 +1,53 @@
-## **RENSEIGNEMENTS PROVENANT DU PROGRAMME NATIONAL SUR LES ESPÈCES AQUATIQUES EN PÉRIL**    
-**Personne-ressource :** Carolyn Bakelaar  
-**Lien pour SIG Interne :** <http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US#>  
+## **INFORMATION FROM NATIONAL AQUATIC SPECIES AT RISK PROGRAM**    
+**Contact:** Carolyn Bakelaar  
+**Internal GIS Tool URL:** <http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US#>  
 
-Cette section décrit les cartes de répartition par zone et d’habitat essentiel des espèces en péril. La source officielle d’information pour les espèces en péril est le Registre public des espèces en péril : https://www.canada.ca/fr/environnement-changement-climatique/services/registre-public-especes-peril.html.
+This section describes Species At Risk distribution/range and critical habitat maps. The official source of information for Species At Risk is the Species At Risk Public Registry www.sararegistry.gc.ca.
 
-Le Programme des espèces en péril du MPO est responsable de l’exécution du mandat du MPO aux termes de la Loi sur les espèces en péril et constitue une source d’information faisant autorité pour les espèces aquatiques en péril.
+DFO’s Species At Risk program is responsible for carrying out DFO’s mandate under the _Species At Risk Act_ (SARA) and is an authoritative source of information for aquatic Species At Risk.
 
-Le Programme des espèces en péril du MPO a publié des cartes de répartition par zone des espèces en péril et de leur habitat essentiel sur le portail des données ouvertes du gouvernement du Canada, et il a également élaboré des outils interactifs de cartographie nationale des espèces en péril à l’échelle interne et publique. Comme le décrit la Foire aux questions de la Carte des espèces aquatiques en péril (https://www.dfo-mpo.gc.ca/species-especes/sara-lep/map-carte/index-fra.html), le Programme des espèces en péril à l’ACN a créé l’outil pour faciliter l’évaluation des projets en vertu de la Loi sur les pêches et de la LEP. Il utilise un système d’information géographique (SIG) et l’affichage interactif de données reproductibles et référencées spatialement pour les espèces aquatiques inscrites en vertu de la LEP. Les données contenues dans l’outil sont conservées par les bureaux régionaux du programme de la LEP, sous la coordination du Programme des espèces en péril de l’ACN (Comité directeur). Les données sont ajoutées de concert avec les plans de rétablissement et les calendriers d’inscription à la LEP. 
+DFO’s Species At Risk program has published Species At Risk distribution/range and critical habitat maps on the Government of Canada Open Data portal, and it has also developed internal and public interactive National Species At Risk Mapping Tools. As described by the National Species At Risk Mapping Tool - Frequently Asked Question (http://dfonl7swvgip001/NationalSARDemo/LinkDocs/Help/FAQsEN_FR.pdf), the Species At Risk Program in NHQ initiated the tool to facilitate project assessment under the _Fisheries Act_ and SARA. It uses a Geographic Information System (GIS) and interactive display of reproducible, spatially-referenced data for aquatic SARA-listed species. The data contained in the tool are maintained by regional SARA program offices, coordinated by the NHQ Species At Risk Program (Steering Committee). Data are added in concert with the Recovery Plans and SARA listing timelines. 
 
-Ce rapport ne fait pas autorité en ce qui concerne les données sur les espèces en péril. Veuillez accéder au SIG des espèces en péril pour créer un rapport faisant autorité, particulièrement si l’une des sources de données se trouve dans la zone de recherche ou à proximité.
-Vous trouverez ci-dessous une liste et un examen des produits de données qui peuvent chevaucher la zone de recherche définie par l’utilisateur.
+This report is *not* the authoritative advice on Species At Risk data. Please access the Species At Risk GIS tool to create an authoritative report, particularly if any of the data sources are at, or near, the search area
+Below, we provide a list and examination of data products that may overlap with the user-defined search area.
 
-### **Données sur la répartition et l’habitat essentiel des espèces en péril**    
+### **Species At Risk distribution and Critical Habitat data**    
 
-#### ***Répartition des espèces en péril du MPO*** {-}    
+#### ***DFO Species At Risk distribution (range)*** {-}    
 
-Personne-ressource : <info@dfo-mpo.gc.ca>  
-Lien : <https://ouvert.canada.ca/data/fr/dataset/e0fabad5-9379-4077-87b9-5705f28c490b> Consulté le : 1er octobre 2020 sur le Portail de données ouvertes  
-Niveau de qualité : Élevée 
-Niveau de sécurité : Aucun
+Contact: <info@dfo-mpo.gc.ca>  
+Link:  Last retrieved on: October 1 2020 from Open Data  <https://open.canada.ca/data/en/dataset/e0fabad5-9379-4077-87b9-5705f28c490b>  
+Quality Tier: High  
+Security level: none  
 
-Description de l’ensemble de données (tirée du dossier des données ouvertes) : Le Programme des espèces en péril est responsable du mandat du MPO issu de la Loi sur les espèces en péril (LEP) afin d’assurer la protection, le rétablissement et la conservation de toutes les espèces aquatiques en péril inscrites au Canada. Cette base de données spatiales a été élaborée dans le cadre de ce mandat afin d’indiquer les zones où des espèces aquatiques inscrites en vertu de la LEP peuvent se trouver. Les polygones des différentes zones de répartition ont été établis par les biologistes régionaux à l’aide de la meilleure information disponible, notamment les rapports de situation du COSEPAC, les évaluations du potentiel de rétablissement, les ouvrages universitaires et les avis d’experts. Ces données spatiales contribuent à la protection, au rétablissement et à la conservation des espèces inscrites comme étant en voie de disparition, menacées ou préoccupantes aux termes de la LEP. Les zones de répartition des espèces sont également décrites et illustrées dans les stratégies de rétablissement, les plans d’action ou les plans de gestion. Il peut y avoir des écarts entre les données de répartition indiquées dans les documents de la LEP relatifs au rétablissement et les données spatiales actuelles disponibles par l’entremise du SIG; veuillez communiquer avec le MPO pour obtenir de plus amples renseignements sur les écarts de données.
+Dataset description from the Open Data record [@OpenData_SARrange]: The Species At Risk Program is responsible for carrying out DFO’s mandate under the _Species At Risk Act_ (SARA) to protect, recover and conserve all listed aquatic Species At Risk in Canada. As part of this mandate, this spatial database has been developed to identify areas in which aquatic species listed under SARA may be found. Distribution (range) polygons and lines were assembled by regional SARA biologists using the best available information, including COSEWIC status reports, recovery potential assessments, academic literature, and expert opinion. These spatial data support the protection, recovery and conservation of species listed as Endangered, Threatened or Special Concern under SARA. Species distributions are also described and displayed in Recovery Strategies, Action Plans and/or Management Plans. Discrepancies may exist between the distribution data shown in a species’ SARA recovery document and the current spatial data available through the GIS tool; please contact DFO for more information on any data discrepancies.
 
-#### ***Habitat essentiel des espèces en péril***    
+#### ***Critical Habitat of Species At Risk***    
 
-Personne-ressource : <info@dfo-mpo.gc.ca>
-Lien : <https://ouvert.canada.ca/data/fr/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c>
-Consulté le : 1er octobre 2020 sur le Portail de données ouvertes  
-Niveau de qualité : Élevée    
-Niveau de sécurité : Aucun
+Contact: <info@dfo-mpo.gc.ca>  
+Last retrieved on: October 1 2020 from Open Data  <https://open.canada.ca/data/en/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c>  
+Quality Tier: High    
+Security level: none    
 
-Description de l’ensemble de données (tirée du dossier des données ouvertes) : Le Programme des espèces en péril consiste à réaliser le mandat du MPO en vertu de la Loi sur les espèces en péril (LEP) afin d’assurer la protection, le rétablissement et la conservation de toutes les espèces aquatiques en péril inscrites au Canada. On a déterminé l'habitat essentiel pour les espèces inscrites comme étant en voie de disparition ou menacées en vertu de la LEP. Selon la définition de l'article 2 de la LEP, l'habitat essentiel est en fait « l'habitat nécessaire à la survie ou au rétablissement d'une espèce sauvage inscrite, qui est désigné comme tel dans un programme de rétablissement ou un plan d'action élaboré à l'égard de l'espèce ». L'alinéa 49(1)a) de la LEP stipule que le plan d’action ou la stratégie de rétablissement comporte la désignation de l’habitat essentiel de l’espèce dans la mesure du possible, en se fondant sur la meilleure information accessible, notamment l’information fournie par le Comité sur la situation des espèces en péril au Canada (COSEPAC). La LEP stipule également qu'il est illégal de détruire toute partie de l'habitat essentiel d'une espèce en péril et peut imposer des restrictions sur l'aménagement et de la construction.Les habitats essentiel ont été assemblés par des biologistes régionaux et des équipes de rétablissement affectés à la mise en œuvre de la LEP. Ils ont pour but de soutenir la protection et le rétablissement des espèces inscrites comme étant en voie de disparition ou menacées conformément à la LEP. Ils sont également décrits et affichés dans les documents et les plans d’action sur le rétablissement de ces espèces.
+Dataset description from the Open Data record [@OpenData_SARcriticalhabitat]: The Species At Risk Program is responsible for carrying out DFO’s mandate under the _Species At Risk Act_ (SARA) to protect, recover and conserve all listed aquatic Species At Risk in Canada. Critical habitat is identified for species listed as Endangered or Threatened under the _Species At Risk Act_ (SARA). Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Section 49(1)(a) of SARA requires that a species’ Recovery Strategy/Action Plan include an identification of the species’ critical habitat to the extent possible, based on the best available information, including information provided by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). SARA makes it illegal to destroy any part of the critical habitat of SAR and may impose restrictions on development and construction. Critical habitats were assembled by SARA regional biologists and recovery teams. They are designed to support the protection and recovery of species listed as Endangered or Threatened under the _Species At Risk Act_. They are also described and displayed in species’ Recovery Documents and Action Plans. 
 
-Les habitats essentiels présentés dans cette section sont disponibles sur le portail de données ouvertes du gouvernement du Canada, à l’exception de l’habitat essentiel de la tortue luth, pour laquelle la délimitation de l’habitat essentiel est actuellement à l’étude. L’ébauche de l’habitat essentiel de la tortue luth est disponible dans le SIG interne des espèces en péril et sera disponible sur le Portail de données ouvertes plus tard.
+Critical habitat presented in this section are available in the Government of Canada Open Data portal, with the exception of critical habitat for Leatherback Sea Turtle, for which delineation of critical habitat is currently under review. Draft critical habitat for Leatherback Sea Turtle is available in the internal Species At Risk GIS tool and will be available in Open Data in the future.
 
-#### ***Répartition des espèces en péril et résultats des recherches sur l’habitat essentiel propres à une zone***
+#### ***Area-specific SAR distribution and critical habitat search results***
 
-**under-development**
-
-```{r, fig.height=6, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with distribution (range) of Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i>. This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report.'}
+```{r echo=FALSE, results='asis'}
+#if(sardist_sf > 1){
+dist_table<-table_dist(sardist_sf, studyArea, listed_species)
+#} else {NULL}
+```
+*
+```{r dist result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Dist_overlap_result<-nrow(dist_table)
+Query_output_dist<-if(Dist_overlap_result < 1){
+  "The search area does not overlap with Species at Risk distribution range."
+} else {
+  "The search area overlaps with Species at Risk distribution range."
+}
+writeLines(Query_output_dist)
 ```
 
-```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with critical habitat of Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA). Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.', fig.height=6, fig.width=11}
-```

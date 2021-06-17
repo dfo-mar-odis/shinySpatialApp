@@ -36,11 +36,11 @@ area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
   
   # convert buffer to polygon
   # pp=st_as_sfc(bboxBuf,crs=4326)
- 
+  
   
   # subset land to plot area to speed up plotting
   land=sf::st_crop(land_layer,bboxBuf)
- 
+  
   # subset US-Canad boundary to plot area to speed up plotting
   bound=sf::st_transform(CANborder,crs=4326) # to fix: currently the projection is NAD83
   bound=sf::st_crop(bound,bboxBuf)
@@ -58,10 +58,10 @@ area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
     labs(x="Longitude", y="Latitude", col="")+
     theme(axis.title.y = element_text(size = 13))+
     theme(axis.title.x = element_text(size = 13))
-    
+  
   
   outList=list(m,bboxBuf)
-    
+  
   return(outList)
   
 }
