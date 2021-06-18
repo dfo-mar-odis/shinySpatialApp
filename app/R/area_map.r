@@ -42,7 +42,7 @@ area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
   land <- sf::st_crop(land_layer,bboxBuf)
   
   # subset US-Canad boundary to plot area to speed up plotting
-  bound <- sf::st_crop(bound,bboxBuf)
+  bound <- sf::st_crop(CANborder,bboxBuf)
   
   # make a plot and write it to m
   m<-ggplot()+
