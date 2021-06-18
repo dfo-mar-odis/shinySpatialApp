@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "geoms_slc_MarBioRegion",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -67.806657076011447, 40.043430831559654 ], [ -54.901318629568145, 40.043430831559654 ], [ -54.901318629568145, 47.833332061863828 ], [ -67.806657076011447, 47.833332061863828 ], [ -67.806657076011447, 40.043430831559654 ] ] ] } }
+]
+}
