@@ -21,28 +21,28 @@
 area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
   
   # buf is in km, and now converted to degrees
-  buf=buf/100
+  buf <- buf/100
   
   # bounding box for study area
-  bbox=sf::st_bbox(studyArea)
+  bbox <- sf::st_bbox(studyArea)
   
   # create bounding box for buffer (plot area)
-  bboxBuf=bbox
+  bboxBuf <- bbox
   
-  bboxBuf["xmin"]=(bbox$xmin)-buf
-  bboxBuf["xmax"]<-(bbox$xmax)+buf
-  bboxBuf["ymin"]<-(bbox$ymin)-buf*0.72
-  bboxBuf["ymax"]<-(bbox$ymax)+buf*0.72
+  bboxBuf["xmin"] <- (bbox$xmin)-buf
+  bboxBuf["xmax"] <- (bbox$xmax)+buf
+  bboxBuf["ymin"] <- (bbox$ymin)-buf*0.72
+  bboxBuf["ymax"] <- (bbox$ymax)+buf*0.72
   
   # convert buffer to polygon
-  # pp=st_as_sfc(bboxBuf,crs=4326)
+  # pp <- st_as_sfc(bboxBuf,crs=4326)
   
   
   # subset land to plot area to speed up plotting
-  land=sf::st_crop(land_layer,bboxBuf)
+  land <- sf::st_crop(land_layer,bboxBuf)
   
   # subset US-Canad boundary to plot area to speed up plotting
-  bound=sf::st_crop(bound,bboxBuf)
+  bound <- sf::st_crop(bound,bboxBuf)
   
   # make a plot and write it to m
   m<-ggplot()+
@@ -59,7 +59,7 @@ area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
     theme(axis.title.x = element_text(size = 13))
   
   
-  outList=list(m,bboxBuf)
+  outList <- list(m,bboxBuf)
   
   return(outList)
   
