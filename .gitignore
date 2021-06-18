@@ -3,8 +3,11 @@ app/data/*
 *.tiff
 *.html
 *.csv
+*.csv
 *.zip
+*.pdf
 data.7z
+
 
 app/shinySpatialApp - Shortcut.lnk
 
