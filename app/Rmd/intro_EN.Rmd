@@ -64,8 +64,9 @@ bboxMap=areaMapList[[2]] #bounding box of the map
 
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
-<!-- # ```{r child = '../Rmd/report_fish_EN.Rmd'} -->
-<!-- # ``` -->
+ 
+ ```{r child = '../Rmd/report_habitat_EN.Rmd'}
+ ```
 
 <!-- END  -->
 
