@@ -150,8 +150,15 @@ grid.arrange(BW_wide, BW_zoom, bottom = expression(paste("Longitude ",degree,"N"
 #### ***Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results*** 
 *
 ```{r nbnw result, echo=FALSE, results='asis'}
-  NBNW<-intersect_NBNW_overlap(NBNW_ImpHab_sf, studyArea)
-  writeLines(NBNW)
+outputList <- poly_intersect(NBNW_ImpHab_sf, Region, studyArea, Bbox = bboxMap)
+Report <- if (is.null(outputList)) {
+   "There are no relevant records in the WSDB for this search area."
+ } else {
+   "There are relevant records in the WSDB for this search area."
+}
+writeLines(Report)
+  # NBNW<-intersect_NBNW_overlap(NBNW_ImpHab_sf, studyArea)
+  # writeLines(NBNW)
 ```
 ```{r nbnw plots, echo=FALSE, results='asis'}
   NBNW_wide<-plot_NBNW_hab(NBNW_ImpHab_sf, studyArea, land10m_sf, bounds_sf)

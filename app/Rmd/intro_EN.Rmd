@@ -45,7 +45,7 @@ studyArea <- sf::st_read("{{path_to_geoms}}")
 # studyArea <- st_read("../studyAreaTest/geoms_slc_coastal_test.geojson")#coastal 
 # studyArea <- st_read("../studyAreaTest/geoms_slc_no_land.geojson") #no land
 # studyArea <- st_read("../studyAreaTest/geoms_slc_BeaverHbrOffshore.geojson") #no land
-
+Region <- st_read("../studyAreaTest/geoms_slc_MarBioRegion.geojson")
 
 site <- sf::st_centroid(studyArea) 
 ```
@@ -61,6 +61,18 @@ areaMapList<-area_map(studyArea, site, land50k_sf, 5, bounds_sf, studyBox_geom)
 areaMap=areaMapList[[1]] # map
 bboxMap=areaMapList[[2]] #bounding box of the map
 ```
+
+```{r parameters for region_map.r, echo=FALSE, include=FALSE, cache=FALSE}
+# The following defines region geometry "look". studyBox_geom is input into the regional map or can be added to any map later
+RegionBox_geom <- geom_sf(data=Region, fill=NA, col="red", size=1) 
+
+# The following plots area map using function (output is a list)
+regionMapList <- region_map(Region, studyArea, land10m_sf, 50, bounds_sf, RegionBox_geom)  
+# The following separates items in the output list: first item is a map and second is a bounding box of the map
+regionMap <- RegionMapList[[1]]
+```
+
+
 
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
