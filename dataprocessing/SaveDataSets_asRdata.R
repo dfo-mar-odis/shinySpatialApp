@@ -4,6 +4,7 @@ library(dplyr)
 library(stringr)
 library(lubridate)
 
+# change directory
 source("SearchPEZ/code/fn_SurveyData_GetRV.R")
 
 #### Arguments for RV survey data #################-
@@ -36,10 +37,11 @@ bioregion_sf <- st_read("../Data/Boundaries/MaritimesRegionBound/MaritimesRegion
 # Rockweed
 rockweed_sf <- st_read("../Data/NaturalResources/Species/Rockweed/MAR_rockweed_presence_validated.shp", stringsAsFactors = FALSE)
 rockweed_sf <- st_transform(rockweed_sf, 4326) # Project to WGS84
+rockweed_sf <- st_make_valid(rockweed_sf)
 ######## Habitat Information########
-rockweed_sf$RWP[which(rockweed_sf$RWP=="1")]= "Present"
-rockweed_sf$RWP[which(rockweed_sf$RWP=="2")]= "Likely Present"
-rockweed_sf$RWP[which(rockweed_sf$RWP=="5")]= "Unknown"
+# rockweed_sf$RWP[which(rockweed_sf$RWP=="1")]= "Present"
+# rockweed_sf$RWP[which(rockweed_sf$RWP=="2")]= "Likely Present"
+# rockweed_sf$RWP[which(rockweed_sf$RWP=="5")]= "Unknown"
 
 
 listed_species <- read.csv("../Data/NaturalResources/Species/MAR_listed_species.csv", stringsAsFactors = FALSE)
@@ -93,15 +95,18 @@ RVGSSPECIES <- RVList[[2]]
 
 
 ClippedCritHab_sf <- st_read("../Data/NaturalResources/Species/SpeciesAtRisk/clipped_layers/ClipCritHab.shp", stringsAsFactors = FALSE)
+ClippedCritHab_sf <- st_make_valid(ClippedCritHab_sf)
 
 #Northern Bottlenose Whale Important Habitat
 NBNW_ImpHab_sf <- st_read("../Data/NaturalResources/Species/Cetaceans/NorthernBottlenoseWhale/NorthernBottlenoseWhale_InterCanyonHabitat.shp", stringsAsFactors = FALSE)
 NBNW_ImpHab_sf <- st_transform(NBNW_ImpHab_sf, crs = 4326)
+NBNW_ImpHab_sf <- st_make_valid(NBNW_ImpHab_sf)
 
 
 # SDMs
 fin_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Fin_Whale.tif")
 fin_whale[fin_whale==0] <- NA
+# fin_whale_sp <- rasterToPolygons(fin_whale, na.rm=TRUE, dissolve=FALSE)
 
 harbour_porpoise <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Harbour_Porpoise.tif")
 harbour_porpoise[harbour_porpoise==0] <- NA
@@ -124,11 +129,13 @@ Blue_Whale_sf$months[Blue_Whale_sf$months == "December to February/June to Augus
 Blue_Whale_sf$months[Blue_Whale_sf$months == "March to May/June to August"] <- "Mar-May/Jun-Aug"
 Blue_Whale_sf$Activity <- paste(Blue_Whale_sf$activity,"-",Blue_Whale_sf$months)
 BlueWhale_ImpHab_sf <- Blue_Whale_sf
+BlueWhale_ImpHab_sf <- st_make_valid(BlueWhale_ImpHab_sf)
 
 
 EBSA_sf <- st_read("../Data/Zones/DFO_EBSA_FGP/DFO_EBSA.shp")
 EBSA_sf <- st_transform(EBSA_sf, crs = 4326)
 EBSA_sf$Report_URL <- str_replace(EBSA_sf$Report_URL, ".pdf", ".html")
+EBSA_sf <- st_make_valid(EBSA_sf)
 
 # Save all objects to a single .Rdata file 
 
@@ -143,6 +150,7 @@ save(bioregion_sf, BlueWhale_ImpHab_sf, bounds_sf, ClippedCritHab_sf, EBSA_sf, f
 # Species at Risk distribution
 sardist_sf <- st_read("../Data/NaturalResources/Species/SpeciesAtRisk/clipped_layers/sardist_4326.shp", stringsAsFactors = FALSE)
 sardist_sf <- dplyr::select(sardist_sf,Common_Nam, Population, Scientific)
+sardist_sf <- st_make_valid(sardist_sf)
 
 save(sardist_sf, file = "../Data/Rdata/OpenData_sardist.RData")
 
@@ -191,6 +199,7 @@ narwc_sf <- st_as_sf(narwc, coords = c("LONGITUDE","LATITUDE"), crs = 4326)
 
 # read in turtle habitat
 leatherback_sf <- st_read("../Data/NaturalResources/Species/SpeciesAtRisk/LeatherBackTurtleCriticalHabitat/LBT_CH_2013.shp", stringsAsFactors = FALSE)
+leatherback_sf <- st_make_valid(leatherback_sf)
 
 # ISDB and MARFIS data
 load("../Data/mar.wrangling/isdb.RData")

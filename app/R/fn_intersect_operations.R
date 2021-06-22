@@ -78,6 +78,60 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
 }
 ##### - END Main intersect function ##################################
 
+
+##### - poly intersect function ##################################
+# This function clips various polygon data sources (e.g. EBSA, critical habitat, etc.)
+# to the extent of the region, the studyArea, and the map bounding box.
+# The map bounding box is created by the area_map() function
+#
+# Inputs:
+# 1. datafile: an input polygon vector file
+# 2. region: a spatial file of the region
+# 3. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
+# 4. Bbox: Coordinates of the map bounding box exported from area_map() function
+
+#
+# Outputs: list containing 3 items
+# 1. data1: the full dataset from clipping the datafile by the studyArea
+# 2. data2: the full dataset from clipping the datafile by the Bounding box
+#                  used for mapping of the cetacean data points
+# 3. Samples_bbox: set of unique points found within the Bounding box used for mapping
+
+poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
+  
+  # Limit data file to data from minYear to present
+  # datafile <- datafile %>% dplyr::filter(YEAR >= Year)
+  # convert Bbox to sf object
+  Bbox <- st_as_sfc(Bbox)
+  # clip the data file first to the extent of the region
+  # and then clip that reduced datafile to the extent of the 
+  # bounding box, then clip that reduced datafile to the 
+  # extent of the studyArea
+  polys_region <- sf::st_intersection(datafile, region)
+  polys_bbox <- sf::st_intersection(polys_region,Bbox)
+  polys_study <- sf::st_intersection(polys_bbox,studyArea)
+  data1 <- polys_study
+  data2 <- polys_bbox
+  
+  # if there are no samples found in the studyArea, exit the function
+  if (nrow(polys_study) > 0) {
+
+    outList <- list(data1, data2)
+    return(outList)
+    
+  } # end of test for zero samples
+  else {
+    return()
+  }
+}
+
+
+##### - END poly intersect function ##################################
+
+
+
+
+
 ##### - create_table_RV function ##################################
 # This function creates summary tables of the RV data
 # found within the studyArea
