@@ -111,11 +111,12 @@ poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
   polys_study <- sf::st_intersection(polys_bbox,studyArea)
   data1 <- polys_study
   data2 <- polys_bbox
+  data3 <- polys_region
   
   # if there are no samples found in the studyArea, exit the function
   if (nrow(polys_study) > 0) {
 
-    outList <- list(data1, data2)
+    outList <- list(data1, data2, data3)
     return(outList)
     
   } # end of test for zero samples
