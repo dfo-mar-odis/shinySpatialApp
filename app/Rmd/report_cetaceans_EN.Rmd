@@ -152,9 +152,9 @@ grid.arrange(BW_wide, BW_zoom, bottom = expression(paste("Longitude ",degree,"N"
 ```{r nbnw result, echo=FALSE, results='asis'}
 outputList <- poly_intersect(NBNW_ImpHab_sf, Region, studyArea, Bbox = bboxMap)
 Report <- if (is.null(outputList)) {
-   "There are no relevant records in the WSDB for this search area."
- } else {
-   "There are relevant records in the WSDB for this search area."
+    "Search area does not overlap with Northern Bottlenose Whale Important Habitat in the Western North Atlantic."
+  } else {
+    "Search area overlaps with Northern Bottlenose Whale Important Habitat in the Western North Atlantic."
 }
 writeLines(Report)
   # NBNW<-intersect_NBNW_overlap(NBNW_ImpHab_sf, studyArea)
