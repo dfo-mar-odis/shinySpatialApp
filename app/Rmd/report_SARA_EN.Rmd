@@ -9,18 +9,30 @@
 
 ```{r echo=FALSE, results='asis'}
 #if(sardist_sf > 1){
-dist_table<-table_dist(sardist_sf, studyArea)
-#} else {NULL}
-```
-*
-```{r dist result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Dist_overlap_result<-nrow(dist_table)
-Query_output_dist<-if(Dist_overlap_result < 1){
+# dist_table<-table_dist(sardist_sf, studyArea)
+outputList <- poly_intersect(sardist_sf, Region, studyArea, Bbox = bboxMap)
+Report <- if (is.null(outputList)) {
   "The search area does not overlap with Species at Risk distribution range."
 } else {
   "The search area overlaps with Species at Risk distribution range."
 }
-writeLines(Query_output_dist)
+writeLines(Report)
+
+areaMap <- areaMap+
+           geom_sf(data=outputList[[2]],fill="red",col="black")
+regionMap <- regionMap+
+             geom_sf(data=outputList[[3]],fill="red",col="black")
+#} else {NULL}
+```
+*
+```{r dist result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+# Dist_overlap_result<-nrow(dist_table)
+# Query_output_dist<-if(Dist_overlap_result < 1){
+#   "The search area does not overlap with Species at Risk distribution range."
+# } else {
+#   "The search area overlaps with Species at Risk distribution range."
+# }
+# writeLines(Query_output_dist)
 ```
 
 ```{r echo=FALSE, results='asis'}
