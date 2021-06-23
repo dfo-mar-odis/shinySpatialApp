@@ -99,8 +99,7 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
 
 poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
   
-  # Limit data file to data from minYear to present
-  # datafile <- datafile %>% dplyr::filter(YEAR >= Year)
+
   # convert Bbox to sf object
   Bbox <- st_as_sfc(Bbox)
   # clip the data file first to the extent of the region

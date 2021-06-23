@@ -69,7 +69,7 @@ RegionBox_geom <- geom_sf(data=Region, fill=NA, col="red", size=1)
 # The following plots area map using function (output is a list)
 regionMapList <- region_map(Region, studyArea, land10m_sf, 50, bounds_sf, RegionBox_geom)  
 # The following separates items in the output list: first item is a map and second is a bounding box of the map
-regionMap <- RegionMapList[[1]]
+regionMap <- regionMapList[[1]]
 ```
 
 
