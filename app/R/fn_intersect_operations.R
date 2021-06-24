@@ -103,9 +103,9 @@ poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
   # and then clip that reduced datafile to the extent of the 
   # bounding box, then clip that reduced datafile to the 
   # extent of the studyArea
-  p1 <- sf::st_intersection(datafile, region)
-  p2 <- sf::st_intersection(p1,Bbox)
-  p3 <- sf::st_intersection(p2,studyArea)
+  p1 <- sf::st_crop(datafile, region)
+  p2 <- sf::st_crop(p1,Bbox)
+  p3 <- sf::st_crop(p2,studyArea)
 
   # if there are no samples found in the studyArea, exit the function
   if (nrow(p3) > 0) {
