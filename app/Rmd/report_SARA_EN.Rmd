@@ -9,30 +9,18 @@
 
 ```{r echo=FALSE, results='asis'}
 #if(sardist_sf > 1){
-# dist_table<-table_dist(sardist_sf, studyArea)
-outputList <- poly_intersect(sardist_sf, Region, studyArea, Bbox = bboxMap)
-Report <- if (is.null(outputList)) {
-  "The search area does not overlap with Species at Risk distribution range."
-} else {
-  "The search area overlaps with Species at Risk distribution range."
-}
-writeLines(Report)
-
-areaMap <- areaMap+
-           geom_sf(data=outputList[[2]],fill="red",col="black")
-regionMap <- regionMap+
-             geom_sf(data=outputList[[3]],fill="red",col="black")
+dist_table<-table_dist(sardist_sf, studyArea)
 #} else {NULL}
 ```
 *
 ```{r dist result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-# Dist_overlap_result<-nrow(dist_table)
-# Query_output_dist<-if(Dist_overlap_result < 1){
-#   "The search area does not overlap with Species at Risk distribution range."
-# } else {
-#   "The search area overlaps with Species at Risk distribution range."
-# }
-# writeLines(Query_output_dist)
+Dist_overlap_result<-nrow(dist_table)
+Query_output_dist<-if(Dist_overlap_result < 1){
+  "The search area does not overlap with Species at Risk distribution range."
+} else {
+  "The search area overlaps with Species at Risk distribution range."
+}
+writeLines(Query_output_dist)
 ```
 
 ```{r echo=FALSE, results='asis'}
@@ -79,3 +67,4 @@ Crithab_query_output_table<-if(crit_result <= 1){
   knitr::kable(crit_table, caption="Quality Tier: High. Security level: none. Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA) for which the search polygon overlaps with their critical habitat. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is <b>not</b> the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report.", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 if(crit_result > 0){Crithab_query_output_table}
 ```
+© 2021 GitHub, Inc.

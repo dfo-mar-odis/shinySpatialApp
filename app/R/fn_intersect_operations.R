@@ -1,12 +1,13 @@
 # The functions in this file are used to clip various data sources (e.g. MARFIS, ISDB, etc.)
 # with the studyArea selected and summarize the data for tables within the final document.
 #
-# 1. main_intersect() - clips data to the extent of the studyArea
-# 2. create_table_RV() - creates summary tables of all species and listed species
-# 3. create_table_MARFIS() - creates summary tables of all species and listed species
-# 4. create_table_ISDB() - creates summary tables of all species and listed species
-# 5. create_table_OBIS() - creates summary table of listed species
-# 6. sfcoords_as_cols() - extracts latitude and longitude from geometry field
+# 1. main_intersect() - clips POINT data to the extent of the studyArea
+# 2, poly_intersect() - clips POLYGON data to the extent of the Region and studyArea
+# 3. create_table_RV() - creates summary tables of all species and listed species
+# 4. create_table_MARFIS() - creates summary tables of all species and listed species
+# 5. create_table_ISDB() - creates summary tables of all species and listed species
+# 6. create_table_OBIS() - creates summary table of listed species
+# 7. sfcoords_as_cols() - extracts latitude and longitude from geometry field
 #                         and add them to new columns
 #
 # Written by Philip Greyson for reproducible reporting project, May/2021
@@ -78,7 +79,6 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
 }
 ##### - END Main intersect function ##################################
 
-
 ##### - poly intersect function ##################################
 # This function clips various polygon data sources (e.g. EBSA, critical habitat, etc.)
 # to the extent of the region, the studyArea, and the map bounding box.
@@ -89,16 +89,13 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
 # 2. region: a spatial file of the region
 # 3. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
 # 4. Bbox: Coordinates of the map bounding box exported from area_map() function
-
 #
 # Outputs: list containing 3 items
-# 1. data1: the full dataset from clipping the datafile by the studyArea
-# 2. data2: the full dataset from clipping the datafile by the Bounding box
-#                  used for mapping of the cetacean data points
-# 3. Samples_bbox: set of unique points found within the Bounding box used for mapping
+# 1. polys_study: the full dataset from clipping the datafile by the studyArea
+# 2. polys_bbox: the full dataset from clipping the datafile by the Bounding box
+# 3. polys_region: the full dataset from clipping the datafile by the Region
 
 poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
-  
 
   # convert Bbox to sf object
   Bbox <- st_as_sfc(Bbox)
@@ -106,17 +103,13 @@ poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
   # and then clip that reduced datafile to the extent of the 
   # bounding box, then clip that reduced datafile to the 
   # extent of the studyArea
-  polys_region <- sf::st_intersection(datafile, region)
-  polys_bbox <- sf::st_intersection(polys_region,Bbox)
-  polys_study <- sf::st_intersection(polys_bbox,studyArea)
-  data1 <- polys_study
-  data2 <- polys_bbox
-  data3 <- polys_region
-  
-  # if there are no samples found in the studyArea, exit the function
-  if (nrow(polys_study) > 0) {
+  p1 <- sf::st_intersection(datafile, region)
+  p2 <- sf::st_intersection(p1,Bbox)
+  p3 <- sf::st_intersection(p2,studyArea)
 
-    outList <- list(data1, data2, data3)
+  # if there are no samples found in the studyArea, exit the function
+  if (nrow(p3) > 0) {
+    outList <- list(studyPoly = p3, mapPoly = p2, regionPoly = p1)
     return(outList)
     
   } # end of test for zero samples
@@ -127,10 +120,6 @@ poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
 
 
 ##### - END poly intersect function ##################################
-
-
-
-
 
 ##### - create_table_RV function ##################################
 # This function creates summary tables of the RV data
@@ -359,7 +348,7 @@ sfcoords_as_cols <- function(x, names = c("long","lat")) {
 ##### - END sfcoords_as_cols function ##################################
 
 
-####### - Other functions ###############################################
+####### - Other functions (by Greg Puncher) ##########################################
 ########## Species At Risk distribution and Critical Habitat data ##########
 # 
 # #SAR distribution
