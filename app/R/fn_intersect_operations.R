@@ -91,9 +91,9 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
 # 4. Bbox: Coordinates of the map bounding box exported from area_map() function
 #
 # Outputs: list containing 3 items
-# 1. polys_study: the full dataset from clipping the datafile by the studyArea
-# 2. polys_bbox: the full dataset from clipping the datafile by the Bounding box
-# 3. polys_region: the full dataset from clipping the datafile by the Region
+# 1. studyPoly: the full dataset from clipping the datafile by the studyArea
+# 2. mapPoly: the full dataset from clipping the datafile by the Bounding box
+# 3. regionPoly: the full dataset from clipping the datafile by the Region
 
 poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
 
