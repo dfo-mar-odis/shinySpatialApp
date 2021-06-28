@@ -7,8 +7,6 @@ library(lubridate)
 # change directory
 source("SearchPEZ/code/fn_SurveyData_GetRV.R")
 
-# RANDOM CHANGE TO CODE
-
 #### Arguments for RV survey data #################-
 # for SelectRV_fn
 SurveyPrefix <- c("4VSW", "FALL", "SPRING", "SUMMER")
