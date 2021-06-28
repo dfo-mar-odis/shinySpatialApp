@@ -23,7 +23,8 @@ land10m_sf <- st_read("../Data/Boundaries/Landmass/ne_10m_land_Clip.shp", string
 #remove State and Province column from land10m
 land10m_sf <- land10m_sf[-c(2)]
 
-land50k_sf <- st_read("../Data/Boundaries/Coast50k/Coastline50k_SHP/Land_AtlCanada_ESeaboardUS.shp",  stringsAsFactors = FALSE)
+land50k_sf <- st_read("../Data/Boundaries/Coast50k/Coastline50k_SHP/Land_AtlCanada_ESeaboardUS.shp",
+                      stringsAsFactors = FALSE)
 
 # National boundaries (terrestrial and marine)
 bounds_sf <- st_read("../Data/Boundaries/AdminBoundaries/AdminBounds_SHP/Boundaries_Line.shp", stringsAsFactors = FALSE)
@@ -43,9 +44,9 @@ rockweed_sf <- st_make_valid(rockweed_sf)
 # rockweed_sf$RWP[which(rockweed_sf$RWP=="2")]= "Likely Present"
 # rockweed_sf$RWP[which(rockweed_sf$RWP=="5")]= "Unknown"
 
-
 # Table of SARA listed species
-listed_species <- read.csv("../Data/NaturalResources/Species/MAR_listed_species.csv", stringsAsFactors = FALSE)
+listed_species <- read.csv("../Data/NaturalResources/Species/MAR_listed_species.csv",
+                           stringsAsFactors = FALSE)
 listed_species <- listed_species %>% rename("SARA status"=Schedule.status,
                                             "COSEWIC listing"=COSEWIC.status,
                                             "Wild Species listing"=Wild_Species,
@@ -54,9 +55,9 @@ listed_species <- listed_species %>% rename("SARA status"=Schedule.status,
                                             "Scientific Name"=Scientific_Name,
                                             "Common Name"=Common_Name)
 
-
 ####### Species Lists  #######
-cetacean_list <- c("BELUGA WHALE", "NORTH ATLANTIC RIGHT WHALE", "FIN WHALE", "NORTHERN BOTTLENOSE WHALE",
+cetacean_list <- c("BELUGA WHALE", "NORTH ATLANTIC RIGHT WHALE", "FIN WHALE", 
+                   "NORTHERN BOTTLENOSE WHALE",
                    "HARBOUR PORPOISE", "KILLER WHALE", "BLUE WHALE", "SEI WHALE", "SOWERBY'S BEAKED WHALE")
 
 
@@ -65,13 +66,11 @@ listed_cetacean_species <- subset(listed_species, COMMONNAME %in% cetacean_list)
 listed_other_species <- subset(listed_species, COMMONNAME %in% other_species_list)
 listed_fish_invert_species <- listed_species[ ! listed_species$COMMONNAME %in% c(other_species_list,cetacean_list), ]
 
-
 # Legend file for displaying cetacean results in consistent colours
 Legend <- read.csv("../Data/NaturalResources/Species/Cetaceans/CetaceanLegend.csv", stringsAsFactors = FALSE)
 Legend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
 
-
-
+# Ocean Biogeographic Information System (OBIS)
 obis <- read.csv("../Data/NaturalResources/Species/OBIS_GBIF_iNaturalist/OBIS_MAR_priority_records.csv", stringsAsFactors = FALSE)
 obis <- dplyr::select(obis,scientificName, decimalLatitude, decimalLongitude, year)
 obis <- obis %>% transmute(obis, scientificName = str_to_sentence(scientificName))
@@ -86,10 +85,9 @@ obis_fish_sf <- st_as_sf(obis_fish, coords = c("decimalLongitude","decimalLatitu
 
 # OBIS cetaceans
 obis_cet <- merge(obis, Legend, by='Scientific Name')
-obis_cet <- dplyr::select(obis_cet,"Scientific Name", YEAR, Legend, decimalLatitude, decimalLongitude)
-
+obis_cet <- dplyr::select(obis_cet,"Scientific Name", YEAR, Legend,
+                          decimalLatitude, decimalLongitude)
 obis_cet_sf <- st_as_sf(obis_cet, coords = c("decimalLongitude","decimalLatitude"), crs = 4326)
-
 
 # RV survey data
 RVList <-  SelectRV_fn(SurveyPrefix, File, minYear)
@@ -97,15 +95,13 @@ RVCatch_sf <- RVList[[1]]
 RVCatch_sf <- dplyr::select(RVCatch_sf, CODE, YEAR, ELAT, ELONG, TOTNO, geometry)
 RVGSSPECIES <- RVList[[2]]
 
-
-
+# Species at Risk critical habitat
 ClippedCritHab_sf <- st_read("../Data/NaturalResources/Species/SpeciesAtRisk/clipped_layers/ClipCritHab.shp", stringsAsFactors = FALSE)
 ClippedCritHab_sf <- st_make_valid(ClippedCritHab_sf)
 
 #Northern Bottlenose Whale Important Habitat
 NBNW_ImpHab_sf <- st_read(dsn = "../Data/NaturalResources/Species/Cetaceans/NorthernBottlenoseWhale_FGP/NorthernBottlenose.gdb", layer = "NorthernBottlenoseWhale_InterCanyonHabitat", stringsAsFactors = FALSE)
 NBNW_ImpHab_sf <- st_make_valid(NBNW_ImpHab_sf)
-
 
 # Species Distribution Model (SDM) outputs
 fin_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Fin_Whale.tif")
