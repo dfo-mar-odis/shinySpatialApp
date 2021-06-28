@@ -7,6 +7,8 @@ library(lubridate)
 # change directory
 source("SearchPEZ/code/fn_SurveyData_GetRV.R")
 
+# RANDOM CHANGE TO CODE
+
 #### Arguments for RV survey data #################-
 # for SelectRV_fn
 SurveyPrefix <- c("4VSW", "FALL", "SPRING", "SUMMER")
@@ -25,12 +27,12 @@ land10m_sf <- land10m_sf[-c(2)]
 
 land50k_sf <- st_read("../Data/Boundaries/Coast50k/Coastline50k_SHP/Land_AtlCanada_ESeaboardUS.shp",  stringsAsFactors = FALSE)
 
-# ADD IN boundary files
+# National boundaries (terrestrial and marine)
 bounds_sf <- st_read("../Data/Boundaries/AdminBoundaries/AdminBounds_SHP/Boundaries_Line.shp", stringsAsFactors = FALSE)
 bounds_sf <- dplyr::select(bounds_sf,SRC_DESC, geometry)
 bounds_sf <- st_transform(bounds_sf, 4326) # Project to WGS84
 
-# Add in DFO bioregions layer
+# DFO bioregions layer (Maritime region)
 bioregion_sf <- st_read("../Data/Boundaries/MaritimesRegionBound/MaritimesRegionPolygon_UpdatedSept2015.shp", stringsAsFactors = FALSE)
 # reduce number of fields
 
@@ -44,6 +46,7 @@ rockweed_sf <- st_make_valid(rockweed_sf)
 # rockweed_sf$RWP[which(rockweed_sf$RWP=="5")]= "Unknown"
 
 
+# Table of SARA listed species
 listed_species <- read.csv("../Data/NaturalResources/Species/MAR_listed_species.csv", stringsAsFactors = FALSE)
 listed_species <- listed_species %>% rename("SARA status"=Schedule.status,
                                             "COSEWIC listing"=COSEWIC.status,
@@ -53,11 +56,8 @@ listed_species <- listed_species %>% rename("SARA status"=Schedule.status,
                                             "Scientific Name"=Scientific_Name,
                                             "Common Name"=Common_Name)
 
-Legend <- read.csv("../Data/NaturalResources/Species/Cetaceans/CetaceanLegend.csv", stringsAsFactors = FALSE)
-Legend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
 
 ####### Species Lists  #######
-
 cetacean_list <- c("BELUGA WHALE", "NORTH ATLANTIC RIGHT WHALE", "FIN WHALE", "NORTHERN BOTTLENOSE WHALE",
                    "HARBOUR PORPOISE", "KILLER WHALE", "BLUE WHALE", "SEI WHALE", "SOWERBY'S BEAKED WHALE")
 
@@ -66,6 +66,13 @@ other_species_list <- c("LOGGERHEAD SEA TURTLE", "ATLANTIC WALRUS", "HARBOUR SEA
 listed_cetacean_species <- subset(listed_species, COMMONNAME %in% cetacean_list)
 listed_other_species <- subset(listed_species, COMMONNAME %in% other_species_list)
 listed_fish_invert_species <- listed_species[ ! listed_species$COMMONNAME %in% c(other_species_list,cetacean_list), ]
+
+
+# Legend file for displaying cetacean results in consistent colours
+Legend <- read.csv("../Data/NaturalResources/Species/Cetaceans/CetaceanLegend.csv", stringsAsFactors = FALSE)
+Legend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
+
+
 
 obis <- read.csv("../Data/NaturalResources/Species/OBIS_GBIF_iNaturalist/OBIS_MAR_priority_records.csv", stringsAsFactors = FALSE)
 obis <- dplyr::select(obis,scientificName, decimalLatitude, decimalLongitude, year)
@@ -98,12 +105,11 @@ ClippedCritHab_sf <- st_read("../Data/NaturalResources/Species/SpeciesAtRisk/cli
 ClippedCritHab_sf <- st_make_valid(ClippedCritHab_sf)
 
 #Northern Bottlenose Whale Important Habitat
-NBNW_ImpHab_sf <- st_read("../Data/NaturalResources/Species/Cetaceans/NorthernBottlenoseWhale/NorthernBottlenoseWhale_InterCanyonHabitat.shp", stringsAsFactors = FALSE)
-NBNW_ImpHab_sf <- st_transform(NBNW_ImpHab_sf, crs = 4326)
+NBNW_ImpHab_sf <- st_read(dsn = "../Data/NaturalResources/Species/Cetaceans/NorthernBottlenoseWhale_FGP/NorthernBottlenose.gdb", layer = "NorthernBottlenoseWhale_InterCanyonHabitat", stringsAsFactors = FALSE)
 NBNW_ImpHab_sf <- st_make_valid(NBNW_ImpHab_sf)
 
 
-# SDMs
+# Species Distribution Model (SDM) outputs
 fin_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Fin_Whale.tif")
 fin_whale[fin_whale==0] <- NA
 # fin_whale_sp <- rasterToPolygons(fin_whale, na.rm=TRUE, dissolve=FALSE)
@@ -131,7 +137,7 @@ Blue_Whale_sf$Activity <- paste(Blue_Whale_sf$activity,"-",Blue_Whale_sf$months)
 BlueWhale_ImpHab_sf <- Blue_Whale_sf
 BlueWhale_ImpHab_sf <- st_make_valid(BlueWhale_ImpHab_sf)
 
-
+# Ecologically or Biologically Significant Marine Areas (EBSAs)
 EBSA_sf <- st_read("../Data/Zones/DFO_EBSA_FGP/DFO_EBSA.shp")
 EBSA_sf <- st_transform(EBSA_sf, crs = 4326)
 EBSA_sf$Report_URL <- str_replace(EBSA_sf$Report_URL, ".pdf", ".html")
@@ -149,7 +155,7 @@ save(bioregion_sf, BlueWhale_ImpHab_sf, bounds_sf, ClippedCritHab_sf, EBSA_sf, f
 
 # Species at Risk distribution
 sardist_sf <- st_read("../Data/NaturalResources/Species/SpeciesAtRisk/clipped_layers/sardist_4326.shp", stringsAsFactors = FALSE)
-sardist_sf <- dplyr::select(sardist_sf,Common_Nam, Population, Scientific)
+# sardist_sf <- dplyr::select(sardist_sf,Common_Nam, Population, Scientific)
 sardist_sf <- st_make_valid(sardist_sf)
 
 save(sardist_sf, file = "../Data/Rdata/OpenData_sardist.RData")
@@ -163,7 +169,7 @@ Legend <- read.csv("../Data/NaturalResources/Species/Cetaceans/CetaceanLegend.cs
 Legend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
 
 # Cetacean point data  #########################
-#read wsdb file
+# Whale Sightings Database (wsdb)
 wsdb <- read.csv("../Data/NaturalResources/Species/Cetaceans/WSDB/MarWSDB_20210407.csv", stringsAsFactors = FALSE)
 wsdb <- dplyr::select(wsdb,COMMONNAME,SCIENTIFICNAME,YEAR,LATITUDE,LONGITUDE)
 wsdb <- wsdb %>% dplyr::filter(YEAR >= 2010)
@@ -174,7 +180,7 @@ wsdb <- dplyr::select(wsdb,CNAME,'Scientific Name',YEAR,Legend, LATITUDE,LONGITU
 # wsdb <- dplyr::rename(wsdb,c("COMMONNAME" = "CNAME"))
 wsdb_sf <- st_as_sf(wsdb, coords = c("LONGITUDE","LATITUDE"), crs = 4326)
 
-#read whitehead lab file
+# Whitehead lab
 whitehead <- read.csv("../Data/NaturalResources/Species/Cetaceans/Whitehead_Lab/whitehead_lab.csv", stringsAsFactors = FALSE)
 whitehead$YEAR <- lubridate::year(whitehead$Date)
 whitehead <- whitehead %>% dplyr::filter(YEAR >= 2010)
@@ -185,7 +191,7 @@ whitehead <- dplyr::select(whitehead,'Scientific Name', YEAR, Legend, Lat, Long)
 whitehead$Long <- -1*whitehead$Long
 whitehead_sf <- st_as_sf(whitehead, coords = c("Long","Lat"), crs = 4326)
 
-#read narwc file - update 
+# North Atlantic Right Whale Consortium (narwc)
 narwc <- read.csv("../Data/NaturalResources/Species/Cetaceans/NARWC/NARWC_09-18-2020.csv", stringsAsFactors = FALSE)
 narwcspecies <-  read.csv("../Data/NaturalResources/Species/Cetaceans/NARWC/NARWCSpeciesNames.csv", stringsAsFactors = FALSE)
 narwcspecies <- narwcspecies %>% rename("Scientific Name"= ScientificName)
@@ -197,7 +203,7 @@ narwc_sf <- st_as_sf(narwc, coords = c("LONGITUDE","LATITUDE"), crs = 4326)
 # END point data   #########################
 
 
-# read in turtle habitat
+# Leatherback turtle habitat
 leatherback_sf <- st_read("../Data/NaturalResources/Species/SpeciesAtRisk/LeatherBackTurtleCriticalHabitat/LBT_CH_2013.shp", stringsAsFactors = FALSE)
 leatherback_sf <- st_make_valid(leatherback_sf)
 
@@ -229,56 +235,3 @@ save(isdb_sf,ISSPECIESCODES,leatherback_sf,Legend, marfis_sf,MARFISSPECIESCODES,
      file = "../Data/Rdata/SecureData.Rdata")
 
 ########################################################-
-# random code bits
-
-list1 <- ls()
-paste(list1, collapse=", ")
-
-load("SecureData.Rdata")
-load("../Data/RData/OpenData.Rdata")
-
-
-
-
-
-land50k_sf<-st_read("../Data/Boundaries/Coast50K/Coastline50k_SHP/Land_AtlCanada_ESeaboardUS.shp", quiet=TRUE, stringsAsFactors = FALSE)
-getwd()
-
-colnames(land_sf)
-land50k_sf = subset(land50k_sf, select = -c(Shape_Leng,Shape_Area))
-plot(land_sf)
-
-file <- "C:/Temp/Land10M.rds"
-file2 <- "C:/Temp/land50k.rds"
-saveRDS(land50k_sf, file, compress = TRUE)
-saveRDS(land10m, file2, compress = TRUE)
-save(land_sf,file = file2, compress = TRUE)
-## restore it under a different name
-land50k <- readRDS(file)
-land10m <- readRDS(file2)
-plot(land2)
-
-rm(land_sf)
-rm(land10m)
-load(file2)
-plot(land_sf)
-
-
-load("N:/MSP/Data/Boundaries/Landmass/land10m.RData")
-
-land10m <- st_read(dsn = "N:/MSP/Data/Boundaries/Landmass",layer = "ne_10m_land_Clip.shp")
-
-land10m_sf <- st_read("N:/MSP/Data/Boundaries/Landmass/ne_10m_land_Clip.shp", stringsAsFactors = FALSE)
-
-land10m <- st_as_sf(land10m)
-plot(land10m)
-
-land2 <- readRDS(file)
-
-
-landfile10m <- "../RData/Land10M.rds"
-landfile50k <- "..RData/land50k.rds"
-
-## restore it under a different name
-land50k <- readRDS(landfile50k)
-land10m <- readRDS(landfile10m)
