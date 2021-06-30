@@ -184,7 +184,9 @@ Report <- if (is.null(outputList)) {
 }
 writeLines(Report)
 
-# the scales::alpha argument can make the polygon colour transparent
+# areaMapNBNW <- areaMap+
+#            geom_sf(data=outputList$mapPoly,fill="red",col="black")
+# the scales::alpha arguement adds transparency to polygons
 areaMapNBNW <- areaMap+
            geom_sf(data=outputList$mapPoly,fill=scales::alpha("red",0.5),col="black")
 regionMapNBNW <- regionMap+
