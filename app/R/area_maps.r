@@ -1,3 +1,5 @@
+
+# ----- AREA MAP -----
 # This function produces a map of the area surrounding a box of the study area using ggplot.
 # The extent of the area to plot around the studyArea is defined by "buf" parameter in km (sets "zoom")
 # This function was created for searchPEZ and it is used as a "basemap" for other plots
@@ -53,7 +55,7 @@ area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
     annotation_scale(location="bl")+
     theme_bw()+
     eval(studyBox_geom)+
-    coord_sf(xlim = c(bboxBuf["xmin"], bboxBuf["xmax"]), ylim = c(bboxBuf["ymin"], bboxBuf["ymax"]),expand=FALSE)+
+    # coord_sf(xlim = c(bboxBuf["xmin"], bboxBuf["xmax"]), ylim = c(bboxBuf["ymin"], bboxBuf["ymax"]),expand=FALSE)+
     labs(x="Longitude", y="Latitude", col="")+
     theme(axis.title.y = element_text(size = 13))+
     theme(axis.title.x = element_text(size = 13))
@@ -65,66 +67,43 @@ area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
   
 }
 
-
-# This function produces a map of the region surrounding a box of the study area using ggplot.
-# The extent of the area to plot around the region is defined by "buf" parameter in km (sets "zoom")
+# ----- REGION MAP -----
+# This function produces a map of the region using ggplot.
 #
 # Inputs:
-# 1. Region: polygon of the region (sf object, defined by the user in the shiny app, or by an internal file
-#            e.g. the Maritime region, Gulf region)
+# 1. regionBox: boundig box of the region (defined in intro) 
 # 2. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
-# 3. land_layer: polygon developed for Atlantic canada, scale used for regional maps is 1:10m
-# 4. buf: how many km around the study area to plot (acts like "zoom")
-# 5. CANborder: Canada border, including water (preloaded)
-# 6. RegionBox: geometry portraying Region box (defines the "look" of the region box, defined in the main script)
-#
-# Outputs: list containing 2 items
-# 1. map, that can be used as a basemap for adding data layers
-# 2. bounding box of the map that can be used for cropping datasets
-#
+# 3. land_layer: polygon developed for Atlantic canada, scale used for regional maps is 1:10m (land10m_sf)
+# 4. CANborder: Canada border, including water (preloaded: bounds_sf)
+# 
+# Output: map, that can be used as a basemap for adding data layers
+# 
+# Modified by Gordana Lazin, June 29, 2021
 # Written by Philip Greyson for reproducible reporting project, June 17, 2021
 #   (modified from area_map)
 # ggplot map developed by Greg Puncher, winter/spring 2021
 
-region_map <- function(Region, studyArea, land_layer, buf, CANborder, RegionBox) {
+
+region_map <- function(regionBox, studyArea, land_layer,CANborder) {
   
-  # buf is in km, and now converted to degrees
-  buf <- buf/100
+  # clip land to plot area to speed up plotting
+  land <- sf::st_crop(land_layer,regionBox)
   
-  # bounding box for region
-  bbox <- sf::st_bbox(Region)
-  
-  # create bounding box for buffer (plot area)
-  bboxBuf <- bbox
-  
-  bboxBuf["xmin"] <- (bbox$xmin)-buf
-  bboxBuf["xmax"] <- (bbox$xmax)+buf
-  bboxBuf["ymin"] <- (bbox$ymin)-buf*0.72
-  bboxBuf["ymax"] <- (bbox$ymax)+buf*0.72
-  
-  # subset land to plot area to speed up plotting
-  land <- sf::st_crop(land_layer,bboxBuf)
-  
-  # subset US-Canad boundary to plot area to speed up plotting
-  bound <- sf::st_crop(CANborder,bboxBuf)
+  # clip US-Canada boundary lines to plot area to speed up plotting
+  bound <- sf::st_crop(CANborder,regionBox)
   
   # make a plot and write it to m
   m <- ggplot()+
-    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1)+ # creates US boundary line, 200 nm limit
     geom_sf(data=land,fill=c("lightgrey"), col="black", size=0.7)+
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1)+ # creates US boundary line, 200 nm limit
     watermark(show = TRUE, lab = "DFO Internal Use Only")+
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="bl")+
     theme_bw()+
-    eval(RegionBox)+
-    coord_sf(xlim = c(bboxBuf["xmin"], bboxBuf["xmax"]), ylim = c(bboxBuf["ymin"], bboxBuf["ymax"]),expand=FALSE)+
+    coord_sf(expand = FALSE)+
     labs(x="Longitude", y="Latitude", col="")+
     theme(axis.title.y = element_text(size = 13))+
     theme(axis.title.x = element_text(size = 13))
   
-  
-  outList <- list(m,bboxBuf)
-  
-  return(outList)
-  
+  return(m)
 }

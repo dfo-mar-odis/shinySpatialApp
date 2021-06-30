@@ -42,8 +42,8 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
   # clip the data file first to the extent of the bounding box
   # and then clip that reduced datafile to the extent of the 
   # study area
-  Samples_bbox <- sf::st_intersection(datafile,Bbox)
-  Samples_study <- sf::st_intersection(Samples_bbox,studyArea)
+  Samples_bbox <- sf::st_crop(datafile,Bbox)
+  Samples_study <- sf::st_crop(Samples_bbox,studyArea)
   data1 <- Samples_study
   data2 <- Samples_bbox
   
@@ -120,6 +120,51 @@ poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
 
 
 ##### - END poly intersect function ##################################
+
+##### - raster intersect function ##################################
+# This function clips various raster data sources (e.g. SDM output, etc.)
+# to the extent of the region, the studyArea, and the map bounding box.
+# The map bounding box is created by the area_map() function
+#
+# Inputs:
+# 1. datafile: an input raster file
+# 2. region: a spatial file of the region
+# 3. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
+# 4. Bbox: Coordinates of the map bounding box exported from area_map() function
+#
+# Outputs: list containing 3 items
+# 1. studyRas: the full dataset from clipping the datafile by the studyArea
+# 2. mapRas: the full dataset from clipping the datafile by the Bounding box
+# 3. regionRas: the full dataset from clipping the datafile by the Region
+raster_intersect <- function(datafile, region, studyArea, Bbox, ...) {
+  
+  # convert Bbox to sf object
+  Bbox <- st_as_sfc(Bbox)
+  Bbox <- st_as_sf(Bbox)
+  # clip the data file first to the extent of the region
+  # and then clip that reduced datafile to the extent of the 
+  # bounding box, then clip that reduced datafile to the 
+  # extent of the studyArea
+  # with raster datasets it's necesssary to comnbine the
+  # crop and mask functions
+  p1 <- crop(datafile, region)
+  p1 <- raster::mask(p1, region)
+  p2 <- crop(p1, Bbox)
+  p2 <- mask(p2, Bbox)
+  p3 <- crop(p2, studyArea)
+  p3 <- mask(p3, studyArea)
+  
+  # if there are no raster cells found in the studyArea, exit the function
+  if (nrow(p3) > 0) {
+    outList <- list(studyRas = p3, mapRas = p2, regionRas = p1)
+    return(outList)
+    
+  } # end of test for zero samples
+  else {
+    return()
+  }
+}
+##### - END raster intersect function ##################################
 
 ##### - create_table_RV function ##################################
 # This function creates summary tables of the RV data

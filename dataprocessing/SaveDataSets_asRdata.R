@@ -104,18 +104,51 @@ NBNW_ImpHab_sf <- st_read(dsn = "../Data/NaturalResources/Species/Cetaceans/Nort
 NBNW_ImpHab_sf <- st_make_valid(NBNW_ImpHab_sf)
 
 # Species Distribution Model (SDM) outputs
+# import Ocean mask (50k) to clip out areas of land (i.e. islands)
+ocean50k_sf <- st_read("../Data/Boundaries/Coast50k/Coastline50k_SHP/Ocean_AtlCanada_ESeaboardUS.shp",
+                      stringsAsFactors = FALSE)
+
+# function for clipping islands out of SDM rasters
+raster_clip <- function(datafile, ocean, ...) {
+        origExtent <- st_as_sf(st_as_sfc(st_bbox(datafile)))
+        p1 <- crop(datafile, ocean)
+        p1 <- raster::mask(p1, ocean)
+        p2 <- crop(p1, origExtent)
+        p2 <- mask(p2, origExtent)
+        return(p2)
+}
+
 fin_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Fin_Whale.tif")
 fin_whale[fin_whale==0] <- NA
-# fin_whale_sp <- rasterToPolygons(fin_whale, na.rm=TRUE, dissolve=FALSE)
+fin_whale <- raster_clip(fin_whale,ocean50k_sf)
 
 harbour_porpoise <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Harbour_Porpoise.tif")
 harbour_porpoise[harbour_porpoise==0] <- NA
+harbour_porpoise <- raster_clip(harbour_porpoise,ocean50k_sf)
 
 humpback_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Humpback_Whale.tif")
 humpback_whale[humpback_whale==0] <- NA
+humpback_whale <- raster_clip(humpback_whale,ocean50k_sf)
 
 sei_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Sei_Whale.tif")
 sei_whale[sei_whale==0] <- NA
+sei_whale <- raster_clip(sei_whale,ocean50k_sf)
+
+
+# OR convert the rasters to sf_objects and use the poly_intersect() function to clip to studyArea
+fin_whale_sf <- stars::st_as_stars(fin_whale)%>%sf::st_as_sf()
+fin_whale_sf <- st_crop(fin_whale_sf, ocean50k_sf)
+fin_whale_sf <- st_make_valid(fin_whale_sf)
+harbour_porpoise_sf <- stars::st_as_stars(harbour_porpoise)%>%sf::st_as_sf()
+harbour_porpoise_sf <- st_crop(harbour_porpoise_sf, ocean50k_sf)
+harbour_porpoise_sf <- st_make_valid(harbour_porpoise_sf)
+humpback_whale_sf <- stars::st_as_stars(humpback_whale)%>%sf::st_as_sf()
+humpback_whale_sf <- st_crop(humpback_whale_sf, ocean50k_sf)
+humpback_whale_sf <- st_make_valid(humpback_whale_sf)
+sei_whale_sf <- stars::st_as_stars(sei_whale)%>%sf::st_as_sf()
+sei_whale_sf <- st_crop(sei_whale_sf, ocean50k_sf)
+sei_whale_sf <- st_make_valid(sei_whale_sf)
+
 
 #Read Blue Whale Important Habitat shapefile and Project to WGS84
 Blue_32198 <- st_read("../Data/NaturalResources/Species/Cetaceans/BlueWhaleHabitat_FGP/BlueWhaleHabitat_HabitatBaleineBleue.shp", quiet=TRUE, stringsAsFactors = FALSE)
@@ -143,8 +176,16 @@ save(bioregion_sf, BlueWhale_ImpHab_sf, bounds_sf, ClippedCritHab_sf, EBSA_sf, f
      harbour_porpoise, humpback_whale, land10m_sf, land50k_sf, 
      listed_species, listed_cetacean_species, listed_other_species, listed_fish_invert_species,
      NBNW_ImpHab_sf, obis_cet_sf, obis_fish_sf, rockweed_sf, 
-     RVCatch_sf, RVGSSPECIES, sei_whale, 
+     RVCatch_sf, RVGSSPECIES, sei_whale,
+     fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf,
      file = "../Data/Rdata/OpenData.RData")
+
+save(bioregion_sf, BlueWhale_ImpHab_sf, bounds_sf, ClippedCritHab_sf, EBSA_sf, fin_whale, 
+     harbour_porpoise, humpback_whale, land10m_sf, land50k_sf, 
+     listed_species, listed_cetacean_species, listed_other_species, listed_fish_invert_species,
+     NBNW_ImpHab_sf, obis_cet_sf, obis_fish_sf, rockweed_sf, 
+     RVCatch_sf, RVGSSPECIES, sei_whale,
+     file = "../Data/Rdata/OpenData_noRasSF.RData")
 
 
 # Species at Risk distribution

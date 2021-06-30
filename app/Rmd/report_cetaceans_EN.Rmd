@@ -152,9 +152,9 @@ Report <- if (is.null(outputList)) {
 writeLines(Report)
 
 areaMapBW <- areaMap+
-           geom_sf(data=outputList[[2]],fill="red",col="black")
+           geom_sf(data=outputList$mapPoly,fill="red",col="black")
 regionMapBW <- regionMap+
-             geom_sf(data=outputList[[3]],fill="red",col="black")
+             geom_sf(data=outputList$regionPoly,fill="red",col="black")
 ```
 
 ```{r bw plots, echo=FALSE, results='asis'}
@@ -185,9 +185,9 @@ Report <- if (is.null(outputList)) {
 writeLines(Report)
 
 areaMapNBNW <- areaMap+
-           geom_sf(data=outputList[[2]],fill="red",col="black")
+           geom_sf(data=outputList$mapPoly,fill="red",col="black")
 regionMapNBNW <- regionMap+
-             geom_sf(data=outputList[[3]],fill="red",col="black")
+             geom_sf(data=outputList$regionPoly,fill="red",col="black")
 
 
 
