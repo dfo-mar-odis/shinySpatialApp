@@ -55,7 +55,7 @@ area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
     annotation_scale(location="bl")+
     theme_bw()+
     eval(studyBox_geom)+
-    # coord_sf(xlim = c(bboxBuf["xmin"], bboxBuf["xmax"]), ylim = c(bboxBuf["ymin"], bboxBuf["ymax"]),expand=FALSE)+
+   # coord_sf(xlim = c(bboxBuf["xmin"], bboxBuf["xmax"]), ylim = c(bboxBuf["ymin"], bboxBuf["ymax"]),expand=FALSE)+
     labs(x="Longitude", y="Latitude", col="")+
     theme(axis.title.y = element_text(size = 13))+
     theme(axis.title.x = element_text(size = 13))
@@ -86,16 +86,16 @@ area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
 
 region_map <- function(regionBox, studyArea, land_layer,CANborder) {
   
-  # clip land to plot area to speed up plotting
+  # subset land to plot area to speed up plotting
   land <- sf::st_crop(land_layer,regionBox)
   
-  # clip US-Canada boundary lines to plot area to speed up plotting
+  # subset US-Canad boundary to plot area to speed up plotting
   bound <- sf::st_crop(CANborder,regionBox)
   
   # make a plot and write it to m
   m <- ggplot()+
-    geom_sf(data=land,fill=c("lightgrey"), col="black", size=0.7)+
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1)+ # creates US boundary line, 200 nm limit
+    geom_sf(data=land,fill=c("lightgrey"), col="black", size=0.7)+
     watermark(show = TRUE, lab = "DFO Internal Use Only")+
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="bl")+
@@ -107,3 +107,4 @@ region_map <- function(regionBox, studyArea, land_layer,CANborder) {
   
   return(m)
 }
+

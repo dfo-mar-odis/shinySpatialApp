@@ -29,38 +29,22 @@ EBSA_location(EBSA_sf, studyArea)
 #function for bioregion
 EBSA_bioregion(EBSA_sf, studyArea)
 ```
+```{r overlap EBSA and plot, echo=FALSE, results='asis'}
+# define polygon dataset and attribute to plot
+poly_sf=EBSA_sf
+attribute="NONE"
 
-```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA; pink) relative to the search area defined by the user (red outline).'}
-plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
-  
-  # buf is in km, and now converted to degrees
-  buf=buf/100
-  buf_lat=buf*0.72
-  #png("pez_and_site.png", width=1616, height=1410)
-  
-  # bounding box
-  bbox=st_bbox(studyArea)
-  
-  # longitude and latitude limits for the map
-  longmin<-(bbox$xmin)-buf
-  longmax<-bbox$xmax+buf
-  latmin<-bbox$ymin-buf_lat
-  latmax<-bbox$ymax+buf_lat
-  
-  EBSAmap <- ggplot()+
-    geom_sf(data=EBSA_sf, fill="plum",col="black")+
-    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
-    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
-    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
-    geom_sf(data=site,fill="yellow",col="black", size=0.6)+
-    annotation_scale(location="br")+
-    theme_bw()+
-    ggplot2::coord_sf(xlim = c(longmin, longmax), ylim = c(latmin, latmax))+
-    labs(x=expression(paste("Longitude ",degree,"W",sep="")),
-         y=expression(paste("Latitude ",degree,"N",sep="")),
-         col="")+
-    watermark(show = TRUE, lab = "DFO Internal Use Only")
-  return(EBSAmap)
-}
-plot_EBSA(EBSA_sf, studyArea, land10m_sf, 300, bounds_sf)
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
+```
+
+```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).'}
+if (!is.null(clipped$regionPoly)){
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
+} 
+```
+
+```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area defined by the user (red outline).'}
+if(!is.null(clipped$studyPoly)){print(
+  plot_polygons(areaMap,bboxMap,studyBox_geom, clipped$mapPoly,attribute))}
 ```
