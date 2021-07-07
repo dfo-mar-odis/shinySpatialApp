@@ -48,10 +48,10 @@ plot_crithab <- function(ClippedCritHab_sf, leatherback_sf, studyArea, land_laye
   latmax <- bbox$ymax+buf_lat
   
   ggplot()+
+    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=leatherback_sf,fill="lightgreen",col="black")+
     geom_sf(data=ClippedCritHab_sf,fill="red",col="black")+
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1)+  # creates US boundary line, 200 nm limit
-    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
@@ -81,9 +81,9 @@ plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
   latmax <- bbox$ymax+buf_lat
   
   ggplot()+
+    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=sardist_sf,fill="orange", col="black", size=0.6)+    
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
-    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
