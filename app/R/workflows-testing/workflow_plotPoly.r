@@ -4,8 +4,8 @@
 # and attribute to plot ("NONE" if no attribute)
 # The rest of the lines stay the same. 
 
-poly_sf= leatherback_sf #EBSA_sf #NBNW_ImpHab_sf #BlueWhale_ImpHab_sf  #leatherback_sf #ClippedCritHab_sf #rockweed_sf
-attribute="NONE" #"NONE"         #"Activity"           #"NONE"         #"NONE"            #"RWP"
+poly_sf=  BlueWhale_ImpHab_sf #EBSA_sf #NBNW_ImpHab_sf  #leatherback_sf #ClippedCritHab_sf #rockweed_sf
+attribute= "Activity"           #"NONE"         #"NONE"            #"RWP"
 
 
 # THIS LINE WOULD BE THE SAME FOR ALL POLYGONS

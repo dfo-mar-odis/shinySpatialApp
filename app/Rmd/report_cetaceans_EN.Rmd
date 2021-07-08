@@ -26,7 +26,7 @@ Report_wsdb <- if (is.null(outputList)) {
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild Species listings. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
 if (!is.null(outputList)) {
-  areaMap+ 
+  areaMap + 
     geom_point(data = wsdb_points, aes(x = long, y = lat, color=Legend), size = 2, shape = 20) +
     ggplot2::scale_colour_manual(values=whale_col)
 }
@@ -139,71 +139,61 @@ plot_cetaceans_4grid(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_w
 
 ### **Blue Whale Important Habitat**  
 #### ***Area-specific Blue Whale Important Habitat search results***
+```{r overlap bw habitat, echo=FALSE, results='asis'}
+poly_sf=BlueWhale_ImpHab_sf
+attribute="Activity"
+
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
+```
 *
 ```{r bw result, echo=FALSE, results='asis'}
-# BW <- blue_whale_habitat_overlap(BlueWhale_ImpHab_sf, studyArea)
-# writeLines(BW)
-outputList <- poly_intersect(BlueWhale_ImpHab_sf, Region, studyArea, Bbox = bboxMap)
-Report <- if (is.null(outputList)) {
-    "Search area does not overlap with Blue Whale Important Habitat in the Western North Atlantic."
-  } else {
-    "Search area overlaps with Blue Whale Important Habitat in the Western North Atlantic."
-}
-writeLines(Report)
+polyText<-if(is.null(clipped$studyPoly)){"Search area does not overlap with Blue Whale Important Habitat in the Western North Atlantic."
+} else {"Search area overlaps with Blue Whale Important Habitat in the Western North Atlantic."}
 
-areaMapBW <- areaMap+
-           geom_sf(data=outputList$mapPoly,fill="red",col="black")
-regionMapBW <- regionMap+
-             geom_sf(data=outputList$regionPoly,fill="red",col="black")
-```
-
-```{r bw plots, echo=FALSE, results='asis'}
-# BW_wide <- plot_bw_hab(BlueWhale_ImpHab_sf, studyArea, land10m_sf, bounds_sf)
-# BW_zoom <- plot_bw_hab_zoom(BlueWhale_ImpHab_sf, studyArea, land50k_sf, 100, bounds_sf)
+ polyText<-noquote(polyText)
+ writeLines(polyText)
 ```
 
 ```{r, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Blue Whale Important Habitat in the Western North Atlantic. Polygons delimit areas in Canadian waters that are important to Blue Whales for foraging and migration. These areas identified in the report by Lesage et al. (2018) are considered important for the survival and recovery of Blue Whales from the western North Atlantic population. Blue Whales most likely need to use several of these important habitats to fulfill their biological needs. As a result, access corridors and habitat they connect need to be considered equally important for the population.'}
-# grid.arrange(BW_wide, BW_zoom, bottom = expression(paste("Longitude ",degree,"N",sep="")),
-#              left = expression(paste("Latitude",degree,"N",sep="")),
-#              nrow = 1,
-#              widths = c(4.1/10, 5.9/10))
-if (!is.null(outputList)) {
-   grid.arrange(regionMapBW, areaMapBW, nrow = 1, widths = c(4.1/10, 5.9/10))
-}
+if (!is.null(clipped$regionPoly)){
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
+}  
 ```
+
+```{r, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with Blue Whale Important Habitat.'}
+if (!is.null(clipped$mapPoly)){
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute) 
+} 
+```
+
 
 ### **Northern bottlenose whale important habitat in inter-canyon areas on the eastern Scotian Shelf**  
 #### ***Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results*** 
-*
-```{r nbnw result, echo=FALSE, results='asis'}
-outputList <- poly_intersect(NBNW_ImpHab_sf, Region, studyArea, Bbox = bboxMap)
-Report <- if (is.null(outputList)) {
-    "Search area does not overlap with Northern Bottlenose Whale Important Habitat in the Western North Atlantic."
-  } else {
-    "Search area overlaps with Northern Bottlenose Whale Important Habitat in the Western North Atlantic."
-}
-writeLines(Report)
+```{r overlap nbw habitat, echo=FALSE, results='asis'}
+poly_sf=NBNW_ImpHab_sf
+attribute="NONE"
 
-# areaMapNBNW <- areaMap+
-#            geom_sf(data=outputList$mapPoly,fill="red",col="black")
-# the scales::alpha arguement adds transparency to polygons
-areaMapNBNW <- areaMap+
-           geom_sf(data=outputList$mapPoly,fill=scales::alpha("red",0.5),col="black")
-regionMapNBNW <- regionMap+
-             geom_sf(data=outputList$regionPoly,fill="red",col="black")
-
-
-  # NBNW<-intersect_NBNW_overlap(NBNW_ImpHab_sf, studyArea)
-  # writeLines(NBNW)
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
 ```
-```{r nbnw plots, echo=FALSE, results='asis'}
-  # NBNW_wide<-plot_NBNW_hab(NBNW_ImpHab_sf, studyArea, land10m_sf, bounds_sf)
-  # NBNW_zoom<-plot_NBNW_hab_zoom(NBNW_ImpHab_sf, studyArea, land50k_sf, 100, bounds_sf)
+*
+```{r nbw result, echo=FALSE, results='asis'}
+polyText<-if(is.null(clipped$studyPoly)){"Search area does not overlap with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf."
+} else {"Search area overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf."}
+
+ polyText<-noquote(polyText)
+ writeLines(polyText)
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
-# grid.arrange(NBNW_wide, NBNW_zoom, bottom = expression(paste("Longitude ",degree,"N",sep="")), left = expression(paste("Latitude ",degree,"N",sep="")), nrow = 1, widths = c(4.1/10, 5.9/10))
-if (!is.null(outputList)) {
-   grid.arrange(regionMapNBNW, areaMapNBNW, nrow = 1, widths = c(4.1/10, 5.9/10))
-}
+if (!is.null(clipped$regionPoly)){
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
+} 
+```
+
+```{r, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf.'}
+if (!is.null(clipped$mapPoly)){
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute) 
+} 
 ```
