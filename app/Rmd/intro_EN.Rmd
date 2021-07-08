@@ -38,15 +38,13 @@ lapply(list.files("../R", pattern = ".[Rr]$", full.names = TRUE),source) # check
 ```
 
 ```{r Search Area and setup.R, echo=FALSE, include=FALSE, cache=FALSE}
-studyArea <- sf::st_read("{{path_to_geoms}}")
+ studyArea <- sf::st_read("{{path_to_geoms}}")
 #studyArea <- sf::st_read("geoms_slc.geojson")
 # Uncomment the following to test fixed polygon:
 # studyArea <- st_read("../studyAreaTest/geoms_slc_test.geojson")#Offshore
 # studyArea <- st_read("../studyAreaTest/geoms_slc_coastal_test.geojson")#coastal 
 # studyArea <- st_read("../studyAreaTest/geoms_slc_no_land.geojson") #no land
-# studyArea <- st_read("../studyAreaTest/geoms_slc_BeaverHbrOffshore.geojson") #no land
-
-
+Region <- st_read("../studyAreaTest/geoms_slc_MarBioRegion.geojson")
 site <- sf::st_centroid(studyArea) 
 ```
  
@@ -62,10 +60,18 @@ areaMap=areaMapList[[1]] # map
 bboxMap=areaMapList[[2]] #bounding box of the map
 ```
 
+```{r parameters for region_map.r, echo=FALSE, include=FALSE, cache=FALSE}
+# Bounding box for the region
+regionBox <- sf::st_bbox(Region) 
+
+# Create the regional map
+regionMap <- region_map(regionBox, studyArea, land10m_sf, bounds_sf)  
+```
+
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
-<!-- # ```{r child = '../Rmd/report_fish_EN.Rmd'} -->
-<!-- # ``` -->
+ <!-- ```{r child = '../Rmd/report_SARA_EN.Rmd'} -->
+ <!-- ``` -->
 
 <!-- END  -->
 

@@ -6,6 +6,8 @@ Data sources/products used in this section include: Whale Sightings Database (WS
 
 Please refer to WHALEMAP [@whalemap] https://whalemap.ocean.dal.ca for additional information on observations (sightings and acoustic detections) of North Atlantic Right Whales. WHALEMAP primarily reflects results for areas that are being monitored; therefore, the absence of North Atlantic Right Whales in an area should be interpreted as an absence of reporting, not necessarily an absence of the species in the search area. In addition, sightings on WHALEMAP are preliminary and subject to change once quality control checks have been completed.
 
+Please refer to the Passive Acoustic Cetacean Map (PACM) to explore when and where cetacean species were acoustically detected in the North Atlantic Ocean based on Passive Acoustic Monitoring (PAM) (https://apps-nefsc.fisheries.noaa.gov/pacm/#/). Acoustic detections in PACM only represent times when animals are calling; they do not capture time periods when animals are present but silent. Detections are from archival acoustic recorders and do not show recorders currently in the water (it is not a real-time tool). Differences in recorder detection ranges for each species are not accounted for; they can vary based on differences in instrumentation (i.e. recording hardware), environmental conditions (i.e. weather, bottom type, ambient sound levels), and anthropogenic sound levels [@PACM2021]. For questions about PACM, please contact nmfs.pacmdata@noaa.gov.
+
 This section does not endeavor to describe every source of information available; the data presented does not represent all available cetacean sightings data within the search area and additional sightings may be available from other sources, or more recent data may be available than what is presented here. In addition to the presence-only data, there may be data available that can be used to support species-specific conclusions about habitat preferences and possible or known occurrence near and within the search area. Please refer to the cited publications for additional information and contact Angelia Vanderlaan (North Atlantic Right Whales) and Hilary Moors-Murphy (other cetacean species) to discuss additional sources of information (e.g., acoustic detections). Data and sources not explicitly included in this report include information from past studies/publications, acoustic detections, prey sampling and tagging. While the value of these data in predicting and describing cetacean occurrences is vital, these types of data are not available for all species and are not yet available for data querying. In the future, as information from other data sources becomes available, these new data will help to provide a more comprehensive understanding of cetacean habitat use and occurrence in the search areas.
 
 ```{r cetacean setup, echo=FALSE, include=FALSE, cache=FALSE}
@@ -212,20 +214,32 @@ Please see a list of all sources of information used in @Lesage2018 and the Open
 
 #### ***Area-specific Blue Whale Important Habitat search results***
 *
-```{r bw result, echo=FALSE, results='asis'}
-BW <- blue_whale_habitat_overlap(BlueWhale_ImpHab_sf, studyArea)
-writeLines(BW)
+```{r overlap bw habitat, echo=FALSE, results='asis'}
+poly_sf=BlueWhale_ImpHab_sf
+attribute="Activity"
+
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
 ```
-```{r bw plots, echo=FALSE, results='asis'}
-BW_wide <- plot_bw_hab(BlueWhale_ImpHab_sf, studyArea, land10m_sf, bounds_sf)
-BW_zoom <- plot_bw_hab_zoom(BlueWhale_ImpHab_sf, studyArea, land50k_sf, 100, bounds_sf)
+*
+```{r bw result, echo=FALSE, results='asis'}
+polyText<-if(is.null(clipped$studyPoly)){"Search area does not overlap with Blue Whale Important Habitat in the Western North Atlantic."
+} else {"Search area overlaps with Blue Whale Important Habitat in the Western North Atlantic."}
+
+ polyText<-noquote(polyText)
+ writeLines(polyText)
 ```
 
 ```{r, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Blue Whale Important Habitat in the Western North Atlantic. Polygons delimit areas in Canadian waters that are important to Blue Whales for foraging and migration. These areas identified in the report by Lesage et al. (2018) are considered important for the survival and recovery of Blue Whales from the western North Atlantic population. Blue Whales most likely need to use several of these important habitats to fulfill their biological needs. As a result, access corridors and habitat they connect need to be considered equally important for the population.'}
-grid.arrange(BW_wide, BW_zoom, bottom = expression(paste("Longitude ",degree,"N",sep="")),
-             left = expression(paste("Latitude",degree,"N",sep="")),
-             nrow = 1,
-             widths = c(4.1/10, 5.9/10))
+if (!is.null(clipped$regionPoly)){
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
+}  
+```
+
+```{r, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with Blue Whale Important Habitat.'}
+if (!is.null(clipped$mapPoly)){
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute) 
+} 
 ```
 
 ### **Northern bottlenose whale important habitat in inter-canyon areas on the eastern Scotian Shelf**  
@@ -246,15 +260,30 @@ The inter-canyon habitat area polygon was delineated using the 500 m depth conto
 
 #### ***Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results*** 
 *
-```{r nbnw result, echo=FALSE, results='asis'}
-  NBNW<-intersect_NBNW_overlap(NBNW_ImpHab_sf, studyArea)
-  writeLines(NBNW)
+```{r overlap nbw habitat, echo=FALSE, results='asis'}
+poly_sf=NBNW_ImpHab_sf
+attribute="NONE"
+
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
 ```
-```{r nbnw plots, echo=FALSE, results='asis'}
-  NBNW_wide<-plot_NBNW_hab(NBNW_ImpHab_sf, studyArea, land10m_sf, bounds_sf)
-  NBNW_zoom<-plot_NBNW_hab_zoom(NBNW_ImpHab_sf, studyArea, land50k_sf, 100, bounds_sf)
+*
+```{r nbw result, echo=FALSE, results='asis'}
+polyText<-if(is.null(clipped$studyPoly)){"Search area does not overlap with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf."
+} else {"Search area overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf."}
+
+ polyText<-noquote(polyText)
+ writeLines(polyText)
 ```
 
-```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
-grid.arrange(NBNW_wide, NBNW_zoom, bottom = expression(paste("Longitude ",degree,"N",sep="")), left = expression(paste("Latitude ",degree,"N",sep="")), nrow = 1, widths = c(4.1/10, 5.9/10))
+```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
+if (!is.null(clipped$regionPoly)){
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
+} 
+```
+
+```{r, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf.'}
+if (!is.null(clipped$mapPoly)){
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute) 
+} 
 ```

@@ -31,7 +31,7 @@ site_map <- function(studyArea,site,land_layer,buf, bound) {
 
 ########## Species At Risk distribution and Critical Habitat data ##########
 
-# critical habitat
+# critical habitat # TO BE DELETED
 plot_crithab <- function(ClippedCritHab_sf, leatherback_sf, studyArea, land_layer, buf, bound) {
   
   # buf is in km, and now converted to degrees
@@ -48,10 +48,10 @@ plot_crithab <- function(ClippedCritHab_sf, leatherback_sf, studyArea, land_laye
   latmax <- bbox$ymax+buf_lat
   
   ggplot()+
-    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=leatherback_sf,fill="lightgreen",col="black")+
     geom_sf(data=ClippedCritHab_sf,fill="red",col="black")+
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1)+  # creates US boundary line, 200 nm limit
+    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
@@ -64,7 +64,7 @@ plot_crithab <- function(ClippedCritHab_sf, leatherback_sf, studyArea, land_laye
 }
 
 
-#SAR distribution
+#SAR distribution # TO BE DELETED - NOT USED ANYMORE
 plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
   
   # buf is in km, and now converted to degrees
@@ -81,9 +81,9 @@ plot_sardist<-function(sardist_sf, studyArea, land_layer, buf, bound) {
   latmax <- bbox$ymax+buf_lat
   
   ggplot()+
-    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=sardist_sf,fill="orange", col="black", size=0.6)+    
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) +  # creates US boundary line, 200 nm limit
+    geom_sf(data=land_layer,fill=c("grey90"), col="black")+
     geom_sf(data=studyArea, fill=NA, col="red", size=1)+
     annotation_scale(location="br")+
     theme_bw()+
@@ -188,7 +188,7 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
 }
 
 
-# Blue whale important habitat
+# Blue whale important habitat # TO BE DELETED
 
 plot_bw_hab <- function(Blue_Whale_sf, studyArea, land_layer, bound) {
   
@@ -209,7 +209,7 @@ plot_bw_hab <- function(Blue_Whale_sf, studyArea, land_layer, bound) {
   
 }
 
-# Blue whale important habitat zoom
+# Blue whale important habitat zoom # TO BE DELETED
 
 plot_bw_hab_zoom <- function(Blue_Whale_sf, studyArea, land_layer, buf, bound) {
   
@@ -243,7 +243,7 @@ plot_bw_hab_zoom <- function(Blue_Whale_sf, studyArea, land_layer, buf, bound) {
   
 }
 
-# Northern Bottlenose whale important habitat
+# Northern Bottlenose whale important habitat # TO BE DELETED
 
 plot_NBNW_hab <- function(critHab, studyArea, land_layer, bound) {
   
@@ -263,7 +263,7 @@ plot_NBNW_hab <- function(critHab, studyArea, land_layer, bound) {
   
 }
 
-# Northern Bottlenose whale important habitat zoom
+# Northern Bottlenose whale important habitat zoom # TO BE DELETED
 
 plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
   
@@ -299,7 +299,7 @@ plot_NBNW_hab_zoom <- function(critHab, studyArea, land_layer, buf, bound) {
 
 ########## Habitat Section ##########
 
-# Rockweed presence [by Gordana Lazin]
+# Rockweed presence [by Gordana Lazin] # TO BE DELETED
 plot_rockweed <- function(rockweed_sf, areaMap, bboxMap) {
   
   # crop rockweed layer to the map area to speed up plotting
@@ -330,7 +330,7 @@ plot_rockweed <- function(rockweed_sf, areaMap, bboxMap) {
   
 }
 
-
+# Rockweed stats
 rockweedStats<- function(rockweed_sf, studyArea) {
   
   # clip rockweed to study area
@@ -361,7 +361,7 @@ rockweedStats<- function(rockweed_sf, studyArea) {
 
 ########## Spatial Planning Section ##########
 
-# EBSA
+# EBSA # TO BE DELETED
 
 plot_EBSA<-function(EBSA_sf, studyArea, land_layer, buf, bound) {
   

@@ -1,12 +1,13 @@
 # The functions in this file are used to clip various data sources (e.g. MARFIS, ISDB, etc.)
 # with the studyArea selected and summarize the data for tables within the final document.
 #
-# 1. main_intersect() - clips data to the extent of the studyArea
-# 2. create_table_RV() - creates summary tables of all species and listed species
-# 3. create_table_MARFIS() - creates summary tables of all species and listed species
-# 4. create_table_ISDB() - creates summary tables of all species and listed species
-# 5. create_table_OBIS() - creates summary table of listed species
-# 6. sfcoords_as_cols() - extracts latitude and longitude from geometry field
+# 1. main_intersect() - clips POINT data to the extent of the studyArea
+# 2, poly_intersect() - clips POLYGON data to the extent of the Region and studyArea
+# 3. create_table_RV() - creates summary tables of all species and listed species
+# 4. create_table_MARFIS() - creates summary tables of all species and listed species
+# 5. create_table_ISDB() - creates summary tables of all species and listed species
+# 6. create_table_OBIS() - creates summary table of listed species
+# 7. sfcoords_as_cols() - extracts latitude and longitude from geometry field
 #                         and add them to new columns
 #
 # Written by Philip Greyson for reproducible reporting project, May/2021
@@ -77,6 +78,52 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
   }
 }
 ##### - END Main intersect function ##################################
+
+##### - poly intersect function ##################################
+# This function clips various polygon data sources (e.g. EBSA, critical habitat, etc.)
+# to the extent of the region, the studyArea, and the map bounding box.
+# The map bounding box is created by the area_map() function
+#
+# Inputs:
+# 1. datafile: an input polygon vector file
+# 2. region: a spatial file of the region
+# 3. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
+# 4. Bbox: Coordinates of the map bounding box exported from area_map() function (bboxMap)
+#
+# Outputs: list containing 3 items
+# 1. studyPoly: the full dataset from clipping the datafile by the studyArea
+# 2. mapPoly: the full dataset from clipping the datafile by the Bounding box
+# 3. regionPoly: the full dataset from clipping the datafile by the Region
+#
+# Created by Phil Greyson june 2021 for reproducible reporting project
+# Modified by Gordana lazin, Jul 2, 2021 (modified outputs)
+
+poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
+
+  # convert Bbox to sf object
+  Bbox <- st_as_sfc(Bbox)
+  # clip the data file first to the extent of the region
+  # and then clip that reduced datafile to the extent of the 
+  # bounding box, then clip that reduced datafile to the 
+  # extent of the studyArea
+  p1 <- sf::st_crop(datafile, region)
+  p2 <- sf::st_crop(p1,Bbox)
+  p3 <- sf::st_crop(p2,studyArea)
+  
+  # if there is no intersect with the box return NULL
+  if (nrow(p1)==0){p1=NULL}
+  if (nrow(p2)==0){p2=NULL}
+  if (nrow(p3)==0){p3=NULL}
+  
+  # define output list
+  outList=outList <- list(studyPoly = p3, mapPoly = p2, regionPoly = p1)
+  
+  return(outList)
+  
+}
+
+
+##### - END poly intersect function ##################################
 
 ##### - create_table_RV function ##################################
 # This function creates summary tables of the RV data
@@ -305,7 +352,7 @@ sfcoords_as_cols <- function(x, names = c("long","lat")) {
 ##### - END sfcoords_as_cols function ##################################
 
 
-####### - Other functions ###############################################
+####### - Other functions (by Greg Puncher) ##########################################
 ########## Species At Risk distribution and Critical Habitat data ##########
 # 
 # #SAR distribution
