@@ -22,7 +22,7 @@
 # Created by Gordana Lazin, July 2, 2021 for reproducible reporting project
 
 
-plot_polygons <- function(baseMap, mapBox, studyBox_geom, polyData, attribute){
+plot_polygons <- function(baseMap, mapBox, studyBox_geom, polyData, attribute, legendName=attribute){
   
   clr="black" #color for outlining polygons
   
@@ -60,7 +60,8 @@ plot_polygons <- function(baseMap, mapBox, studyBox_geom, polyData, attribute){
   }else{ # Case 2: plotting polygons in different colors based on "attribute" column in the data
     
     polyPlot<-geom_sf(data=polyData, aes(fill=!!sym(attribute)), colour=clr)
-    polyFill <-scale_fill_manual(values=legendColor)
+    polyFill <-scale_fill_manual(values=legendColor, name=legendName) 
+    
   }
   
  
