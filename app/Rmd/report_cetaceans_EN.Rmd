@@ -8,10 +8,10 @@ whale_col=values=c("Beluga Whale: Endangered (SARA & COSEWIC)"="cyan3","Blue Wha
 #### ***Area-specific WSDB search results***
 
 ```{r wsdb, include=FALSE, cache=FALSE}
-outputList <- main_intersect(wsdb_sf, studyArea, Bbox = bboxMap)
+outputList <- point_intersect(wsdb_sf, studyArea, Bbox = bboxMap)
 
 if (!is.null(outputList)) {
-wsdb_points <- sfcoords_as_cols(outputList[[2]])
+wsdb_points <- sfcoords_as_cols(outputList$mapData)
 }
 ```
 *
@@ -21,7 +21,7 @@ Report_wsdb <- if (is.null(outputList)) {
  } else {
    "There are relevant records in the WSDB for this search area."
  }
- writeLines(Report_wsdb)
+writeLines(Report_wsdb)
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or included in the Wild Species listings. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
@@ -36,9 +36,9 @@ if (!is.null(outputList)) {
 #### ***Area-specific Whitehead Lab search results***
 
 ```{r whitehead, include=FALSE, cache=FALSE}
-outputList <- main_intersect(whitehead_sf, studyArea, Bbox = bboxMap)
+outputList <- point_intersect(whitehead_sf, studyArea, Bbox = bboxMap)
 if (!is.null(outputList)) {
-  whitehead_points <- sfcoords_as_cols(outputList[[2]])
+  whitehead_points <- sfcoords_as_cols(outputList$mapData)
 }
 ```
 *
@@ -64,10 +64,10 @@ if (!is.null(outputList)) {
 
 #### ***Area-specific NARWC search results***
 ```{r narwc, include=FALSE, cache=FALSE}
-outputList <- main_intersect(narwc_sf, studyArea, Bbox = bboxMap)
+outputList <- point_intersect(narwc_sf, studyArea, Bbox = bboxMap)
 
 if (!is.null(outputList)) {
-  narwc_points <- sfcoords_as_cols(outputList[[2]])
+  narwc_points <- sfcoords_as_cols(outputList$mapData)
 }
 ```
 *
@@ -93,10 +93,10 @@ if (!is.null(outputList)) {
 #### ***Area-specific OBIS cetacean search results***
 
 ```{r obis, include=FALSE, cache=FALSE}
-outputList <- main_intersect(obis_cet_sf, studyArea, Bbox = bboxMap)
+outputList <- point_intersect(obis_cet_sf, studyArea, Bbox = bboxMap)
 
 if (!is.null(outputList)) {
-  obis_cet_points <- sfcoords_as_cols(outputList[[2]])
+  obis_cet_points <- sfcoords_as_cols(outputList$mapData)
 }
 ```
 *

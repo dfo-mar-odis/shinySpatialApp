@@ -14,12 +14,12 @@ knitr::kable(table_RV, align="l",
 #### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
 
 ```{r, include=FALSE, cache=FALSE}
-  outputList <- main_intersect(RVCatch_sf, studyArea,speciestable = RVGSSPECIES, Bbox = bboxMap, Year = minYear)
+  outputList <- point_intersect(RVCatch_sf, studyArea, speciestable = RVGSSPECIES, Bbox = bboxMap, Year = minYear)
 
-Samples_bbox <- outputList[[3]]
+Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList)) {
-  tableList <- create_table_RV(outputList[[1]], listed_species, speciestable = RVGSSPECIES)
+  tableList <- create_table_RV(outputList$studyData, listed_species, speciestable = RVGSSPECIES)
   table_rv1 <- tableList[[1]]
   table_rv2 <- tableList[[2]]
 }
@@ -62,20 +62,20 @@ knitr::kable(table_rv1, align="l", caption="\\label{tab:rv_freq_table}Quality Ti
 #### ***Area-specific MARFIS & ISDB search results***
 
 ```{r, include=FALSE, cache=FALSE}
-outputListI <- main_intersect(isdb_sf, studyArea, Bbox = bboxMap, Year = minYear)
-outputListM <- main_intersect(marfis_sf, studyArea, Bbox = bboxMap, Year = minYear)
-Samples_bboxI <- outputListI[[3]]
-Samples_bboxM <- outputListM[[3]]
+outputListI <- point_intersect(isdb_sf, studyArea, Bbox = bboxMap, Year = minYear)
+outputListM <- point_intersect(marfis_sf, studyArea, Bbox = bboxMap, Year = minYear)
+Samples_bboxI <- outputListI$mapPoints
+Samples_bboxM <- outputListM$mapPoints
 
 if (!is.null(outputListI)) {
-  tableList <- create_table_ISDB(outputListI[[1]], listed_species,
+  tableList <- create_table_ISDB(outputListI$studyData, listed_species,
                                  speciestable = ISSPECIESCODES)
   table_isdb1 <- tableList[[1]]
   table_isdb2 <- tableList[[2]]
 }
 
 if (!is.null(outputListM)) {
-  tableList <- create_table_MARFIS(outputListM[[1]], listed_species, speciestable = MARFISSPECIESCODES)
+  tableList <- create_table_MARFIS(outputListM$studyData, listed_species, speciestable = MARFISSPECIESCODES)
   table_mar1 <- tableList[[1]]
   table_mar2 <- tableList[[2]]
 }
@@ -136,11 +136,11 @@ if (!is.null(outputListM)) {
 #### ***Area-specific OBIS fish and invertebrate search results***
 
 ```{r, include=FALSE, cache=FALSE}
-outputList <- main_intersect(obis_fish_sf, studyArea, Bbox = bboxMap, Year = minYear)
-Samples_bbox <- outputList[[3]]
+outputList <- point_intersect(obis_fish_sf, studyArea, Bbox = bboxMap, Year = minYear)
+Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList)) {
-  tableList <- create_table_OBIS(outputList[[1]])
+  tableList <- create_table_OBIS(outputList$studyData)
   table_obis1 <- tableList[[1]]
 }
 ```
