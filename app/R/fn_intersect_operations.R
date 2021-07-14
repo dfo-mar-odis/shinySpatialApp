@@ -1,21 +1,22 @@
 # The functions in this file are used to clip various data sources (e.g. MARFIS, ISDB, etc.)
 # with the studyArea selected and summarize the data for tables within the final document.
 #
-# 1. main_intersect() - clips POINT data to the extent of the studyArea
+# 1. point_intersect() - clips POINT data to the extent of the studyArea
 # 2, poly_intersect() - clips POLYGON data to the extent of the Region and studyArea
-# 3. create_table_RV() - creates summary tables of all species and listed species
+# 3. raster_intersect() - clips RASTER data to the extent of the studyArea
+# 4. create_table_RV() - creates summary tables of all species and listed species
 # 4. create_table_MARFIS() - creates summary tables of all species and listed species
-# 5. create_table_ISDB() - creates summary tables of all species and listed species
-# 6. create_table_OBIS() - creates summary table of listed species
-# 7. sfcoords_as_cols() - extracts latitude and longitude from geometry field
-#                         and add them to new columns
+# 6. create_table_ISDB() - creates summary tables of all species and listed species
+# 7. create_table_OBIS() - creates summary table of listed species
+# 8. sfcoords_as_cols() - extracts latitude and longitude from geometry field
+#                         and adds them to new columns
 #
-# Written by Philip Greyson for reproducible reporting project, May/2021
+# Written by Philip Greyson for Reproducible Reporting project, May/2021
 
 
 
-##### - main_intersect function ##################################
-# This function clips various data sources (e.g. MARFIS, ISDB, etc.)
+##### - point_intersect function ##################################
+# This function clips various point data sources (e.g. MARFIS, ISDB, etc.)
 # to the extent of the studyArea and the map bounding box.
 # The map bounding box is created by the area_map() function
 #
@@ -26,14 +27,14 @@
 # 4. Year: Minimum year for the data, defined in intro_EN.Rmd as minYear
 #
 # Outputs: list containing 3 items
-# 1. data1: the full dataset from clipping the datafile by the studyArea
-# 2. data2: the full dataset from clipping the datafile by the Bounding box
+# 1. studyData: the full dataset from clipping the datafile by the studyArea
+# 2. mapData: the full dataset from clipping the datafile by the Bounding box
 #                  used for mapping of the cetacean data points
-# 3. Samples_bbox: set of unique points found within the Bounding box used for mapping
+# 3. mapPoints: set of unique points found within the Bounding box used for mapping
 
 
 
-main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
+point_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
   
   # Limit data file to data from minYear to present
   # datafile <- datafile %>% dplyr::filter(YEAR >= Year)
@@ -42,34 +43,34 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
   # clip the data file first to the extent of the bounding box
   # and then clip that reduced datafile to the extent of the 
   # study area
-  Samples_bbox <- sf::st_intersection(datafile,Bbox)
-  Samples_study <- sf::st_intersection(Samples_bbox,studyArea)
-  data1 <- Samples_study
-  data2 <- Samples_bbox
-  
+  p1 <- sf::st_crop(datafile,Bbox)
+  p2 <- sf::st_crop(p1,studyArea)
+  data1 <- p2
+  data2 <- p1
+
   # if there are no samples found in the studyArea, exit the function
-  if (nrow(Samples_study) > 0) {
+  if (nrow(p2) > 0) {
     
     # create smaller files for the points by selecting
     # only the geometry field
     # for RV the ELAT and ELONG fields are necessary
     # for the final mapping
-    if ("ELAT" %in% colnames(Samples_study)) {
-      Samples_bbox <- dplyr::select(Samples_bbox, ELAT, ELONG, geometry)
+    if ("ELAT" %in% colnames(p2)) {
+      p1 <- dplyr::select(p1, ELAT, ELONG, geometry)
     } else {
-      Samples_bbox <- dplyr::select(Samples_bbox,geometry)
+      p1 <- dplyr::select(p1,geometry)
     }
     # create smaller point files by taking only 
     # unique points
-    Samples_bbox <- unique(Samples_bbox)
+    p1 <- unique(p1)
     # Calculate the number of samples/tows within 
     # the study area
     # Samples_study_no <- nrow(Samples_study)
     
     # add coordinates to table from geometry column
-    Samples_bbox <- sfcoords_as_cols(Samples_bbox)
+    p1 <- sfcoords_as_cols(p1)
     
-    outList <- list(data1, data2, Samples_bbox)
+    outList <- list(studyData = data1, mapData = data2, mapPoints = p1)
     return(outList)
     
   } # end of test for zero samples
@@ -77,9 +78,9 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
     return()
   }
 }
-##### - END Main intersect function ##################################
+##### - END point_intersect function ##################################
 
-##### - poly intersect function ##################################
+##### - poly_intersect function ##################################
 # This function clips various polygon data sources (e.g. EBSA, critical habitat, etc.)
 # to the extent of the region, the studyArea, and the map bounding box.
 # The map bounding box is created by the area_map() function
@@ -95,8 +96,7 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
 # 2. mapPoly: the full dataset from clipping the datafile by the Bounding box
 # 3. regionPoly: the full dataset from clipping the datafile by the Region
 #
-# Created by Phil Greyson june 2021 for reproducible reporting project
-# Modified by Gordana lazin, Jul 2, 2021 (modified outputs)
+# Created by Phil Greyson June 2021 for reproducible reporting project
 
 poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
 
@@ -110,20 +110,63 @@ poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
   p2 <- sf::st_crop(p1,Bbox)
   p3 <- sf::st_crop(p2,studyArea)
   
-  # if there is no intersect with the box return NULL
-  if (nrow(p1)==0){p1=NULL}
-  if (nrow(p2)==0){p2=NULL}
-  if (nrow(p3)==0){p3=NULL}
-  
-  # define output list
-  outList=outList <- list(studyPoly = p3, mapPoly = p2, regionPoly = p1)
-  
-  return(outList)
-  
+  # if there are no samples found in the studyArea, exit the function
+  if (nrow(p3) > 0) {
+    outList <- list(studyPoly = p3, mapPoly = p2, regionPoly = p1)
+    return(outList)
+    
+  } # end of test for zero samples
+  else {
+    return()
+  }
 }
 
+##### - END poly_intersect function ##################################
 
-##### - END poly intersect function ##################################
+##### - raster_intersect function ##################################
+# This function clips various raster data sources (e.g. SDM output, etc.)
+# to the extent of the region, the studyArea, and the map bounding box.
+# The map bounding box is created by the area_map() function
+#
+# Inputs:
+# 1. datafile: an input raster file
+# 2. region: a spatial file of the region
+# 3. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
+# 4. Bbox: Coordinates of the map bounding box exported from area_map() function
+#
+# Outputs: list containing 3 items
+# 1. studyRas: the full dataset from clipping the datafile by the studyArea
+# 2. mapRas: the full dataset from clipping the datafile by the Bounding box
+# 3. regionRas: the full dataset from clipping the datafile by the Region
+raster_intersect <- function(datafile, region, studyArea, Bbox, ...) {
+  
+  # convert Bbox to sf object
+  Bbox <- st_as_sfc(Bbox)
+  Bbox <- st_as_sf(Bbox)
+  # clip the data file first to the extent of the region
+  # and then clip that reduced datafile to the extent of the 
+  # bounding box, then clip that reduced datafile to the 
+  # extent of the studyArea
+  # with raster datasets it's necesssary to comnbine the
+  # crop and mask functions
+  p1 <- crop(datafile, region)
+  p1 <- raster::mask(p1, region)
+  p2 <- crop(p1, Bbox)
+  p2 <- mask(p2, Bbox)
+  p3 <- crop(p2, studyArea)
+  p3 <- mask(p3, studyArea)
+  
+  # if there are no raster cells found in the studyArea, exit the function
+  if (nrow(p3) > 0) {
+    outList <- list(studyRas = p3, mapRas = p2, regionRas = p1)
+    return(outList)
+    
+  } # end of test for zero samples
+  else {
+    return()
+  }
+}
+##### - END raster_intersect function ##################################
 
 ##### - create_table_RV function ##################################
 # This function creates summary tables of the RV data
@@ -155,7 +198,7 @@ create_table_RV <- function(datafile, listed_table, speciestable, ...) {
   datatable1 <- aggregate(
     x = list(Records = datafile$CODE),
     by = list(CODE = datafile$CODE),
-    length)
+    FUN = length)
   datatable1 <- merge(individuals,datatable1, by = 'CODE')
   
   data1 <- merge(datafile,speciestable, by = 'CODE')
@@ -217,7 +260,7 @@ create_table_MARFIS <- function(datafile, listed_table, speciestable, ...) {
   datatable1 <- aggregate(
     x = list(Records = datafile$SPECIES_CODE),
     by = list(SPECIES_CODE = datafile$SPECIES_CODE),
-    length)
+    FUN = length)
   datatable1 <- merge(datatable1,speciestable, by = 'SPECIES_CODE')
   datatable1 <- datatable1 %>% rename("Common Name"= COMMONNAME)
   data1 <- merge(datafile,speciestable, by = 'SPECIES_CODE')
@@ -275,7 +318,7 @@ create_table_ISDB <- function(datafile, listed_table, speciestable, ...) {
   datatable1 <- aggregate(
     x = list(Records = datafile$SPECCD_ID),
     by = list(SPECCD_ID = datafile$SPECCD_ID),
-    length)
+    FUN = length)
   data1 <- merge(datafile,speciestable, by = 'SPECCD_ID')
   datatable1 <- merge(datatable1,speciestable, by = 'SPECCD_ID')
   # Merge the datafile with the listed_species table
@@ -320,10 +363,10 @@ create_table_OBIS <- function(datafile, ...) {
   
   # calculate frequency of OBIS samples
   datatable1 <- datafile
-  datatable1 <- datatable1 %>% rename("COSEWIC listing"=COSEWIC.listing, 
-                                      "SARA status"=SARA.status,
-                                      "Scientific Name"=Scientific.Name,
-                                      "Common Name"=Common.Name)
+  # datatable1 <- datatable1 %>% rename("COSEWIC listing"=COSEWIC.listing, 
+  #                                     "SARA status"=SARA.status,
+  #                                     "Scientific Name"=Scientific.Name,
+  #                                     "Common Name"=Common.Name)
   
   datatable1 <- dplyr::select(datatable1, "Scientific Name", "Common Name", 
                               "SARA status","COSEWIC listing")
@@ -337,8 +380,12 @@ create_table_OBIS <- function(datafile, ...) {
 ##### - END create_table_OBIS function ##################################
 
 ##### - sfcoords_as_cols function ##################################
-# function to add coordinates as columns to an SF object
-
+# This function extracts X and Y coordinates from the 
+# sf geometry field and puts them in new fields ("long", "lat")
+# 
+#
+# Outputs: returns the datatable with new fields
+# for coordinates
 sfcoords_as_cols <- function(x, names = c("long","lat")) {
   stopifnot(inherits(x,"sf") && inherits(sf::st_geometry(x),"sfc_POINT"))
   ret <- sf::st_coordinates(x)
