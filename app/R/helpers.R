@@ -3,7 +3,6 @@ library(shinyjs)
 library(leaflet)
 library(leafem)
 library(mapedit)
-library(sf)
 library(glue)
 library(callr)
 library(scales) # needed for polygon transparency in mapping
