@@ -57,7 +57,7 @@ if(crit_result > 0){Crithab_query_output_table}
 
 
 ```{r echo=FALSE, results='asis'}
-# define polygon dataset and attribute to plot
+# define polygon dataset and attribute to plot!
 poly_sf=ClippedCritHab_sf
 attribute="Common_Nam"
 legend_name = "Common Name"
