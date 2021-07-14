@@ -71,7 +71,7 @@ regionMap <- region_map(regionBox, studyArea, land10m_sf, bounds_sf)
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
  
- ```{r child = '../Rmd/report_cetaceans_EN.Rmd'}
+ ```{r child = '../Rmd/report_SARA_EN.Rmd'}
  ```
 
 <!-- END  -->
