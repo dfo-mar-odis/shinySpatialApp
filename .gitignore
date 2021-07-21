@@ -26,6 +26,7 @@ app/output/*.docx
 app/output/*.rds
 app/output/*.Rmd
 tmp/
+app/tests/temp/
 
 # History files
 .Rhistory
