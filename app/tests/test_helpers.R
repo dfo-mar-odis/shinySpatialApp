@@ -2,7 +2,7 @@
 library(testthat)
 library(here)
 
-source("../R/helpers.R", chdir = TRUE)
+source(here("app/R/helpers.R"))
 
 
 test_that("check name", {

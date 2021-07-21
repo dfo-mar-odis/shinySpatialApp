@@ -46,7 +46,7 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 
 5.  Routinely Pull (i.e. git fetch + git merge) from origin/master to deal with any conflicts `git pull origin master`
 
-6.   Once the original issue is fixed, ensure the report can still be generated through the app.
+6.  Once the original issue is fixed, ensure the report can still be generated through the app and that the test suite passes: `testthat::testdir("app/tests")`
 
 7.  If everything still runs correctly, make a pull request from github website to merge `my_dev_branch` into `master`.
 
