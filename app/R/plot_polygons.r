@@ -9,6 +9,8 @@
 #    (pre-clipped to map area with the poly_intersect function, using bboxMap, or regionBox)
 # 5. attribute: attribute in the polygon data to be plotted (column name as a string, e.g. "Activity", or "Rockweed"; 
 #               this attribute name will appear in the legend. For single color polygons use attribute="NONE".
+# 6. legendName: string, sets the name of the legend for cases where the attribute is not appropriate. Defaults to
+#                the attribute.  
 #    
 # 
 # Examples of use:
@@ -22,7 +24,7 @@
 # Created by Gordana Lazin, July 2, 2021 for reproducible reporting project
 
 
-plot_polygons <- function(baseMap, mapBox, studyBox_geom, polyData, attribute){
+plot_polygons <- function(baseMap, mapBox, studyBox_geom, polyData, attribute, legendName=attribute){
   
   clr="black" #color for outlining polygons
   
@@ -60,7 +62,8 @@ plot_polygons <- function(baseMap, mapBox, studyBox_geom, polyData, attribute){
   }else{ # Case 2: plotting polygons in different colors based on "attribute" column in the data
     
     polyPlot<-geom_sf(data=polyData, aes(fill=!!sym(attribute)), colour=clr)
-    polyFill <-scale_fill_manual(values=legendColor)
+    polyFill <-scale_fill_manual(values=legendColor, name=legendName) 
+    
   }
   
  

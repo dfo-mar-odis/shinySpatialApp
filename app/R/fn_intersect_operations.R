@@ -3,14 +3,15 @@
 #
 # 1. point_intersect() - clips POINT data to the extent of the studyArea
 # 2, poly_intersect() - clips POLYGON data to the extent of the Region and studyArea
-# 3. create_table_RV() - creates summary tables of all species and listed species
+# 3. raster_intersect() - clips RASTER data to the extent of the studyArea
+# 4. create_table_RV() - creates summary tables of all species and listed species
 # 4. create_table_MARFIS() - creates summary tables of all species and listed species
-# 5. create_table_ISDB() - creates summary tables of all species and listed species
-# 6. create_table_OBIS() - creates summary table of listed species
-# 7. sfcoords_as_cols() - extracts latitude and longitude from geometry field
-#                         and add them to new columns
+# 6. create_table_ISDB() - creates summary tables of all species and listed species
+# 7. create_table_OBIS() - creates summary table of listed species
+# 8. sfcoords_as_cols() - extracts latitude and longitude from geometry field
+#                         and adds them to new columns
 #
-# Written by Philip Greyson for reproducible reporting project, May/2021
+# Written by Philip Greyson for Reproducible Reporting project, May/2021
 
 
 
