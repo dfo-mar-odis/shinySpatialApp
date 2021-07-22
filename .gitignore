@@ -26,7 +26,8 @@ app/output/*.docx
 app/output/*.rds
 app/output/*.Rmd
 tmp/
-app/tests/temp/
+app/tests/temp/*
+!app/tests/temp/.gitkeep
 
 # History files
 .Rhistory
