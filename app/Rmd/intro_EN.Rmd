@@ -30,11 +30,11 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="lef
 
 ```{r load data and functions, echo=FALSE, include=FALSE, cache=FALSE}
 minYear <- 2010
-load(here("app/data/OpenData.RData"))
-load(here("app/data/OpenData_sardist.RData"))
-load(here("app/data/SecureData.RData"))
+load(here::here("app/data/OpenData.RData"))
+load(here::here("app/data/OpenData_sardist.RData"))
+load(here::here("app/data/SecureData.RData"))
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
-lapply(list.files(here("app/R"), pattern = ".[Rr]$", full.names = TRUE),source) # check helpers.R for a list of packages
+lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE),source) # check helpers.R for a list of packages
 ```
 
 ```{r Search Area and setup.R, echo=FALSE, include=FALSE, cache=FALSE}
@@ -42,9 +42,9 @@ studyArea <- sf::st_read("{{path_to_geoms}}")
 #studyArea <- sf::st_read("geoms_slc.geojson")
 # Uncomment the following to test fixed polygon:
 # studyArea <- st_read("../studyAreaTest/geoms_slc_test.geojson")#Offshore
-#studyArea <- st_read("../studyAreaTest/geoms_slc_coastal_test.geojson")#coastal 
+# studyArea <- st_read("../studyAreaTest/geoms_slc_coastal_test.geojson")#coastal 
 # studyArea <- st_read("../studyAreaTest/geoms_slc_no_land.geojson") #no land
-Region <- st_read(here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
+Region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
 site <- sf::st_centroid(studyArea) 
 ```
  
@@ -112,7 +112,7 @@ The output from the search includes the following sections:
 This report incorporates information from a variety of sources with differing levels of quality control. Consequently, data sources in the report are categorized into tiers of data quality, and associated usage recommendations.
 
 ```{r table tiers read, echo=FALSE, cache=FALSE, include = FALSE}
-table_tier <- read.csv(here("app/data/misc/table_tiers_EN.csv"))
+table_tier <- read.csv(here::here("app/data/misc/table_tiers_EN.csv"))
 ```
 ```{r}
 knitr::kable(table_tier,align="l", 
@@ -145,7 +145,7 @@ The following are definitions relevant for species listed by the _Species At Ris
 
 # **CONTRIBUTORS**
 ```{r read contributors, echo=FALSE, cache=FALSE, include = FALSE}
-people <- read.csv(here("app/data/misc/contributors.csv"))
+people <- read.csv(here::here("app/data/misc/contributors.csv"))
 people <- people$list
 sort(people)
 ```

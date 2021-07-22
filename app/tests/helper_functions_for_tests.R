@@ -16,7 +16,7 @@ render_check_delete <- function(section_path, delete_file=TRUE) {
   unlink(test_out_dir) # empty the folder
   out_html <- rmarkdown::render(section_path, output_dir = test_out_dir)
   success <- file.exists(out_html)
-  if (file.exists(out_html) & delete_file) {
+  if (file.exists(out_html) && delete_file) {
     file.remove(out_html)
   }
   return(success)
