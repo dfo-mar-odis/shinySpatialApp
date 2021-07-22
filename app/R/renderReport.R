@@ -29,7 +29,7 @@ renderReport <- function(input, geoms, fl = NULL, dir_out = "output",
     msg <- "Please define areas of interest"
     return(list(msg = msg, ok = FALSE, html = "empty_report.html"))
   } else {
-    flge <- save_geom(geoms)
+    flge <- save_geom(geoms, dir_out = dir_out)
   }
   
   # nasty trick (due to current rmarkdown behavior) to name final file properly 

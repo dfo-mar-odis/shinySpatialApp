@@ -20,9 +20,18 @@ list2env(prepped_data, env=globalenv())
 # ----------------------------TESTS---------------------------------------
 # tests.  After preparing the environment, any of the following can be run individually:
 test_that("render Intro", {
-  # will need to set valid options in the RMD for the intro
-  success <- render_check_delete(here("app/Rmd/intro_EN.Rmd"))
-  expect_true(success)
+  test_out_dir = here("app/tests/temp")
+  temp_files <- list.files(test_out_dir, include.dirs = T, full.names = T, recursive = T)
+  unlink(temp_files, recursive=TRUE)
+  out_file = here("app/tests/temp/rmd_intro")
+  chk <- renderReport(
+    input = readRDS(here("app/tests/input")), # sample input from application, with no sections.
+    geoms = studyArea,
+    fl = out_file,
+    dir_in = here("app/Rmd"),
+    dir_out = here("app/tests/temp")
+  )
+  expect_true(file.exists(here("app/tests/temp/rmd_intro_EN.html")))
 })
 
 test_that("render SARA", {
