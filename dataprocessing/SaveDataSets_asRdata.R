@@ -90,7 +90,7 @@ obis_cet <- dplyr::select(obis_cet,"Scientific Name", YEAR, Legend,
 obis_cet_sf <- st_as_sf(obis_cet, coords = c("decimalLongitude","decimalLatitude"), crs = 4326)
 
 # RV survey data
-RVList <-  SelectRV_fn(SurveyPrefix, File, minYear)
+RVList <-  CompileRV_fn(SurveyPrefix, File, minYear)
 RVCatch_sf <- RVList[[1]]
 RVCatch_sf <- dplyr::select(RVCatch_sf, CODE, YEAR, ELAT, ELONG, TOTNO, geometry)
 RVGSSPECIES <- RVList[[2]]
