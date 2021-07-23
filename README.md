@@ -14,7 +14,9 @@ on Maritimes Region as a pilot”.
 ## Set up Revn:
 ```R
 install.packages("renv")
-renv::restore()
+renv::activate()
+renv::equip() # loads needed installation libs
+renv::restore() # loads all needed packages (may take 15+ mins the first time)
 ```
 
 Adding a package: 
