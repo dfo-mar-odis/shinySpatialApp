@@ -68,7 +68,6 @@ crit_table<-table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
 Dist_query_output_table<-if(Dist_overlap_result < 1){
   ""
 } else {
-  knitr::kable(dist_table[!duplicated(dist_table),], align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 }
 if(Dist_overlap_result > 1){Dist_query_output_table}
 ```
