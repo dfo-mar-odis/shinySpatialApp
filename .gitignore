@@ -6,6 +6,7 @@ app/data/*
 *.csv
 *.zip
 *.pdf
+*.png
 data.7z
 
 
