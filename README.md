@@ -11,12 +11,22 @@ on Maritimes Region as a pilot”.
 
 # How to use the App 
 
-## Installation 
-
-```R 
-install.packages("remotes")
-remotes::install_deps()
+## Set up Revn:
+```R
+install.packages("renv")
+renv::activate()
+renv::equip() # loads needed installation libs
+renv::restore() # loads all needed packages (may take 15+ mins the first time)
 ```
+
+Adding a package: 
+```R
+install.packages("new_package")
+renv::snapshot()
+```
+
+After adding a new package, commit the updated renv.lock file to source control.
+
 
 ## Run the application
 
