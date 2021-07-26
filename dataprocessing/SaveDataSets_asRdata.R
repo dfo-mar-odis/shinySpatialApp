@@ -5,7 +5,8 @@ library(stringr)
 library(lubridate)
 
 # change directory
-source("dataprocessing/fn_SurveyData_GetRV.R")
+source("dataprocessing/CompileRV_fn.R")
+setwd("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data")
 
 #### Arguments for RV survey data #################-
 # for SelectRV_fn
@@ -39,16 +40,12 @@ bioregion_sf <- st_read("../Data/Boundaries/MaritimesRegionBound/MaritimesRegion
 rockweed_sf <- st_read("../Data/NaturalResources/Species/Rockweed/MAR_rockweed_presence_validated.shp", stringsAsFactors = FALSE)
 rockweed_sf <- st_transform(rockweed_sf, 4326) # Project to WGS84
 rockweed_sf <- st_make_valid(rockweed_sf)
-######## Habitat Information########
-# rockweed_sf$RWP[which(rockweed_sf$RWP=="1")]= "Present"
-# rockweed_sf$RWP[which(rockweed_sf$RWP=="2")]= "Likely Present"
-# rockweed_sf$RWP[which(rockweed_sf$RWP=="5")]= "Unknown"
 
 # Table of SARA listed species
 listed_species <- read.csv("../Data/NaturalResources/Species/MAR_listed_species.csv",
                            stringsAsFactors = FALSE)
 listed_species <- listed_species %>% rename("SARA status"=Schedule.status,
-                                            "COSEWIC listing"=COSEWIC.status,
+                                            "COSEWIC status"=COSEWIC.status,
                                             "Wild Species listing"=Wild_Species,
                                             "SCIENTIFICNAME"=Scientific_Name_upper,
                                             "COMMONNAME"=Common_Name_upper,
@@ -79,7 +76,7 @@ obis <- obis %>% dplyr::filter(YEAR >= 2010)
 
 # OBIS fish and inverts
 obis_fish <- merge(obis, listed_fish_invert_species, by='Scientific Name')
-obis_fish <- dplyr::select(obis_fish,"Scientific Name", YEAR, "Common Name", "COSEWIC listing",
+obis_fish <- dplyr::select(obis_fish,"Scientific Name", YEAR, "Common Name", "COSEWIC status",
                            "SARA status", decimalLatitude, decimalLongitude)
 obis_fish_sf <- st_as_sf(obis_fish, coords = c("decimalLongitude","decimalLatitude"), crs = 4326)
 
