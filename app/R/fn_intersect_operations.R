@@ -95,7 +95,7 @@ main_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
 # 2. mapPoly: the full dataset from clipping the datafile by the Bounding box
 # 3. regionPoly: the full dataset from clipping the datafile by the Region
 #
-# Created by Phil Greyson june 2021 for reproducible reporting project
+# Created by Phil Greyson June 2021 for reproducible reporting project
 # Modified by Gordana lazin, Jul 2, 2021 (modified outputs)
 
 poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
@@ -121,8 +121,6 @@ poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
   return(outList)
   
 }
-
-
 ##### - END poly intersect function ##################################
 
 ##### - create_table_RV function ##################################
@@ -185,7 +183,7 @@ create_table_RV <- function(datafile, listed_table, speciestable, ...) {
   datatable2 <- dplyr::select(datatable2, "Scientific Name", Individuals,Frequency)
   datatable2 <- merge(datatable2,listed_table, by = 'Scientific Name')
   datatable2 <- dplyr::select(datatable2, "Scientific Name", "Common Name", 
-                              "SARA status","COSEWIC listing",Individuals,Frequency)
+                              "SARA status","COSEWIC status",Individuals,Frequency)
   
   # order the tables by number of individuals caught (decreasing)
   datatable1 <- datatable1[with(datatable1, order(-Individuals)), ]
@@ -242,7 +240,7 @@ create_table_MARFIS <- function(datafile, listed_table, speciestable, ...) {
   datatable1 <- datatable1 %>% transmute(datatable1, CName = str_to_sentence(CName))
   datatable1 <- datatable1 %>% rename('Common Name' = CName)
   datatable2 <- dplyr::select(datatable2, 'Scientific Name', 'Common Name',
-                              "SARA status","COSEWIC listing",Records)
+                              "SARA status","COSEWIC status",Records)
   # order the tables by number of Records (decreasing)
   datatable1 <- datatable1[with(datatable1, order(-Records)), ]
   datatable2 <- datatable2[with(datatable2, order(-Records)), ]
@@ -292,7 +290,7 @@ create_table_ISDB <- function(datafile, listed_table, speciestable, ...) {
   
   datatable1 <- dplyr::select(datatable1, 'Scientific Name', 'Common Name', Records)
   datatable2 <- dplyr::select(datatable2, 'Scientific Name', 'Common Name', 
-                              "SARA status","COSEWIC listing",Records)
+                              "SARA status","COSEWIC status",Records)
   # order the tables by number of Records (decreasing)
   datatable1 <- datatable1[with(datatable1, order(-Records)), ]
   datatable2 <- datatable2[with(datatable2, order(-Records)), ]
@@ -320,13 +318,13 @@ create_table_OBIS <- function(datafile, ...) {
   
   # calculate frequency of OBIS samples
   datatable1 <- datafile
-  datatable1 <- datatable1 %>% rename("COSEWIC listing"=COSEWIC.listing, 
-                                      "SARA status"=SARA.status,
-                                      "Scientific Name"=Scientific.Name,
-                                      "Common Name"=Common.Name)
+  # datatable1 <- datatable1 %>% rename("COSEWIC status"=COSEWIC.listing, 
+  #                                     "SARA status"=SARA.status,
+  #                                     "Scientific Name"=Scientific.Name,
+  #                                     "Common Name"=Common.Name)
   
   datatable1 <- dplyr::select(datatable1, "Scientific Name", "Common Name", 
-                              "SARA status","COSEWIC listing")
+                              "SARA status","COSEWIC status")
   datatable1$geometry <- NULL
   datatable1 <- unique(datatable1)
   
@@ -334,7 +332,7 @@ create_table_OBIS <- function(datafile, ...) {
   outList <- list(datatable1)
   return(outList)
 }
-##### - END create_table_OBIS function ##################################
+
 
 ##### - sfcoords_as_cols function ##################################
 # function to add coordinates as columns to an SF object
@@ -400,7 +398,6 @@ table_crit <- function(ClippedCritHab_sf, studyArea, leatherback_sf) {
   return(crit_table)
 }
 
-
 # #Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans
 sdm_table <- function(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea) {
   
@@ -447,30 +444,6 @@ sdm_table <- function(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_
                                           "Sei Whale"=Sei_Whale)
   return(table_sdm)
   
-}
-
-# #Blue Whale Important Habitat
-blue_whale_habitat_overlap <- function(Blue_Whale_sf, studyArea) {
-  
-  intersect <- sf::st_intersection(Blue_Whale_sf,studyArea)
-  x <- as.numeric(nrow(intersect))
-  Query_output_crit <- if(x < 1){
-    "Search area does not overlaps with Blue Whale Important Habitat in the Western North Atlantic."
-  } else {
-    "Search area overlaps with Blue Whale Important Habitat in the Western North Atlantic."
-  }
-  
-}
-
-# Northern Bottlenose Whale critical habitat
-intersect_NBNW_overlap <- function(NBNW, studyArea) {
-  intersect <- sf::st_intersection(NBNW,studyArea)
-  y <- as.numeric(nrow(intersect))
-  Query_output_criteria <- if(y < 1){
-    "Search area does not overlap with Northern Bottlenose Whale Important Habitat in the Western North Atlantic."
-  } else {
-    "Search area overlaps with Northern Bottlenose Whale Important Habitat in the Western North Atlantic."
-  }
 }
 
 ########## Spatial Planning Section ##########
@@ -564,4 +537,3 @@ EBSA_bioregion <- function(EBSA_sf, studyArea) {
 }
 
 
-####### - END Other functions ###############################################
