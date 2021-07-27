@@ -318,10 +318,11 @@ create_table_OBIS <- function(datafile, ...) {
   
   # calculate frequency of OBIS samples
   datatable1 <- datafile
-  # datatable1 <- datatable1 %>% rename("COSEWIC status"=COSEWIC.listing, 
-  #                                     "SARA status"=SARA.status,
-  #                                     "Scientific Name"=Scientific.Name,
-  #                                     "Common Name"=Common.Name)
+  #datatable1 <- outputList[[1]] -- for TESTING
+  datatable1 <- datatable1 %>% rename("COSEWIC status"=COSEWIC.status,
+                                      "SARA status"=SARA.status,
+                                      "Scientific Name"=Scientific.Name,
+                                      "Common Name"=Common.Name)
   
   datatable1 <- dplyr::select(datatable1, "Scientific Name", "Common Name", 
                               "SARA status","COSEWIC status")
