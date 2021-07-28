@@ -8,3 +8,67 @@ table_RV<- table_RV %>% dplyr::rename("Season/Months"=Season.Months,"Description
 knitr::kable(table_RV, align="l",
       caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
+
+#### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes***
+
+```{r, include=FALSE, cache=FALSE}
+  outputList <- main_intersect(RVCatch_sf, studyArea,speciestable = RVGSSPECIES, Bbox = bboxMap, Year = minYear)
+
+Samples_bbox <- outputList[[3]]
+
+if (!is.null(outputList)) {
+  tableList <- create_table_RV(outputList[[1]], listed_species, speciestable = RVGSSPECIES)
+  table_rv1 <- tableList[[1]]
+  table_rv2 <- tableList[[2]]
+}
+```
+*
+```{r, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_RV <- if (is.null(outputList)) {
+    "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+  } else {
+    "There are relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+  }
+Report_RV<-noquote(Report_RV)
+writeLines(Report_RV)
+```
+
+```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area'}
+if (!is.null(outputList)) {
+areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = Samples_bbox$ELONG, yend = endy <- Samples_bbox$ELAT),arrow=arrow(length = unit(0.2,"cm")), size = 0.5)
+}
+```
+<br>
+```{r}
+if (!is.null(outputList)) {
+ knitr::kable(table_rv2, align="l", caption="\\label{tab:rv_SAR_table} Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), species assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or species included in the Wild species listing (B=Breeding, N=non-breeding, M=migratory). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
+<br>
+```{r}
+if (!is.null(outputList)) {
+knitr::kable(table_rv1, align="l", caption="\\label{tab:rv_freq_table}Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
+
+### **Enquête sur l’industrie et bases de données sur les pêches dans les Maritimes**  
+
+#### ***Base de données des relevés de l’industrie (BDRI)***  
+
+Personne-ressource :  <Claire.Mussells@dfo-mpo.gc.ca>  
+Consulté le : 2019   
+Niveau de qualité : Moyenne  
+Année de recherche : de 2002 à 2019  
+Niveau de sécurité : Protégé B  
+
+La base de données des relevés de l’industrie (BDRI) est une base de données ministérielle qui contient des observations des prises en mer de bateaux de pêche commerciale exploités dans l’Atlantique Nord-Ouest. Les relevés de l’industrie ne sont pas spatialement ou temporellement synoptiques et, par conséquent, il est fortement recommandé d’intégrer des renseignements supplémentaires sur la présence et/ou l’utilisation de l’habitat (c.-à-d. frai, migration, aires d’alimentation) provenant d’études à plus grande échelle. Les renseignements sur les prises et l’effort de pêche pour un titulaire de permis individuel constituent des renseignements personnels protégés en vertu de l’article 19 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-12) et, pour un titulaire de permis d’entreprise, est considéré comme un renseignement de nature délicate, exclusif et protégé en vertu de l’article 20 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-13).
+
+Sans consentement écrit, Pêches et Océans Canada n’est pas autorisé à communiquer des renseignements ou des produits de données de la BDRI (comme des cartes et des couches de données) qui pourraient révéler des renseignements personnels ou de tiers comme les prises, les valeurs au débarquement et les lieux de pêche propres aux navires, car ces renseignements sont considérés comme confidentiels. Des renseignements sur la politique de protection des renseignements personnels sont disponibles dans les lignes directrices sur la diffusion informelle à l’intention du personnel du MPO (c.-à-d. Annexe B – « Renseignements sur les prises et l’effort et sur les quotas : À faire et à ne pas faire lors de la diffusion informelle \\\\ent.dfo-mpo.ca\\ATLShares\\Shared\\ATIP Information\\Information_Release_Guidelines-eng.docx). Si vous souhaitez inclure des données d’observateurs dans une publication, n’oubliez pas de les agréger (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r).
+
+#### ***Système d’information sur les pêches des Maritimes (SIPMAR)***  
+
+Personne-ressource :  <XMARComData@dfo-mpo.gc.ca>    
+Consulté le : 2019  
+Niveau de qualité : Moyenne    
+Année de recherche : de 2002 à 2019    
+Niveau de sécurité : Protégé B

@@ -35,13 +35,13 @@ poly_sf=EBSA_sf
 attribute="NONE"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
+clipped <- poly_intersect(poly_sf, Region, studyArea, bboxMap)
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).'}
 if (!is.null(clipped$regionPoly)){
-  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
-} 
+  plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionPoly, attribute)
+}
 ```
 
 ```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area defined by the user (red outline).'}
