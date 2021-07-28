@@ -5,7 +5,8 @@ library(stringr)
 library(lubridate)
 
 # change directory
-source("dataprocessing/fn_SurveyData_GetRV.R")
+source("dataprocessing/CompileRV_fn.R")
+setwd("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data")
 
 #### Arguments for RV survey data #################-
 # for SelectRV_fn
@@ -39,16 +40,12 @@ bioregion_sf <- st_read("../Data/Boundaries/MaritimesRegionBound/MaritimesRegion
 rockweed_sf <- st_read("../Data/NaturalResources/Species/Rockweed/MAR_rockweed_presence_validated.shp", stringsAsFactors = FALSE)
 rockweed_sf <- st_transform(rockweed_sf, 4326) # Project to WGS84
 rockweed_sf <- st_make_valid(rockweed_sf)
-######## Habitat Information########
-# rockweed_sf$RWP[which(rockweed_sf$RWP=="1")]= "Present"
-# rockweed_sf$RWP[which(rockweed_sf$RWP=="2")]= "Likely Present"
-# rockweed_sf$RWP[which(rockweed_sf$RWP=="5")]= "Unknown"
 
 # Table of SARA listed species
 listed_species <- read.csv("../Data/NaturalResources/Species/MAR_listed_species.csv",
                            stringsAsFactors = FALSE)
 listed_species <- listed_species %>% rename("SARA status"=Schedule.status,
-                                            "COSEWIC listing"=COSEWIC.status,
+                                            "COSEWIC status"=COSEWIC.status,
                                             "Wild Species listing"=Wild_Species,
                                             "SCIENTIFICNAME"=Scientific_Name_upper,
                                             "COMMONNAME"=Common_Name_upper,
@@ -79,7 +76,7 @@ obis <- obis %>% dplyr::filter(YEAR >= 2010)
 
 # OBIS fish and inverts
 obis_fish <- merge(obis, listed_fish_invert_species, by='Scientific Name')
-obis_fish <- dplyr::select(obis_fish,"Scientific Name", YEAR, "Common Name", "COSEWIC listing",
+obis_fish <- dplyr::select(obis_fish,"Scientific Name", YEAR, "Common Name", "COSEWIC status",
                            "SARA status", decimalLatitude, decimalLongitude)
 obis_fish_sf <- st_as_sf(obis_fish, coords = c("decimalLongitude","decimalLatitude"), crs = 4326)
 
@@ -103,52 +100,23 @@ ClippedCritHab_sf <- st_make_valid(ClippedCritHab_sf)
 NBNW_ImpHab_sf <- st_read(dsn = "../Data/NaturalResources/Species/Cetaceans/NorthernBottlenoseWhale_FGP/NorthernBottlenose.gdb", layer = "NorthernBottlenoseWhale_InterCanyonHabitat", stringsAsFactors = FALSE)
 NBNW_ImpHab_sf <- st_make_valid(NBNW_ImpHab_sf)
 
-# Species Distribution Model (SDM) outputs
-# import Ocean mask (50k) to clip out areas of land (i.e. islands)
-ocean50k_sf <- st_read("../Data/Boundaries/Coast50k/Coastline50k_SHP/Ocean_AtlCanada_ESeaboardUS.shp",
-                      stringsAsFactors = FALSE)
+# Priority areas to enhance monitoring of cetaceans- Species Distribution Model (SDM) outputs
+# New files updated 7/26/2021
+fin_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Cetaceans_Tiff/Fin_Whale.tif")
+harbour_porpoise <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Cetaceans_Tiff/Harbour_Porpoise.tif")
+humpback_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Cetaceans_Tiff/Humpback_Whale.tif")
+sei_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Cetaceans_Tiff/Sei_Whale.tif")
 
-# function for clipping islands out of SDM rasters
-raster_clip <- function(datafile, ocean, ...) {
-        origExtent <- st_as_sf(st_as_sfc(st_bbox(datafile)))
-        p1 <- crop(datafile, ocean)
-        p1 <- raster::mask(p1, ocean)
-        p2 <- crop(p1, origExtent)
-        p2 <- mask(p2, origExtent)
-        return(p2)
-}
-
-fin_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Fin_Whale.tif")
-fin_whale[fin_whale==0] <- NA
-fin_whale <- raster_clip(fin_whale,ocean50k_sf)
-
-harbour_porpoise <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Harbour_Porpoise.tif")
-harbour_porpoise[harbour_porpoise==0] <- NA
-harbour_porpoise <- raster_clip(harbour_porpoise,ocean50k_sf)
-
-humpback_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Humpback_Whale.tif")
-humpback_whale[humpback_whale==0] <- NA
-humpback_whale <- raster_clip(humpback_whale,ocean50k_sf)
-
-sei_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Sei_Whale.tif")
-sei_whale[sei_whale==0] <- NA
-sei_whale <- raster_clip(sei_whale,ocean50k_sf)
-
-
-# OR convert the rasters to sf_objects and use the poly_intersect() function to clip to studyArea
+# The following provides an option to convert the rasters to sf_objects and use the poly_intersect() function to clip to studyArea instead of using rasters
+# This is also in the cetaceans Rmarkdown - need to double check
 fin_whale_sf <- stars::st_as_stars(fin_whale)%>%sf::st_as_sf()
-fin_whale_sf <- st_crop(fin_whale_sf, ocean50k_sf)
 fin_whale_sf <- st_make_valid(fin_whale_sf)
 harbour_porpoise_sf <- stars::st_as_stars(harbour_porpoise)%>%sf::st_as_sf()
-harbour_porpoise_sf <- st_crop(harbour_porpoise_sf, ocean50k_sf)
 harbour_porpoise_sf <- st_make_valid(harbour_porpoise_sf)
 humpback_whale_sf <- stars::st_as_stars(humpback_whale)%>%sf::st_as_sf()
-humpback_whale_sf <- st_crop(humpback_whale_sf, ocean50k_sf)
 humpback_whale_sf <- st_make_valid(humpback_whale_sf)
 sei_whale_sf <- stars::st_as_stars(sei_whale)%>%sf::st_as_sf()
-sei_whale_sf <- st_crop(sei_whale_sf, ocean50k_sf)
 sei_whale_sf <- st_make_valid(sei_whale_sf)
-
 
 #Read Blue Whale Important Habitat shapefile and Project to WGS84
 Blue_32198 <- st_read("../Data/NaturalResources/Species/Cetaceans/BlueWhaleHabitat_FGP/BlueWhaleHabitat_HabitatBaleineBleue.shp", quiet=TRUE, stringsAsFactors = FALSE)
@@ -172,20 +140,20 @@ EBSA_sf <- st_make_valid(EBSA_sf)
 
 # Save all objects to a single .Rdata file 
 
-save(bioregion_sf, BlueWhale_ImpHab_sf, bounds_sf, ClippedCritHab_sf, EBSA_sf, fin_whale, 
-     harbour_porpoise, humpback_whale, land10m_sf, land50k_sf, 
+save(bioregion_sf, BlueWhale_ImpHab_sf, bounds_sf, ClippedCritHab_sf, 
+     EBSA_sf, land10m_sf, land50k_sf, 
      listed_species, listed_cetacean_species, listed_other_species, listed_fish_invert_species,
      NBNW_ImpHab_sf, obis_cet_sf, obis_fish_sf, rockweed_sf, 
-     RVCatch_sf, RVGSSPECIES, sei_whale,
+     RVCatch_sf, RVGSSPECIES, 
      fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf,
      file = "../Data/Rdata/OpenData.RData")
 
-save(bioregion_sf, BlueWhale_ImpHab_sf, bounds_sf, ClippedCritHab_sf, EBSA_sf, fin_whale, 
-     harbour_porpoise, humpback_whale, land10m_sf, land50k_sf, 
-     listed_species, listed_cetacean_species, listed_other_species, listed_fish_invert_species,
-     NBNW_ImpHab_sf, obis_cet_sf, obis_fish_sf, rockweed_sf, 
-     RVCatch_sf, RVGSSPECIES, sei_whale,
-     file = "../Data/Rdata/OpenData_noRasSF.RData")
+# save(bioregion_sf, BlueWhale_ImpHab_sf, bounds_sf, ClippedCritHab_sf, EBSA_sf, fin_whale, 
+#      harbour_porpoise, humpback_whale, land10m_sf, land50k_sf, 
+#      listed_species, listed_cetacean_species, listed_other_species, listed_fish_invert_species,
+#      NBNW_ImpHab_sf, obis_cet_sf, obis_fish_sf, rockweed_sf, 
+#      RVCatch_sf, RVGSSPECIES, sei_whale,
+#      file = "../Data/Rdata/OpenData_noRasSF.RData")
 
 
 # Species at Risk distribution
