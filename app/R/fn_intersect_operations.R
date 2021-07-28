@@ -436,7 +436,8 @@ table_crit <- function(ClippedCritHab_sf, studyArea, leatherback_sf) {
   leatherback_table[1,1] <- "Leatherback Sea Turtle"
   leatherback_table[1,2] <- NA
   if(leatherback_result >= 1){
-    leatherback_table[1,3] <- intersect_leatherback$AreaName
+    # handle case where result > 1
+    leatherback_table[1,3] <- paste(intersect_leatherback$AreaName, collapse=', ' )
   }else{
     leatherback_table[1,3] <- NA  
   }
