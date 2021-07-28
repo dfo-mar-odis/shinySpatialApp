@@ -36,10 +36,10 @@ render_check_delete <- function(section_path, delete_file=TRUE) {
 
 load_test_data <- function() {
   minYear <<- 2010
+  source(here("dataprocessing/MakeTestData.R"))
+  gen_all_test_data()
   toenv <- globalenv() # loads the data to environment where function is called
-  load(here("app/data/OpenData.RData"), envir=toenv)
-  load(here("app/data/OpenData_sardist.RData"), envir=toenv)
-  load(here("app/data/SecureData.RData"), envir=toenv)
+  load(here("app/data/testData.RData"), envir=toenv)
   lapply(list.files(here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source, local=toenv)
 }
 
