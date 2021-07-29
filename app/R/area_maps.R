@@ -20,7 +20,7 @@
 # Written by Gordana Lazin for reproducibble reporting project, April 12, 2021
 # ggplot map developed by Greg Puncher, winter/spring 2021
 
-area_map <- function(studyArea,site,land_layer,buf, CANborder, studyBox_geom) {
+area_map <- function(studyArea, site, land_layer,buf, CANborder, studyBox_geom) {
   
   # buf is in km, and now converted to degrees
   buf <- buf/100
