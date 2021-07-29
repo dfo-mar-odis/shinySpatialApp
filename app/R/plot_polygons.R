@@ -47,7 +47,7 @@ plot_polygons <- function(baseMap, mapBox, studyBox_geom, polyData, attribute, l
   axLim=ggplot2::coord_sf(xlim=c(mapBox["xmin"], mapBox["xmax"]),ylim=c(mapBox["ymin"], mapBox["ymax"]),expand=FALSE)
   
   # color-blind options for the legend
-  legendColor=c("#009E73", "#E69F00", "#0072B2", "#CC79A7","#F0E442","#D55E00","#56B4E9","#999999")
+  legendColor=c("#009E73", "#E69F00", "#0072B2", "#CC79A7","#F0E442","#D55E00","#56B4E9","#999999", "black")
   
   
   # there are two types of plots: 
