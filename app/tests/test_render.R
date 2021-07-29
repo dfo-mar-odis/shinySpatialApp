@@ -9,7 +9,12 @@ source(here("app/tests/helper_functions_for_tests.R"))
 load_test_data()
 
 # select random sample area from test sample areas
-study_area_opts <- list.files(here("app/studyAreaTest/"), pattern = "*.geojson", full.names = TRUE)
+study_area_opts <- here("app/studyAreaTest/", c("geoms_slc_coastal_test.geojson", 
+                                                "geoms_slc_no_land.geojson", 
+                                                "geoms_slc_coastal_test.geojson"))
+
+
+
 studyArea <- st_read(sample(study_area_opts, 1))
 
 # prepped_data is a list of needed variables, eg site, studyBox_geom, etc.
