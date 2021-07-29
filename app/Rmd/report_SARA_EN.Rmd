@@ -1,9 +1,29 @@
-## **INFORMATION FROM NATIONAL AQUATIC SPECIES AT RISK PROGRAM**    
+## **INFORMATION FROM THE NATIONAL AQUATIC SPECIES AT RISK GEODATABASE**    
+**Contact:** Carolyn Bakelaar  
+**Internal GIS Tool URL:** <http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US#>  
+
+This section describes Species At Risk distribution/range and critical habitat maps. The official source of information for Species At Risk is the Species At Risk Public Registry www.sararegistry.gc.ca.
+
+DFO’s Species At Risk Program is responsible for carrying out DFO’s mandate under the _Species At Risk Act_ (SARA) and is an authoritative source of information for aquatic Species At Risk.
+
+DFO’s Species At Risk Program has published Species At Risk distribution/range and critical habitat maps on the Government of Canada Open Data portal, and it has also developed internal and public interactive National Species At Risk Mapping Tools. As described by the National Species At Risk Mapping Tool - Frequently Asked Questions (http://dfonl7swvgip001/NationalSARDemo/LinkDocs/Help/FAQsEN_FR.pdf), the Species At Risk Program in NHQ initiated the tool to facilitate project assessment under the _Fisheries Act_ and SARA. It uses a Geographic Information System (GIS) and interactive display of reproducible, spatially-referenced data for aquatic SARA-listed species. The data contained in the tool are maintained by regional SARA program offices, coordinated by the NHQ Species At Risk Program (Steering Committee). Data are added in concert with the development of SARA recovery documents and SARA listing timelines.
+
+This report is *not* the authoritative advice on Species At Risk data. Please access the Species At Risk GIS tool to create an authoritative report, particularly if any of the data sources are at, or near, the search area. Below, we provide a list and examination of data products that may overlap with the user-defined search area.
+
 ### **Species At Risk distribution and Critical Habitat data**    
 
 #### ***DFO Species At Risk distribution (range)***     
 
 #### ***Critical Habitat of Species At Risk***    
+
+Contact: <info@dfo-mpo.gc.ca>  
+Last retrieved on: October 1 2020 from Open Data  <https://open.canada.ca/data/en/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c>  
+Quality Tier: High    
+Security level: none    
+
+Dataset description from the Open Data record [@OpenData_SARcriticalhabitat]: The Species At Risk Program is responsible for carrying out DFO’s mandate under the _Species At Risk Act_ (SARA) to protect, recover and conserve all listed aquatic Species At Risk in Canada. Critical habitat is identified for species listed as Endangered or Threatened under the _Species At Risk Act_ (SARA). Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Section 49(1)(a) of SARA requires that a species’ Recovery Strategy/Action Plan include an identification of the species’ critical habitat to the extent possible, based on the best available information, including information provided by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). SARA makes it illegal to destroy any part of the critical habitat of SAR and may impose restrictions on development and construction. Critical habitats were assembled by SARA regional biologists and recovery teams. They are designed to support the protection and recovery of species listed as Endangered or Threatened under the _Species At Risk Act_. They are also described and displayed in species’ Recovery Documents and Action Plans.
+
+Critical habitat presented in this section are available in the Government of Canada Open Data portal, with the exception of draft critical habitat for Leatherback Sea Turtle, for which delineation of critical habitat is currently under review. Draft critical habitat for Leatherback Sea Turtle is available in the internal Species At Risk GIS tool and will be available in Open Data once it has been included in a proposed or final recovery strategy.
 
 #### ***Area-specific SAR distribution and critical habitat search results***
 
@@ -41,7 +61,6 @@ crit_table<-table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
 Dist_query_output_table<-if(Dist_overlap_result < 1){
   ""
 } else {
-  knitr::kable(dist_table[!duplicated(dist_table),], align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 }
 if(Dist_overlap_result > 1){Dist_query_output_table}
 ```
@@ -68,13 +87,13 @@ clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
 
 ```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes critical habitat of Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA) in the Scotian Shelf Bioregion. Please see table below for complimentary information. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species.” Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.', fig.height=6, fig.width=11}
 if (!is.null(clipped$regionPoly)){
-  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute, legendName=legend_name) 
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute, legendName=legend_name)
 }  
 ```
 
 ```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with critical habitat of Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA)', fig.height=6, fig.width=11}
 if (!is.null(clipped$mapPoly)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute, legendName = legend_name) 
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly, attribute, legendName = legend_name)
 }  
 ```
 
@@ -90,14 +109,12 @@ clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
 
 ```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes draft critical habitat of Leatherback Sea Turtle in the Scotian Shelf Bioregion, relative to the search area.', fig.height=6, fig.width=11}
 if (!is.null(clipped$regionPoly)){
-  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute)
 }   
 ```
 
 ```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with draft critical habitat of Leatherback Sea Turtle', fig.height=6, fig.width=11}
 if (!is.null(clipped$mapPoly)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute) 
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute)
 }  
 ```
-
-
