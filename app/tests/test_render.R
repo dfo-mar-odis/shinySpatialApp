@@ -9,18 +9,17 @@ source(here("app/tests/helper_functions_for_tests.R"))
 load_test_data()
 
 # select random sample area from test sample areas
-study_area_opts <- here("app/studyAreaTest/", c("geoms_slc_coastal_test.geojson", 
-                                                "geoms_slc_no_land.geojson", 
-                                                "geoms_slc_coastal_test.geojson"))
+studyAreaOpts <- here("app/studyAreaTest/", c("geoms_slc_coastal_test.geojson", 
+                                              "geoms_slc_no_land.geojson", 
+                                              "geoms_slc_coastal_test.geojson"))
 
 
 
-studyArea <- st_read(sample(study_area_opts, 1))
+studyArea <- st_read(sample(studyAreaOpts, 1))
 
 # prepped_data is a list of needed variables, eg site, studyBox_geom, etc.
-prepped_data <- prep_test_data(studyArea)
-list2env(prepped_data, env=globalenv())
-
+preppedData <- prep_test_data(studyArea)
+list2env(preppedData, env=globalenv())
 
 # ----------------------------TESTS---------------------------------------
 # tests.  After preparing the environment, any of the following can be run individually:

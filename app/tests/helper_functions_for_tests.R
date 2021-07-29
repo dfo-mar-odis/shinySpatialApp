@@ -12,7 +12,7 @@
 # Developed by Quentin Stoyel, Summer 2021
 
 render_check_delete <- function(section_path, delete_file=TRUE) {
-  test_out_dir = here("app/tests/temp")
+  test_out_dir = here::here("app/tests/temp")
   unlink(test_out_dir) # empty the folder
   out_html <- rmarkdown::render(section_path, output_dir = test_out_dir)
   success <- file.exists(out_html)
@@ -36,11 +36,11 @@ render_check_delete <- function(section_path, delete_file=TRUE) {
 
 load_test_data <- function() {
   minYear <<- 2010
-  source(here("dataprocessing/MakeTestData.R"))
+  source(here::here("dataprocessing/MakeTestData.R"))
   gen_all_test_data()
   toenv <- globalenv() # loads the data to environment where function is called
-  load(here("app/data/testData.RData"), envir=toenv)
-  lapply(list.files(here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source, local=toenv)
+  load(here::here("app/data/testData.RData"), envir=toenv)
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source, local=toenv)
 }
 
 # ----- PREP TEST DATA -----
@@ -65,7 +65,7 @@ prep_test_data <- function(studyArea) {
   areaMap <- areaMapList[[1]] # map
   bboxMap <- areaMapList[[2]] #bounding box of the map
   
-  Region <- st_read(here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
+  Region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
   regionBox <- sf::st_bbox(Region) 
   regionMap <- region_map(regionBox, studyArea, land10m_sf, bounds_sf)  
   out_list <- list("Region" = Region,

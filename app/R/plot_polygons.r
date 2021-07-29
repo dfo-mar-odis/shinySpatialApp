@@ -15,10 +15,10 @@
 # 
 # Examples of use:
 #
-#   To plot on region map: plot_polygons(regionMap,regionBox,studyBox_geom, data$regionPoly,attribute="NONE")
+#   To plot on region map: plot_polygons(regionMap, regionBox, studyBox_geom, data$regionPoly, attribute="NONE")
 #                          (only parameters to change are data$regionPoly and attribute)
 #
-#   To plot area map: plot_polygons(areaMap,bboxMap,studyBox_geom, data$regionPoly,attribute="NONE")
+#   To plot area map: plot_polygons(areaMap, bboxMap, studyBox_geom, data$regionPoly, attribute="NONE")
 #                          (only parameters to change are data$regionPoly and attribute)
 #
 # Created by Gordana Lazin, July 2, 2021 for reproducible reporting project
@@ -69,7 +69,7 @@ plot_polygons <- function(baseMap, mapBox, studyBox_geom, polyData, attribute, l
  
   # this is how general plotting function should look like
     
-    polyMap <- baseMap+
+    polyMap <- baseMap +
       polyPlot +
       polyFill +
       studyBox_geom +

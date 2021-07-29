@@ -19,6 +19,8 @@
 # Outputs:
 # 1. out_samp: vector of point geometries with length = 10 * mult 
 
+library(sf)
+library(dplyr)
 
 get_random_points <- function(mult = 10) {
   studyArea1 <- st_read(here::here("app/studyAreaTest/geoms_slc_test.geojson"))#Offshore
