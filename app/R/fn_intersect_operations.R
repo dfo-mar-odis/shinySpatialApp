@@ -22,8 +22,8 @@
 # Inputs:
 # 1. datafile: an input point or raster file
 # 2. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
-# 3. Bbox: Coordinates of the map bounding box exported from area_map() function
-# 4. Year: Minimum year for the data, defined in intro_EN.Rmd as minYear
+# 3. mapBbox: Coordinates of the map bounding box exported from area_map() function
+# 4. year: Minimum year for the data, defined in intro_EN.Rmd as minYear
 #
 # Outputs: list containing 3 items
 # 1. studyData: the full dataset from clipping the datafile by the studyArea
@@ -33,43 +33,34 @@
 
 
 
-point_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
+point_intersect <- function(data_sf, studyArea, mapBbox, year, ...) {
 
   # Limit data file to data from minYear to present
   # datafile <- datafile %>% dplyr::filter(YEAR >= Year)
-  # convert Bbox to sf object
-  Bbox <- st_as_sfc(Bbox)
-  # clip the data file first to the extent of the bounding box
-  # and then clip that reduced datafile to the extent of the
-  # study area
-  p1 <- sf::st_crop(datafile,Bbox)
-  p2 <- sf::st_crop(p1,studyArea)
-  data1 <- p2
-  data2 <- p1
+  # convert bbox to sf object representing the map
+  mapArea <- st_as_sfc(mapBbox)
+
+  # crop data:
+  mapData <- sf::st_crop(data_sf, mapArea)
+  studyData <- sf::st_crop(mapData, studyArea)
 
   # if there are no samples found in the studyArea, exit the function
-  if (nrow(p2) > 0) {
+  if (nrow(studyData) > 0) {
 
-    # create smaller files for the points by selecting
-    # only the geometry field
-    # for RV the ELAT and ELONG fields are necessary
-    # for the final mapping
-    if ("ELAT" %in% colnames(p2)) {
-      p1 <- dplyr::select(p1, ELAT, ELONG, geometry)
+    # drop all unused columns (everything except geometry)
+    # for RV the ELAT and ELONG fields are necessary as well
+    if ("ELAT" %in% colnames(mapData)) {
+      mapPoints <- dplyr::select(mapData, ELAT, ELONG, geometry)
     } else {
-      p1 <- dplyr::select(p1,geometry)
+      mapPoints <- dplyr::select(mapData, geometry)
     }
-    # create smaller point files by taking only
-    # unique points
-    p1 <- unique(p1)
-    # Calculate the number of samples/tows within
-    # the study area
-    # Samples_study_no <- nrow(Samples_study)
+    # remove redundant geometries
+    mapPoints <- unique(mapPoints)
 
     # add coordinates to table from geometry column
-    p1 <- sfcoords_as_cols(p1)
+    mapPoints <- sfcoords_as_cols(mapPoints)
 
-    outList <- list(studyData = data1, mapData = data2, mapPoints = p1)
+    outList <- list(studyData = studyData, mapData = mapData, mapPoints = mapPoints)
     return(outList)
 
   } # end of test for zero samples
@@ -79,48 +70,6 @@ point_intersect <- function(datafile, studyArea, Bbox, Year, ...) {
 }
 ##### - END point_intersect function ##################################
 
-##### - poly_intersect function ##################################
-# This function clips various polygon data sources (e.g. EBSA, critical habitat, etc.)
-# to the extent of the region, the studyArea, and the map bounding box.
-# The map bounding box is created by the area_map() function
-#
-# Inputs:
-# 1. datafile: an input polygon vector file
-# 2. region: a spatial file of the region
-# 3. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
-# 4. Bbox: Coordinates of the map bounding box exported from area_map() function (bboxMap)
-#
-# Outputs: list containing 3 items
-# 1. studyPoly: the full dataset from clipping the datafile by the studyArea
-# 2. mapPoly: the full dataset from clipping the datafile by the Bounding box
-# 3. regionPoly: the full dataset from clipping the datafile by the Region
-#
-# Created by Phil Greyson June 2021 for reproducible reporting project
-
-poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
-
-  # convert Bbox to sf object
-  Bbox <- st_as_sfc(Bbox)
-  # clip the data file first to the extent of the region
-  # and then clip that reduced datafile to the extent of the
-  # bounding box, then clip that reduced datafile to the
-  # extent of the studyArea
-  p1 <- sf::st_crop(datafile, region)
-  p2 <- sf::st_crop(p1,Bbox)
-  p3 <- sf::st_crop(p2,studyArea)
-
-  # if there are no samples found in the studyArea, exit the function
-  if (nrow(p3) > 0) {
-    outList <- list(studyPoly = p3, mapPoly = p2, regionPoly = p1)
-    return(outList)
-
-  } # end of test for zero samples
-  else {
-    return()
-  }
-}
-
-##### - END poly_intersect function ##################################
 
 ##### - raster_intersect function ##################################
 # This function clips various raster data sources (e.g. SDM output, etc.)
@@ -131,33 +80,30 @@ poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
 # 1. datafile: an input raster file
 # 2. region: a spatial file of the region
 # 3. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
-# 4. Bbox: Coordinates of the map bounding box exported from area_map() function
+# 4. mapBbox: Coordinates of the map bounding box exported from area_map() function
 #
 # Outputs: list containing 3 items
 # 1. studyRas: the full dataset from clipping the datafile by the studyArea
 # 2. mapRas: the full dataset from clipping the datafile by the Bounding box
 # 3. regionRas: the full dataset from clipping the datafile by the Region
-raster_intersect <- function(datafile, region, studyArea, Bbox, ...) {
+raster_intersect <- function(datafile, region, studyArea, mapBbox, ...) {
 
   # convert Bbox to sf object
-  Bbox <- st_as_sfc(Bbox)
-  Bbox <- st_as_sf(Bbox)
-  # clip the data file first to the extent of the region
-  # and then clip that reduced datafile to the extent of the
-  # bounding box, then clip that reduced datafile to the
-  # extent of the studyArea
+  tmpBbox <- st_as_sfc(mapBbox)
+  mapArea <- st_as_sf(tmpBbox)
+  # Crop Data
   # with raster datasets it's necesssary to comnbine the
   # crop and mask functions
-  p1 <- crop(datafile, region)
-  p1 <- raster::mask(p1, region)
-  p2 <- crop(p1, Bbox)
-  p2 <- mask(p2, Bbox)
-  p3 <- crop(p2, studyArea)
-  p3 <- mask(p3, studyArea)
+  regionData <- crop(datafile, region)
+  regionData <- raster::mask(regionData, region)
+  mapData <- crop(regionData, mapArea)
+  mapData <- mask(mapData, mapArea)
+  studyData <- crop(mapData, studyArea)
+  studyData <- mask(studyData, studyArea)
 
   # if there are no raster cells found in the studyArea, exit the function
-  if (nrow(p3) > 0) {
-    outList <- list(studyRas = p3, mapRas = p2, regionRas = p1)
+  if (nrow(studyData) > 0) {
+    outList <- list(studyRas = studyData, mapRas = mapData, regionRas = regionData)
     return(outList)
 
   } # end of test for zero samples
@@ -176,7 +122,7 @@ raster_intersect <- function(datafile, region, studyArea, Bbox, ...) {
 # 1. datafile: an input polygon vector file
 # 2. region: a spatial file of the region
 # 3. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
-# 4. Bbox: Coordinates of the map bounding box exported from area_map() function (bboxMap)
+# 4. mapBbox: Coordinates of the map bounding box exported from area_map() function (bboxMap)
 #
 # Outputs: list containing 3 items
 # 1. studyPoly: the full dataset from clipping the datafile by the studyArea
@@ -186,25 +132,23 @@ raster_intersect <- function(datafile, region, studyArea, Bbox, ...) {
 # Created by Phil Greyson June 2021 for reproducible reporting project
 # Modified by Gordana lazin, Jul 2, 2021 (modified outputs)
 
-poly_intersect <- function(datafile, region, studyArea, Bbox, ...) {
+poly_intersect <- function(datafile, region, studyArea, mapBbox, ...) {
 
-  # convert Bbox to sf object
-  Bbox <- st_as_sfc(Bbox)
-  # clip the data file first to the extent of the region
-  # and then clip that reduced datafile to the extent of the
-  # bounding box, then clip that reduced datafile to the
-  # extent of the studyArea
-  p1 <- sf::st_crop(datafile, region)
-  p2 <- sf::st_crop(p1,Bbox)
-  p3 <- sf::st_crop(p2,studyArea)
+  mapArea <- st_as_sfc(mapBbox)
+  
+  # Crop data
+  regionData <- sf::st_crop(datafile, region)
+  mapData <- sf::st_crop(regionData, mapArea)
+  studyData <- sf::st_crop(mapData, studyArea)
 
-  # if there is no intersect with the box return NULL
-  if (nrow(p1)==0){p1=NULL}
-  if (nrow(p2)==0){p2=NULL}
-  if (nrow(p3)==0){p3=NULL}
+  # if there is no intersect with the box set return to NULL
+  if (nrow(regionData) == 0) {regionData <- NULL}
+  if (nrow(mapData) == 0) {mapData <- NULL}
+  if (nrow(studyData) == 0) {studyData <- NULL}
 
-  # define output list
-  outList=outList <- list(studyPoly = p3, mapPoly = p2, regionPoly = p1)
+  outList <- list(studyPoly = studyData, 
+                  mapPoly = mapData, 
+                  regionPoly = regionData)
 
   return(outList)
 
