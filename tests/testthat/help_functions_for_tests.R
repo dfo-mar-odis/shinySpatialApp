@@ -41,7 +41,7 @@ render_check_delete <- function(sectionPath, deleteFile=TRUE) {
 
 
 load_test_data <- function(testEnv) {
-  
+  catch_all_output({
   load(here::here("app/data/testData.RData"), envir = testEnv)
   load(here::here("app/data/testData.RData"), envir = environment())
   lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source, local=testEnv)
@@ -64,6 +64,7 @@ load_test_data <- function(testEnv) {
   Region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
   regionBox <- sf::st_bbox(Region) 
   regionMap <- region_map(regionBox, studyArea, land10m_sf, bounds_sf)  
+  })
   out_list <- list("minYear" = 2010,
                    "Region" = Region,
                    "site" = site,

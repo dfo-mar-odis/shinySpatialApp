@@ -28,8 +28,8 @@ app/output/*.rds
 app/output/*.Rmd
 tmp/
 renv/
-app/tests/testthat/temp/*
-!app/tests/temp/.gitkeep
+tests/temp/*
+!tests/temp/.gitkeep
 
 # History files
 .Rhistory

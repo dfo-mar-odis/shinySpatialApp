@@ -67,7 +67,6 @@ plot_polygons <- function(baseMap, mapBbox, studyBox_geom, polyData, attribute, 
     polyFill <- scale_fill_manual(values=legendColor, name=legendName) 
     
   }
-  
  
   # this is how general plotting function should look like
     
