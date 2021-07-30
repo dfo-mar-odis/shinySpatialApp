@@ -42,3 +42,7 @@ test_that("area plot list", {
   expect_equal(length(testPlotList[[1]]$layers), 6)
   expect_equal(class(testPlotList[[2]]), "bbox")
 })
+
+
+
+

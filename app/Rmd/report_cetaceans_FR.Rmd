@@ -41,7 +41,7 @@ Veuillez prendre note des avertissements et mises en garde importants suivants a
 #### ***Résultats de la recherche de la BDOB par zone***
 
 ```{r wsdb, include=FALSE, cache=FALSE}
-outputList <- main_intersect(wsdb_sf, studyArea, Bbox = bboxMap)
+outputList <- main_intersect(wsdb_sf, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
 wsdb_points <- sfcoords_as_cols(outputList[[2]])
@@ -78,7 +78,7 @@ La description suivante des méthodes de collecte de données sur les observatio
 #### ***Résultats de la recherche du laboratoire Whitehead par zone***
 
 ```{r whitehead, include=FALSE, cache=FALSE}
-outputList <- main_intersect(whitehead_sf, studyArea, Bbox = bboxMap)
+outputList <- main_intersect(whitehead_sf, studyArea, mapBbox = bboxMap)
 if (!is.null(outputList)) {
   whitehead_points <- sfcoords_as_cols(outputList[[2]])
 }
@@ -113,7 +113,7 @@ La base de données des observations du NARWC contient des registres de milliers
 
 #### ***Résultats de la recherche du NARWC par zone***
 ```{r narwc, include=FALSE, cache=FALSE}
-outputList <- main_intersect(narwc_sf, studyArea, Bbox = bboxMap)
+outputList <- main_intersect(narwc_sf, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
   narwc_points <- sfcoords_as_cols(outputList[[2]])
@@ -146,7 +146,7 @@ Une recherche du SIBO a été effectuée pour trouver d’autres documents perti
 
 #### ***Résultats de la recherche du SIBO pour les cétacés, par zone***
 ```{r obis, include=FALSE, cache=FALSE}
-outputList <- main_intersect(obis_cet_sf, studyArea, Bbox = bboxMap)
+outputList <- main_intersect(obis_cet_sf, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
   obis_cet_points <- sfcoords_as_cols(outputList[[2]])

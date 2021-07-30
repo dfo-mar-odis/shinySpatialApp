@@ -19,7 +19,7 @@ whale_col=values=c("Beluga Whale: Endangered (SARA & COSEWIC)"="cyan3","Blue Wha
 #### ***Area-specific WSDB search results***
 
 ```{r wsdb, include=FALSE, cache=FALSE}
-outputList <- point_intersect(wsdb_sf, studyArea, Bbox = bboxMap)
+outputList <- point_intersect(wsdb_sf, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
 wsdb_points <- sfcoords_as_cols(outputList$mapData)
@@ -47,7 +47,7 @@ if (!is.null(outputList)) {
 #### ***Area-specific Whitehead Lab search results***
 
 ```{r whitehead, include=FALSE, cache=FALSE}
-outputList <- point_intersect(whitehead_sf, studyArea, Bbox = bboxMap)
+outputList <- point_intersect(whitehead_sf, studyArea, mapBbox = bboxMap)
 if (!is.null(outputList)) {
   whitehead_points <- sfcoords_as_cols(outputList$mapData)
 }
@@ -75,7 +75,7 @@ if (!is.null(outputList)) {
 
 #### ***Area-specific NARWC search results***
 ```{r narwc, include=FALSE, cache=FALSE}
-outputList <- point_intersect(narwc_sf, studyArea, Bbox = bboxMap)
+outputList <- point_intersect(narwc_sf, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
   narwc_points <- sfcoords_as_cols(outputList$mapData)
@@ -112,7 +112,7 @@ An OBIS search [@OBIS] was conducted to find additional relevant records for cet
 #### ***Area-specific OBIS cetacean search results***
 
 ```{r obis, include=FALSE, cache=FALSE}
-outputList <- point_intersect(obis_cet_sf, studyArea, Bbox = bboxMap)
+outputList <- point_intersect(obis_cet_sf, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
   obis_cet_points <- sfcoords_as_cols(outputList$mapData)

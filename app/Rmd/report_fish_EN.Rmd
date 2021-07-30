@@ -14,7 +14,7 @@ knitr::kable(table_RV, align="l",
 #### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
 
 ```{r, include=FALSE, cache=FALSE}
-  outputList <- point_intersect(RVCatch_sf, studyArea, speciestable = RVGSSPECIES, Bbox = bboxMap, Year = minYear)
+  outputList <- point_intersect(RVCatch_sf, studyArea, speciestable = RVGSSPECIES, mapBbox = bboxMap, Year = minYear)
 
 Samples_bbox <- outputList$mapPoints
 
@@ -62,8 +62,8 @@ knitr::kable(table_rv1, align="l", caption="\\label{tab:rv_freq_table}Quality Ti
 #### ***Area-specific MARFIS & ISDB search results***
 
 ```{r, include=FALSE, cache=FALSE}
-outputListI <- point_intersect(isdb_sf, studyArea, Bbox = bboxMap, Year = minYear)
-outputListM <- point_intersect(marfis_sf, studyArea, Bbox = bboxMap, Year = minYear)
+outputListI <- point_intersect(isdb_sf, studyArea, mapBbox = bboxMap, Year = minYear)
+outputListM <- point_intersect(marfis_sf, studyArea, mapBbox = bboxMap, Year = minYear)
 Samples_bboxI <- outputListI$mapPoints
 Samples_bboxM <- outputListM$mapPoints
 
@@ -144,7 +144,7 @@ OBIS is a global, open-access data and information clearing-house on marine biod
 #### ***Area-specific OBIS fish and invertebrate search results***
 
 ```{r, include=FALSE, cache=FALSE}
-outputList <- point_intersect(obis_fish_sf, studyArea, Bbox = bboxMap, Year = minYear)
+outputList <- point_intersect(obis_fish_sf, studyArea, mapBbox = bboxMap, Year = minYear)
 Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList)) {

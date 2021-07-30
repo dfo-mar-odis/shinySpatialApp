@@ -12,7 +12,8 @@ knitr::kable(table_RV, align="l",
 #### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes***
 
 ```{r, include=FALSE, cache=FALSE}
-  outputList <- main_intersect(RVCatch_sf, studyArea,speciestable = RVGSSPECIES, Bbox = bboxMap, Year = minYear)
+  outputList <- main_intersect(RVCatch_sf, studyArea,speciestable = RVGSSPECIES,
+                               mapBbox = bboxMap, Year = minYear)
 
 Samples_bbox <- outputList[[3]]
 
