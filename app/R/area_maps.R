@@ -45,12 +45,13 @@ area_map <- function(studyArea, site, landLayer, bufKm, CANborder, studyBoxGeom)
   bound <- sf::st_crop(CANborder, bboxBuf)
   
   # configure the plot
-  outPlot <- default_ggplot() + 
+  outPlot <- ggplot() + 
     geom_sf(data=site, fill="yellow", col="black", size=0.6) +
     geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1)+ # creates US boundary line, 200 nm limit
     geom_sf(data=land, fill=c("lightgrey"), col="black", size=0.7) +
-    eval(studyBoxGeom)
+    eval(studyBoxGeom) 
   
+  outPlot <- format_ggplot(outPlot, bboxBuf)
   outList <- list(outPlot, bboxBuf)
   
   return(outList)
@@ -83,28 +84,40 @@ region_map <- function(regionBbox, studyArea, landLayer, CANborder) {
   bound <- sf::st_crop(CANborder,regionBbox)
   
   # configure the plot
-  outPlot <- default_ggplot() +
-    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1)+ # creates US boundary line, 200 nm limit
-    geom_sf(data=land,fill=c("lightgrey"), col="black", size=0.7)+
-    geom_sf(data=studyArea, fill=NA, col="red", size=1)+
-    coord_sf(expand = FALSE)
+  rawPlot <- ggplot() +
+    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
+    geom_sf(data=land,fill=c("lightgrey"), col="black", size=0.7) +
+    geom_sf(data=studyArea, fill=NA, col="red", size=1)
+  
+  outPlot <- format_ggplot(rawPlot, regionBbox)
   
   return(outPlot)
 }
 
 
-#-----------Default Ggplot ----------
-# Function that returns a ggplot object with preset formatting, 
+#-----------Format Ggplot ----------
+# Function that takes a ggplot object as input and adds preset formatting, 
 # and axis labels of latitude and longitude, allows all plots
 # to have a consistent style.  
 
-default_ggplot <- function() {
-  outPlot <- ggplot()+
-    watermark(show = TRUE, lab = "DFO Internal Use Only")+
+format_ggplot <- function(ggplotIn, bbox = FALSE) {
+  
+  ggplotOut <- ggplotIn + watermark(show = TRUE, lab = "DFO Internal Use Only")+
     annotation_scale(location="bl")+
     theme_bw()+
-    labs(x="Longitude", y="Latitude", col="")+
+    labs(x=expression(paste("Longitude ",degree,"W",sep="")),
+         y=expression(paste("Latitude ",degree,"N",sep="")),
+         col="")  +
     theme(axis.title.y = element_text(size = 13))+
     theme(axis.title.x = element_text(size = 13))
-  return(outPlot)
+  
+  # crop to bbox if used:
+  if (class(bbox) == "bbox") {
+    ggplotOut <- ggplotOut + coord_sf(xlim = c(bbox[["xmin"]], bbox[["xmax"]]),
+                                    ylim = c(bbox[["ymin"]], bbox["ymax"]), 
+                                    expand = FALSE)
+    
+  }
+  
+  return(ggplotOut)
 }
