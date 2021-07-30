@@ -105,8 +105,8 @@ format_ggplot <- function(ggplotIn, bbox = FALSE) {
   ggplotOut <- ggplotIn + watermark(show = TRUE, lab = "DFO Internal Use Only")+
     annotation_scale(location="bl")+
     theme_bw()+
-    labs(x=expression(paste("Longitude ",degree,"W",sep="")),
-         y=expression(paste("Latitude ",degree,"N",sep="")),
+    labs(x=expression(paste("Longitude ", degree, "W", sep="")),
+         y=expression(paste("Latitude ", degree, "N", sep="")),
          col="")  +
     theme(axis.title.y = element_text(size = 13))+
     theme(axis.title.x = element_text(size = 13))

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "geoms_slc",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "from_map_1" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -66.980724, 44.50035 ], [ -66.980724, 44.844234 ], [ -66.482537, 44.844234 ], [ -66.482537, 44.50035 ], [ -66.980724, 44.50035 ] ] ] } }
+]
+}
