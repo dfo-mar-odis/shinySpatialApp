@@ -15,7 +15,7 @@ This report is *not* the authoritative advice on Species At Risk data. Please ac
 #### ***DFO Species At Risk distribution (range)*** {-}    
 
 Contact: <info@dfo-mpo.gc.ca>  
-Link:  Last retrieved on: October 1 2020 from Open Data  <https://open.canada.ca/data/en/dataset/e0fabad5-9379-4077-87b9-5705f28c490b>  
+Last retrieved on: October 1 2020 from Open Data  <https://open.canada.ca/data/en/dataset/e0fabad5-9379-4077-87b9-5705f28c490b>  
 Quality Tier: High  
 Security level: none  
 
