@@ -29,6 +29,7 @@ app/output/*.Rmd
 tmp/
 renv/
 tests/temp/*
+tests/*.RData
 !tests/temp/.gitkeep
 
 # History files
