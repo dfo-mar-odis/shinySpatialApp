@@ -46,9 +46,9 @@ area_map <- function(studyArea, site, landLayer, bufKm, CANborder, studyBoxGeom)
   
   # configure the plot
   outPlot <- ggplot() + 
-    geom_sf(data=site, fill="yellow", col="black", size=0.6) +
-    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1)+ # creates US boundary line, 200 nm limit
-    geom_sf(data=land, fill=c("lightgrey"), col="black", size=0.7) +
+    geom_sf(data = site, fill = "yellow", col = "black", size = 0.6) +
+    geom_sf(data = bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
+    geom_sf(data = land, fill = c("lightgrey"), col = "black", size = 0.7) +
     eval(studyBoxGeom) 
   
   outPlot <- format_ggplot(outPlot, bboxBuf)
@@ -78,16 +78,16 @@ area_map <- function(studyArea, site, landLayer, bufKm, CANborder, studyBoxGeom)
 region_map <- function(regionBbox, studyArea, landLayer, CANborder) {
   
   # subset land to plot area to speed up plotting
-  land <- sf::st_crop(landLayer,regionBbox)
+  land <- sf::st_crop(landLayer, regionBbox)
   
   # subset US-Canad boundary to plot area to speed up plotting
-  bound <- sf::st_crop(CANborder,regionBbox)
+  bound <- sf::st_crop(CANborder, regionBbox)
   
   # configure the plot
   rawPlot <- ggplot() +
-    geom_sf(data=bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
-    geom_sf(data=land,fill=c("lightgrey"), col="black", size=0.7) +
-    geom_sf(data=studyArea, fill=NA, col="red", size=1)
+    geom_sf(data = bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
+    geom_sf(data = land, fill = c("lightgrey"), col = "black", size = 0.7) +
+    geom_sf(data = studyArea, fill = NA, col = "red", size = 1)
   
   outPlot <- format_ggplot(rawPlot, regionBbox)
   
@@ -103,11 +103,11 @@ region_map <- function(regionBbox, studyArea, landLayer, CANborder) {
 format_ggplot <- function(ggplotIn, bbox = FALSE) {
   
   ggplotOut <- ggplotIn + watermark(show = TRUE, lab = "DFO Internal Use Only")+
-    annotation_scale(location="bl")+
+    annotation_scale(location = "bl")+
     theme_bw()+
-    labs(x=expression(paste("Longitude ", degree, "W", sep="")),
-         y=expression(paste("Latitude ", degree, "N", sep="")),
-         col="")  +
+    labs(x = expression(paste("Longitude ", degree, "W", sep = "")),
+         y = expression(paste("Latitude ", degree, "N", sep = "")),
+         col = "")  +
     theme(axis.title.y = element_text(size = 13))+
     theme(axis.title.x = element_text(size = 13))
   

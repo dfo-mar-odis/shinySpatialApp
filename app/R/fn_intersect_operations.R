@@ -172,7 +172,7 @@ poly_intersect <- function(datafile, region, studyArea, mapBbox, ...) {
 create_table_RV <- function(datafile, listed_table, speciestable, ...) {
 
   # calculate the number of unique sample locations
-  Samples_study_no <- dim(unique(datafile[,c("geometry")]))[1]
+  Samples_study_no <- dim(unique(datafile[, c("geometry")]))[1]
   # calculate a table of all species caught and
   # the total number of individuals caught.
   # Join to the species lookup table to get
@@ -186,22 +186,22 @@ create_table_RV <- function(datafile, listed_table, speciestable, ...) {
     x = list(Records = datafile$CODE),
     by = list(CODE = datafile$CODE),
     FUN = length)
-  datatable1 <- merge(individuals,datatable1, by = 'CODE')
+  datatable1 <- merge(individuals, datatable1, by = 'CODE')
 
   data1 <- merge(datafile,speciestable, by = 'CODE')
-  datatable1 <- merge(datatable1,speciestable, by = 'CODE')
+  datatable1 <- merge(datatable1, speciestable, by = 'CODE')
 
   # Merge the datafile with the listed_species table
   # and create a frequency table of all listed species
   # caught
-  data1 <- merge(data1,listed_table, by = 'Scientific Name')
+  data1 <- merge(data1, listed_table, by = 'Scientific Name')
   datatable2 <- aggregate(
     x = list(Records = data1$'Scientific Name'),
     by = list('Scientific Name' = data1$'Scientific Name'),
     length)
   # merge the frequency table with listed_table to get
   # the SARA and COSEWIC listings for each species
-  datatable2 <- merge(datatable2,listed_table, by = 'Scientific Name')
+  datatable2 <- merge(datatable2, listed_table, by = 'Scientific Name')
   # add a field for the number of samples
   datatable1$Samples <- Samples_study_no
   # combine the number of species records with number of samples
@@ -210,12 +210,12 @@ create_table_RV <- function(datafile, listed_table, speciestable, ...) {
                                             sep = "/", remove = FALSE)
 
   datatable1 <- dplyr::select(datatable1, "Scientific Name", "Common Name",
-                              Individuals,Frequency)
-  datatable2 <- merge(datatable2,datatable1, by = 'Scientific Name')
-  datatable2 <- dplyr::select(datatable2, "Scientific Name", Individuals,Frequency)
-  datatable2 <- merge(datatable2,listed_table, by = 'Scientific Name')
+                              Individuals, Frequency)
+  datatable2 <- merge(datatable2, datatable1, by = 'Scientific Name')
+  datatable2 <- dplyr::select(datatable2, "Scientific Name", Individuals, Frequency)
+  datatable2 <- merge(datatable2, listed_table, by = 'Scientific Name')
   datatable2 <- dplyr::select(datatable2, "Scientific Name", "Common Name",
-                              "SARA status","COSEWIC status",Individuals,Frequency)
+                              "SARA status", "COSEWIC status", Individuals, Frequency)
 
   # order the tables by number of individuals caught (decreasing)
   datatable1 <- datatable1[with(datatable1, order(-Individuals)), ]
@@ -248,22 +248,22 @@ create_table_MARFIS <- function(datafile, listed_table, speciestable, ...) {
     x = list(Records = datafile$SPECIES_CODE),
     by = list(SPECIES_CODE = datafile$SPECIES_CODE),
     FUN = length)
-  datatable1 <- merge(datatable1,speciestable, by = 'SPECIES_CODE')
+  datatable1 <- merge(datatable1, speciestable, by = 'SPECIES_CODE')
   datatable1 <- datatable1 %>% rename("Common Name"= COMMONNAME)
-  data1 <- merge(datafile,speciestable, by = 'SPECIES_CODE')
+  data1 <- merge(datafile, speciestable, by = 'SPECIES_CODE')
   data1$Common_Name_MARFIS <- data1$COMMONNAME
 
   # Merge the datafile with the listed_species table
   # and create a frequency table of all listed species
   # caught
-  data1 <- merge(data1,listed_table, by = 'Common_Name_MARFIS')
+  data1 <- merge(data1, listed_table, by = 'Common_Name_MARFIS')
   # data1 <- data1 %>% rename("SCIENTIFICNAME" = Scientific_Name)
 
   datatable2 <- aggregate(
     x = list(Records = data1$'Scientific Name'),
     by = list('Scientific Name' = data1$'Scientific Name'),
     length)
-  datatable2 <- merge(datatable2,listed_table, by = 'Scientific Name')
+  datatable2 <- merge(datatable2, listed_table, by = 'Scientific Name')
 
 
 
