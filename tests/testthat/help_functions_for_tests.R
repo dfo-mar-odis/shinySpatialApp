@@ -12,17 +12,20 @@
 # Developed by Quentin Stoyel, Summer 2021
 
 render_check_delete <- function(sectionPath, deleteFile=TRUE) {
-  load_test_data(environment())
+  list2env(load_test_data(), envir = environment())
   test_out_dir <- here::here("tests/temp")
-  unlink(test_out_dir) # empty the folder
+  unlink(paste(test_out_dir,"/*", sep="")) # empty the folder
   
   catch_all_output({
-    out_html <- rmarkdown::render(sectionPath, output_dir = test_out_dir)
+    # set the title from render to hide warnings
+    out_html <- rmarkdown::render(sectionPath, 
+                                  output_options = list(pandoc_args = c("--metadata=title:\"test doc\"")),
+                                  output_dir = test_out_dir)
     })
   
   success <- file.exists(out_html)
   if (file.exists(out_html) && deleteFile) {
-    file.remove(out_html)
+    unlink(paste(test_out_dir,"/*", sep="")) # empty the folder
   }
   
   return(success)
@@ -33,39 +36,43 @@ render_check_delete <- function(sectionPath, deleteFile=TRUE) {
 # This function is used to load necessary data into the environment for testing.
 # Very similar to the initial chunks used in the first r markdown script.
 #
-# Inputs: None
+# Inputs: test environment where output should be saved
 #
 # Outputs: None
 #
 # Developed by Quentin Stoyel, Summer 2021
 
 
-load_test_data <- function(testEnv) {
+load_test_data <- function() {
   catch_all_output({
-  load(here::here("app/data/testData.RData"), envir = testEnv)
-  load(here::here("app/data/testData.RData"), envir = environment())
-  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source, local=testEnv)
-  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source, local=environment())
-
-  # select random sample area from test sample areas
-  studyAreaOpts <- here("app/studyAreaTest/", c("geoms_slc_coastal_test.geojson", 
-                                                "geoms_slc_no_land.geojson", 
-                                                "geoms_slc_coastal_test.geojson"))
-  
-  studyArea <- st_read(sample(studyAreaOpts, 1))
-  
-  site <- sf::st_centroid(studyArea)
-  
-  studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1) 
-  
-  areaMapList <- area_map(studyArea, site, land50k_sf, 5, bounds_sf, studyBox_geom)
-  areaMap <- areaMapList[[1]]
-  bboxMap <- areaMapList[[2]] 
-  Region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-  regionBox <- sf::st_bbox(Region) 
-  regionMap <- region_map(regionBox, studyArea, land10m_sf, bounds_sf)  
+    # check if globalenv data is loaded, if not load it:
+    if (!exists("bioregion_sf")) {
+      load(here::here("app/data/testData.RData"), envir = globalenv())
+    }
+    if (!exists("add_buffer")) {
+      lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source, local=globalenv())
+    }
+    
+    # select random sample area from test sample areas
+    studyAreaOpts <- here("app/studyAreaTest/", c("geoms_slc_coastal_test.geojson", 
+                                                  "geoms_slc_no_land.geojson", 
+                                                  "geoms_slc_coastal_test.geojson"))
+    
+    studyArea <- st_read(sample(studyAreaOpts, 1))
+    
+    site <- sf::st_centroid(studyArea)
+    
+    studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1) 
+    
+    areaMapList <- area_map(studyArea, site, land50k_sf, 5, bounds_sf, studyBox_geom)
+    areaMap <- areaMapList[[1]]
+    bboxMap <- areaMapList[[2]] 
+    Region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
+    regionBox <- sf::st_bbox(Region) 
+    regionMap <- region_map(regionBox, studyArea, land10m_sf, bounds_sf)  
   })
-  out_list <- list("minYear" = 2010,
+  
+  outList <- list("minYear" = 2010,
                    "Region" = Region,
                    "site" = site,
                    "studyBox_geom" = studyBox_geom, 
@@ -74,9 +81,7 @@ load_test_data <- function(testEnv) {
                    "regionBox" = regionBox, 
                    "regionMap" = regionMap,
                    "studyArea" = studyArea)
-  
-  
-  list2env(out_list, env=testEnv)
+  return(outList)
   
   }
 
