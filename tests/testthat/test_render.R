@@ -11,7 +11,8 @@ test_that("render Intro", {
   out_file <- here::here("tests/temp/rmd_intro")
  
   chk <- renderReport(
-    input = readRDS(here::here("tests/testthat/input")), # sample input from application, with no sections.
+    # use sample input from application, with no sections:
+    input = readRDS(here::here("tests/testthat/input")),
     geoms = studyArea,
     outFileName = out_file,
     dirIn = here::here("app/Rmd"),
