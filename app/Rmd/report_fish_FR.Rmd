@@ -1,5 +1,18 @@
 ## **POISSONS ET INVERTÉBRÉS**
 
+La présente section décrit les résultats tirés des sources de données suivantes : Enquête sur les navires de recherche (NR) dans les Maritimes, Base de données des relevés de l’industrie (BDRI), Système d’information sur les pêches des Maritimes (SIPMAR) et Système d’information sur la biodiversité des océans (SIBO). Les extrants propres à une zone sont fournis dans des sous-sections marquées selon la source de données. Des descriptions des données sources et des références et personnes-ressources appropriées sont fournis au début de chaque sous-section.
+
+### **Enquête sur les navires de recherche dans les Maritimes**   
+
+Personne-ressource : <DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca>   
+Consulté le : 21 janvier 2021 sur le Portail de données ouvertes  <https://ouvert.canada.ca/data/fr/dataset/8ddcaeea-b806-4958-a79f-ba9ab645f53b>    
+Niveau de qualité : Élevée  
+Année de recherche : de 1970 à 2020 
+Niveau de sécurité : Aucun  
+
+Description de l’ensemble de données (tirée du dossier des données ouvertes) : Les relevés des écosystèmes de Pêches et Océans Canada, réalisés sur une base annuelle, sont une source de données de surveillance intégrée des écosystèmes. Les données de ces relevés constituent la principale source pour surveiller les tendances de la répartition, de l’abondance et de la condition biologique des espèces au sein de la région, et elles renseignent également le Programme de monitorage de la zone Atlantique (PMZA), qui assure la surveillance des conditions hydrographiques, du zooplancton et du phytoplancton. Les relevés, fondés sur un plan d’échantillonnage aléatoire stratifié, sont réalisés au moyen d’un chalut de fond à panneaux, d’une rosette CTP et de traits verticaux de plancton. Les données tirées des captures au chalut de fond servent à surveiller la répartition et l’abondance des poissons et des invertébrés dans l’ensemble du plateau néo-écossais, de la baie de Fundy et du banc de Georges.  
+
+
 ```{r table RV read, echo=FALSE, cache=FALSE, include = FALSE}
 table_RV <- read.csv("../data/misc/table_RV_EN.csv")
 table_RV<- table_RV %>% dplyr::rename("Season/Months"=Season.Months,"Description of Geographic Range"=Description.of.Geographic.Range)
@@ -12,7 +25,7 @@ knitr::kable(table_RV, align="l",
 #### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes***
 
 ```{r, include=FALSE, cache=FALSE}
-  outputList <- main_intersect(RVCatch_sf, studyArea,speciestable = RVGSSPECIES,
+  outputList <- point_intersect(RVCatch_sf, studyArea,speciestable = RVGSSPECIES,
                                mapBbox = bboxMap, Year = minYear)
 
 Samples_bbox <- outputList[[3]]

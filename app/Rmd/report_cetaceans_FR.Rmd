@@ -2,11 +2,11 @@
 
 La présente section résume l’information disponible par l’entremise de diverses sources, des observations visuelles signalées, des prévisions modélisées de l’habitat convenable et de l’habitat important pour identifier les espèces de cétacés susceptibles de se trouver dans la zone de recherche. Les extrants de chaque source de données sont décrits dans les sous-sections marquées selon la source de données. Bien que de nombreuses espèces aient été identifiées dans cette région, seules les espèces inscrites en vertu de la LEP ou évaluées par le COSEPAC sont résumées ici. Les extrants comprennent les données d’observation recueillies à partir de relevés systématiques de cétacés ainsi que les données recueillies de façon fortuite au cours des années précédentes dans les eaux canadiennes et parfois américaines de l’Atlantique Nord-Ouest. Cependant, la majorité des observations de cétacés dans la biorégion du plateau néo-écossais sont fortuites; les relevés systématiques complets sur la présence ou la répartition des cétacés dans toute la région sont limités. Les résultats de ce rapport fournissent certains renseignements sur la répartition, mais ne doivent pas être interprétés comme des indices complets de l’abondance de la population ou de la densité relative ou de l’abondance dans la zone d’étude, étant donné que l’effort connexe ne couvre pas la totalité de l’aire de répartition d’une espèce et que la couverture est inégale dans la zone d’étude. Une analyse exhaustive future de tout effort d’observation associé à ces données est nécessaire pour caractériser davantage la présence de cétacés dans la région à des échelles temporelles et spatiales. Pour les relevés comportant soit un placement aléatoire des transects dans la zone d’étude, soit des relevés comportant des estimations de la distance de l’observation, la densité et la répartition des espèces pourraient être estimées (bien que ces résultats d’étude ne soient pas présentés ici). Par conséquent, les extrants du présent rapport comprennent des données sur la présence seulement, et nous ne pouvons pas dire si la présence insuffisante d’une espèce est liée à une absence réelle, à un manque d’effort ou au fait que des sources de données supplémentaires n’ont pas été déclarées pour la région (p. ex., données d’observations provenant d’autres sources, détections acoustiques). Par conséquent, nous suggérons que si une espèce est absente de ce rapport, cette absence devrait être interprétée comme une absence de déclaration, et non nécessairement comme l’absence de l’espèce dans la zone visée.
 
-Les sources de données et les produits utilisés dans cette section comprennent ce qui suit : la Base de données des observations de baleines (BDOB), le laboratoire Whitehead (Université de Dalhousie), la Base de données des observations du North Atlantic Right Whale Consortium (NARWC), le Système d’information sur la biodiversité des océans (SIBO), les zones prioritaires pour améliorer la surveillance des cétacés, l’habitat important pour le rorqual bleu de l’ouest de l’Atlantique Nord et l’habitat important de la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais.
+Les sources de données et les produits utilisés dans cette section comprennent ce qui suit : la Base de données des observations de baleines (BDOB), le laboratoire Whitehead (Université de Dalhousie), la Base de données des observations du North Atlantic Right Whale Consortium (NARWC), le Système d’information sur la biodiversité des océans (SIBO), les zones prioritaires pour améliorer la surveillance des cétacés, l’habitat important pour le rorqual bleu de l’ouest de l’Atlantique Nord et l’habitat important de la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais. 
 
 Veuillez consulter le WHALEMAP (https://whalemap.ocean.dal.ca/; Johnson 2018) pour obtenir de plus amples renseignements sur les observations (observations et détections acoustiques) de baleines noires de l’Atlantique Nord. Le WHALEMAP reflète principalement les résultats pour les zones surveillées; par conséquent, l’absence de baleines noires de l’Atlantique Nord dans une zone devrait être interprétée comme une absence de déclaration, et pas nécessairement une absence de l’espèce dans la zone de recherche. De plus, les observations du WHALEMAP sont préliminaires et peuvent être modifiées une fois les vérifications de contrôle de la qualité terminées.
 
-Veuillez consulter le Passive Acoustic Cetacean Map (PACM) pour examiner quand et où les les espèces de cétacés ont été détectés acoustiquement dans l’océan Atlantique Nord, d’après les efforts de surveillance acoustique passive (https://apps-nefsc.fisheries.noaa.gov/pacm/#/). Les détections acoustiques sur le Passive Acoustic Cetacean Map (PACM) ne représentent que les appels des animaux ; elles ne saisissent pas les périodes de temps lorsque les animaux sont présents mais demeurent silencieux. Les détections proviennent d’enregistreurs acoustiques d’archives et ne montrent pas les enregistreurs dans l’eau présentement (ce n’est pas un outil en temps réel). Les différences dans les portées de détection des enregistreurs pour chaque espèce ne sont pas comptabilisées ; elles peuvent varier selon les différences au niveau des instruments (p. ex. le matériel d’enregistrement), des conditions environnementales (p. ex. le météo, le type de fond, les niveaux sonores ambiants), et des niveaux sonores anthropiques [@PACM2021]. Pour toute question relative au PACM, veuillez consulter nmfs.pacmdata@noaa.gov.
+Veuillez consulter le Passive Acoustic Cetacean Map (PACM) pour examiner quand et où les les espèces de cétacés ont été détectés acoustiquement dans l’océan Atlantique Nord, d’après les efforts de surveillance acoustique passive (https://apps-nefsc.fisheries.noaa.gov/pacm/#/). Les détections acoustiques sur le Passive Acoustic Cetacean Map (PACM) ne représentent que les appels des animaux ; elles ne saisissent pas les périodes de temps lorsque les animaux sont présents mais demeurent silencieux. Les détections proviennent d’enregistreurs acoustiques d’archives et ne montrent pas les enregistreurs dans l’eau présentement (ce n’est pas un outil en temps réel). Les différences dans les portées de détection des enregistreurs pour chaque espèce ne sont pas comptabilisées ; elles peuvent varier selon les différences au niveau des instruments (p. ex. le matériel d’enregistrement), des conditions environnementales (p. ex. le météo, le type de fond, les niveaux sonores ambiants), et des niveaux sonores anthropiques [@PACM2021]. Pour toute question relative au PACM, veuillez consulter nmfs.pacmdata@noaa.gov. 
 
 La présente section ne vise pas à décrire toutes les sources d’information disponibles; les données présentées ne représentent pas toutes les données disponibles sur les observations de cétacés dans la zone de recherche, et d’autres observations peuvent provenir d’autres sources ou de données plus récentes que celles présentées ici. En plus des données sur la présence seulement, certaines des données disponibles peuvent être utilisées pour appuyer les conclusions propres aux espèces au sujet des préférences en matière d’habitat et de la présence possible ou connue à proximité et à l’intérieur de la zone de recherche. Veuillez consulter les publications citées pour obtenir de plus amples renseignements et communiquer avec Angelia Vanderlaan (baleines noires de l’Atlantique Nord) et Hilary Moors-Murphy (autres espèces de cétacés) pour discuter d’autres sources d’information (p. ex., détections acoustiques). Les données et les sources qui ne sont pas explicitement incluses dans le présent rapport comprennent des renseignements tirés d’études ou de publications antérieures, des détections acoustiques, l’échantillonnage des proies et le marquage. Bien que la valeur de ces données dans la prévision et la description de la présence des cétacés soit vitale, ces types de données ne sont pas disponibles pour toutes les espèces et ne peuvent pas encore être interrogées. À l’avenir, à mesure que l’information provenant d’autres sources de données deviendra disponible, ces nouvelles données aideront à mieux comprendre l’utilisation de l’habitat des cétacés et la présence de ceux-ci dans les zones de recherche.
 
@@ -19,9 +19,9 @@ whale_col=values=c("Beluga Whale: Endangered (SARA & COSEWIC)"="cyan3","Blue Wha
 Personne-ressource : <XMARWhaleSightings@dfo-mpo.gc.ca>
 LIEN : <http://www.inter.dfo-mpo.gc.ca/Maritimes/SBSA/ecpop/lep/Bas-Donnees>    
 Consulté le : 27 octobre 2020 par Shelley Lang  
-Niveau de qualité : Faible
+Niveau de qualité : Faible 
 Année de recherche : de 2002 à 2020  
-Niveau de sécurité : Aucun
+Niveau de sécurité : Aucun 
 
 La base de données sur les mammifères marins et les animaux pélagiques, ou Base de données des observations de baleines, a été mise en œuvre en 2002 par le MPO afin de fournir un dépôt central pour les observations d’animaux marins, en particulier de cétacés, et d’améliorer l’accessibilité aux données d’observation provenant de diverses sources, y compris certaines données provenant des relevés des mammifères marins et des activités de recherche (MacDonald et al., 2017). La plupart des efforts visant à rassembler les données d’observations disponibles ont porté sur la collecte de données provenant de diverses sources en exploitation dans les eaux de la Nouvelle-Écosse (y compris la baie de Fundy et le plateau néo-écossais), et plus récemment dans le golfe du Saint-Laurent, bien que moins d’efforts aient été déployés pour obtenir les données disponibles d’autres régions. La plupart des observations ont été recueillies de façon fortuite et provenaient de personnes possédant une vaste expertise et une vaste expérience en matière d’identification des mammifères marins. Pour de plus amples renseignements, consulter le site suivant : http://www.inter.dfo-mpo.gc.ca/Maritimes/SBSA/ecpop/lep/Bas-Donnees ou le document de MacDonald et al. (2017) <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf>.     
 
@@ -33,17 +33,17 @@ Cette base de données ne cherche pas activement à stocker de l’information s
 
 Veuillez prendre note des avertissements et mises en garde importants suivants associés aux observations de la BDOB :
 
-- Les données représentent une combinaison d’observations recueillies au fil des années et des saisons. Les données d’observation sont biaisées par le moment et l’endroit où les activités ont été menées; par conséquent, l’effort d’observation est inégal d’un mois, d’une année ou d’une région à l’autre. Donc, les différences apparentes dans les profils de répartition saisonniers ou annuels des données d’observation ne devraient pas être considérées comme définitives. Les conditions météorologiques défavorables et un effort visuel diminué en hiver, au printemps et à l’automne expliquent probablement le nombre moins élevé d’observation comparativement à l’été.
+- Les données représentent une combinaison d’observations recueillies au fil des années et des saisons. Les données d’observation sont biaisées par le moment et l’endroit où les activités ont été menées; par conséquent, l’effort d’observation est inégal d’un mois, d’une année ou d’une région à l’autre. Donc, les différences apparentes dans les profils de répartition saisonniers ou annuels des données d’observation ne devraient pas être considérées comme définitives. Les conditions météorologiques défavorables et un effort visuel diminué en hiver, au printemps et à l’automne expliquent probablement le nombre moins élevé d’observation comparativement à l’été. 
 - L’effort d’observation n’a pas été quantifié (c.-à-d. les données ne peuvent pas être utilisées pour estimer la densité ou l’abondance réelle ou relative d’une espèce dans une région, ni l’absence d’une espèce). Si une espèce est absente dans une zone, cette absence devrait être interprétée comme une absence de déclaration, et pas nécessairement comme l’absence de l’espèce dans cette zone.
 - Les données d’observation n’ont pas encore été complètement vérifiées et peuvent contenir des dédoublements. Les observations peuvent également comprendre les observations des mêmes animaux signalées par plusieurs plateformes ou navires.
-- On ne connaît pas la qualité de certaines données d’observation. La plupart des observations ont été recueillies de façon fortuite et provenaient de personnes possédant une vaste expertise et une vaste expérience en matière d’identification des mammifères marins.
+- On ne connaît pas la qualité de certaines données d’observation. La plupart des observations ont été recueillies de façon fortuite et provenaient de personnes possédant une vaste expertise et une vaste expérience en matière d’identification des mammifères marins. 
 - Il existe une incertitude importante quant au nombre d’animaux inclus dans chaque observation en raison des difficultés associées à la quantification du nombre d’individus observés dans un groupe.
 - Les observations qui n’ont pu être reliées à des espèces sont classées dans le plus petit groupe taxonomique possible.
 
 #### ***Résultats de la recherche de la BDOB par zone***
 
 ```{r wsdb, include=FALSE, cache=FALSE}
-outputList <- main_intersect(wsdb_sf, studyArea, mapBbox = bboxMap)
+outputList <- point_intersect(wsdb_sf, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
 wsdb_points <- sfcoords_as_cols(outputList[[2]])
@@ -67,20 +67,21 @@ if (!is.null(outputList)) {
 ```
 
 ### **Le laboratoire Whitehead, Université de Dalhousie**
+
 LIEN : <https://whiteheadlab.weebly.com/contact.html>
 Consulté le : 12 janvier 2021 par Laura Feyrer    
 Niveau de qualité : Élevée    
 Année de recherche : de 2002 à 2019  
-Niveau de sécurité : Aucun
+Niveau de sécurité : Aucun 
 
-Les renseignements suivants sont résumés dans ce site Web (https://whiteheadlab.weebly.com/). Le Whitehead Lab est basé au département de biologie de l’Université Dalhousie (Halifax, Nouvelle-Écosse). Depuis sa création en 1987, le laboratoire Whitehead a accueilli plus de 75 étudiants au niveau postdoctoral, au doctorat, à la maîtrise et au premier cycle. Ces étudiants mènent principalement des recherches axées sur la conservation sur le comportement, l’écologie et la biologie des populations des espèces de cétacés (principalement, les cachalots, les baleines à bec commune et les globicéphales noirs), et de nombreuses études sont axées sur les espèces dans les eaux de l’est du Canada.
+Les renseignements suivants sont résumés dans ce site Web (https://whiteheadlab.weebly.com/). Le Whitehead Lab est basé au département de biologie de l’Université Dalhousie (Halifax, Nouvelle-Écosse). Depuis sa création en 1987, le laboratoire Whitehead a accueilli plus de 75 étudiants au niveau postdoctoral, au doctorat, à la maîtrise et au premier cycle. Ces étudiants mènent principalement des recherches axées sur la conservation sur le comportement, l’écologie et la biologie des populations des espèces de cétacés (principalement, les cachalots, les baleines à bec commune et les globicéphales noirs), et de nombreuses études sont axées sur les espèces dans les eaux de l’est du Canada. 
 
 La description suivante des méthodes de collecte de données sur les observations de cétacés utilisées par le laboratoire de Whitehead est tirée de Whitehead (2013); les données sur les observations de cétacés comprennent les observations d’espèces ciblées par la recherche ainsi que les observations fortuites de cétacés pendant des études sur les baleines à bec commune du Nord et, dans une moindre mesure, les cachalots dans le nord-ouest de l’Atlantique, principalement dans la ZPM du Gully, et les canyons adjacents le long de la limite est du plateau néo-écossais (les canyons Shortland et Haldimand). La collecte des données a été effectuée de façon comparable, à partir de deux navires de recherche similaires, un voilier auxiliaire de 10 mètres (utilisé lors des efforts antérieurs) et un voilier auxiliaire de 13 mètres (utilisé plus tard). Tous les cétacés observés ont été consignés, ainsi que le moment de l’observation, l’espèce (quand il était possible de la déterminer) et la position. À mesure que les définitions de la taille du groupe changent au cours de l’étude, les estimations de la taille du groupe peuvent être inexactes et peuvent être biaisées par des facteurs comme le comportement des animaux et les conditions météorologiques. Par conséquent, les lieux d’observation représentent des observations de groupes, qui pourraient être formés d’un ou de plusieurs animaux, plutôt que le nombre d’individus observés. Le laboratoire Whitehead fournit des observations de cétacés à la BDOB. Toutefois, en raison de son niveau de qualité élevé, cette base de données est résumée de manière indépendante dans cette section du rapport.
 
 #### ***Résultats de la recherche du laboratoire Whitehead par zone***
 
 ```{r whitehead, include=FALSE, cache=FALSE}
-outputList <- main_intersect(whitehead_sf, studyArea, mapBbox = bboxMap)
+outputList <- point_intersect(whitehead_sf, studyArea, mapBbox = bboxMap)
 if (!is.null(outputList)) {
   whitehead_points <- sfcoords_as_cols(outputList[[2]])
 }
@@ -102,10 +103,10 @@ if (!is.null(outputList)) {
 ```
 
 ### **Base de données des observations du North Atlantic Right Whale Consortium (NARWC)**  
-Personne-ressource : <hpettis@neaq.org>
-LIEN : <https://www.narwc.org/sightings-database.html>
+Personne-ressource : <hpettis@neaq.org> 
+LIEN : <https://www.narwc.org/sightings-database.html> 
 Consulté le : 18 septembre 2020  
-Niveau de qualité : Élevée
+Niveau de qualité : Élevée 
 Année de recherche : de 2000 à 2019
 Niveau de sécurité : Aucun
 
@@ -115,7 +116,7 @@ La base de données des observations du NARWC contient des registres de milliers
 
 #### ***Résultats de la recherche du NARWC par zone***
 ```{r narwc, include=FALSE, cache=FALSE}
-outputList <- main_intersect(narwc_sf, studyArea, mapBbox = bboxMap)
+outputList <- point_intersect(narwc_sf, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
   narwc_points <- sfcoords_as_cols(outputList[[2]])
@@ -148,7 +149,7 @@ Une recherche du SIBO a été effectuée pour trouver d’autres documents perti
 
 #### ***Résultats de la recherche du SIBO pour les cétacés, par zone***
 ```{r obis, include=FALSE, cache=FALSE}
-outputList <- main_intersect(obis_cet_sf, studyArea, mapBbox = bboxMap)
+outputList <- point_intersect(obis_cet_sf, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
   obis_cet_points <- sfcoords_as_cols(outputList[[2]])
@@ -258,11 +259,7 @@ De 2012 à 2014, une surveillance acoustique passive a été effectuée tout au 
 
 Le polygone des zones d’habitat situées entre les canyons a été délimité par la courbe isobathe de 500 m et par des lignes droites reliant les angles sud-est des zones d’habitat essentiel existantes, mais ces limites sont fondées sur des données spatiales peu abondantes concernant la présence des baleines à bec communes dans les eaux plus profondes. Il faudra davantage de données pour pouvoir déterminer si cette zone englobe entièrement l’habitat important situé entre les canyons, surtout en ce qui concerne la limite sud-est plus profonde. De même, l’étendue complète de l’habitat important pour la population de baleine à bec commune du plateau néo-écossais demeure inconnue, et les zones potentielles d’habitat essentiel en dehors des canyons et des zones situées entre ceux-ci dans l’est du plateau néo-écossais n’ont pas été entièrement évaluées. Pour de plus amples renseignements, consulter le rapport du MPO (MPO 2020).
 
-<<<<<<< HEAD
-#### ***Résultats de la recherche sur l’habitat important pour la baleine à bec commune, par zone***
-=======
-#### ***Résultats de la recherche sur l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais, par zone***
->>>>>>> 8d5588be5459dec14288036f9a824a15422e42af
+#### ***Résultats de la recherche sur l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais, par zone*** 
 *
 ```{r overlap nbw habitat, echo=FALSE, results='asis'}
 poly_sf=NBNW_ImpHab_sf

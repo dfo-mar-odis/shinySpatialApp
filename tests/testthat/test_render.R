@@ -46,3 +46,28 @@ test_that("render planning", {
   success <- render_check_delete(here::here("app/Rmd/report_planning_EN.Rmd"))
   expect_true(success)
 })
+
+test_that("render SARA FR", {
+  success <- render_check_delete(here::here("app/Rmd/report_SARA_FR.Rmd"))
+  expect_true(success)
+})
+
+test_that("render Ceteceans FR", {
+  success <- render_check_delete(here::here("app/Rmd/report_cetaceans_FR.Rmd"))
+  expect_true(success)
+})
+
+test_that("render Fish FR", {
+  success <- render_check_delete(here::here("app/Rmd/report_fish_FR.Rmd"))
+  expect_true(success)
+})
+
+test_that("render habitat FR", {
+  success <- render_check_delete(here::here("app/Rmd/report_habitat_FR.Rmd"))
+  expect_true(success)
+})
+
+test_that("render planning FR", {
+  success <- render_check_delete(here::here("app/Rmd/report_planning_FR.Rmd"))
+  expect_true(success)
+})

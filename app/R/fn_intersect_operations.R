@@ -1,7 +1,7 @@
 # The functions in this file are used to clip various data sources (e.g. MARFIS, ISDB, etc.)
 # with the studyArea selected and summarize the data for tables within the final document.
 #
-# 1. main_intersect() - clips POINT data to the extent of the studyArea
+# 1. point_intersect() - clips POINT data to the extent of the studyArea, previously main_intersect()
 # 2. poly_intersect() - clips POLYGON data to the extent of the Region and studyArea
 # 3. create_table_RV() - creates summary tables of all species and listed species
 # 4. create_table_MARFIS() - creates summary tables of all species and listed species
@@ -163,7 +163,7 @@ poly_intersect <- function(datafile, region, studyArea, mapBbox, ...) {
 # 1. datafile: an input point file of RV survey data found within the studyArea
 # 2. listed_table: a table of species at risk listed by SARA and/or COSEWIC
 # 3. speciestable: the RVGSSPECIES species table to link species codes with names
-# 4. Samples_study_no: output from main_intersect() function of the number of samples in studyArea
+# 4. Samples_study_no: output from point_intersect() function of the number of samples in studyArea
 #
 # Outputs: list containing 2 items
 # 1. datatable1: datatable of all species found within the studyArea
