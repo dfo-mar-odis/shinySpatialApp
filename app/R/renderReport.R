@@ -2,23 +2,23 @@
 #'
 #' @param input list of inputs.
 #' @param geoms sf object selected.
-#' @param fl file name (optional).
-#' @param dir_out output directory.
-#' @param dir_in input directory.
+#' @param outFileName file name (optional).
+#' @param dirOut output directory.
+#' @param dirIn input directory.
 # 
-renderReport <- function(input, geoms, fl = NULL, dir_out = "output", 
-  dir_in = "Rmd") { 
+renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output", 
+  dirIn = "Rmd") { 
   
   # rm all html 
   clear_www_html()
   clear_output()
 
-  # lang of the report 
-  lang <- rev(input$report_lang)
-  nl <- length(lang)
-  ok <- rep(FALSE, nl)
+  # lang of the report, set ok to check for each lang
+  langs <- rev(input$report_lang)
+  numLang <- length(langs)
+  ok <- rep(FALSE, numLang)
   
-  if (is.null(lang)) {
+  if (is.null(langs)) {
     msg <- "Please select at least one language"
     return(list(msg = msg, ok = FALSE, html = "empty_report.html"))
   }
@@ -29,118 +29,110 @@ renderReport <- function(input, geoms, fl = NULL, dir_out = "output",
     msg <- "Please define areas of interest"
     return(list(msg = msg, ok = FALSE, html = "empty_report.html"))
   } else {
-    flge <- save_geom(geoms, dir_out = dir_out)
+    geomFile <- save_geom(geoms, dirOut = dirOut)
   }
   
   # nasty trick (due to current rmarkdown behavior) to name final file properly 
-  if (!is.null(fl) & fl != "") {
-    fl <- rep(fl, 10)
-  } else fl <- rep("report_SMR", 10)
+  if (!is.null(outFileName) & outFileName != "") {
+    outFileName <- rep(outFileName, 10)
+  } else outFileName <- rep("report_SMR", 10)
   
   # loop over language 
-  for (i in seq_len(nl)) {
-    msgInfo(paste0("Creating report (", lang[i], ")"))
-    fl2 <- paste0(fl, "_", lang[i]) 
-    x <- glue("{dir_in}/intro_{lang[i]}.Rmd")
+  for (i in seq_len(numLang)) {
+    msgInfo(paste0("Creating report (", langs[i], ")"))
+    langOutFile <- paste0(outFileName, "_", langs[i])
+    inFile <- glue("{dirIn}/intro_{langs[i]}.Rmd") 
 
     # Section(s) to be added
     s_main <- s_ebsa <- s_appendix <- NULL
     if (!is.null(input$main_sections)) {
-      s_main <- main_parts(input$main_sections, lang[i])
+      s_main <- main_parts(input$main_sections, langs[i])
     } 
     if (!is.null(input$extra_sections)) {
-      s_ebsa <- ebsa_part(any(input$extra_sections == 1), lang[i])
-      s_appendix <- appendix_part(any(input$extra_sections == 2), lang[i])
+      s_ebsa <- ebsa_part(any(input$extra_sections == 1), langs[i])
+      s_appendix <- appendix_part(any(input$extra_sections == 2), langs[i])
     }
     
-    # fill out .Rmd file before rendering
-    flrmd <- glue("{dir_out}/{basename(x)}")
-    template <- readLines(x)
-    data_all <- c(
+    # fill out .Rmd file in outDir before rendering
+    rmdOut <- glue("{dirOut}/{basename(inFile)}") 
+    template <- readLines(inFile)
+    whiskerData <- c(
       input,
-      path_to_geoms = flge$relrmd,
-      add_main_sections = add_sections(s_main, dir_in, dir_out),
-      add_ebsa_section = add_sections(s_ebsa, dir_in, dir_out),
-      add_appendix = add_sections(s_appendix, dir_in, dir_out)
+      path_to_geoms = geomFile$relRmd,
+      add_main_sections = add_sections(s_main, dirIn, dirOut),
+      add_ebsa_section = add_sections(s_ebsa, dirIn, dirOut),
+      add_appendix = add_sections(s_appendix, dirIn, dirOut)
     )  
-    writeLines(whisker::whisker.render(template, data_all), flrmd)
+    writeLines(whisker::whisker.render(template, whiskerData), rmdOut)
 
     # First rendering
     ok[i] <- tryCatch({
-#      callr::r(
-#        function() {     
-        rmarkdown::render(flrmd,
+        rmarkdown::render(rmdOut,
          output_format = "all",
-         output_dir = dir_out,
-         output_file = fl2,
+         output_dir = dirOut,
+         output_file = langOutFile,
          quiet = TRUE)
-#        }
-#      )
-      
       TRUE
       }, 
       error = function(x) FALSE
     )
   
-  }
+  } # end of language loop
 
   if (all(ok)) {
-    # this is done to generate a html preview (see "report" tab)
-    preview_html <- switch_ext(basename(x), "html")
-    gnr_html <- switch_ext(flrmd, "html")
+    # this is done to generate an html preview (see "report" tab)
+    htmlName <- switch_ext(basename(inFile), "html") 
+    htmlOut <- switch_ext(rmdOut, "html") 
     # do not render again if html has already been generated
-    if (file.exists(gnr_html)) {
-      file.copy(gnr_html, glue("www/{preview_html}"))
+    if (file.exists(htmlOut)) {
+      file.copy(htmlOut, glue("www/{htmlName}"))
     } else {
-#      callr::r(
-#        function() {
-      rmarkdown::render(flrmd,
+      rmarkdown::render(rmdOut,
         output_format = "html_document",
         output_dir = "www",
         quiet = TRUE)
- #         })
     }
     msg <- "Successfully rendered."
   } else {
     msg <- "Issue while rendering"
-    flrmd <- preview_html <- NULL
+    rmdOut <- htmlName <- NULL
   }
 
-  list(msg = msg, ok = all(ok), html = preview_html)
+  list(msg = msg, ok = all(ok), html = htmlName)
 }
 
 # add rmd code chunk to add section (using child documents)
-add_sections <- function(flnms = NULL, dir_in, dir_out) {
-  if (!is.null(flnms)) {
-    vc_nm <- paste0("'", flnms, "'") 
+add_sections <- function(fileNames = NULL, dirIn, dirOut) {
+  if (!is.null(fileNames)) {
+    rmdChildNames <- paste0("'", fileNames, "'") 
     # copy/paste files
-    file.copy(paste0(dir_in, "/", flnms), dir_out)
+    file.copy(paste0(dirIn, "/", fileNames), dirOut)
     #
-    glue("```{{r, child = c({glue_collapse(vc_nm, sep = ', ')})}}\n```")
-  } else flnms
+    glue("```{{r, child = c({glue_collapse(rmdChildNames, sep = ', ')})}}\n```")
+  } else fileNames
 }
 
-main_parts <- function(x, lang = c("EN", "FR")) {
+main_parts <- function(sectionNum, lang = c("EN", "FR")) {
   lang <- match.arg(lang)
-  vc <- c(
+  sectionName <- c(
     "report_SARA",
     "report_fish",
     "report_cetaceans"
-  )[as.numeric(x)]
-  paste0(vc, "_", lang, ".Rmd")
+  )[as.numeric(sectionNum)]
+  paste0(sectionName, "_", lang, ".Rmd")
 }
 
-ebsa_part <- function(x, lang = c("EN", "FR")) {
+ebsa_part <- function(includSection, lang = c("EN", "FR")) {
   lang <- match.arg(lang)
-  ifelse(x, glue("report_planning_{lang}.Rmd"), NULL)
+  ifelse(includSection, glue("report_planning_{lang}.Rmd"), NULL)
 }
 
-appendix_part <- function(x, lang = c("EN", "FR")) {
+appendix_part <- function(includSection, lang = c("EN", "FR")) {
   lang <- match.arg(lang)
-  ifelse(x, glue("report_habitat_{lang}.Rmd"), NULL)
+  ifelse(includSection, glue("report_habitat_{lang}.Rmd"), NULL)
 }
 
-save_geom <- function(geoms, dir_out = "output", flnm ="geoms_slc.geojson") {
-  st_write(geoms, glue("{dir_out}/{flnm}"), delete_dsn = TRUE, quiet = TRUE)
-  list(relroot = glue("{dir_out}/{flnm}"), relrmd = flnm)
+save_geom <- function(geoms, dirOut = "output", geomFileName ="geoms_slc.geojson") {
+  st_write(geoms, glue("{dirOut}/{geomFileName}"), delete_dsn = TRUE, quiet = TRUE)
+  list(relRoot = glue("{dirOut}/{geomFileName}"), relRmd = geomFileName)
 }

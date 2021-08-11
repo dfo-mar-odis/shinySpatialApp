@@ -175,7 +175,7 @@ server <- function(input, output, session) {
       chk <- renderReport(
           input = reactiveValuesToList(input),
           geoms = geoms$final,
-          fl = input$report_name
+          outFileName = input$report_name
         )
       if (chk$ok) {
         output$render_success <- info_valid(chk$msg, chk$ok)

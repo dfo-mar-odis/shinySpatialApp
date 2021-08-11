@@ -1,18 +1,32 @@
 ## **POISSONS ET INVERTÉBRÉS**
 
+La présente section décrit les résultats tirés des sources de données suivantes : Enquête sur les navires de recherche (NR) dans les Maritimes, Base de données des relevés de l’industrie (BDRI), Système d’information sur les pêches des Maritimes (SIPMAR) et Système d’information sur la biodiversité des océans (SIBO). Les extrants propres à une zone sont fournis dans des sous-sections marquées selon la source de données. Des descriptions des données sources et des références et personnes-ressources appropriées sont fournis au début de chaque sous-section.
+
+### **Enquête sur les navires de recherche dans les Maritimes**   
+
+Personne-ressource : <DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca>   
+Consulté le : 21 janvier 2021 sur le Portail de données ouvertes  <https://ouvert.canada.ca/data/fr/dataset/8ddcaeea-b806-4958-a79f-ba9ab645f53b>    
+Niveau de qualité : Élevée  
+Année de recherche : de 1970 à 2020 
+Niveau de sécurité : Aucun  
+
+Description de l’ensemble de données (tirée du dossier des données ouvertes) : Les relevés des écosystèmes de Pêches et Océans Canada, réalisés sur une base annuelle, sont une source de données de surveillance intégrée des écosystèmes. Les données de ces relevés constituent la principale source pour surveiller les tendances de la répartition, de l’abondance et de la condition biologique des espèces au sein de la région, et elles renseignent également le Programme de monitorage de la zone Atlantique (PMZA), qui assure la surveillance des conditions hydrographiques, du zooplancton et du phytoplancton. Les relevés, fondés sur un plan d’échantillonnage aléatoire stratifié, sont réalisés au moyen d’un chalut de fond à panneaux, d’une rosette CTP et de traits verticaux de plancton. Les données tirées des captures au chalut de fond servent à surveiller la répartition et l’abondance des poissons et des invertébrés dans l’ensemble du plateau néo-écossais, de la baie de Fundy et du banc de Georges.  
+
+
 ```{r table RV read, echo=FALSE, cache=FALSE, include = FALSE}
 table_RV <- read.csv("../data/misc/table_RV_EN.csv")
 table_RV<- table_RV %>% dplyr::rename("Season/Months"=Season.Months,"Description of Geographic Range"=Description.of.Geographic.Range)
 ```
-```{r}
+```{r RV table setup}
 knitr::kable(table_RV, align="l",
       caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
 #### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes***
 
-```{r, include=FALSE, cache=FALSE}
-  outputList <- main_intersect(RVCatch_sf, studyArea,speciestable = RVGSSPECIES, Bbox = bboxMap, Year = minYear)
+```{r RV results, include=FALSE, cache=FALSE}
+  outputList <- point_intersect(RVCatch_sf, studyArea,speciestable = RVGSSPECIES,
+                               mapBbox = bboxMap, Year = minYear)
 
 Samples_bbox <- outputList[[3]]
 
@@ -23,7 +37,7 @@ if (!is.null(outputList)) {
 }
 ```
 *
-```{r, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+```{r RV check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_RV <- if (is.null(outputList)) {
     "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
   } else {
@@ -33,19 +47,19 @@ Report_RV<-noquote(Report_RV)
 writeLines(Report_RV)
 ```
 
-```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area'}
+```{r RV plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area'}
 if (!is.null(outputList)) {
 areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = Samples_bbox$ELONG, yend = endy <- Samples_bbox$ELAT),arrow=arrow(length = unit(0.2,"cm")), size = 0.5)
 }
 ```
 <br>
-```{r}
+```{r RV SAR table}
 if (!is.null(outputList)) {
  knitr::kable(table_rv2, align="l", caption="\\label{tab:rv_SAR_table} Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), species assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or species included in the Wild species listing (B=Breeding, N=non-breeding, M=migratory). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 <br>
-```{r}
+```{r RV freq table}
 if (!is.null(outputList)) {
 knitr::kable(table_rv1, align="l", caption="\\label{tab:rv_freq_table}Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }

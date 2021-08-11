@@ -12,10 +12,10 @@ Ce rapport *ne fait pas* autorité en ce qui concerne les données sur les espè
 
 ### **Données sur la répartition et l’habitat essentiel des espèces en péril**    
 
-#### ***Répartition des espèces en péril du MPO*** {-}    
+#### ***Répartition des espèces en péril du MPO (aire de répartition)*** {-}    
 
 Personne-ressource : <info@dfo-mpo.gc.ca>  
-Lien: Consulté le : 1er octobre 2020 sur le Portail de données ouvertes <https://ouvert.canada.ca/data/fr/dataset/e0fabad5-9379-4077-87b9-5705f28c490b>
+Consulté le : 1er octobre 2020 sur le Portail de données ouvertes <https://ouvert.canada.ca/data/fr/dataset/e0fabad5-9379-4077-87b9-5705f28c490b>
 Niveau de qualité : Élevée
 Niveau de sécurité : Aucun
 
@@ -28,99 +28,98 @@ Consulté le : 1er octobre 2020 sur le Portail de données ouvertes <https://ouv
 Niveau de qualité : Élevée
 Niveau de sécurité : Aucun   
 
-Description de l’ensemble de données (tirée du dossier des données ouvertes) : Le Programme des espèces en péril consiste à réaliser le mandat du MPO en vertu de la _Loi sur les espèces en péril_ (LEP) afin d’assurer la protection, le rétablissement et la conservation de toutes les espèces aquatiques en péril inscrites au Canada. On a déterminé l'habitat essentiel pour les espèces inscrites comme étant en voie de disparition ou menacées en vertu de la LEP. Selon la définition de l'article 2 de la LEP, l'habitat essentiel est en fait « l'habitat nécessaire à la survie ou au rétablissement d'une espèce sauvage inscrite, qui est désigné comme tel dans un programme de rétablissement ou un plan d'action élaboré à l'égard de l'espèce ». L'alinéa 49(1)a) de la LEP stipule que le plan d’action ou la stratégie de rétablissement comporte la désignation de l’habitat essentiel de l’espèce dans la mesure du possible, en se fondant sur la meilleure information accessible, notamment l’information fournie par le Comité sur la situation des espèces en péril au Canada (COSEPAC). La LEP stipule également qu'il est illégal de détruire toute partie de l'habitat essentiel d'une espèce en péril et peut imposer des restrictions sur l'aménagement et de la construction.Les habitats essentiel ont été assemblés par des biologistes régionaux et des équipes de rétablissement affectés à la mise en œuvre de la LEP. Ils ont pour but de soutenir la protection et le rétablissement des espèces inscrites comme étant en voie de disparition ou menacées conformément à la LEP. Ils sont également décrits et affichés dans les documents et les plans d’action sur le rétablissement de ces espèces.
+Description de l’ensemble de données (tirée du dossier des données ouvertes) : Le Programme des espèces en péril consiste à réaliser le mandat du MPO en vertu de la _Loi sur les espèces en péril_ (LEP) afin d’assurer la protection, le rétablissement et la conservation de toutes les espèces aquatiques en péril inscrites au Canada. On a déterminé l'habitat essentiel pour les espèces inscrites comme étant en voie de disparition ou menacées en vertu de la LEP. Selon la définition de l'article 2 de la LEP, l'habitat essentiel est en fait « l'habitat nécessaire à la survie ou au rétablissement d'une espèce sauvage inscrite, qui est désigné comme tel dans un programme de rétablissement ou un plan d'action élaboré à l'égard de l'espèce ». L'alinéa 49(1)(a) de la LEP stipule que le plan d’action ou la stratégie de rétablissement comporte la désignation de l’habitat essentiel de l’espèce dans la mesure du possible, en se fondant sur la meilleure information accessible, notamment l’information fournie par le Comité sur la situation des espèces en péril au Canada (COSEPAC). La LEP stipule également qu'il est illégal de détruire toute partie de l'habitat essentiel d'une espèce en péril et peut imposer des restrictions sur l'aménagement et de la construction. Les habitats essentiel ont été assemblés par des biologistes régionaux et des équipes de rétablissement affectés à la mise en œuvre de la LEP. Ils ont pour but de soutenir la protection et le rétablissement des espèces inscrites comme étant en voie de disparition ou menacées conformément à la LEP. Ils sont également décrits et affichés dans les documents et les plans d’action sur le rétablissement de ces espèces.
 
 Les habitats essentiels présentés dans cette section sont disponibles sur le portail de données ouvertes du gouvernement du Canada, à l’exception de l’habitat essentiel de la tortue luth, pour laquelle la délimitation de l’habitat essentiel est actuellement à l’étude. L’ébauche de l’habitat essentiel de la tortue luth est disponible dans le SIG interne des espèces en péril et sera disponible sur le Portail de données ouvertes plus tard.
 
 #### ***Répartition des espèces en péril et résultats des recherches sur l’habitat essentiel propres à une zone***
 
-```{r echo=FALSE, results='asis'}
+```{r sardist load, echo=FALSE, results='asis'}
 #if(sardist_sf > 1){
-dist_table<-table_dist(sardist_sf, studyArea)
+dist_table <- table_dist(sardist_sf, studyArea)
 #} else {NULL}
 ```
 *
 ```{r dist result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Dist_overlap_result<-nrow(dist_table)
-Query_output_dist<-if(Dist_overlap_result < 1){
-  "The search area does not overlap with Species at Risk distribution range."
+Dist_overlap_result <- nrow(dist_table)
+Query_output_dist <- if(Dist_overlap_result < 1){
+  "La zone de recherche ne chevauche pas l’aire de répartition des espèces en péril."
 } else {
-  "The search area overlaps with Species at Risk distribution range."
+  "La zone de recherche chevauche l’aire de répartition des espèces en péril."
 }
 writeLines(Query_output_dist)
 ```
 
-```{r echo=FALSE, results='asis'}
-crit_table<-table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
+```{r leatherback table, echo=FALSE, results='asis'}
+crit_table <- table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
 ```
 *
 ```{r crit result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
- crit_result<-nrow(crit_table)
- Query_output_crit<-if(crit_result < 1){
-   "The search area does not overlap with defined Species at Risk Critical Habitat."
+ crit_result <- nrow(crit_table)
+ Query_output_crit <- if(crit_result < 1){
+   "La zone de recherche ne chevauche pas l’habitat essentiel défini des espèces en péril."
  } else {
-   "The search area overlaps with defined Species at Risk Critical Habitat."
+   "La zone de recherche chevauche l’habitat essentiel défini des espèces en péril."
  }
  writeLines(Query_output_crit)
 ```
 
-```{r echo=FALSE, results='asis'}
-Dist_query_output_table<-if(Dist_overlap_result < 1){
+```{r dist?, echo=FALSE, results='asis'}
+Dist_query_output_table <- if(Dist_overlap_result < 1){
   ""
 } else {
-  knitr::kable(dist_table[!duplicated(dist_table),], align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 }
 if(Dist_overlap_result > 1){Dist_query_output_table}
 ```
 
-```{r echo=FALSE, results='asis'}
+```{r crithab table, echo=FALSE, results='asis'}
 crit_table <- unique( crit_table[ , 1:3 ] )
-Crithab_query_output_table<-if(crit_result <= 1){
+Crithab_query_output_table <- if(crit_result <= 1){
   ""
 } else {
-  knitr::kable(crit_table, caption="Quality Tier: High. Security level: none. Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA) for which the search polygon overlaps with their critical habitat. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is <b>not</b> the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report.", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+  knitr::kable(crit_table, caption="Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Espèces en péril inscrites comme en voie de disparition ou menacées en vertu de la LEP pour lesquelles le polygone de recherche chevauche leur habitat essentiel. Selon la définition de l’article 2 de la LEP, l’habitat essentiel est en fait « l’habitat nécessaire à la survie ou au rétablissement d’une espèce sauvage inscrite, qui est désigné comme tel dans un programme de rétablissement ou un plan d’action élaboré à l’égard de l’espèce ». L’habitat essentiel est désigné dans un programme de rétablissement final ou un plan d’action publié dans le Registre public des espèces en péril (http://www.sararegistry.gc.ca). Il ne s’agit <b>pas</b> d’une source ni d’un conseil faisant autorité en ce qui concerne les données sur les espèces en péril. Veuillez accéder au SIG des espèces en péril (http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) pour créer un rapport faisant autorité.", booktabs = T, escape = F, linesep = "")} %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 if(crit_result > 0){Crithab_query_output_table}
 ```
 
 
-```{r echo=FALSE, results='asis'}
+```{r crithab plot setup, echo=FALSE, results='asis'}
 # define polygon dataset and attribute to plot
-poly_sf=ClippedCritHab_sf
-attribute="Common_Nam"
+poly_sf <- ClippedCritHab_sf
+attribute <- "Common_Nam"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
+clipped <- poly_intersect(poly_sf, Region, studyArea, bboxMap)
 ```
 
-```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes critical habitat of Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA) in the Scotian Shelf Bioregion. Please see table below for complimentary information. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species.” Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.', fig.height=6, fig.width=11}
+```{r crithab region plot, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Cette carte résume l’habitat essentiel des espèces en péril inscrites comme en voie de disparition ou menacées en vertu de la LEP de la biorégion du plateau néo-écossais. Veuillez consulter le tableau ci-dessous pour l’information complémentaire. Selon la définition de l’article 2 de la LEP, l’habitat essentiel est en fait « l’habitat nécessaire à la survie ou au rétablissement d’une espèce sauvage inscrite, qui est désigné comme tel dans un programme de rétablissement ou un plan d’action élaboré à l’égard de l’espèce ». L’habitat essentiel est désigné dans un programme de rétablissement final ou un plan d’action publié dans le Registre public des espèces en péril (http://www.sararegistry.gc.ca). Il ne s’agit <b>pas</b> d’une source ni d’un conseil faisant autorité en ce qui concerne les données sur les espèces en péril. Veuillez accéder au SIG des espèces en péril (http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) pour créer un rapport faisant autorité.', fig.height=6, fig.width=11}
 if (!is.null(clipped$regionPoly)){
-  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute)
+  plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionPoly, attribute)
 }  
 ```
 
-```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with critical habitat of Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA)', fig.height=6, fig.width=11}
+```{r crithab area plot, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Cette carte résume les zones où le polygone de recherche chevauche l’habitat essentiel des espèces en péril inscrites comme en voie de disparition ou menacées en vertu de la LEP', fig.height=6, fig.width=11}
 if (!is.null(clipped$mapPoly)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute)
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly, attribute)
 }  
 ```
 
-```{r echo=FALSE, results='asis'}
+```{r leatherback plot setup, echo=FALSE, results='asis'}
 # define polygon dataset and attribute to plot
-poly_sf=leatherback_sf
-attribute="NONE"
+poly_sf <- leatherback_sf
+attribute <- "NONE"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
+clipped <- poly_intersect(poly_sf, Region, studyArea, bboxMap)
 ```
 
-```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes draft critical habitat of Leatherback Sea Turtle in the Scotian Shelf Bioregion, relative to the search area.', fig.height=6, fig.width=11}
+```{r letherback region plot, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Cette carte résume l’ébauche de l’habitat essentiel de la tortue luth de la biorégion du plateau néo-écossais, par rapport à la zone de recherche. ', fig.height=6, fig.width=11}
 if (!is.null(clipped$regionPoly)){
-  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute)
+  plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionPoly, attribute)
 }   
 ```
 
-```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with draft critical habitat of Leatherback Sea Turtle', fig.height=6, fig.width=11}
+```{r leatherback area plot, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Cette carte résume les zones où le polygone de recherche chevauche  l’ébauche de l’habitat essentiel de la tortue luth.', fig.height=6, fig.width=11}
 if (!is.null(clipped$mapPoly)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute)
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly, attribute)
 }  
 ```
