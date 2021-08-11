@@ -21,40 +21,40 @@ Remarques sur les données :
 #### ***Résultats de la recherche sur la végétation intertidale et le fucus, par zone***  
 
 ```{r overlap rockweed, echo=FALSE, results='asis'}
-rockweed_intersect <- st_intersection(studyArea,st_make_valid(rockweed_sf))
-rockweed_result<-as.numeric(nrow(rockweed_intersect))
+rockweed_intersect <- st_intersection(studyArea, st_make_valid(rockweed_sf))
+rockweed_result <- as.numeric(nrow(rockweed_intersect))
 ```
 *
 ```{r overlap rockweed output, echo=FALSE, results='asis'}
- Query_output_rockweed<-if(rockweed_result < 1){"There are no relevant records of predicted intertidal vegetation for this search area."
+ Query_output_rockweed <- if(rockweed_result < 1){"There are no relevant records of predicted intertidal vegetation for this search area."
    } else {"There are relevant records of predicted intertidal vegetation for this search area."}
  Query_output_rockweed<-noquote(Query_output_rockweed)
  writeLines(Query_output_rockweed)
 ```
 
-```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
+```{r rockweed plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
 plot_rockweed <- function(rockweed_sf, areaMap, bboxMap) {
   
   # crop rockweed layer to the map area to speed up plotting
-  rockweed=st_crop(st_make_valid(rockweed_sf),bboxMap)
+  rockweed <- st_crop(st_make_valid(rockweed_sf), bboxMap)
   
-  if (dim(rockweed)[1]==0){
-    rockweedMap=NULL
+  if (dim(rockweed)[1] == 0){
+    rockweedMap <- NULL
   }else{
     
     # define axis limit
-    axLim=ggplot2::coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]), ylim = c(bboxMap["ymin"], bboxMap["ymax"]),expand=FALSE)
+    axLim <-ggplot2::coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]), ylim = c(bboxMap["ymin"], bboxMap["ymax"]),expand=FALSE)
     
     # replace codes with words
-    rockweed$Rockweed=""
-    rockweed$Rockweed[which(rockweed$RWP==1)]="1-Present"
-    rockweed$Rockweed[which(rockweed$RWP==2)]="2-Likely Present"
-    rockweed$Rockweed[which(rockweed$RWP==5)]="5-Unknown"
-    rockweed$Rockweed[which(rockweed$RWP==0)]="Not Present"
+    rockweed$Rockweed <- ""
+    rockweed$Rockweed[which(rockweed$RWP == 1)] <- "1-Present"
+    rockweed$Rockweed[which(rockweed$RWP == 2)] <- "2-Likely Present"
+    rockweed$Rockweed[which(rockweed$RWP == 5)] <- "5-Unknown"
+    rockweed$Rockweed[which(rockweed$RWP == 0)] <- "Not Present"
     
     rockweedMap <- areaMap +
-      geom_sf(data=rockweed, aes(fill=Rockweed), colour=NA)+
-      scale_fill_manual(values=c("#009E73", "#E69F00", "#0072B2","#999999"))+
+      geom_sf(data = rockweed, aes(fill = Rockweed), colour = NA) +
+      scale_fill_manual(values = c("#009E73", "#E69F00", "#0072B2","#999999")) +
       studyBox_geom +
       axLim
   }
@@ -70,10 +70,10 @@ if(rockweed_result > 1){print(
 if(rockweed_result > 1){
   rwTable <- rockweedStats(rockweed_sf, studyArea)}
 ```
-```{r}
+```{r rockweed table}
 if(rockweed_result > 1){
 knitr::kable(rwTable,align="l",
-             caption = "Number of vegetation polygons and surface area occupied by each category for the study area. Total intertidal vegetations is a sum of all categories.", booktabs = T, escape = F, linesep="") %>%
+             caption = "Number of vegetation polygons and surface area occupied by each category for the study area. Total intertidal vegetations is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 } 
 ```
