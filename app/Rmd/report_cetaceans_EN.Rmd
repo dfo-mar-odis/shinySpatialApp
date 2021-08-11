@@ -58,7 +58,6 @@ Report_wsdb <- if (is.null(outputList)) {
  }
  writeLines(Report_wsdb)
 ```
-
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
 if (!is.null(outputList)) {
   areaMap + geom_point(data = wsdb_points, aes(x = long, y = lat, color=Legend), size = 2, shape = 20) +
@@ -94,7 +93,6 @@ Report_whitehead <-  if (is.null(outputList)) {
  }
 writeLines(Report_whitehead)
 ```
-
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whitehead Lab, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Field efforts were primarily conducted in the Gully Marine Protected Area, and adjacent canyons along the edge of the eastern Scotian Shelf, during good weather conditions (for example, see Whitehead 2013 for a map of effort between 1988-2011), though some data from surveys along the shelf edge off Nova Scotia, Newfoundland and Labrador are included. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. This map also does not include acoustic detections. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. For more information, please visit: <https://whiteheadlab.weebly.com/contact.html>'}
 if (!is.null(outputList)) {
   areaMap + geom_point(data = whitehead_points, aes(x = long, y = lat, color=Legend), size = 2, shape = 20) + ggplot2::scale_colour_manual(values=whale_col)
@@ -123,7 +121,7 @@ if (!is.null(outputList)) {
 ```
 *
 ```{r narwc result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_narwc <-  if (is.null(outputList)) {
+Report_narwc <- if (is.null(outputList)) {
    "There are no relevant records in the NARWC database for this search area."
  } else {
    "There are relevant records in the NARWC database for this search area."
@@ -163,7 +161,6 @@ Report_obis_cet <-  if (is.null(outputList)) {
 }
 writeLines(Report_obis_cet)
 ```
-
 ```{r, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Ocean Biodiversity Information System (OBIS), for cetacean species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
 if (!is.null(outputList)) {
   areaMap + geom_point(data = obis_cet_points, aes(x = long, y = lat, color = Legend), size = 2, shape = 20) + ggplot2::scale_colour_manual(values=whale_col)
@@ -259,7 +256,7 @@ Year-round passive acoustic monitoring conducted with bottom-mounted recorders a
 The inter-canyon habitat area polygon was delineated using the 500 m depth contour and straight lines connecting the southeast corners of the existing critical habitat areas, but these boundaries are based on limited spatial information on the presence of Northern Bottlenose Whales in deeper waters. More data are needed to determine whether this area fully encompasses important inter-canyon habitat, particularly in regard to the deeper southeastern boundary. Similarly, the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown, and potential critical habitat areas outside the canyons and inter-canyon areas on the eastern Scotian Shelf have not been fully assessed. See [@DFO2020NBW_imphabitat] for further information.
 
 #### ***Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results*** 
-*
+
 ```{r overlap nbw habitat, echo=FALSE, results='asis'}
 poly_sf=NBNW_ImpHab_sf
 attribute="NONE"

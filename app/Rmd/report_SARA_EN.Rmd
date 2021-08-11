@@ -63,7 +63,7 @@ crit_table<-table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
  }
  writeLines(Query_output_crit)
 ```
-
+<br>
 ```{r echo=FALSE, results='asis'}
 Dist_query_output_table<-if(Dist_overlap_result < 1){
   ""
@@ -80,29 +80,28 @@ Crithab_query_output_table<-if(crit_result <= 1){
   knitr::kable(crit_table, caption="Quality Tier: High. Security level: none. Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA) for which the search polygon overlaps with their critical habitat. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is <b>not</b> the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report.", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 if(crit_result > 0){Crithab_query_output_table}
 ```
-
+<br>
 
 ```{r echo=FALSE, results='asis'}
 # define polygon dataset and attribute to plot
 poly_sf=ClippedCritHab_sf
 attribute="Common_Nam"
-
 # intersect polyData with 3 polygons (region, map area, and study box)
 clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
 ```
 
-```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes critical habitat of Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA) in the Scotian Shelf Bioregion. Please see table below for complimentary information. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species.” Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.', fig.height=6, fig.width=11}
+```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes critical habitat of Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA) in the Scotian Shelf Bioregion. Please see table above for complimentary information. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species.” Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.', fig.height=6, fig.width=11}
 if (!is.null(clipped$regionPoly)){
   plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
 }  
 ```
-
+<br>
 ```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with critical habitat of Species At Risk listed as Endangered or Threatened under the <i>Species At Risk Act</i> (SARA)', fig.height=6, fig.width=11}
 if (!is.null(clipped$mapPoly)){
   plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute) 
 }  
 ```
-
+<br>
 ```{r echo=FALSE, results='asis'}
 # define polygon dataset and attribute to plot
 poly_sf=leatherback_sf
@@ -117,7 +116,7 @@ if (!is.null(clipped$regionPoly)){
   plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
 }   
 ```
-
+<br>
 ```{r, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with draft critical habitat of Leatherback Sea Turtle', fig.height=6, fig.width=11}
 if (!is.null(clipped$mapPoly)){
   plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute) 
