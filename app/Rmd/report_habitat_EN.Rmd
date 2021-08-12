@@ -27,12 +27,12 @@ poly_sf <- rockweed_sf
 attribute <- "RWP"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- poly_intersect(poly_sf, Region, studyArea, bboxMap)
+clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
 ```
 *
 ```{r overlap rockweed output, echo=FALSE, results='asis'}
  
-polyText <- if(is.null(clipped$studyPoly)){"There are no relevant records of predicted intertidal vegetation for this search area."
+polyText <- if(is.null(clipped$studyData)){"There are no relevant records of predicted intertidal vegetation for this search area."
 } else {"There are relevant records of predicted intertidal vegetation for this search area."}
 
  polyText <- noquote(polyText)
@@ -40,17 +40,17 @@ polyText <- if(is.null(clipped$studyPoly)){"There are no relevant records of pre
 ```
 
 ```{r rockweed plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
-if(!is.null(clipped$studyPoly)){print(
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly, attribute))}
+if(!is.null(clipped$studyData)){print(
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData, attribute))}
 ```
 
 ```{r table rockweed, echo=FALSE, cache=FALSE, include = FALSE}
-if(!is.null(clipped$studyPoly)){
-  rwTable <- rockweedStats(clipped$studyPoly, studyArea)}
+if(!is.null(clipped$studyData)){
+  rwTable <- rockweedStats(clipped$studyData, studyArea)}
 ```
 
 ```{r rockweed table}
-if(!is.null(clipped$studyPoly)){
+if(!is.null(clipped$studyData)){
 knitr::kable(rwTable,align="l",
              caption = "Number of vegetation polygons and surface area occupied by each category for the study area. Total intertidal vegetations is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")

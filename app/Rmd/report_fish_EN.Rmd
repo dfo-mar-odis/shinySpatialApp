@@ -24,7 +24,7 @@ knitr::kable(table_RV, align="l",
 #### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
 
 ```{r RV results, include=FALSE, cache=FALSE}
-  outputList <- point_intersect(RVCatch_sf, studyArea, speciestable = RVGSSPECIES, mapBbox = bboxMap, Year = minYear)
+  outputList <- master_intersect(RVCatch_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
 
 Samples_bbox <- outputList$mapPoints
 
@@ -90,8 +90,8 @@ The Maritimes Fishery Information System (MARFIS) is a DFO database, managed by 
 #### ***Area-specific MARFIS & ISDB search results***
 
 ```{r marfis isdb results, include=FALSE, cache=FALSE}
-outputListI <- point_intersect(isdb_sf, studyArea, mapBbox = bboxMap, Year = minYear)
-outputListM <- point_intersect(marfis_sf, studyArea, mapBbox = bboxMap, Year = minYear)
+outputListI <- master_intersect(isdb_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
+outputListM <- master_intersect(marfis_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
 Samples_bboxI <- outputListI$mapPoints
 Samples_bboxM <- outputListM$mapPoints
 
@@ -172,7 +172,7 @@ OBIS is a global, open-access data and information clearing-house on marine biod
 #### ***Area-specific OBIS fish and invertebrate search results***
 
 ```{r obis results, include=FALSE, cache=FALSE}
-outputList <- point_intersect(obis_fish_sf, studyArea, mapBbox = bboxMap, Year = minYear)
+outputList <- master_intersect(obis_fish_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
 Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList)) {

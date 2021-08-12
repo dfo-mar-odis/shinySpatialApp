@@ -6,7 +6,7 @@
 # 2. mapBbox: bbox object, representing bounding box of the map, bboxMap (for the areaMap) or regionBox (for regionMap)  
 # 3. studyBox_geom: geometry polygon with the area of interest (defined through shiny app and in the intro)
 # 4. polyData: polygon data to be plotted 
-#    (pre-clipped to map area with the poly_intersect function, using bboxMap, or regionBox)
+#    (pre-clipped to map area with the master_intersect function, using bboxMap, or regionBox)
 # 5. attribute: attribute in the polygon data to be plotted (column name as a string, e.g. "Activity", or "Rockweed"; 
 #               this attribute name will appear in the legend. For single color polygons use attribute="NONE".
 # 6. legendName: string, sets the name of the legend for cases where the attribute is not appropriate. Defaults to

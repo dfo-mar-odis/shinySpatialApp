@@ -69,13 +69,13 @@ load_test_data <- function() {
     areaMapList <- area_map(studyArea, site, land50k_sf, 5, bounds_sf, studyBox_geom)
     areaMap <- areaMapList[[1]]
     bboxMap <- areaMapList[[2]] 
-    Region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-    regionBox <- sf::st_bbox(Region) 
+    region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
+    regionBox <- sf::st_bbox(region) 
     regionMap <- region_map(regionBox, studyArea, land10m_sf, bounds_sf)  
   })
   
   outList <- list("minYear" = 2010,
-                   "Region" = Region,
+                   "region" = region,
                    "site" = site,
                    "studyBox_geom" = studyBox_geom, 
                    "areaMap" = areaMap, 

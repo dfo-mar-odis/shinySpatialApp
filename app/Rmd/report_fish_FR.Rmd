@@ -25,13 +25,13 @@ knitr::kable(table_RV, align="l",
 #### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes***
 
 ```{r RV results, include=FALSE, cache=FALSE}
-  outputList <- point_intersect(RVCatch_sf, studyArea,speciestable = RVGSSPECIES,
+outputList <- master_intersect(RVCatch_sf, region, studyArea, speciestable = RVGSSPECIES,
                                mapBbox = bboxMap, Year = minYear)
 
-Samples_bbox <- outputList[[3]]
+Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList)) {
-  tableList <- create_table_RV(outputList[[1]], listed_species, speciestable = RVGSSPECIES)
+  tableList <- create_table_RV(outputList$studyData, listed_species, speciestable = RVGSSPECIES)
   table_rv1 <- tableList[[1]]
   table_rv2 <- tableList[[2]]
 }
@@ -55,7 +55,7 @@ areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = S
 <br>
 ```{r RV SAR table}
 if (!is.null(outputList)) {
- knitr::kable(table_rv2, align="l", caption="\\label{tab:rv_SAR_table} Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), species assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), or species included in the Wild species listing (B=Breeding, N=non-breeding, M=migratory). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+ knitr::kable(table_rv2, align="l", caption="\\label{tab:rv_SAR_table} Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or species assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 <br>
