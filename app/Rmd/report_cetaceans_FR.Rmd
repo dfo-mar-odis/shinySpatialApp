@@ -43,10 +43,10 @@ Veuillez prendre note des avertissements et mises en garde importants suivants a
 #### ***Résultats de la recherche de la BDOB par zone***
 
 ```{r wsdb, include=FALSE, cache=FALSE}
-outputList <- point_intersect(wsdb_sf, studyArea, mapBbox = bboxMap)
+outputList <- master_intersect(wsdb_sf, region, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
-wsdb_points <- sfcoords_as_cols(outputList[[2]])
+wsdb_points <- sfcoords_as_cols(outputList$mapData)
 }
 ```
 *
@@ -81,9 +81,9 @@ La description suivante des méthodes de collecte de données sur les observatio
 #### ***Résultats de la recherche du laboratoire Whitehead par zone***
 
 ```{r whitehead, include=FALSE, cache=FALSE}
-outputList <- point_intersect(whitehead_sf, studyArea, mapBbox = bboxMap)
+outputList <- master_intersect(whitehead_sf, region, studyArea, mapBbox = bboxMap)
 if (!is.null(outputList)) {
-  whitehead_points <- sfcoords_as_cols(outputList[[2]])
+  whitehead_points <- sfcoords_as_cols(outputList$mapData)
 }
 ```
 *
@@ -116,10 +116,10 @@ La base de données des observations du NARWC contient des registres de milliers
 
 #### ***Résultats de la recherche du NARWC par zone***
 ```{r narwc, include=FALSE, cache=FALSE}
-outputList <- point_intersect(narwc_sf, studyArea, mapBbox = bboxMap)
+outputList <- master_intersect(narwc_sf, region, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
-  narwc_points <- sfcoords_as_cols(outputList[[2]])
+  narwc_points <- sfcoords_as_cols(outputList$mapData)
 }
 ```
 *
@@ -149,10 +149,10 @@ Une recherche du SIBO a été effectuée pour trouver d’autres documents perti
 
 #### ***Résultats de la recherche du SIBO pour les cétacés, par zone***
 ```{r obis, include=FALSE, cache=FALSE}
-outputList <- point_intersect(obis_cet_sf, studyArea, mapBbox = bboxMap)
+outputList <- master_intersect(obis_cet_sf, region, studyArea, mapBbox = bboxMap)
 
 if (!is.null(outputList)) {
-  obis_cet_points <- sfcoords_as_cols(outputList[[2]])
+  obis_cet_points <- sfcoords_as_cols(outputList$mapData)
 }
 ```
 *
@@ -216,15 +216,15 @@ Veuillez consulter la liste de toutes les sources d’information utilisées dan
 #### ***Résultats de la recherche sur l’habitat important des rorquals bleus par zone***
 *
 ```{r overlap bw habitat, echo=FALSE, results='asis'}
-poly_sf=BlueWhale_ImpHab_sf
-attribute="Activity"
+poly_sf <- BlueWhale_ImpHab_sf
+attribute <- "Activity"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
+clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
 ```
 *
 ```{r bw result, echo=FALSE, results='asis'}
-polyText<-if(is.null(clipped$studyPoly)){"La zone de recherche ne chevauche pas l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
+polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
 } else {"La zone de recherche chevauche l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."}
 
  polyText<-noquote(polyText)
@@ -232,14 +232,14 @@ polyText<-if(is.null(clipped$studyPoly)){"La zone de recherche ne chevauche pas 
 ```
 
 ```{r bw region plot, fig.height=4, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Habitat important pour le rorqual bleu dans l’ouest de l’Atlantique-Nord. Zones délimitées par des polygones dans les eaux canadiennes qui sont importantes pour les rorquals bleus pour l’alimentation et le transit. Ces zones d’habitat désignées dans le rapport par Lesage et al. (2018) sont considérées comme importantes pour la survie et le rétablissement des rorquals bleus de la population de l’ouest de l’Atlantique Nord. Les rorquals bleus ont fort probablement besoin d’utiliser plusieurs de ces habitats importants pour répondre à leurs besoins biologiques. Par conséquent, les corridors d’accès et l’habitat qu’ils relient doivent être considérés comme tout aussi importants pour la population.'}
-if (!is.null(clipped$regionPoly)){
-  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute)
+if (!is.null(clipped$regionData)){
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionData,attribute)
 }  
 ```
 
 ```{r bw area plot, fig.height=4, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. La carte résume les zones dans lesquelles le polygone de recherche chevauche l’habitat important pour le rorqual bleu.'}
-if (!is.null(clipped$mapPoly)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute)
+if (!is.null(clipped$mapData)){
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData,attribute)
 }
 ```
 
@@ -262,15 +262,15 @@ Le polygone des zones d’habitat situées entre les canyons a été délimité 
 #### ***Résultats de la recherche sur l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais, par zone*** 
 *
 ```{r overlap nbw habitat, echo=FALSE, results='asis'}
-poly_sf=NBNW_ImpHab_sf
-attribute="NONE"
+poly_sf <- NBNW_ImpHab_sf
+attribute <- "NONE"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
+clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
 ```
 *
 ```{r nbw result, echo=FALSE, results='asis'}
-polyText<-if(is.null(clipped$studyPoly)){"La zone de recherche ne chevauche pas l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais."
+polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais."
 } else {"La zone de recherche chevauche l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais."}
 
  polyText<-noquote(polyText)
@@ -278,13 +278,13 @@ polyText<-if(is.null(clipped$studyPoly)){"La zone de recherche ne chevauche pas 
 ```
 
 ```{r nbw region plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Habitat important proposé pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais La baleine à bec commune est présente toute l’année dans les zones entre les canyons, qui servent d’habitat d’alimentation et de couloirs de déplacement. Veuillez prendre note que l’étendue de l’habitat important de la baleine à bec commune sur le plateau néo-écossais demeure inconnue. Veuillez consulter les renseignements complémentaires dans le document <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
-if (!is.null(clipped$regionPoly)){
-  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute)
+if (!is.null(clipped$regionData)){
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionData,attribute)
 }
 ```
 
 ```{r nbw area plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: noneNiveau de qualité : Élevée. Niveau de sécurité : Aucun. La carte résume les zones dans lesquelles le polygone de recherche chevauche l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais.'}
-if (!is.null(clipped$mapPoly)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapPoly,attribute)
+if (!is.null(clipped$mapData)){
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData,attribute)
 }
 ```

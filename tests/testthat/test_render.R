@@ -7,7 +7,7 @@ test_that("render Intro", {
   list2env(load_test_data(), envir = environment())
   test_out_dir <- here::here("tests/temp")
   temp_files <- list.files(test_out_dir, include.dirs = T, full.names = T, recursive = T)
-  unlink(temp_files, recursive=TRUE)
+  unlink(temp_files, recursive = TRUE)
   out_file <- here::here("tests/temp/rmd_intro")
  
   chk <- renderReport(
