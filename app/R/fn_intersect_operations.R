@@ -413,50 +413,35 @@ table_crit <- function(ClippedCritHab_sf, studyArea, leatherback_sf) {
   return(crit_table)
 }
 
+# little helper function for sdm_table function below
+does_sf_intersect <- function(data_sf, studyArea) {
+  intersectResult <- sf::st_intersection(data_sf, studyArea)
+  nIntersectRows <- as.numeric(nrow(intersectResult))
+  intersectBool <- if(nIntersectRows < 1){
+    FALSE
+  } else {
+    TRUE
+  }
+  return(intersectBool)
+}
+
 # #Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans
 sdm_table <- function(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea) {
-
-  fin_intersect <- sf::st_intersection(fin_whale_sf,studyArea)
-  x<-as.numeric(nrow(fin_intersect))
-  fin_area<-if(x < 1){
-    FALSE
-  } else {
-    TRUE
-  }
-
-  harbour_intersect <- sf::st_intersection(harbour_porpoise_sf,studyArea)
-  x<-as.numeric(nrow(harbour_intersect))
-  harbour_area<-if(x < 1){
-    FALSE
-  } else {
-    TRUE
-  }
-
-  humpback_intersect <- sf::st_intersection(humpback_whale_sf,studyArea)
-  x<-as.numeric(nrow(humpback_intersect))
-  humpback_area<-if(x < 1){
-    FALSE
-  } else {
-    TRUE
-  }
-
-  sei_intersect <- sf::st_intersection(sei_whale_sf,studyArea)
-  x<-as.numeric(nrow(sei_intersect))
-  sei_area<-if(x < 1){
-    FALSE
-  } else {
-    TRUE
-  }
-
-  table_sdm<-data.frame(Fin_Whale="",Habour_Porpoise="", Humpback_Whale="", Sei_Whale="")
-  table_sdm[1,1]<-fin_area
-  table_sdm[1,2]<-harbour_area
-  table_sdm[1,3]<-humpback_area
-  table_sdm[1,4]<-sei_area
-  table_sdm<- table_sdm %>% dplyr::rename("Fin Whale"=Fin_Whale,
-                                          "Habour Porpoise"=Habour_Porpoise,
-                                          "Humpback Whale"=Humpback_Whale,
-                                          "Sei Whale"=Sei_Whale)
+  
+  finIntersect <- does_sf_intersect(fin_whale_sf, studyArea)
+  harbourIntersect <- does_sf_intersect(harbour_porpoise_sf, studyArea)
+  humpbackIntersect <- does_sf_intersect(humpback_whale_sf, studyArea)
+  seiIntersect <- does_sf_intersect(sei_whale_sf, studyArea)
+  
+  table_sdm <- data.frame(Fin_Whale = "", Habour_Porpoise = "", Humpback_Whale = "", Sei_Whale = "")
+  table_sdm[1,1] <- finIntersect
+  table_sdm[1,2] <- harbourIntersect
+  table_sdm[1,3] <- humpbackIntersect
+  table_sdm[1,4] <- seiIntersect
+  table_sdm <- table_sdm %>% dplyr::rename("Fin Whale" = Fin_Whale,
+                                          "Habour Porpoise" = Habour_Porpoise,
+                                          "Humpback Whale" = Humpback_Whale,
+                                          "Sei Whale" = Sei_Whale)
   return(table_sdm)
 
 }
@@ -466,9 +451,8 @@ sdm_table <- function(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_
 # #Ecologically and Biologically Significant Areas (EBSA)
 EBSA_overlap <- function(EBSA_sf, studyArea) {
 
-  EBSA_intersect <- sf::st_intersection(EBSA_sf,studyArea)
-  EBSA_result<-as.numeric(nrow(EBSA_intersect))
-  Query_output_EBSA<-if(EBSA_result < 1){
+  EBSA_intersect <- does_sf_intersect(EBSA_sf,studyArea)
+  Query_output_EBSA<-if(EBSA_intersect){
     "The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSA)."
   } else {
     "The search area overlaps with identified Ecologically and Biologically Significant Areas (EBSA)."
@@ -501,14 +485,14 @@ EBSA_report <- function(EBSA_sf, studyArea) {
 EBSA_reporturl <- function(EBSA_sf, studyArea) {
 
   intersect <- sf::st_intersection(EBSA_sf,studyArea)
-  x<-as.numeric(nrow(intersect))
-  Query_output_EBSA_reporturl<-if(x < 1){
+  x <- as.numeric(nrow(intersect))
+  Query_output_EBSA_reporturl <- if(x < 1){
     ""
   } else {
     paste("Report URL:",intersect$Report_URL)
   }
 
-  Query_output_EBSA_reporturl2<-unique(noquote(Query_output_EBSA_reporturl))
+  Query_output_EBSA_reporturl2 <- unique(noquote(Query_output_EBSA_reporturl))
 
   writeLines(Query_output_EBSA_reporturl2, sep="\n")
 
@@ -517,9 +501,9 @@ EBSA_reporturl <- function(EBSA_sf, studyArea) {
 # # Location intersect
 EBSA_location <- function(EBSA_sf, studyArea) {
 
-  intersect <- sf::st_intersection(EBSA_sf,studyArea)
-  x<-as.numeric(nrow(intersect))
-  Location_result<-if(x < 1){
+  intersect <- sf::st_intersection(EBSA_sf, studyArea)
+  x <- as.numeric(nrow(intersect))
+  Location_result <- if(x < 1){
     ""
   } else {
     paste("Location: ",intersect$Name)
@@ -539,10 +523,10 @@ EBSA_bioregion <- function(EBSA_sf, studyArea) {
     paste("Bioregion: ",intersect$Bioregion)
   }
 
-  Query_output_area2<-paste(unique(Query_output_area), collapse = ' ')
-  Query_output_area3<-noquote(Query_output_area2)
+  Query_output_area2 <- paste(unique(Query_output_area), collapse = ' ')
+  Query_output_area3 <- noquote(Query_output_area2)
 
-  Bioregion_result<-if(x < 1){
+  Bioregion_result <- if(x < 1){
     ""
   } else {
     writeLines(Query_output_area3, sep="\n")
