@@ -32,7 +32,7 @@ rockweed_result <- as.numeric(nrow(rockweed_intersect))
  writeLines(Query_output_rockweed)
 ```
 
-```{r rockweed plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
+```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
 plot_rockweed <- function(rockweed_sf, areaMap, bboxMap) {
   
   # crop rockweed layer to the map area to speed up plotting

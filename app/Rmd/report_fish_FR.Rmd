@@ -47,7 +47,7 @@ Report_RV<-noquote(Report_RV)
 writeLines(Report_RV)
 ```
 
-```{r RV plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area'}
+```{r RV-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area'}
 if (!is.null(outputList)) {
 areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = Samples_bbox$ELONG, yend = endy <- Samples_bbox$ELAT),arrow=arrow(length = unit(0.2,"cm")), size = 0.5)
 }
