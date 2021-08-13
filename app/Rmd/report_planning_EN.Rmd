@@ -42,7 +42,7 @@ EBSA_location(EBSA_sf, studyArea)
 #function for bioregion
 EBSA_bioregion(EBSA_sf, studyArea)
 ```
-```{r overlap EBSA and plot, echo=FALSE, results='asis'}
+```{r overlap-EBSA-plot, echo=FALSE, results='asis'}
 # define polygon dataset and attribute to plot
 poly_sf <- EBSA_sf
 attribute <- "NONE"
@@ -51,13 +51,13 @@ attribute <- "NONE"
 clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
 ```
 
-```{r EBSA region plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).'}
+```{r EBSA-region-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).'}
 if (!is.null(clipped$regionData)){
   plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionData, attribute)
 }
 ```
 
-```{r EBSA area plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area defined by the user (red outline).'}
+```{r EBSA-area-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area defined by the user (red outline).'}
 if(!is.null(clipped$studyData)){print(
   plot_polygons(areaMap,bboxMap,studyBox_geom, clipped$mapData,attribute))}
 ```
