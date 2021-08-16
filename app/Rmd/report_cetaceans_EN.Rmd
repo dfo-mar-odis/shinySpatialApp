@@ -20,7 +20,7 @@ Contact: <XMARWhaleSightings@dfo-mpo.gc.ca>
 URL: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>    
 Last retrieved on: October 27 2020  by Shelley Lang  
 Quality Tier: Low  
-Search year: 2002-2020  
+Search year: 2010-2020  
 Security level: none  
 
 The Marine Mammal and Pelagic Animals, or Whale Sighting Database (WSDB), was implemented in 2002 by DFO to provide a central repository for reported sightings of marine animals, especially cetaceans, and to improve accessibility to sightings data from a variety of sources, including some data from marine mammal surveys and research activities [@WSDB]. Most efforts to collate available sightings data focused on the collecting data from various sources operating in Nova Scotia waters (including the Bay of Fundy and Scotian Shelf), and more recently in the Gulf of St. Lawrence, while less efforts were made to obtain available data from other regions. Most sightings were collected on an opportunistic basis and observations came from individuals with a wide range of expertise and experience in marine mammal identification. For more information see: http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database or @WSDB <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf>.     
@@ -69,7 +69,7 @@ if (!is.null(outputList)) {
 URL: <https://whiteheadlab.weebly.com/contact.html>  
 Last retrieved on: January 12 2021  by Laura Feyrer    
 Quality Tier: High    
-Search year: 2002-2019    
+Search year: 2010-2019    
 Security level: none   
 
 The following information is summarized in this website (https://whiteheadlab.weebly.com/). The Whitehead Lab is based out of the Dalhousie University Department of Biology (Halifax, Nova Scotia). Since its inception in 1987, the Whitehead Lab has been home to over 75 postdoctoral, Ph.D., M.Sc., and undergraduate students. These students primarily conduct conservation-based research on the behavior, ecology, and population biology of cetacean species (primarily, Sperm Whales, Northern Bottlenose Whales, and Long-Finned Pilot Whales), with many studies focused on species in eastern Canadian waters. 
@@ -104,7 +104,7 @@ Contact: <hpettis@neaq.org>
 URL: <https://www.narwc.org/sightings-database.html>  
 Last retrieved on: September 18 2020  
 Quality Tier: High  
-Search year: 2000-2019  
+Search year: 2010-2019  
 Security level: none  
 
 The following information is summarized in the NARWC Sightings Database site https://www.narwc.org/sightings-database.html and @NARWCdatabase.
@@ -139,7 +139,7 @@ Contact: <helpdesk@obis.org>
 URL: <https://obis.org/>    
 Last retrieved on: January 27 2021 by Gregory Puncher from OBIS      
 Quality Tier: Medium    
-Search year: 2002-2020    
+Search year: 2010-2020    
 Security level: none    
 
 An OBIS search [@OBIS] was conducted to find additional relevant records for cetaceans listed by SARA, or assessed by COSEWIC. A first level QC process was performed by removing duplicate reports that are also present in WSDB. Subsequent versions of this report will aim at expanding our QC efforts for this source of information.
