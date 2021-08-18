@@ -10,7 +10,7 @@ Veuillez consulter le Passive Acoustic Cetacean Map (PACM) pour examiner quand e
 
 La présente section ne vise pas à décrire toutes les sources d’information disponibles; les données présentées ne représentent pas toutes les données disponibles sur les observations de cétacés dans la zone de recherche, et d’autres observations peuvent provenir d’autres sources ou de données plus récentes que celles présentées ici. En plus des données sur la présence seulement, certaines des données disponibles peuvent être utilisées pour appuyer les conclusions propres aux espèces au sujet des préférences en matière d’habitat et de la présence possible ou connue à proximité et à l’intérieur de la zone de recherche. Veuillez consulter les publications citées pour obtenir de plus amples renseignements et communiquer avec Angelia Vanderlaan (baleines noires de l’Atlantique Nord) et Hilary Moors-Murphy (autres espèces de cétacés) pour discuter d’autres sources d’information (p. ex., détections acoustiques). Les données et les sources qui ne sont pas explicitement incluses dans le présent rapport comprennent des renseignements tirés d’études ou de publications antérieures, des détections acoustiques, l’échantillonnage des proies et le marquage. Bien que la valeur de ces données dans la prévision et la description de la présence des cétacés soit vitale, ces types de données ne sont pas disponibles pour toutes les espèces et ne peuvent pas encore être interrogées. À l’avenir, à mesure que l’information provenant d’autres sources de données deviendra disponible, ces nouvelles données aideront à mieux comprendre l’utilisation de l’habitat des cétacés et la présence de ceux-ci dans les zones de recherche.
 
-```{r cetacean setup, echo=FALSE, include=FALSE, cache=FALSE}
+```{r cetacean-setup, echo=FALSE, include=FALSE, cache=FALSE}
 whale_col=values=c("Beluga Whale: Endangered (SARA & COSEWIC)"="cyan3","Blue Whale: Endangered (SARA & COSEWIC)"="black", "Fin Whale: Special Concern (SARA & COSEWIC)"="chartreuse4", "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)"="red","Killer Whale: No Status (SARA) & Special Concern (COSEWIC)"="#00AFBB", "North Atlantic Right Whale: Endangered (SARA & COSEWIC)"="darkorchid4", "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)"="#0827EF", "Sei Whale: No Status (SARA) & Endangered (COSEWIC)"="#EF6408",  "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)"="#F5A4E7")
 ```
 
@@ -50,7 +50,7 @@ wsdb_points <- sfcoords_as_cols(outputList$mapData)
 }
 ```
 *
-```{r wsdb result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+```{r wsdb-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_wsdb <- if (is.null(outputList)) {
    "There are no relevant records in the WSDB for this search area."
  } else {
@@ -87,7 +87,7 @@ if (!is.null(outputList)) {
 }
 ```
 *
-```{r whitehead result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+```{r whitehead-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_whitehead <-  if (is.null(outputList)) {
    "Il n’existe aucun registre pertinent dans la base de données du laboratoire Whitehead pour cette zone de recherche."
  } else {
@@ -123,7 +123,7 @@ if (!is.null(outputList)) {
 }
 ```
 *
-```{r narwc result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+```{r narwc-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_narwc <-  if (is.null(outputList)) {
    "Il n’existe aucun registre pertinent dans la base de données du NARWC pour cette zone de recherche."
  } else {
@@ -156,7 +156,7 @@ if (!is.null(outputList)) {
 }
 ```
 *
-```{r obis result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+```{r obis-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_obis_cet <-  if (is.null(outputList)) {
   "Il n’existe aucun registre pertinent pour les cétacés dans le système d’information sur la biodiversité des océans (SIBO) pour cette zone de recherche."
 } else {
@@ -193,7 +193,7 @@ Considérations importantes relatives à l’utilisation : les prévisions modé
 # sei_whale_sf<-stars::st_as_stars(sei_whale)%>%sf::st_as_sf()
 table_sdm <- sdm_table(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea)
 ```
-```{r sdm table}
+```{r sdm-table}
  knitr::kable(table_sdm, align="cccc", caption=". Niveau de qualité : Faible. Niveau de sécurité : Aucun. Résultats indiquant si la zone de recherche chevauche les zones prioritaires prévues pour améliorer la surveillance de plusieurs espèces de cétacés (rorqual commun, marsouin commun, rorqual à bosse et rorqual boréal). VRAI = le polygone chevauche la zone prioritaire; FAUX = le polygone ne chevauche PAS la zone prioritaire.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
@@ -215,7 +215,7 @@ Veuillez consulter la liste de toutes les sources d’information utilisées dan
 
 #### ***Résultats de la recherche sur l’habitat important des rorquals bleus par zone***
 *
-```{r overlap bw habitat, echo=FALSE, results='asis'}
+```{r overlap-bw-habitat, echo=FALSE, results='asis'}
 poly_sf <- BlueWhale_ImpHab_sf
 attribute <- "Activity"
 
@@ -223,7 +223,7 @@ attribute <- "Activity"
 clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
 ```
 *
-```{r bw result, echo=FALSE, results='asis'}
+```{r bw-result, echo=FALSE, results='asis'}
 polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
 } else {"La zone de recherche chevauche l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."}
 
@@ -231,7 +231,7 @@ polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas 
  writeLines(polyText)
 ```
 
-```{r bw region-plot, fig.height=4, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Habitat important pour le rorqual bleu dans l’ouest de l’Atlantique-Nord. Zones délimitées par des polygones dans les eaux canadiennes qui sont importantes pour les rorquals bleus pour l’alimentation et le transit. Ces zones d’habitat désignées dans le rapport par Lesage et al. (2018) sont considérées comme importantes pour la survie et le rétablissement des rorquals bleus de la population de l’ouest de l’Atlantique Nord. Les rorquals bleus ont fort probablement besoin d’utiliser plusieurs de ces habitats importants pour répondre à leurs besoins biologiques. Par conséquent, les corridors d’accès et l’habitat qu’ils relient doivent être considérés comme tout aussi importants pour la population.'}
+```{r bw-region-plot, fig.height=4, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Habitat important pour le rorqual bleu dans l’ouest de l’Atlantique-Nord. Zones délimitées par des polygones dans les eaux canadiennes qui sont importantes pour les rorquals bleus pour l’alimentation et le transit. Ces zones d’habitat désignées dans le rapport par Lesage et al. (2018) sont considérées comme importantes pour la survie et le rétablissement des rorquals bleus de la population de l’ouest de l’Atlantique Nord. Les rorquals bleus ont fort probablement besoin d’utiliser plusieurs de ces habitats importants pour répondre à leurs besoins biologiques. Par conséquent, les corridors d’accès et l’habitat qu’ils relient doivent être considérés comme tout aussi importants pour la population.'}
 if (!is.null(clipped$regionData)){
   plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionData,attribute)
 }  
@@ -261,7 +261,7 @@ Le polygone des zones d’habitat situées entre les canyons a été délimité 
 
 #### ***Résultats de la recherche sur l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais, par zone*** 
 *
-```{r overlap nbw habitat, echo=FALSE, results='asis'}
+```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
 poly_sf <- NBNW_ImpHab_sf
 attribute <- "NONE"
 
@@ -269,7 +269,7 @@ attribute <- "NONE"
 clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
 ```
 *
-```{r nbw result, echo=FALSE, results='asis'}
+```{r nbw-result, echo=FALSE, results='asis'}
 polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais."
 } else {"La zone de recherche chevauche l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais."}
 
@@ -279,12 +279,12 @@ polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas 
 
 ```{r nbw-region-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Habitat important proposé pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais La baleine à bec commune est présente toute l’année dans les zones entre les canyons, qui servent d’habitat d’alimentation et de couloirs de déplacement. Veuillez prendre note que l’étendue de l’habitat important de la baleine à bec commune sur le plateau néo-écossais demeure inconnue. Veuillez consulter les renseignements complémentaires dans le document <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
 if (!is.null(clipped$regionData)){
-  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionData,attribute)
+  plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionData, attribute)
 }
 ```
 
 ```{r nbw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: noneNiveau de qualité : Élevée. Niveau de sécurité : Aucun. La carte résume les zones dans lesquelles le polygone de recherche chevauche l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais.'}
 if (!is.null(clipped$mapData)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData,attribute)
+  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData, attribute)
 }
 ```

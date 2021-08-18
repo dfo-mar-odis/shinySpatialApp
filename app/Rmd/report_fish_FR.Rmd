@@ -13,18 +13,18 @@ Niveau de sécurité : Aucun
 Description de l’ensemble de données (tirée du dossier des données ouvertes) : Les relevés des écosystèmes de Pêches et Océans Canada, réalisés sur une base annuelle, sont une source de données de surveillance intégrée des écosystèmes. Les données de ces relevés constituent la principale source pour surveiller les tendances de la répartition, de l’abondance et de la condition biologique des espèces au sein de la région, et elles renseignent également le Programme de monitorage de la zone Atlantique (PMZA), qui assure la surveillance des conditions hydrographiques, du zooplancton et du phytoplancton. Les relevés, fondés sur un plan d’échantillonnage aléatoire stratifié, sont réalisés au moyen d’un chalut de fond à panneaux, d’une rosette CTP et de traits verticaux de plancton. Les données tirées des captures au chalut de fond servent à surveiller la répartition et l’abondance des poissons et des invertébrés dans l’ensemble du plateau néo-écossais, de la baie de Fundy et du banc de Georges.  
 
 
-```{r table RV read, echo=FALSE, cache=FALSE, include = FALSE}
+```{r table-RV-read, echo=FALSE, cache=FALSE, include = FALSE}
 table_RV <- read.csv("../data/misc/table_RV_EN.csv")
 table_RV<- table_RV %>% dplyr::rename("Season/Months"=Season.Months,"Description of Geographic Range"=Description.of.Geographic.Range)
 ```
-```{r RV table setup}
+```{r RV-table-setup}
 knitr::kable(table_RV, align="l",
       caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
 #### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes***
 
-```{r RV results, include=FALSE, cache=FALSE}
+```{r RV-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(RVCatch_sf, region, studyArea, speciestable = RVGSSPECIES,
                                mapBbox = bboxMap, Year = minYear)
 
@@ -37,7 +37,7 @@ if (!is.null(outputList)) {
 }
 ```
 *
-```{r RV check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+```{r RV-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_RV <- if (is.null(outputList)) {
     "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
   } else {
@@ -53,13 +53,13 @@ areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = S
 }
 ```
 <br>
-```{r RV SAR table}
+```{r RV-SAR-table}
 if (!is.null(outputList)) {
  knitr::kable(table_rv2, align="l", caption="\\label{tab:rv_SAR_table} Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or species assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 <br>
-```{r RV freq table}
+```{r RV-freq-table}
 if (!is.null(outputList)) {
 knitr::kable(table_rv1, align="l", caption="\\label{tab:rv_freq_table}Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
