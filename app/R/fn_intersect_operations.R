@@ -147,29 +147,29 @@ raster_intersect <- function(datafile, region, studyArea, mapBbox, ...) {
 # 1. datatable1: datatable of all species found within the studyArea
 # 2. datatable2: datatable of only listed species found within the studyArea
 
-create_table_RV <- function(datafile, listed_table, speciestable, ...) {
+create_table_RV <- function(data_sf, listed_table, speciestable, ...) {
 
   # calculate the number of unique sample locations
-  Samples_study_no <- dim(unique(datafile[, c("geometry")]))[1]
+  Samples_study_no <- dim(unique(data_sf[, c("geometry")]))[1]
   # calculate a table of all species caught and
   # the total number of individuals caught.
   # Join to the species lookup table to get
   # species names
   individuals <- aggregate(
-    x = list(Individuals = datafile$TOTNO),
-    by = list(CODE = datafile$CODE),
+    x = list(Individuals = data_sf$TOTNO),
+    by = list(CODE = data_sf$CODE),
     FUN = sum)
 
   datatable1 <- aggregate(
-    x = list(Records = datafile$CODE),
-    by = list(CODE = datafile$CODE),
+    x = list(Records = data_sf$CODE),
+    by = list(CODE = data_sf$CODE),
     FUN = length)
   datatable1 <- merge(individuals, datatable1, by = 'CODE')
 
-  data1 <- merge(datafile,speciestable, by = 'CODE')
+  data1 <- merge(data_sf,speciestable, by = 'CODE')
   datatable1 <- merge(datatable1, speciestable, by = 'CODE')
 
-  # Merge the datafile with the listed_species table
+  # Merge the data_sf with the listed_species table
   # and create a frequency table of all listed species
   # caught
   data1 <- merge(data1, listed_table, by = 'Scientific Name')
