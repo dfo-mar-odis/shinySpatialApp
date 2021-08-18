@@ -68,7 +68,7 @@ crit_table <- table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
 Dist_query_output_table<-if(Dist_overlap_result < 1){
   ""
 } else {
-  dist_table
+  
 }
 if(Dist_overlap_result > 1){Dist_query_output_table}
 ```
