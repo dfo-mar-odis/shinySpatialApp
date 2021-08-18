@@ -4,7 +4,7 @@ This section summarizes information available through various sources, via repor
 
 Data sources/products used in this section include: Whale Sightings Database (WSDB), The Whitehead Lab (Dalhousie University), North Atlantic Right Whale Consortium (NARWC) Sightings Database, Ocean Biodiversity Information System (OBIS), Priority Areas to Enhance Monitoring of Cetaceans, Blue Whale Important Habitat in the Western North Atlantic, and Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf.
 
-Please refer to WHALEMAP [@whalemap] <https://whalemap.ocean.dal.ca> for additional information on observations (sightings and acoustic detections) of North Atlantic Right Whales. WHALEMAP primarily reflects results for areas that are being monitored; therefore, the absence of North Atlantic Right Whales in an area should be interpreted as an absence of reporting, not necessarily an absence of the species in the search area. In addition, sightings on WHALEMAP are preliminary and subject to change once quality control checks have been completed.
+Please refer to WHALEMAP [@whalemap] https://whalemap.ocean.dal.ca for additional information on observations (sightings and acoustic detections) of North Atlantic Right Whales. WHALEMAP is a better source of information for North Atlantic Right Whales in Canadian waters with near real time data from survey teams in both Canadian and US waters. WHALEMAP primarily reflects results for areas that are being monitored; therefore, the absence of North Atlantic Right Whales in an area should be interpreted as an absence of reporting, not necessarily an absence of the species in the search area. In addition, sightings on WHALEMAP are preliminary and subject to change once quality control checks have been completed.
 
 Please refer to the Passive Acoustic Cetacean Map (PACM) to explore when and where cetacean species were acoustically detected in the North Atlantic Ocean based on Passive Acoustic Monitoring (PAM) (<https://apps-nefsc.fisheries.noaa.gov/pacm/#/>). Acoustic detections in PACM only represent times when animals are calling; they do not capture time periods when animals are present but silent. Detections are from archival acoustic recorders and do not show recorders currently in the water (it is not a real-time tool). Differences in recorder detection ranges for each species are not accounted for; they can vary based on differences in instrumentation (i.e. recording hardware), environmental conditions (i.e. weather, bottom type, ambient sound levels), and anthropogenic sound levels [@PACM2021]. For questions about PACM, please contact [nmfs.pacmdata\@noaa.gov](mailto:nmfs.pacmdata@noaa.gov){.email}.
 
@@ -16,11 +16,12 @@ whale_col=values=c("Beluga Whale: Endangered (SARA & COSEWIC)"="cyan3","Blue Wha
 
 ### **Whale Sightings Database (WSDB)**
 
-Contact: [XMARWhaleSightings\@dfo-mpo.gc.ca](mailto:XMARWhaleSightings@dfo-mpo.gc.ca){.email} URL: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>\
-Last retrieved on: October 27 2020 by Shelley Lang\
-Quality Tier: Low\
-Search year: 2002-2020\
-Security level: none
+Contact: <XMARWhaleSightings@dfo-mpo.gc.ca>
+URL: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>    
+Last retrieved on: October 27 2020  by Shelley Lang  
+Quality Tier: Low  
+Search year: 2010-2020  
+Security level: none  
 
 The Marine Mammal and Pelagic Animals, or Whale Sighting Database (WSDB), was implemented in 2002 by DFO to provide a central repository for reported sightings of marine animals, especially cetaceans, and to improve accessibility to sightings data from a variety of sources, including some data from marine mammal surveys and research activities [@WSDB]. Most efforts to collate available sightings data focused on the collecting data from various sources operating in Nova Scotia waters (including the Bay of Fundy and Scotian Shelf), and more recently in the Gulf of St. Lawrence, while less efforts were made to obtain available data from other regions. Most sightings were collected on an opportunistic basis and observations came from individuals with a wide range of expertise and experience in marine mammal identification. For more information see: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database> or @WSDB <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf>.
 
@@ -66,12 +67,11 @@ if (!is.null(outputList)) {
 ```
 
 ### **The Whitehead Lab, Dalhousie University**
-
-URL: <https://whiteheadlab.weebly.com/contact.html>\
-Last retrieved on: January 12 2021 by Laura Feyrer\
-Quality Tier: High\
-Search year: 2002-2019\
-Security level: none
+URL: <https://whiteheadlab.weebly.com/contact.html>  
+Last retrieved on: January 12 2021  by Laura Feyrer    
+Quality Tier: High    
+Search year: 2010-2019    
+Security level: none   
 
 The following information is summarized in this website (<https://whiteheadlab.weebly.com/>). The Whitehead Lab is based out of the Dalhousie University Department of Biology (Halifax, Nova Scotia). Since its inception in 1987, the Whitehead Lab has been home to over 75 postdoctoral, Ph.D., M.Sc., and undergraduate students. These students primarily conduct conservation-based research on the behavior, ecology, and population biology of cetacean species (primarily, Sperm Whales, Northern Bottlenose Whales, and Long-Finned Pilot Whales), with many studies focused on species in eastern Canadian waters.
 
@@ -104,17 +104,14 @@ if (!is.null(outputList)) {
 ```
 
 ### **North Atlantic Right Whale Consortium (NARWC) Sightings Database**  
+Contact: <hpettis@neaq.org>  
+URL: <https://www.narwc.org/sightings-database.html>  
+Last retrieved on: September 18 2020  
+Quality Tier: High  
+Search year: 2010-2019  
+Security level: none  
 
-Contact: [hpettis\@neaq.org](mailto:hpettis@neaq.org){.email}\
-URL: <https://www.narwc.org/sightings-database.html>\
-Last retrieved on: September 18 2020\
-Quality Tier: High\
-Search year: 2000-2019\
-Security level: none
-
-The following information is summarized in the NARWC Sightings Database site <https://www.narwc.org/sightings-database.html> and @NARWCdatabase.
-
-The NARWC Sightings Database contains records of thousands of sightings of Right Whales in the North Atlantic Ocean, as well as sightings of other species of whales, dolphins, sea turtles, seals, and large fishes. It also contains survey data associated with many of these sightings, which could be used to determine the associated survey effort. However, the database does not include the sighting distance data required to determine species density or abundance from these surveys. The sightings contained in the database come from a wide variety of contributors including NARWC members and others. Each record in the Sightings Database represents a group of whales (i.e., a group of 3 whales has a single record just as a group of 1 does), and there may or may not be photographic proof of a given Right Whale sighting. The Sightings and Photo-Identification databases are periodically cross-referenced, so that individual identification data from the latter can be linked to sighting data from the former. For that reason, all sightings in the Identification Database are eventually included in the Sightings Database (with an approximate 1-year lag). Although the individual identifications of animals are not included in the Sightings Database, the two databases can be linked on common fields. This review article of the Sightings Database provides potential users with important information: <https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf>
+The NARWC Sightings Database contains records of thousands of sightings of Right Whales in the North Atlantic Ocean, as well as sightings of other species of whales, dolphins, sea turtles, seals, and large fishes. It also contains survey data associated with many of these sightings, which could be used to determine the associated survey effort. However, the database does not include the sighting distance data required to determine species density or abundance from these surveys. The sightings contained in the database come from a wide variety of contributors including NARWC members and others. Each record in the Sightings Database represents a group of whales (i.e., a group of 3 whales has a single record just as a group of 1 does), and there may or may not be photographic proof of a given Right Whale sighting. The Sightings and Photo-Identification databases are periodically cross-referenced, so that individual identification data from the latter can be linked to sighting data from the former. For that reason, all sightings in the Identification Database are eventually included in the Sightings Database (with an approximate 1-2 year lag). Although the individual identifications of animals are not included in the Sightings Database, the two databases can be linked on common fields. This review article of the Sightings Database  provides potential users with important information:  https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf
 
 #### ***Area-specific NARWC search results***
 ```{r narwc, include=FALSE, cache=FALSE}
@@ -143,13 +140,12 @@ if (!is.null(outputList)) {
 ```
 
 ### **Ocean Biodiversity Information System (OBIS) [for cetaceans]**  
-
-Contact: [helpdesk\@obis.org](mailto:helpdesk@obis.org){.email}\
-URL: <https://obis.org/>\
-Last retrieved on: January 27 2021 by Gregory Puncher from OBIS\
-Quality Tier: Medium\
-Search year: 2002-2020\
-Security level: none
+Contact: <helpdesk@obis.org>  
+URL: <https://obis.org/>    
+Last retrieved on: January 27 2021 by Gregory Puncher from OBIS      
+Quality Tier: Medium    
+Search year: 2010-2020    
+Security level: none    
 
 An OBIS search [@OBIS] was conducted to find additional relevant records for cetaceans listed by SARA, or assessed by COSEWIC. A first level QC process was performed by removing duplicate reports that are also present in WSDB. Subsequent versions of this report will aim at expanding our QC efforts for this source of information.
 

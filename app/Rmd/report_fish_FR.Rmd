@@ -7,7 +7,7 @@ La présente section décrit les résultats tirés des sources de données suiva
 Personne-ressource : <DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca>   
 Consulté le : 21 janvier 2021 sur le Portail de données ouvertes  <https://ouvert.canada.ca/data/fr/dataset/8ddcaeea-b806-4958-a79f-ba9ab645f53b>    
 Niveau de qualité : Élevée  
-Année de recherche : de 1970 à 2020 
+Année de recherche : de 1970 à 2020
 Niveau de sécurité : Aucun  
 
 Description de l’ensemble de données (tirée du dossier des données ouvertes) : Les relevés des écosystèmes de Pêches et Océans Canada, réalisés sur une base annuelle, sont une source de données de surveillance intégrée des écosystèmes. Les données de ces relevés constituent la principale source pour surveiller les tendances de la répartition, de l’abondance et de la condition biologique des espèces au sein de la région, et elles renseignent également le Programme de monitorage de la zone Atlantique (PMZA), qui assure la surveillance des conditions hydrographiques, du zooplancton et du phytoplancton. Les relevés, fondés sur un plan d’échantillonnage aléatoire stratifié, sont réalisés au moyen d’un chalut de fond à panneaux, d’une rosette CTP et de traits verticaux de plancton. Les données tirées des captures au chalut de fond servent à surveiller la répartition et l’abondance des poissons et des invertébrés dans l’ensemble du plateau néo-écossais, de la baie de Fundy et du banc de Georges.  
@@ -19,10 +19,10 @@ table_RV<- table_RV %>% dplyr::rename("Season/Months"=Season.Months,"Description
 ```
 ```{r RV-table-setup}
 knitr::kable(table_RV, align="l",
-      caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+      caption = "Résumé des données recueillies au cours des quatre enquêtes distinctes sur les navires de recherche dans les Maritimes. Se reporter à Chadwick et al. (2007)* pour obtenir de plus amples renseignements sur le calendrier et l’ajustement périodique des enquêtes 4VSW.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
-#### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes***
+#### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes, par zone***
 
 ```{r RV-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(RVCatch_sf, region, studyArea, speciestable = RVGSSPECIES,
@@ -39,15 +39,15 @@ if (!is.null(outputList)) {
 *
 ```{r RV-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_RV <- if (is.null(outputList)) {
-    "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+    "Il n’existe aucun registre pertinent des enquêtes sur les navires de recherche dans les Maritimes pour cette zone de recherche."
   } else {
-    "There are relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
+    "Il existe des registres pertinents des enquêtes sur les navires de recherche dans les Maritimes pour cette zone de recherche."
   }
 Report_RV<-noquote(Report_RV)
 writeLines(Report_RV)
 ```
 
-```{r RV-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area'}
+```{r RV-plot, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge), utilisée pour demander des renseignements sur l’enquête sur le navire de recherche dans les Maritimes. Les lignes et les flèches noires indiquent l’emplacement et la direction de chaque exemple de chalut de fond à panneaux. La fréquence représente le nombre de chaluts où une espèce donnée a été échantillonnée, en comparaison au nombre total de chaluts dans la zone de recherche.'}
 if (!is.null(outputList)) {
 areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = Samples_bbox$ELONG, yend = endy <- Samples_bbox$ELAT),arrow=arrow(length = unit(0.2,"cm")), size = 0.5)
 }
@@ -55,17 +55,17 @@ areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = S
 <br>
 ```{r RV-SAR-table}
 if (!is.null(outputList)) {
- knitr::kable(table_rv2, align="l", caption="\\label{tab:rv_SAR_table} Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or species assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+ knitr::kable(table_rv2, align="l", caption="\\label{tab:rv_SAR_table} Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 <br>
 ```{r RV-freq-table}
 if (!is.null(outputList)) {
-knitr::kable(table_rv1, align="l", caption="\\label{tab:rv_freq_table}Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+knitr::kable(table_rv1, align="l", caption="\\label{tab:rv_freq_table}QNiveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes de <u>toutes les espèces</u> contenues dans la zone de recherche, résumées par espèce ou groupe d’espèces. <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 
-### **Enquête sur l’industrie et bases de données sur les pêches dans les Maritimes**  
+### **Bases de données des relevés de l’industrie et sur les pêches dans les Maritimes**  
 
 #### ***Base de données des relevés de l’industrie (BDRI)***  
 
@@ -75,9 +75,9 @@ Niveau de qualité : Moyenne
 Année de recherche : de 2002 à 2019  
 Niveau de sécurité : Protégé B  
 
-La base de données des relevés de l’industrie (BDRI) est une base de données ministérielle qui contient des observations des prises en mer de bateaux de pêche commerciale exploités dans l’Atlantique Nord-Ouest. Les relevés de l’industrie ne sont pas spatialement ou temporellement synoptiques et, par conséquent, il est fortement recommandé d’intégrer des renseignements supplémentaires sur la présence et/ou l’utilisation de l’habitat (c.-à-d. frai, migration, aires d’alimentation) provenant d’études à plus grande échelle. Les renseignements sur les prises et l’effort de pêche pour un titulaire de permis individuel constituent des renseignements personnels protégés en vertu de l’article 19 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-12) et, pour un titulaire de permis d’entreprise, est considéré comme un renseignement de nature délicate, exclusif et protégé en vertu de l’article 20 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-13).
+La base de données des relevés de l’industrie (BDRI) est une base de données ministérielle qui contient des observations des prises en mer de bateaux de pêche commerciale exploités dans l’Atlantique Nord-Ouest. Les registres peuvent être associés aux activités de pêche commerciale régulières, ou ils peuvent représenter les relevés scientifiques dirigés par l’industrie. Les relevés de l’industrie ne sont pas spatialement ou temporellement synoptiques et, par conséquent, il est fortement recommandé d’intégrer des renseignements supplémentaires sur la présence et/ou l’utilisation de l’habitat (c.-à-d. frai, migration, aires d’alimentation) provenant d’études à plus grande échelle. Les renseignements sur les prises et l’effort de pêche pour un titulaire de permis individuel constituent des renseignements personnels protégés en vertu de l’article 19 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-12) et, pour un titulaire de permis d’entreprise, est considéré comme un renseignement de nature délicate, exclusif et protégé en vertu de l’article 20 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-13).
 
-Sans consentement écrit, Pêches et Océans Canada n’est pas autorisé à communiquer des renseignements ou des produits de données de la BDRI (comme des cartes et des couches de données) qui pourraient révéler des renseignements personnels ou de tiers comme les prises, les valeurs au débarquement et les lieux de pêche propres aux navires, car ces renseignements sont considérés comme confidentiels. Des renseignements sur la politique de protection des renseignements personnels sont disponibles dans les lignes directrices sur la diffusion informelle à l’intention du personnel du MPO (c.-à-d. Annexe B – « Renseignements sur les prises et l’effort et sur les quotas : À faire et à ne pas faire lors de la diffusion informelle \\\\ent.dfo-mpo.ca\\ATLShares\\Shared\\ATIP Information\\Information_Release_Guidelines-eng.docx). Si vous souhaitez inclure des données d’observateurs dans une publication, n’oubliez pas de les agréger (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r).
+Sans consentement écrit, Pêches et Océans Canada n’est pas autorisé à communiquer des renseignements ou des produits de données de la BDRI (comme des cartes et des couches de données) qui pourraient révéler des renseignements personnels ou de tiers comme les prises, les valeurs au débarquement et les lieux de pêche propres aux navires, car ces renseignements sont considérés comme confidentiels. Des renseignements sur la politique de protection des renseignements personnels sont disponibles dans les lignes directrices sur la diffusion informelle à l’intention du personnel du MPO (c.-à-d. Annexe B – « Renseignements sur les prises et l’effort et sur les quotas : À faire et à ne pas faire lors de la diffusion informelle » \\\\ent.dfo-mpo.ca\\ATLShares\\Shared\\ATIP Information\\Information_Release_Guidelines-eng.docx). Si vous souhaitez inclure des données d’observateurs dans une publication, n’oubliez pas de les agréger (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r).
 
 #### ***Système d’information sur les pêches des Maritimes (SIPMAR)***  
 
@@ -86,3 +86,120 @@ Consulté le : 2019
 Niveau de qualité : Moyenne    
 Année de recherche : de 2002 à 2019    
 Niveau de sécurité : Protégé B
+
+Le Système d’information sur les pêches des Maritimes (SIPMAR) est une base de données du MPO, gérée par la Direction des politiques et des études économiques. Le SIPMAR contient des renseignements sur les prises et les efforts, les quotas et les permis pour la région des Maritimes. Les renseignements consignés pour toutes les pêches commerciales qui se déroulent dans cette région sont associés à ces données. Si un navire commercial de la région des Maritimes fait des débarquements dans une autre région du MPO ou à l’extérieur des eaux canadiennes, l’information n’est pas incluse dans la base de données du SIPMAR, peu importe si le navire provient de la région des Maritimes. La majorité des renseignements sur les prises sont liés au déchargement commercial (p. ex. les programmes de contrôle à quai). Les renseignements déclarés dans le SIPMAR ne sont pas considérés comme spatialement ou temporellement synoptiques et, par conséquent, il est fortement recommandé d’intégrer des renseignements supplémentaires sur la présence et/ou l’utilisation de l’habitat (c.-à-d. frai, migration, alimentation) provenant d’études à plus grande échelle. Les données sur les rejets et les registres de données sur les espèces en péril sont également plus limitées, car les dossiers sur les prises ne comportent pas tous les coordonnées géographiques (latitude et longitude) associées ou des renseignements sur l’effort de pêche. Cependant, en général, tous les dossiers sont associés à une division de l’OPANO et à une zone unitaire de l’OPANO, même si aucune coordonnée n’a été fournie. Les données de production (moins de quatre ans) sont considérées comme préliminaires et peuvent être modifiées sans préavis. Des changements aux données archivées (plus de quatre ans) peuvent également se produire, mais ils sont généralement limités. Le travail de contrôle et d’assurance de la qualité est en cours dans la base de données du SIPMAR, mais les erreurs ne sont pas toutes corrigées. Si vous avez des erreurs à signaler, des questions ou des demandes de correction de données, vous pouvez les envoyer à notre boîte de réception de la qualité des données : CDDDataQuality@dfo-mpo.gc.ca. Cette information sur le SIPMAR a été fournie par Colin.O’Neil@dfo-mpo.gc.ca (juillet 2020, Direction des politiques et des études économiques). Si vous souhaitez inclure des données d’observateurs dans une publication, n’oubliez pas de les agréger (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r).
+
+#### ***Résultats de recherche du SIPMAR et de la BDRI par zone***
+```{r, include=FALSE, cache=FALSE}
+outputListI <- main_intersect(isdb_sf, studyArea, Bbox = bboxMap, Year = minYear)
+outputListM <- main_intersect(marfis_sf, studyArea, Bbox = bboxMap, Year = minYear)
+Samples_bboxI <- outputListI[[3]]
+Samples_bboxM <- outputListM[[3]]
+
+if (!is.null(outputListI)) {
+  tableList <- create_table_ISDB(outputListI[[1]], listed_species,
+                                 speciestable = ISSPECIESCODES)
+  table_isdb1 <- tableList[[1]]
+  table_isdb2 <- tableList[[2]]
+}
+
+if (!is.null(outputListM)) {
+  tableList <- create_table_MARFIS(outputListM[[1]], listed_species, speciestable = MARFISSPECIESCODES)
+  table_mar1 <- tableList[[1]]
+  table_mar2 <- tableList[[2]]
+}
+```
+*
+```{r, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_isdb <- if (is.null(outputListI)) {
+    "Il n’y a aucun registre pertinent dans la base de données des relevés de l’industrie (BDRI) pour cette zone de recherche."
+  } else {
+    "Il y a des registres pertinents dans la base de données des relevés de l’industrie (BDRI) pour cette zone de recherche."
+  }
+Report_isdb<-noquote(Report_isdb)
+writeLines(Report_isdb)
+```
+
+*
+```{r, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_marfis <- if (is.null(outputListM)) {
+    "Il n’y a aucun registre pertinent dans le Système d’information sur les pêches des Maritimes (SIPMAR) pour cette zone de recherche."
+  } else {
+    "Il y a des registres pertinents dans le Système d’information sur les pêches des Maritimes (SIPMAR) pour cette zone de recherche."
+  }
+Report_marfis<-noquote(Report_marfis)
+writeLines(Report_marfis)
+```
+
+```{r, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Moyenne. Niveau de sécurité : Protégé B. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge) utilisée pour demander des renseignements agrégés provenant des dossiers d’observation du Système d’information sur les pêches des Maritimes (SIPMAR) et/ou de la Base de données des relevés de l’industrie (BDRI), qui sont présentés sous forme de points noirs, pour toutes les espèces. La règle des cinq n’a pas été appliquée.'}
+if (!is.null(outputListI) & !is.null(outputListM)) {
+  areaMap + geom_point(data = Samples_bboxI, aes(x = long, y = lat), size = 2, shape = 16, col = "black") + geom_point(data = Samples_bboxM, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
+} else if (!is.null(outputListI)) {
+    areaMap + geom_point(data = Samples_bboxI, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
+} else if (!is.null(outputListM)) {
+        areaMap + geom_point(data = Samples_bboxM, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
+}
+```
+```{r}
+if (!is.null(outputListI)) {
+knitr::kable(table_isdb2, align="l", caption="Niveau de qualité : Moyenne. Niveau de sécurité : Protégé B. Registres d’observation de la base de données des relevés de l’industrie des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>TSi une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+<br><br>
+```{r}
+if (!is.null(outputListI)) {
+  knitr::kable(table_isdb1, align="l", caption="Niveau de qualité : Moyenne. Niveau de sécurité : Protégé B. Registres d’observation de la base de données des relevés de l’industrie de <u>toutes les espèces</u> contenues dans la zone de recherche, résumées par espèce ou groupe d’espèces. <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+```{r}
+if (!is.null(outputListM)) {
+  knitr::kable(table_mar2, align="l", caption="Niveau de qualité : Moyenne. Niveau de sécurité : Protégé B. Registres d’observation du Système d’information sur les pêches des Maritimes des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+<br><br>
+```{r}
+if (!is.null(outputListM)) {
+  knitr::kable(table_mar1, caption="Niveau de qualité : Moyenne. Niveau de sécurité : Protégé B. Registres d’observation du Système d’information sur les pêches des Maritimes de <u>toutes les espèces</u> contenues dans la zone de recherche, résumées par espèce ou groupe d’espèces. <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="")  %>% column_spec(1, width="15cm")
+} %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+### **Système d’information sur la biodiversité des océans (SIBO)**  
+Personne-ressource: helpdesk@obis.org  
+LIENL: <https://obis.org/>    
+Consulté le : J27 janvier 2021 par Gregory Puncher du SIBO
+Niveau de qualité: Moyenne
+Année de recherche : de 2002 à 2020  
+Niveau de sécurité : Aucun
+
+Le SIBO est un centre mondial de données et d’information en libre accès sur la biodiversité marine pour la science, la conservation et le développement durable. Il a pour vision de bâtir et de maintenir une alliance mondiale qui collabore avec les communautés scientifiques pour faciliter l’accès libre et ouvert à la biodiversité et aux données et informations biogéographiques sur la vie marine, ainsi que leur application. Des recherches du SIBO ont été effectuées pour trouver d’autres documents pertinents pour les espèces inscrites en vertu de la LEP ou évaluées par le COSEPAC. Les versions futures de cet outil de production de rapports viseront à élargir nos vérifications de la qualité de la base de données du SIBO.
+
+#### ***Résultats de recherche du SIBO sur les poissons et les invertébrés par zone***
+
+```{r, include=FALSE, cache=FALSE}
+outputList <- main_intersect(obis_fish_sf, studyArea, Bbox = bboxMap, Year = minYear)
+Samples_bbox <- outputList[[3]]
+
+if (!is.null(outputList)) {
+  tableList <- create_table_OBIS(outputList[[1]])
+  table_obis1 <- tableList[[1]]
+}
+```
+*
+```{r, echo=FALSE, results='asis',}
+Report_obis <- if (is.null(outputList)) {
+  "Il n’y a aucun registre pertinent dans le système d’information sur la biodiversité des océans (SIB)O pour cette zone de recherche."
+} else {
+  "Il y a des registres pertinents dans le système d’information sur la biodiversité des océans (SIB)O pour cette zone de recherche."
+}
+Report_obis<-noquote(Report_obis)
+writeLines(Report_obis)
+```
+```{r, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge) a été utilisée pour rechercher des informations dans les registres d’observation du SIBO sur les espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). Les observations sur terre indiquent que les données d’observation n’ont pas encore été complètement vérifiées ou que des animaux ont été observés depuis la côte. <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>'}
+if (!is.null(outputList)) {
+  areaMap +
+    geom_point(data = Samples_bbox, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
+}
+```
+```{r echo=FALSE, results='asis', caption="
+Les espèces prioritaires avec des observations contenues dans la base de données du SIBO, dans la zone de recherche."}
+if (!is.null(outputList)) {
+  knitr::kable(table_obis1, align="l", caption="Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Registres d’observation du système d’information sur la biodiversité des océans (SIBO) des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
