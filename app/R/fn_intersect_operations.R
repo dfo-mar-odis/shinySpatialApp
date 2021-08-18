@@ -467,15 +467,15 @@ EBSA_overlap <- function(EBSA_sf, studyArea) {
 # # EBSA report
 EBSA_report <- function(EBSA_sf, studyArea) {
 
-  EBSA_intersect <- sf::st_intersection(EBSA_sf,studyArea)
-  EBSA_result<-as.numeric(nrow(EBSA_intersect))
-  Query_output_EBSA_report<-if(EBSA_result < 1){
+  EBSA_intersect <- sf::st_intersection(EBSA_sf, studyArea)
+  EBSA_result <- as.numeric(nrow(EBSA_intersect))
+  Query_output_EBSA_report <- if(EBSA_result < 1){
     ""
   } else {
     paste("Report: ", EBSA_intersect$Report)
   }
 
-  Query_output_EBSA_report2<-unique(noquote(Query_output_EBSA_report))
+  Query_output_EBSA_report2 <- unique(noquote(Query_output_EBSA_report))
 
   writeLines(Query_output_EBSA_report2, sep="\n")
 
