@@ -93,8 +93,8 @@ Le Système d’information sur les pêches des Maritimes (SIPMAR) est une base 
 ```{r marfis-isdb-results, include=FALSE, cache=FALSE}
 outputListI <- master_intersect(isdb_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
 outputListM <- master_intersect(marfis_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
-Samples_bboxI <- outputListI[[3]]
-Samples_bboxM <- outputListM[[3]]
+Samples_bboxI <- outputListI$mapPoints
+Samples_bboxM <- outputListM$mapPoints
 
 if (!is.null(outputListI)) {
   tableList <- create_table_ISDB(outputListI[[1]], listed_species,
@@ -173,8 +173,8 @@ Le SIBO est un centre mondial de données et d’information en libre accès sur
 #### ***Résultats de recherche du SIBO sur les poissons et les invertébrés par zone***
 
 ```{r obis-results, include=FALSE, cache=FALSE}
-outputList <- master_intersect(obis_fish_sf, studyArea, Bbox = bboxMap, Year = minYear)
-Samples_bbox <- outputList[[3]]
+outputList <- master_intersect(obis_fish_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
+Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList)) {
   tableList <- create_table_OBIS(outputList[[1]])

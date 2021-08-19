@@ -86,7 +86,7 @@ master_intersect <- function(data_sf, region, studyArea, mapBbox, ...) {
                   mapPoints = mapPoints)
   return(outList)
 }
-  
+
   
 ##### - END master_intersect function ##################################
 
@@ -138,16 +138,15 @@ raster_intersect <- function(datafile, region, studyArea, mapBbox, ...) {
 # found within the studyArea
 #
 # Inputs:
-# 1. datafile: an input point file of RV survey data found within the studyArea
+# 1. data_sf: an input point file of RV survey data found within the studyArea (eg. output from master_intersect)
 # 2. listed_table: a table of species at risk listed by SARA and/or COSEWIC
 # 3. speciestable: the RVGSSPECIES species table to link species codes with names
-# 4. Samples_study_no: output from master_intersect() function of the number of samples in studyArea
 #
 # Outputs: list containing 2 items
 # 1. datatable1: datatable of all species found within the studyArea
 # 2. datatable2: datatable of only listed species found within the studyArea
 
-create_table_RV <- function(data_sf, listed_table, speciestable, ...) {
+create_table_RV <- function(data_sf, sarTable, speciesTable, ...) {
 
   # calculate the number of unique sample locations
   Samples_study_no <- dim(unique(data_sf[, c("geometry")]))[1]
@@ -155,52 +154,43 @@ create_table_RV <- function(data_sf, listed_table, speciestable, ...) {
   # the total number of individuals caught.
   # Join to the species lookup table to get
   # species names
-  individuals <- aggregate(
+  individualCounts <- aggregate(
     x = list(Individuals = data_sf$TOTNO),
     by = list(CODE = data_sf$CODE),
     FUN = sum)
 
-  datatable1 <- aggregate(
+  recordCounts <- aggregate( 
     x = list(Records = data_sf$CODE),
     by = list(CODE = data_sf$CODE),
     FUN = length)
-  datatable1 <- merge(individuals, datatable1, by = 'CODE')
-
-  data1 <- merge(data_sf,speciestable, by = 'CODE')
-  datatable1 <- merge(datatable1, speciestable, by = 'CODE')
-
-  # Merge the data_sf with the listed_species table
-  # and create a frequency table of all listed species
-  # caught
-  data1 <- merge(data1, listed_table, by = 'Scientific Name')
-  datatable2 <- aggregate(
-    x = list(Records = data1$'Scientific Name'),
-    by = list('Scientific Name' = data1$'Scientific Name'),
-    length)
-  # merge the frequency table with listed_table to get
-  # the SARA and COSEWIC listings for each species
-  datatable2 <- merge(datatable2, listed_table, by = 'Scientific Name')
+  allSpeciesData <- merge(individualCounts, recordCounts, by = 'CODE')
+  allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'CODE')
   # add a field for the number of samples
-  datatable1$Samples <- Samples_study_no
+  allSpeciesData$Samples <- Samples_study_no
   # combine the number of species records with number of samples
   # into a new field for Frequency
-  datatable1 <- datatable1 %>% tidyr::unite("Frequency", c(Records,Samples),
+  allSpeciesData <- allSpeciesData %>% tidyr::unite("Frequency", c(Records, Samples),
                                             sep = "/", remove = FALSE)
-
-  datatable1 <- dplyr::select(datatable1, "Scientific Name", "Common Name",
+  
+  allSpeciesData <- dplyr::select(allSpeciesData, "Scientific Name", "Common Name",
                               Individuals, Frequency)
-  datatable2 <- merge(datatable2, datatable1, by = 'Scientific Name')
-  datatable2 <- dplyr::select(datatable2, "Scientific Name", Individuals, Frequency)
-  datatable2 <- merge(datatable2, listed_table, by = 'Scientific Name')
-  datatable2 <- dplyr::select(datatable2, "Scientific Name", "Common Name",
-                              "SARA status", "COSEWIC status", Individuals, Frequency)
-
+  
+  # filter allSpeciesData for only SAR species, add status values
+  sarData <- filter(allSpeciesData, `Scientific Name` %in% 
+                      sarTable$`Scientific Name`)
+  # need this select to avoid duplicate "common name" col.
+  sarData <- dplyr::select(sarData, "Scientific Name", Individuals, Frequency)
+  sarData <- merge(sarData, sarTable, by = 'Scientific Name')
+  sarData <- dplyr::select(sarData, "Scientific Name", "Common Name",
+                                  "SARA status", "COSEWIC status", Individuals, Frequency)
+  
+  
   # order the tables by number of individuals caught (decreasing)
-  datatable1 <- datatable1[with(datatable1, order(-Individuals)), ]
-  datatable2 <- datatable2[with(datatable2, order(-Individuals)), ]
-  row.names(datatable1) <- NULL
-  row.names(datatable2) <- NULL
-  outList <- list(datatable1, datatable2)
+  allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Individuals)), ]
+  sarData <- sarData[with(sarData, order(-Individuals)), ]
+  row.names(allSpeciesData) <- NULL
+  row.names(sarData) <- NULL
+  outList <- list(allSpeciesData, sarData)
   return(outList)
 }
 ##### - END create_table_RV function ##################################
@@ -228,6 +218,7 @@ create_table_MARFIS <- function(datafile, listed_table, speciestable, ...) {
     FUN = length)
   datatable1 <- merge(datatable1, speciestable, by = 'SPECIES_CODE')
   datatable1 <- datatable1 %>% rename("Common Name"= COMMONNAME)
+  
   data1 <- merge(datafile, speciestable, by = 'SPECIES_CODE')
   data1$Common_Name_MARFIS <- data1$COMMONNAME
 
@@ -251,7 +242,9 @@ create_table_MARFIS <- function(datafile, listed_table, speciestable, ...) {
   datatable1 <- datatable1 %>% rename('Common Name' = CName)
   datatable2 <- dplyr::select(datatable2, 'Scientific Name', 'Common Name',
                               "SARA status","COSEWIC status",Records)
-  # order the tables by number of Records (decreasing)
+ 
+  
+   # order the tables by number of Records (decreasing)
   datatable1 <- datatable1[with(datatable1, order(-Records)), ]
   datatable2 <- datatable2[with(datatable2, order(-Records)), ]
   row.names(datatable1) <- NULL
@@ -389,14 +382,15 @@ table_dist <- function(sardist_sf, studyArea) {
 # #SAR critical habitat
 table_crit <- function(ClippedCritHab_sf, studyArea, leatherback_sf) {
 
-  intersect_crit <- sf::st_intersection(ClippedCritHab_sf,studyArea)
+  intersect_crit <- sf::st_intersection(ClippedCritHab_sf, studyArea)
   intersect_crit_result <- nrow(intersect_crit)
-  crit_table <- data.frame(CommonName=intersect_crit$Common_Nam,
-                           Population=intersect_crit$Population,
-                           Area=intersect_crit$Waterbody,
-                           SARA_status=intersect_crit$SARA_Statu)
-  leatherback_table <- data.frame(CommonName="",Population="", Area="", SARA_status="")
-  intersect_leatherback <- sf::st_intersection(leatherback_sf,studyArea)
+  crit_table <- data.frame(CommonName = intersect_crit$Common_Nam,
+                           Population = intersect_crit$Population,
+                           Area = intersect_crit$Waterbody,
+                           SARA_status = intersect_crit$SARA_Statu)
+  
+  leatherback_table <- data.frame(CommonName="", Population="", Area="", SARA_status="")
+  intersect_leatherback <- sf::st_intersection(leatherback_sf, studyArea)
   leatherback_result <- nrow(intersect_leatherback)
   leatherback_table[1,1] <- "Leatherback Sea Turtle"
   leatherback_table[1,2] <- NA
@@ -407,7 +401,7 @@ table_crit <- function(ClippedCritHab_sf, studyArea, leatherback_sf) {
     leatherback_table[1,3] <- NA
   }
   leatherback_table[1,4] <- "Endangered"
-  crit_table <- bind_rows(crit_table,leatherback_table)
+  crit_table <- bind_rows(crit_table, leatherback_table)
   crit_table <- crit_table[!is.na(crit_table$Area), ]
 
   return(crit_table)
@@ -477,7 +471,7 @@ EBSA_report <- function(EBSA_sf, studyArea) {
 
   Query_output_EBSA_report2 <- unique(noquote(Query_output_EBSA_report))
 
-  writeLines(Query_output_EBSA_report2, sep="\n")
+  writeLines(Query_output_EBSA_report2, sep="\n\n")
 
 }
 
@@ -494,7 +488,7 @@ EBSA_reporturl <- function(EBSA_sf, studyArea) {
 
   Query_output_EBSA_reporturl2 <- unique(noquote(Query_output_EBSA_reporturl))
 
-  writeLines(Query_output_EBSA_reporturl2, sep="\n")
+  writeLines(Query_output_EBSA_reporturl2, sep="\n\n")
 
 }
 
@@ -509,7 +503,7 @@ EBSA_location <- function(EBSA_sf, studyArea) {
     paste("Location: ",intersect$Name)
   }
 
-  writeLines(Location_result, sep="\n")
+  writeLines(Location_result, sep="\n\n")
 }
 
 #Bioregion intersect

@@ -1,23 +1,25 @@
-## **AREAS DESIGNATED FOR SPATIAL PLANNING**  
+## **AREAS DESIGNATED FOR SPATIAL PLANNING**
 
-### **Ecologically and Biologically Significant Areas (EBSA)**  
-Contact: <carissa.philippe@dfo-mpo.gc.ca>  
-Last retrieved on: January 21, 2021 from Open Data  
-<https://open.canada.ca/data/en/dataset/d2d6057f-d7c4-45d9-9fd9-0a58370577e0>  
-Quality Tier: High  
-Security level: none  
+### **Ecologically and Biologically Significant Areas (EBSA)**
+
+Contact: [carissa.philippe\@dfo-mpo.gc.ca](mailto:carissa.philippe@dfo-mpo.gc.ca){.email}\
+Last retrieved on: January 21, 2021 from Open Data\
+<https://open.canada.ca/data/en/dataset/d2d6057f-d7c4-45d9-9fd9-0a58370577e0>\
+Quality Tier: High\
+Security level: none
 
 Dataset description from the Open Data record [@OpenData_ebsa]: Ecologically and Biologically Significant Areas (EBSAs) are areas within Canada's oceans that have been identified through formal scientific assessments as having special biological or ecological significance when compared with the surrounding marine ecosystem. Failure to define an area as an EBSA does not mean that it is unimportant ecologically. All areas serve ecological functions to some extent and require sustainable management. Rather, areas identified as EBSAs should be viewed as the most important areas where, with existing knowledge, regulators and marine users should be particularly risk averse to ensure ecosystems remain healthy and productive. EBSA information is used to inform marine planning, including environmental assessment and the siting of marine-based activities, by:
 
-- Informing and guiding project-specific or regional environmental assessments
-- Informing and guiding industries and regulators in their planning and operations, for example: EBSAs have been acknowledged and referred to (often as "Special Areas" or "Potentially Sensitive Areas") in oil and gas related assessments
-- EBSA information has been provided to proponents of submarine cable projects to be used for route planning purposes
-- Informing and guiding Integrated Oceans Management (IOM) process within five Large Ocean Management Areas (LOMAs) and twelve marine bioregions
-- Serving as a basis for the identification of Areas of Interest (AOIs) and of Marine Protected Areas (MPAs) (individually and in the context of planning bioregional networks of MPAs).
+-   Informing and guiding project-specific or regional environmental assessments
+-   Informing and guiding industries and regulators in their planning and operations, for example: EBSAs have been acknowledged and referred to (often as "Special Areas" or "Potentially Sensitive Areas") in oil and gas related assessments
+-   EBSA information has been provided to proponents of submarine cable projects to be used for route planning purposes
+-   Informing and guiding Integrated Oceans Management (IOM) process within five Large Ocean Management Areas (LOMAs) and twelve marine bioregions
+-   Serving as a basis for the identification of Areas of Interest (AOIs) and of Marine Protected Areas (MPAs) (individually and in the context of planning bioregional networks of MPAs).
 
-#### ***Area-specific EBSA search results***  
+#### ***Area-specific EBSA search results***
 
-*
+-   
+
 ```{r EBSA-overlap, echo=FALSE, results='asis'}
 #function for overlap
 EBSA_overlap(EBSA_sf, studyArea)
@@ -42,6 +44,7 @@ EBSA_location(EBSA_sf, studyArea)
 #function for bioregion
 EBSA_bioregion(EBSA_sf, studyArea)
 ```
+
 ```{r overlap-EBSA-plot, echo=FALSE, results='asis'}
 # define polygon dataset and attribute to plot
 poly_sf <- EBSA_sf
