@@ -31,7 +31,7 @@ knitr::kable(table_RV, align="l",
 Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList)) {
-  tableList <- create_table_RV(outputList$studyData, listed_species, speciestable = RVGSSPECIES)
+  tableList <- create_table_RV(outputList$studyData, listed_species, speciesTable = RVGSSPECIES)
   table_rv1 <- tableList[[1]]
   table_rv2 <- tableList[[2]]
 }
@@ -98,13 +98,13 @@ Samples_bboxM <- outputListM$mapPoints
 
 if (!is.null(outputListI)) {
   tableList <- create_table_ISDB(outputListI[[1]], listed_species,
-                                 speciestable = ISSPECIESCODES)
+                                 speciesTable = ISSPECIESCODES)
   table_isdb1 <- tableList[[1]]
   table_isdb2 <- tableList[[2]]
 }
 
 if (!is.null(outputListM)) {
-  tableList <- create_table_MARFIS(outputListM[[1]], listed_species, speciestable = MARFISSPECIESCODES)
+  tableList <- create_table_MARFIS(outputListM[[1]], listed_species, speciesTable = MARFISSPECIESCODES)
   table_mar1 <- tableList[[1]]
   table_mar2 <- tableList[[2]]
 }

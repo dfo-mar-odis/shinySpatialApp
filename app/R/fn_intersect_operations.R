@@ -143,8 +143,8 @@ raster_intersect <- function(datafile, region, studyArea, mapBbox, ...) {
 # 3. speciestable: the RVGSSPECIES species table to link species codes with names
 #
 # Outputs: list containing 2 items
-# 1. datatable1: datatable of all species found within the studyArea
-# 2. datatable2: datatable of only listed species found within the studyArea
+# 1. allSpeciesData: datatable of all species found within the studyArea
+# 2. sarData: datatable of only listed species found within the studyArea
 
 create_table_RV <- function(data_sf, sarTable, speciesTable, ...) {
 
@@ -200,56 +200,57 @@ create_table_RV <- function(data_sf, sarTable, speciesTable, ...) {
 # found within the studyArea
 #
 # Inputs:
-# 1. datafile: an input point file of MARFIS data found within the studyArea
-# 2. listed_table: a table of species at risk listed by SARA and/or COSEWIC
-# 3. speciestable: the MARFISSPECIESCODES species table to link species codes with names
+# 1. data_sf: an input point file of MARFIS data found within the studyArea
+# 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
+# 3. speciesTable: the MARFISSPECIESCODES species table to link species codes with names
 
 #
 # Outputs: list containing 2 items
-# 1. datatable1: datatable of all species found within the studyArea
-# 2. datatable2: datatable of only listed species found within the studyArea
-create_table_MARFIS <- function(datafile, listed_table, speciestable, ...) {
+# 1. allSpeciesData: datatable of all species found within the studyArea
+# 2. sarData: datatable of only listed species found within the studyArea
+create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
 
-  # calculate frequency of MARFIS samples and join
-  # to species lookup tables
-  datatable1 <- aggregate(
-    x = list(Records = datafile$SPECIES_CODE),
-    by = list(SPECIES_CODE = datafile$SPECIES_CODE),
+  # set record column and join with speciesTable
+  allSpeciesData <- aggregate(
+    x = list(Records = data_sf$SPECIES_CODE),
+    by = list(SPECIES_CODE = data_sf$SPECIES_CODE),
     FUN = length)
-  datatable1 <- merge(datatable1, speciestable, by = 'SPECIES_CODE')
-  datatable1 <- datatable1 %>% rename("Common Name"= COMMONNAME)
   
-  data1 <- merge(datafile, speciestable, by = 'SPECIES_CODE')
+  allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'SPECIES_CODE')
+  allSpeciesData <- allSpeciesData %>% rename("Common Name"= COMMONNAME)
+  
+  data1 <- merge(data_sf, speciesTable, by = 'SPECIES_CODE')
   data1$Common_Name_MARFIS <- data1$COMMONNAME
 
-  # Merge the datafile with the listed_species table
+  # Merge the data_sf with the listed_species table
   # and create a frequency table of all listed species
   # caught
-  data1 <- merge(data1, listed_table, by = 'Common_Name_MARFIS')
+  data1 <- merge(data1, sarTable, by = 'Common_Name_MARFIS')
   # data1 <- data1 %>% rename("SCIENTIFICNAME" = Scientific_Name)
 
-  datatable2 <- aggregate(
+  sarData <- aggregate(
     x = list(Records = data1$'Scientific Name'),
     by = list('Scientific Name' = data1$'Scientific Name'),
     length)
-  datatable2 <- merge(datatable2, listed_table, by = 'Scientific Name')
+  sarData <- merge(sarData, sarTable, by = 'Scientific Name')
 
 
 
-  datatable1 <- dplyr::select(datatable1, 'Common Name', Records)
-  datatable1 <- datatable1 %>% rename(CName = 'Common Name')
-  datatable1 <- datatable1 %>% transmute(datatable1, CName = str_to_sentence(CName))
-  datatable1 <- datatable1 %>% rename('Common Name' = CName)
-  datatable2 <- dplyr::select(datatable2, 'Scientific Name', 'Common Name',
-                              "SARA status","COSEWIC status",Records)
+  allSpeciesData <- dplyr::select(allSpeciesData, 'Common Name', Records)
+  allSpeciesData <- allSpeciesData %>% rename(CName = 'Common Name')
+  allSpeciesData <- allSpeciesData %>% transmute(allSpeciesData,
+                                                 CName = str_to_sentence(CName))
+  allSpeciesData <- allSpeciesData %>% rename('Common Name' = CName)
+  sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
+                           "SARA status","COSEWIC status", Records)
  
   
    # order the tables by number of Records (decreasing)
-  datatable1 <- datatable1[with(datatable1, order(-Records)), ]
-  datatable2 <- datatable2[with(datatable2, order(-Records)), ]
-  row.names(datatable1) <- NULL
-  row.names(datatable2) <- NULL
-  outList <- list(datatable1, datatable2)
+  allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
+  sarData <- sarData[with(sarData, order(-Records)), ]
+  row.names(allSpeciesData) <- NULL
+  row.names(sarData) <- NULL
+  outList <- list(allSpeciesData, sarData)
   return(outList)
 
 }
@@ -260,47 +261,47 @@ create_table_MARFIS <- function(datafile, listed_table, speciestable, ...) {
 # found within the studyArea
 #
 # Inputs:
-# 1. datafile: an input point file of ISDB data found within the studyArea
-# 2. listed_table: a table of species at risk listed by SARA and/or COSEWIC
-# 3. speciestable: the ISSPECIESCODES species table to link species codes with names
+# 1. data_sf: an input point file of ISDB data found within the studyArea
+# 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
+# 3. speciesTable: the ISSPECIESCODES species table to link species codes with names
 #
 # Outputs: list containing 2 items
-# 1. datatable1: datatable of all species found within the studyArea
+# 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. datatable2: datatable of only listed species found within the studyArea
 
-create_table_ISDB <- function(datafile, listed_table, speciestable, ...) {
+create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
 
   # calculate frequency of ISDB samples and join
   # to species lookup tables
 
-  datatable1 <- aggregate(
-    x = list(Records = datafile$SPECCD_ID),
-    by = list(SPECCD_ID = datafile$SPECCD_ID),
+  allSpeciesData <- aggregate(
+    x = list(Records = data_sf$SPECCD_ID),
+    by = list(SPECCD_ID = data_sf$SPECCD_ID),
     FUN = length)
-  data1 <- merge(datafile,speciestable, by = 'SPECCD_ID')
-  datatable1 <- merge(datatable1,speciestable, by = 'SPECCD_ID')
-  # Merge the datafile with the listed_species table
+  data1 <- merge(data_sf, speciesTable, by = 'SPECCD_ID')
+  allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'SPECCD_ID')
+  # Merge the data_sf with the listed_species table
   # and create a frequency table of all listed species
   # caught
-  data1 <- merge(data1,listed_table, by = 'Scientific Name')
+  data1 <- merge(data1,sarTable, by = 'Scientific Name')
 
-  datatable2 <- aggregate(
+  sarData <- aggregate(
     x = list(Records = data1$'Scientific Name'),
     by = list('Scientific Name' = data1$'Scientific Name'),
     length)
-  datatable2 <- merge(datatable2,listed_table, by = 'Scientific Name')
+  sarData <- merge(sarData, sarTable, by = 'Scientific Name')
 
 
-  datatable1 <- dplyr::select(datatable1, 'Scientific Name', 'Common Name', Records)
-  datatable2 <- dplyr::select(datatable2, 'Scientific Name', 'Common Name',
-                              "SARA status","COSEWIC status",Records)
+  allSpeciesData <- dplyr::select(allSpeciesData, 'Scientific Name', 'Common Name', Records)
+  sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
+                           "SARA status","COSEWIC status",Records)
   # order the tables by number of Records (decreasing)
-  datatable1 <- datatable1[with(datatable1, order(-Records)), ]
-  datatable2 <- datatable2[with(datatable2, order(-Records)), ]
-  row.names(datatable1) <- NULL
-  row.names(datatable2) <- NULL
+  allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
+  sarData <- sarData[with(sarData, order(-Records)), ]
+  row.names(allSpeciesData) <- NULL
+  row.names(sarData) <- NULL
 
-  outList <- list(datatable1, datatable2)
+  outList <- list(allSpeciesData, sarData)
   return(outList)
 }
 ##### - END create_table_ISDB function ##################################
@@ -312,27 +313,23 @@ create_table_ISDB <- function(datafile, listed_table, speciestable, ...) {
 # SARA and COSEWIC listed species
 #
 # Inputs:
-# 1. datafile: an input point file of OBIS data found within the studyArea
+# 1. data_sf: an input point file of OBIS data found within the studyArea
 #
 # Outputs: list containing 1 items
-# 1. datatable1: datatable of all species found within the studyArea
+# 1. outTable: datatable of all species found within the studyArea
 
-create_table_OBIS <- function(datafile, ...) {
+create_table_OBIS <- function(data_sf, ...) {
 
   # calculate frequency of OBIS samples
-  datatable1 <- datafile
-  #datatable1 <- datatable1 %>% rename("COSEWIC status"=COSEWIC.status,
-  #                                    "SARA status"=SARA.status,
-  #                                    "Scientific Name"=Scientific.Name,
-  #                                    "Common Name"=Common.Name)
+  outTable <- data_sf
 
-  datatable1 <- dplyr::select(datatable1, "Scientific Name", "Common Name",
+  outTable <- dplyr::select(outTable, "Scientific Name", "Common Name",
                               "SARA status","COSEWIC status")
-  datatable1$geometry <- NULL
-  datatable1 <- unique(datatable1)
+  outTable$geometry <- NULL
+  outTable <- unique(outTable)
 
-  row.names(datatable1) <- NULL
-  outList <- list(datatable1)
+  row.names(outTable) <- NULL
+  outList <- list(outTable)
   return(outList)
 }
 
@@ -344,15 +341,15 @@ create_table_OBIS <- function(datafile, ...) {
 #
 # Outputs: returns the datatable with new fields
 # for coordinates
-sfcoords_as_cols <- function(x, names = c("long","lat")) {
-  stopifnot(inherits(x,"sf") && inherits(sf::st_geometry(x),"sfc_POINT"))
-  ret <- sf::st_coordinates(x)
+sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
+  stopifnot(inherits(data_sf,"sf") && inherits(sf::st_geometry(data_sf),"sfc_POINT"))
+  ret <- sf::st_coordinates(data_sf)
   ret <- tibble::as_tibble(ret)
   stopifnot(length(names) == ncol(ret))
-  x <- x[ , !names(x) %in% names]
-  ret <- setNames(ret,names)
-  x <- dplyr::bind_cols(x,ret)
-  return(x)
+  data_sf <- data_sf[ , !names(data_sf) %in% names]
+  ret <- setNames(ret, names)
+  data_sf <- dplyr::bind_cols(data_sf, ret)
+  return(data_sf)
 }
 ##### - END sfcoords_as_cols function ##################################
 
@@ -363,9 +360,9 @@ sfcoords_as_cols <- function(x, names = c("long","lat")) {
 # #SAR distribution
 table_dist <- function(sardist_sf, studyArea) {
   #table_dist <- function(sardist_sf, studyArea, listed_species) {
-  intersect_dist <- sf::st_intersection(sardist_sf,studyArea)
+  intersect_dist <- sf::st_intersection(sardist_sf, studyArea)
   intersect_dist$Common_Nam[intersect_dist$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
-  dist_table <- intersect_dist %>% dplyr::select(Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
+  dist_table <-  intersect_dist %>% dplyr::select(Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
   #dist_table <- dist_table %>% dplyr::rename("Scientific_Name"=Scientific)
   #dist_table <- merge(dist_table, listed_species, by='Scientific_Name')
   #dist_table <- dist_table %>% dplyr::select(Common_Nam, Scientific, Population, Waterbody, Schedule.status, COSEWIC.status, Wild_Species)
