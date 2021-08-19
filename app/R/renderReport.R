@@ -108,7 +108,7 @@ add_sections <- function(fileNames = NULL, dirIn, dirOut) {
     # copy/paste files
     file.copy(paste0(dirIn, "/", fileNames), dirOut)
     #
-    glue("```{{r, child = c({glue_collapse(rmdChildNames, sep = ', ')})}}\n```")
+    glue("```{{r child = c({glue_collapse(rmdChildNames, sep = ', ')})}}\n```")
   } else fileNames
 }
 

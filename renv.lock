@@ -46,15 +46,15 @@
     },
     "Mar.data": {
       "Package": "Mar.data",
-      "Version": "2020.11.23",
+      "Version": "2021.04.16",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "Mar.data",
       "RemoteUsername": "Maritimes",
       "RemoteRef": "HEAD",
-      "RemoteSha": "978b18f8f67acc74d14149b0a3287feead46a3a4",
-      "Hash": "cb6df22f30b4e3cc2eccd657fe6c3d5f"
+      "RemoteSha": "6d296221429d347a503e3f174778727fbed59e08",
+      "Hash": "db5b3a008232d3ea086ac038985d67e1"
     },
     "Mar.datawrangling": {
       "Package": "Mar.datawrangling",
@@ -71,16 +71,16 @@
     },
     "Mar.utils": {
       "Package": "Mar.utils",
-      "Version": "2021.02.05",
+      "Version": "2021.06.16",
       "Source": "GitHub",
-      "RemoteType": "github",
       "Remotes": "Maritimes/Mar.data",
+      "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "Mar.utils",
       "RemoteUsername": "Maritimes",
       "RemoteRef": "HEAD",
-      "RemoteSha": "56ea3917069186227631162ab288dacc72722f39",
-      "Hash": "ceb4c224e91831a893a2c29641887580"
+      "RemoteSha": "43d06ca3837f398f66c08818cd24c1ba4780c7ab",
+      "Hash": "2a71197efe3bc895ef824f14102cfb34"
     },
     "Matrix": {
       "Package": "Matrix",
@@ -294,10 +294,10 @@
     },
     "cli": {
       "Package": "cli",
-      "Version": "2.3.1",
+      "Version": "3.0.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "3e3f28efcadfda442cd18651fbcbbecf"
+      "Hash": "e3ae5d68dea0c55a12ea12a9fda02e61"
     },
     "clipr": {
       "Package": "clipr",
@@ -501,6 +501,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "4d243a9c10b00589889fe32314ffd902"
+    },
+    "geometries": {
+      "Package": "geometries",
+      "Version": "0.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "be29054e97e756ade56d13a89c6d5243"
     },
     "geosphere": {
       "Package": "geosphere",
@@ -1229,6 +1236,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "9d6831c4c002137d99be6b946ac9da07"
+    },
+    "sfheaders": {
+      "Package": "sfheaders",
+      "Version": "0.4.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c1bd5fbd6bed3c16a20df15d9bc20c55"
     },
     "shiny": {
       "Package": "shiny",

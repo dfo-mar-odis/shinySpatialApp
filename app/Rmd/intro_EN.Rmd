@@ -35,7 +35,7 @@ load(here::here("app/data/testData.RData"))
 #load(here::here("app/data/OpenData_sardist.RData"))
 #load(here::here("app/data/SecureData.RData"))
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
-lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE),source) # check helpers.R for a list of packages
+lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
 ```
 
 ```{r  Load Search Area, echo=FALSE, include=FALSE, cache=FALSE}
