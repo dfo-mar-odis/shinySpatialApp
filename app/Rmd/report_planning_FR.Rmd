@@ -7,18 +7,57 @@ Consulté le : 21 janvier 2021 sur le Portail de données ouvertes
 Niveau de qualité : Élevée  
 Niveau de sécurité : Aucun  
 
-Description de l’ensemble de données (tirée du dossier des données ouvertes): Les zones d'importance écologique et biologique (ZIEB) sont des zones au sein des eaux océaniques canadiennesque des évaluations scientifiques officielles ont désignées comme ayant une importance écologique et biologique particulière par rapport à l'écosystème marin environnant. Le fait qu'une zone n'ait pas été désignée comme ayant une importance écologique et biologique ne signifie pas pour autant qu'elle n'a pas une importance écologique. Toutes les zones assument des fonctions écologiques dans une certaine mesure et exigent une gestion durable. Les zones désignées comme des ZIEB devraient plutôt être vues comme des zones extrêmement importantes, où les connaissances, les législateurs et les utilisateurs des ressources marines doivent exercer une grande prudence eu égard au risque, afin de veiller à ce que les écosystèmes restent sains et productifs. Les renseignements relatifs à ces aires sont utilisés pour appuyer la planification marine, notamment l'évaluation environnementale et la mise en place d'activités marines:
+Description de l’ensemble de données (tirée du dossier des données ouvertes): Les zones d'importance écologique et biologique (ZIEB) sont des zones au sein des eaux océaniques canadiennes que des évaluations scientifiques officielles ont désignées comme ayant une importance écologique et biologique particulière par rapport à l'écosystème marin environnant. Le fait qu'une zone n'ait pas été désignée comme ayant une importance écologique et biologique ne signifie pas pour autant qu'elle n'a pas une importance écologique. Toutes les zones assument des fonctions écologiques dans une certaine mesure et exigent une gestion durable. Les zones désignées comme des ZIEB devraient plutôt être vues comme des zones extrêmement importantes, où les connaissances, les législateurs et les utilisateurs des ressources marines doivent exercer une grande prudence eu égard au risque, afin de veiller à ce que les écosystèmes restent sains et productifs. Les renseignements relatifs à ces aires sont utilisés pour appuyer la planification marine, notamment l'évaluation environnementale et la mise en place d'activités marines:
 
-- Informing and guiding project-specific or regional environmental assessments
+- En informant et guidant les évaluations environnementales régionales ou spécifique à un projet
 - En informant et guidant les industries et les législateurs pour une planification et une conduite d'activités optimale, par exemple: les zones d'importance écologique et biologique ont été prises en compte et mentionnées dans les évaluations portant sur le pétrole et le gaz.
-- Des renseignements ont été fournis aux promoteurs de projets de câbles sous-marins, afin de les aider à en déterminer les tracés.
+- Des renseignements sur les ZIEB ont été fournis aux promoteurs de projets de câbles sous-marins, afin de les aider à en déterminer les tracés.
 - En information et en guidant le processus de gestion intégrée des océans dans cinq zones étendues de gestion des océans et 12 biorégions marines.
 - En servant de fondement pour la détermination des zones d'intérêt et des zones de protection marines (de manière individuelle et dans le cadre de la planification des réseaux biorégionaux de zones de protection marines).
 
 #### ***Résultats de la recherche des ZIEB par zone***  
 
-**under-development**
+*
+```{r echo=FALSE, results='asis'}
+#function for overlap
+EBSA_overlap(EBSA_sf, studyArea)
+```
 
-```{r, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA; pink) relative to the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue.'}
-#plot_EBSA(EBSA_sf, studyArea, land10m_sf, 300)
+```{r echo=FALSE, results='asis'}
+#function for report
+EBSA_report(EBSA_sf, studyArea)
+```
+
+```{r echo=FALSE, results='asis'}
+#function for report url
+EBSA_reporturl(EBSA_sf, studyArea)
+```
+
+```{r echo=FALSE, results='asis'}
+#function for location
+EBSA_location(EBSA_sf, studyArea)
+```
+
+```{r echo=FALSE, results='asis'}
+#function for bioregion
+EBSA_bioregion(EBSA_sf, studyArea)
+```
+```{r overlap EBSA and plot, echo=FALSE, results='asis'}
+# define polygon dataset and attribute to plot
+poly_sf=EBSA_sf
+attribute="NONE"
+
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- poly_intersect(poly_sf,Region,studyArea, bboxMap)
+```
+
+```{r, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) par rapport à la zone de recherche définie par l’utilisateur (entourée de rouge).'}
+if (!is.null(clipped$regionPoly)){
+  plot_polygons(regionMap,regionBox,studyBox_geom, clipped$regionPoly,attribute) 
+} 
+```
+
+```{r, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) dans la zone de recherche définie par l’utilisateur (entourée de rouge).'}
+if(!is.null(clipped$studyPoly)){print(
+  plot_polygons(areaMap,bboxMap,studyBox_geom, clipped$mapPoly,attribute))}
 ```
