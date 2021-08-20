@@ -42,3 +42,18 @@ extract_isdb <- function(){
                                     create.shps = T, file.id = "isdb2015_DemoHex", ignore.col.limit = T)
   return(isdb2015_DemoHex)
 }
+
+
+
+preprocess_marfis <- function(marfis_sf) {
+  return(marfis_sf)
+}
+
+preprocess_isdb <- function(isdb_sf) {
+  return(isdb_sf)
+}
+
+
+
+
+

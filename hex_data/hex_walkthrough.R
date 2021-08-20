@@ -1,29 +1,84 @@
 # script to walkthrough hex_data handling:
 
-marf2015_demo <- readRDS(here::here("hex_data/marf2015_DemoHex_sp.RDS"))
-hexGrid <- marf2015_demo[["Grid2Min"]]
-hex_sf <- sf::st_as_sf(hexGrid)
-
-spec_df <- dplyr::select(hex_sf, -ORD_gr, -HEXID)
-spec_df <- sf::st_drop_geometry(spec_df)
-hex_sf$count <- rowSums(spec_df != 0) / 2
-hex_sf <- dplyr::filter(hex_sf, count > 0)
-
-hex_sf$count <- as.factor(hex_sf$count)
-poly_sf <- hex_sf
-attribute <- "count"
-clipped <- master_intersect(hex_sf, region, hex_sf, bboxMap)
-plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData, attribute)
 
 
-plot_spec <- function(data_sf, specCol) {
-  plot_sf <- dplyr::filter(data_sf, get(specCol) > 0)
-  
-  # use cut function here instead of log.
-  # alternatively use continuous scale colour bar
-  plot_sf$attr <- as.factor(log(plot_sf[[specCol]], base=10) %/% 1)
-  attribute <- "attr"
-  clipped <- master_intersect(plot_sf, region, studyArea, bboxMap)
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData, attribute)
-  
+
+isdb2015_demo <- readRDS(here::here("hex_data/isdb2015_DemoHex_sf.RDS"))
+marfis2015_demo <- readRDS(here::here("hex_data/marf2015_DemoHex_sf.RDS"))
+isdb_codes <- readRDS(here::here("hex_data/SPECIES_ISDB.RDS"))
+
+# helper function, replaces a column name with it's common name from the 
+# corresponding marifs or isdb species table. 
+# returns a list containing the common name and the updated data_sf object. 
+set_spec_col_name <- function(data_sf, fullColName, attrNum, marfis=FALSE) {
+  if (marfis) {
+    lookupTable <- MARFISSPECIESCODES
+    lookupCol <- "SPECIES_CODE"
+    cnameCol <- "COMMONNAME"
+  }
+  else {
+    lookupTable <- ISSPECIESCODES
+    lookupCol <- "SPECCD_ID"
+    cnameCol <- "Common Name"
+    
+  }
+  # get species name from table
+  specName <- filter(lookupTable, get(lookupCol)==attrNum)[[cnameCol]]
+  data_sf[[specName]] <- data_sf[[fullColName]]
+  outList <- list(specName = specName, data_sf=data_sf)
+  return(outList)
 }
+
+
+# adds marfis or isdb data for a given species to an input ggplot. 
+plot_isdb_marfis <- function(specNum, ggplotIn, data_sf, marfis=FALSE) {
+  if (marfis) {
+    fullColName <- glue("X", specNum, "_SU")
+  }
+  else {
+    fullColName <- glue("EST_NUM_CAUGHT_", specNum)
+  }
+  
+  if (fullColName %in% names(data_sf)) {
+    poly_sf <- filter(data_sf, get(fullColName) > 0)
+    specData <- set_spec_col_name(poly_sf, fullColName, specNum, marfis)
+    if (!is.null(specData$data_sf)) {
+      outMap <- ggplotIn +
+        geom_sf(data=specData$data_sf, aes(fill=get(specData$specName)), color = NA) + 
+        scale_fill_viridis_c(option = "plasma",  name=toString(specData$specName))
+      return(outMap)
+    } # end of data results in area check
+    else {
+      return(NULL)
+    }
+  } # end of column name in data check
+  else {
+    return(NULL)
+  }
+}
+
+marfisClipped <- master_intersect(marfis2015_demo, region, studyArea, bboxMap)
+isdbClipped <- master_intersect(isdb2015_demo, region, studyArea, bboxMap)
+
+
+plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis=FALSE) {
+  
+  plotList <- lapply(speciesCodeList, plot_isdb_marfis, ggplotIn=baseGgplot, data_sf=data_sf, marfis=marfis)
+  plotList <- plotList[!sapply(plotList, is.null)]
+  #Arrange all plots in a grid
+  gridExtra::grid.arrange(grobs=plotList,
+                          bottom = expression(paste("Longitude ",degree,"N",sep="")),
+                          left = expression(paste("Latitude ",degree,"N",sep="")),
+                          ncol=2)
+}
+
+
+
+
+
+
+
+
+
+
+
