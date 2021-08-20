@@ -21,7 +21,7 @@ Data notes:
 
 #### ***Area-specific Intertidal Vegetation and Rockweed search results***  
 
-```{r overlap rockweed, echo=FALSE, results='asis'}
+```{r overlap-rockweed, echo=FALSE, results='asis'}
 # define polygon dataset and attribute to plot
 poly_sf <- rockweed_sf
 attribute <- "RWP"
@@ -30,7 +30,7 @@ attribute <- "RWP"
 clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
 ```
 *
-```{r overlap rockweed output, echo=FALSE, results='asis'}
+```{r overlap-rockweed-output, echo=FALSE, results='asis'}
  
 polyText <- if(is.null(clipped$studyData)){"There are no relevant records of predicted intertidal vegetation for this search area."
 } else {"There are relevant records of predicted intertidal vegetation for this search area."}
@@ -39,20 +39,19 @@ polyText <- if(is.null(clipped$studyData)){"There are no relevant records of pre
  writeLines(polyText)
 ```
 
-```{r rockweed plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
+```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
 if(!is.null(clipped$studyData)){print(
   plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData, attribute))}
 ```
 
-```{r table rockweed, echo=FALSE, cache=FALSE, include = FALSE}
+```{r table-rockweed, echo=FALSE, cache=FALSE, include = FALSE}
 if(!is.null(clipped$studyData)){
   rwTable <- rockweedStats(clipped$studyData, studyArea)}
 ```
 
-```{r rockweed table}
+```{r rockweed-table}
 if(!is.null(clipped$studyData)){
-knitr::kable(rwTable,align="l",
-             caption = "Number of vegetation polygons and surface area occupied by each category for the study area. Total intertidal vegetations is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
+knitr::kable(rwTable,align="l", caption = "Number of vegetation polygons and surface area occupied by each category for the study area. Total intertidal vegetations is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 } 
 ```
