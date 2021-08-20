@@ -39,10 +39,10 @@ lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), s
 ```
 
 ```{r  Load-Search-Area, echo=FALSE, include=FALSE, cache=FALSE}
-studyArea <- sf::st_read("{{path_to_geoms}}")
+#studyArea <- sf::st_read("{{path_to_geoms}}")
 # studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
 # Uncomment the following to test fixed polygon:
-#studyArea <- st_read("../studyAreaTest/geoms_slc_test.geojson")#Offshore
+# studyArea <- st_read("../studyAreaTest/geoms_slc_test.geojson")#Offshore
 # studyArea <- st_read("../studyAreaTest/geoms_slc_coastal_test.geojson")#coastal
 # studyArea <- st_read("../studyAreaTest/geoms_slc_no_land.geojson") #no land
 region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
@@ -71,8 +71,8 @@ regionMap <- region_map(regionBox, studyArea, land10m_sf, bounds_sf)
 
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
- <!--```{r child = '../Rmd/report_fish_EN.Rmd'} 
- ``` -->
+<!-- ```{r child = '../Rmd/report_fish_EN.Rmd'} 
+``` -->
 
 <!-- END  -->
 

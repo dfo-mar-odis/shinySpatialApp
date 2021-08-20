@@ -89,6 +89,49 @@ The Maritimes Fishery Information System (MARFIS) is a DFO database, managed by 
 
 #### ***Area-specific MARFIS & ISDB search results***
 
+```{r new-marfis-isdb-results, include=FALSE, cache=FALSE}
+
+isdb2015_demo <- readRDS(here::here("hex_data/isdb2015_DemoHex_sf.RDS"))
+marfis2015_demo <- readRDS(here::here("hex_data/marf2015_DemoHex_sf.RDS"))
+isdbClipped <- master_intersect(isdb2015_demo, region, studyArea, mapBbox = bboxMap, Year = minYear)
+marfisClipped <- master_intersect(marfis2015_demo, region, studyArea, mapBbox = bboxMap, Year = minYear)
+
+# generate tables here
+
+```
+*
+```{r new-isdb-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_isdb <- if (is.null(isdbClipped)) {
+    "There are no relevant records in the Industry Survey Database (ISDB) for this search area."
+  } else {
+    "There are relevant records in the Industry Survey Database (ISDB) for this search area."
+  }
+Report_isdb<-noquote(Report_isdb)
+writeLines(Report_isdb)
+```
+
+*
+```{r new-marfis-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_marfis <- if (is.null(marfisClipped)) {
+    "There are no relevant records in the Maritimes Fishery Information System (MARFIS) for this search area."
+  } else {
+    "There are relevant records in the Maritimes Fishery Information System (MARFIS) for this search area."
+  }
+Report_marfis<-noquote(Report_marfis)
+writeLines(Report_marfis)
+```
+*
+```{r new-marfis-isdb-plot, fig.height=8, fig.width=31, fig.cap='Quality Tier: Medium. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query aggregated information from Maritimes Fishery Information System (MARFIS) and/or Industry Survey Database (ISDB) observation records shown by species. Rule of five was not applied.'}
+if (!is.null(isdbClipped)) {
+  specList <- filter(ISSPECIESCODES, get("Scientific Name") %in% listed_species$`Scientific Name`)$SPECCD_ID
+  plot_marfis_grid(areaMap, isdbClipped$mapData, specList, marfis = FALSE)
+} 
+if (!is.null(marfisClipped)) {
+  specList <- filter(MARFISSPECIESCODES, COMMONNAME %in% listed_species$Common_Name_MARFIS)$SPECIES_CODE
+  plot_marfis_grid(areaMap, marfisClipped$mapData, specList, marfis = TRUE)
+}
+```
+*
 ```{r marfis-isdb-results, include=FALSE, cache=FALSE}
 outputListI <- master_intersect(isdb_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
 outputListM <- master_intersect(marfis_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)

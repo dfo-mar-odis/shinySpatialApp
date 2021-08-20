@@ -42,10 +42,10 @@ plot_isdb_marfis <- function(specNum, ggplotIn, data_sf, marfis=FALSE) {
   if (fullColName %in% names(data_sf)) {
     poly_sf <- filter(data_sf, get(fullColName) > 0)
     specData <- set_spec_col_name(poly_sf, fullColName, specNum, marfis)
-    if (!is.null(specData$data_sf)) {
+    if (nrow(specData$data_sf) > 0) {
       outMap <- ggplotIn +
         geom_sf(data=specData$data_sf, aes(fill=get(specData$specName)), color = NA) + 
-        scale_fill_viridis_c(option = "plasma",  name=toString(specData$specName))
+        scale_fill_viridis_c(option = "plasma",  name=str_wrap(toString(specData$specName), 8))
       return(outMap)
     } # end of data results in area check
     else {
@@ -69,13 +69,13 @@ plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis=FALSE) {
   gridExtra::grid.arrange(grobs=plotList,
                           bottom = expression(paste("Longitude ",degree,"N",sep="")),
                           left = expression(paste("Latitude ",degree,"N",sep="")),
-                          ncol=2)
+                          ncol=3)
 }
 
 
 
 
-
+specList <- filter(MARFISSPECIESCODES, COMMONNAME %in% listed_species$Common_Name_MARFIS)$SPECIES_CODE
 
 
 
