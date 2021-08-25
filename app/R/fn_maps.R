@@ -195,25 +195,7 @@ clean_isdb_marfis_sf <- function(data_sf, specNumList, marfis=FALSE){
 }
 
 
-#
-# INPUTS:
-# baseGgplot: background ggplot object for all plots with land, axis, etc.  regionMap/areaMap
-# data_sf: data to plot
-# speciesCodeList: List of species codes indicating which species to plot
-# marfis: boolean indicating whether the data is from marfis or isdb
-#
-#
-plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis, ncol=3) {
-  
-  cleanData <- clean_isdb_marfis_sf(data_sf, speciesCodeList, marfis)
-  
-  plotList <- lapply(cleanData$specList, plot_isdb_marfis, ggplotIn=baseGgplot, 
-                     data_sf=cleanData$data_sf, maxCnt=cleanData$scaleLim)
-  plotList <- plotList[!sapply(plotList, is.null)]
-  
-  plotList <- plotList[1:4]
-  plotLabels <- cleanData$specList[1:4]
-  
+chunk_plotter <- function(plotList) {
   legend <- cowplot::get_legend(plotList[[1]] + theme(legend.position = c(0.2, 0.8)))
   p_grid <- cowplot::plot_grid(plotlist = plotList)
   cowplot::plot_grid(p_grid,
@@ -225,7 +207,33 @@ plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis, ncol=3)
                         x=0.5, y= 0, vjust=-4, angle= 0) +
     cowplot::draw_label(expression(paste("Latitude ",degree,"N",sep="")),
                         x=0, y=0.5, vjust= 3, hjust=-0.1, angle=90)
+}
+
+#
+# INPUTS:
+# baseGgplot: background ggplot object for all plots with land, axis, etc.  regionMap/areaMap
+# data_sf: data to plot
+# speciesCodeList: List of species codes indicating which species to plot
+# marfis: boolean indicating whether the data is from marfis or isdb
+#
+#
+plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis) {
   
+  cleanData <- clean_isdb_marfis_sf(data_sf, speciesCodeList, marfis)
+  
+  # make all of the individual plots, get rid of any empty plots
+  plotList <- lapply(cleanData$specList, plot_isdb_marfis, ggplotIn=baseGgplot, 
+                     data_sf=cleanData$data_sf, maxCnt=cleanData$scaleLim)
+  plotList <- plotList[!sapply(plotList, is.null)]
+  
+  
+  # plot a 2x2 grid for each four plots:
+  chunkSize <- 6
+  plotChunks <- split(plotList, ceiling(seq_along(plotList) / chunkSize))
+  # use for loop instead of lapply to suppress index output in the rmd
+  for (chunk in plotChunks) {
+    plot(chunk_plotter(chunk))
+  }
 }
 
 
