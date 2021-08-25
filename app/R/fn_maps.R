@@ -39,8 +39,8 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   #Arrange all 4 cetaceans into grid
   gridExtra::grid.arrange(finWhalePlot, harbourPorpoisePlot, humpbackWhalePlot,
                           seiWhalePlot,
-                          bottom = expression(paste("Longitude ",degree,"N",sep="")),
-                          left = expression(paste("Latitude ",degree,"N",sep="")),
+                          bottom = expression(paste("Longitude ", degree, "W", sep="")),
+                          left = expression(paste("Latitude ", degree, "N", sep="")),
                           nrow = 2)
 }
 
@@ -90,46 +90,46 @@ whale_ggplot <- function(whale_sf, bound, landLayer, studyArea, plotTitle, plotB
 
 
 
-
 # helper function, replaces a column name with it's common name from the 
 # corresponding marifs or isdb species table. 
 # returns a list containing the common name and the updated data_sf object. 
-set_spec_col_name <- function(data_sf, fullColName, attrNum, marfis=FALSE) {
+get_spec_names <- function(colNames, marfis=FALSE) {
   if (marfis) {
+    attrNums <- col_to_marfis(colNames)
     lookupTable <- MARFISSPECIESCODES
     lookupCol <- "SPECIES_CODE"
     cnameCol <- "COMMONNAME"
   }
   else {
+    attrNums <- col_to_isdb(colNames)
     lookupTable <- ISSPECIESCODES
     lookupCol <- "SPECCD_ID"
     cnameCol <- "Common Name"
     
   }
   # get species name from table
-  specName <- filter(lookupTable, get(lookupCol)==attrNum)[[cnameCol]]
-  data_sf[[specName]] <- data_sf[[fullColName]]
-  outList <- list(specName = specName, data_sf=data_sf)
-  return(outList)
+  specNames <- filter(lookupTable, get(lookupCol) %in% attrNums)[[cnameCol]]
+  return(specNames)
 }
 
 
 # adds marfis or isdb data for a given species to an input ggplot. 
-plot_isdb_marfis <- function(specNum, ggplotIn, data_sf, marfis=FALSE) {
-  if (marfis) {
-    fullColName <- glue("X", specNum, "_SU")
-  }
-  else {
-    fullColName <- glue("EST_NUM_CAUGHT_", specNum)
-  }
+plot_isdb_marfis <- function(colName, ggplotIn, data_sf, maxCnt) {
   
-  if (fullColName %in% names(data_sf)) {
-    poly_sf <- filter(data_sf, get(fullColName) > 0)
-    specData <- set_spec_col_name(poly_sf, fullColName, specNum, marfis)
-    if (nrow(specData$data_sf) > 0) {
+  if (colName %in% names(data_sf)) {
+    # drop zero rows:
+    plot_sf <- dplyr::filter(data_sf, (get(colName) > 0))
+    if (nrow(plot_sf) > 0) {
       outMap <- ggplotIn +
-        geom_sf(data=specData$data_sf, aes(fill=get(specData$specName)), color = NA) + 
-        scale_fill_viridis_c(option = "plasma",  name=str_wrap(toString(specData$specName), 8))
+        geom_sf(data=plot_sf, aes(fill=get(colName)), color = NA) + 
+        scale_fill_viridis_c(option = "plasma", limits=c(0, maxCnt)) + 
+        theme(legend.position = "none",
+              legend.direction = "horizontal") +
+        guides(fill=guide_colorbar(title="Estimated combined weight", title.position="top", title.hjust = 0.5)) +
+        theme(axis.title.x=element_blank(),
+              axis.title.y=element_blank())+
+        labs(subtitle = colName) 
+      
       return(outMap)
     } # end of data results in area check
     else {
@@ -141,16 +141,91 @@ plot_isdb_marfis <- function(specNum, ggplotIn, data_sf, marfis=FALSE) {
   }
 }
 
-# plots marfis and isdb data by species in a grid
-plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis=FALSE) {
+
+marfis_to_col <- function(marfisNum){
+  fullColNames <- paste("X", marfisNum, "_SU", sep = "")
+  return(fullColNames)
+}
+
+isdb_to_col <- function(isdbNum){
+  fullColNames <- paste("EST_COMBINED_WT_", isdbNum, sep = "")
+  return(fullColNames)
+}
+
+col_to_marfis <- function(marfisCol){
+  marfisNum <- gsub("_SU", "", gsub("X", "", marfisCol))
+  return(marfisNum)
+}
+
+col_to_isdb <- function(isdbCol){
+  isdbNum <- gsub("EST_COMBINED_WT_", "", isdbCol)
+  return(isdbNum)
+}
+
+
+
+
+clean_isdb_marfis_sf <- function(data_sf, specNumList, marfis=FALSE){
   
-  plotList <- lapply(speciesCodeList, plot_isdb_marfis, ggplotIn=baseGgplot, data_sf=data_sf, marfis=marfis)
+  # convert numeric list to list of col names:
+  if (marfis) {
+    fullColNames <- marfis_to_col(specNumList)
+  }
+  else {
+    fullColNames <- isdb_to_col(specNumList)
+  }
+  
+  # only select columns asked for that have data:
+  data_sf <- dplyr::select(data_sf, any_of(fullColNames))
+  noGeom <- sf::st_drop_geometry(data_sf)
+  noGeom <- dplyr::select(noGeom, which(colSums(noGeom) > 0))
+  scaleLim <- max(noGeom)
+  colNamesUsed <- names(noGeom)
+  data_sf <- dplyr::select(data_sf, all_of(colNamesUsed))
+  
+  specNames <-get_spec_names(colNamesUsed, marfis)
+  names(data_sf) <- append(specNames, "geometry")
+  
+  
+  
+  outList <- list(data_sf = data_sf,
+                  specList = specNames,
+                  scaleLim = scaleLim)
+  return(outList)
+}
+
+
+#
+# INPUTS:
+# baseGgplot: background ggplot object for all plots with land, axis, etc.  regionMap/areaMap
+# data_sf: data to plot
+# speciesCodeList: List of species codes indicating which species to plot
+# marfis: boolean indicating whether the data is from marfis or isdb
+#
+#
+plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis, ncol=3) {
+  
+  cleanData <- clean_isdb_marfis_sf(data_sf, speciesCodeList, marfis)
+  
+  plotList <- lapply(cleanData$specList, plot_isdb_marfis, ggplotIn=baseGgplot, 
+                     data_sf=cleanData$data_sf, maxCnt=cleanData$scaleLim)
   plotList <- plotList[!sapply(plotList, is.null)]
-  #Arrange all plots in a grid
-  gridExtra::grid.arrange(grobs=plotList,
-                          bottom = expression(paste("Longitude ",degree,"N",sep="")),
-                          left = expression(paste("Latitude ",degree,"N",sep="")),
-                          ncol=2)
+  
+  plotList <- plotList[1:4]
+  plotLabels <- cleanData$specList[1:4]
+  
+  legend <- cowplot::get_legend(plotList[[1]] + theme(legend.position = c(0.2, 0.8)))
+  p_grid <- cowplot::plot_grid(plotlist = plotList)
+  cowplot::plot_grid(p_grid,
+                     legend, 
+                     ncol = 1, 
+                     rel_heights = c(2, 0.3),
+                     scale=0.9) +
+    cowplot::draw_label(expression(paste("Longitude ",degree,"W",sep="")),
+                        x=0.5, y= 0, vjust=-4, angle= 0) +
+    cowplot::draw_label(expression(paste("Latitude ",degree,"N",sep="")),
+                        x=0, y=0.5, vjust= 3, hjust=-0.1, angle=90)
+  
 }
 
 
