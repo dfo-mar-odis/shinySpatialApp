@@ -89,10 +89,91 @@ whale_ggplot <- function(whale_sf, bound, landLayer, studyArea, plotTitle, plotB
 }
 
 
+# ----------------MARFIS ISDB FUNCTIONS -------------------
 
-# helper function, replaces a column name with it's common name from the 
-# corresponding marifs or isdb species table. 
-# returns a list containing the common name and the updated data_sf object. 
+#
+# INPUTS:
+# baseGgplot: background ggplot object for all plots with land, axis, etc.  regionMap/areaMap
+# data_sf: data to plot
+# speciesCodeList: List of species codes indicating which species to plot
+# marfis: boolean indicating whether the data is from marfis or isdb
+#
+#
+plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis) {
+  
+  cleanData <- clean_isdb_marfis_sf(data_sf, speciesCodeList, marfis)
+  
+  # make all of the individual plots, get rid of any empty plots
+  plotList <- lapply(cleanData$specList, plot_isdb_marfis, ggplotIn=baseGgplot, 
+                     data_sf=cleanData$data_sf, maxCnt=cleanData$scaleLim)
+  plotList <- plotList[!sapply(plotList, is.null)]
+  
+  
+  # plot a 2x2 grid for each four plots:
+  chunkSize <- 4
+  plotChunks <- split(plotList, ceiling(seq_along(plotList) / chunkSize))
+  # use for loop instead of lapply to suppress index output in the rmd
+  outPlot = baseGgplot +
+    scale_fill_viridis_c(option = "plasma", limits=c(0, cleanData$scaleLim)) + 
+    theme(legend.direction = "horizontal",
+          legend.position = "bottom") +
+    guides(fill=guide_colorbar(title="Estimated combined weight",
+                               title.position="top", title.hjust = 0.5))
+  for (i in 1:length(plotList)) {
+    outPlot = outPlot + plotList[[i]]$layers[[7]]
+  }
+  #for (chunk in plotChunks) {
+  #  plot(grid_plotter(chunk))
+  #}
+  plot(outPlot)
+}
+
+
+# INPUTS
+# data_sf: an sf object, typically striaght from the data preporcessing stage. Should have the original marfis/isdb column names
+# specNumList: list of numerical marifs/isdb species codes
+# marfis: boolean indicating whether data is marfis or isdb
+#
+# OUTPUTS: outlist containing:
+# data_sf: an sf object with the species common names as column headers for each of the input species codes
+# specList: specNumList converted into commmon names
+# scaleLim: the maximum value in data_sf, used to coordinate heatmap scales.
+#
+#
+clean_isdb_marfis_sf <- function(data_sf, specNumList, marfis=FALSE){
+  
+  # convert numeric list to list of col names:
+  if (marfis) {
+    fullColNames <- marfis_to_col(specNumList)
+  }
+  else {
+    fullColNames <- isdb_to_col(specNumList)
+  }
+  
+  # only select columns asked for that have data:
+  data_sf <- dplyr::select(data_sf, any_of(fullColNames))
+  noGeom <- sf::st_drop_geometry(data_sf)
+  noGeom <- dplyr::select(noGeom, which(colSums(noGeom) > 0))
+  
+  scaleLim <- max(noGeom)
+  colNamesUsed <- names(noGeom)
+  data_sf <- dplyr::select(data_sf, all_of(colNamesUsed))
+
+  specNames <-get_spec_names(colNamesUsed, marfis)
+  names(data_sf) <- append(specNames, "geometry")
+  
+  
+  outList <- list(data_sf = data_sf,
+                  specList = specNames,
+                  scaleLim = scaleLim)
+  return(outList)
+}
+
+
+
+
+# helper function, 
+# converts a list of raw marfis/isdb column names to the common names of the species
 get_spec_names <- function(colNames, marfis=FALSE) {
   if (marfis) {
     attrNums <- col_to_marfis(colNames)
@@ -107,7 +188,6 @@ get_spec_names <- function(colNames, marfis=FALSE) {
     cnameCol <- "Common Name"
     
   }
-  # get species name from table
   specNames <- filter(lookupTable, get(lookupCol) %in% attrNums)[[cnameCol]]
   return(specNames)
 }
@@ -117,7 +197,6 @@ get_spec_names <- function(colNames, marfis=FALSE) {
 plot_isdb_marfis <- function(colName, ggplotIn, data_sf, maxCnt) {
   
   if (colName %in% names(data_sf)) {
-    # drop zero rows:
     plot_sf <- dplyr::filter(data_sf, (get(colName) > 0))
     if (nrow(plot_sf) > 0) {
       outMap <- ggplotIn +
@@ -125,7 +204,8 @@ plot_isdb_marfis <- function(colName, ggplotIn, data_sf, maxCnt) {
         scale_fill_viridis_c(option = "plasma", limits=c(0, maxCnt)) + 
         theme(legend.position = "none",
               legend.direction = "horizontal") +
-        guides(fill=guide_colorbar(title="Estimated combined weight", title.position="top", title.hjust = 0.5)) +
+        guides(fill=guide_colorbar(title="Estimated combined weight",
+                                   title.position="top", title.hjust = 0.5)) +
         theme(axis.title.x=element_blank(),
               axis.title.y=element_blank())+
         labs(subtitle = colName) 
@@ -139,6 +219,21 @@ plot_isdb_marfis <- function(colName, ggplotIn, data_sf, maxCnt) {
   else {
     return(NULL)
   }
+}
+
+# plots an input list of plots onto a cowplot grid.
+grid_plotter <- function(plotList) {
+  legend <- cowplot::get_legend(plotList[[1]] + theme(legend.position = c(0.2, 0.8)))
+  p_grid <- cowplot::plot_grid(plotlist = plotList)
+  cowplot::plot_grid(p_grid,
+                     legend, 
+                     ncol = 1, 
+                     rel_heights = c(2, 0.3),
+                     scale=0.9) +
+    cowplot::draw_label(expression(paste("Longitude ",degree,"W",sep="")),
+                        x=0.5, y= 0, vjust=-4, angle= 0) +
+    cowplot::draw_label(expression(paste("Latitude ",degree,"N",sep="")),
+                        x=0, y=0.5, vjust= 3, hjust=-0.1, angle=90)
 }
 
 
@@ -161,81 +256,6 @@ col_to_isdb <- function(isdbCol){
   isdbNum <- gsub("EST_COMBINED_WT_", "", isdbCol)
   return(isdbNum)
 }
-
-
-
-
-clean_isdb_marfis_sf <- function(data_sf, specNumList, marfis=FALSE){
-  
-  # convert numeric list to list of col names:
-  if (marfis) {
-    fullColNames <- marfis_to_col(specNumList)
-  }
-  else {
-    fullColNames <- isdb_to_col(specNumList)
-  }
-  
-  # only select columns asked for that have data:
-  data_sf <- dplyr::select(data_sf, any_of(fullColNames))
-  noGeom <- sf::st_drop_geometry(data_sf)
-  noGeom <- dplyr::select(noGeom, which(colSums(noGeom) > 0))
-  scaleLim <- max(noGeom)
-  colNamesUsed <- names(noGeom)
-  data_sf <- dplyr::select(data_sf, all_of(colNamesUsed))
-  
-  specNames <-get_spec_names(colNamesUsed, marfis)
-  names(data_sf) <- append(specNames, "geometry")
-  
-  
-  
-  outList <- list(data_sf = data_sf,
-                  specList = specNames,
-                  scaleLim = scaleLim)
-  return(outList)
-}
-
-
-chunk_plotter <- function(plotList) {
-  legend <- cowplot::get_legend(plotList[[1]] + theme(legend.position = c(0.2, 0.8)))
-  p_grid <- cowplot::plot_grid(plotlist = plotList)
-  cowplot::plot_grid(p_grid,
-                     legend, 
-                     ncol = 1, 
-                     rel_heights = c(2, 0.3),
-                     scale=0.9) +
-    cowplot::draw_label(expression(paste("Longitude ",degree,"W",sep="")),
-                        x=0.5, y= 0, vjust=-4, angle= 0) +
-    cowplot::draw_label(expression(paste("Latitude ",degree,"N",sep="")),
-                        x=0, y=0.5, vjust= 3, hjust=-0.1, angle=90)
-}
-
-#
-# INPUTS:
-# baseGgplot: background ggplot object for all plots with land, axis, etc.  regionMap/areaMap
-# data_sf: data to plot
-# speciesCodeList: List of species codes indicating which species to plot
-# marfis: boolean indicating whether the data is from marfis or isdb
-#
-#
-plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis) {
-  
-  cleanData <- clean_isdb_marfis_sf(data_sf, speciesCodeList, marfis)
-  
-  # make all of the individual plots, get rid of any empty plots
-  plotList <- lapply(cleanData$specList, plot_isdb_marfis, ggplotIn=baseGgplot, 
-                     data_sf=cleanData$data_sf, maxCnt=cleanData$scaleLim)
-  plotList <- plotList[!sapply(plotList, is.null)]
-  
-  
-  # plot a 2x2 grid for each four plots:
-  chunkSize <- 6
-  plotChunks <- split(plotList, ceiling(seq_along(plotList) / chunkSize))
-  # use for loop instead of lapply to suppress index output in the rmd
-  for (chunk in plotChunks) {
-    plot(chunk_plotter(chunk))
-  }
-}
-
 
 
 

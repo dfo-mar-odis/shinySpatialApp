@@ -283,7 +283,7 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   # Merge the data_sf with the listed_species table
   # and create a frequency table of all listed species
   # caught
-  data1 <- merge(data1,sarTable, by = 'Scientific Name')
+  data1 <- merge(data1, sarTable, by = 'Scientific Name')
 
   sarData <- aggregate(
     x = list(Records = data1$'Scientific Name'),
