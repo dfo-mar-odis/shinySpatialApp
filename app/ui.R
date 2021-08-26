@@ -57,7 +57,18 @@ ui <- fluidPage(
 
           # Three selections panels
           tabsetPanel(
-
+            
+            tabPanel(
+              "Draw from map",
+              myhelptxt("Use the interactive map on the right side to create geometries (points, lines or polygons)."),
+              numericInput("from_map_buffer", label = "Optional buffer (m)", value = "0", min = 0),
+              myhelptxt("Save created geometry for use when generating report."),
+              actionButton('save_from_map', 'Save from map', icon = icon("download")),
+              hspace(2),
+              uiOutput("created_from_map", inline = TRUE),
+              uiOutput("from_map_not", inline = TRUE)
+            ),
+            
             tabPanel(
               "Bounding box",
               myhelptxt("Use the fields below to create a bounding box."),
@@ -93,16 +104,6 @@ ui <- fluidPage(
               actionButton('save_pt', 'Save', icon = icon("download"))
             ),
 
-            tabPanel(
-              "Draw from map",
-              myhelptxt("Use the interactive map on the right side to create geometries (points, lines or polygons)."),
-              numericInput("from_map_buffer", label = "Optional buffer (m)", value = "0", min = 0),
-              myhelptxt("Save created geometry for use when generating report."),
-              actionButton('save_from_map', 'Save from map', icon = icon("download")),
-              hspace(2),
-              uiOutput("created_from_map", inline = TRUE),
-              uiOutput("from_map_not", inline = TRUE)
-            ),
 
             tabPanel(
               "Import files",

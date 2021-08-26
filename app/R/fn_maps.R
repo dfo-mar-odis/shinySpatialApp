@@ -119,12 +119,12 @@ plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis) {
           legend.position = "bottom") +
     guides(fill=guide_colorbar(title="Estimated combined weight",
                                title.position="top", title.hjust = 0.5))
-  for (i in 1:length(plotList)) {
-    outPlot = outPlot + plotList[[i]]$layers[[7]]
-  }
-  #for (chunk in plotChunks) {
-  #  plot(grid_plotter(chunk))
+  #for (i in 1:length(plotList)) {
+  #  outPlot = outPlot + plotList[[i]]$layers[[7]]
   #}
+  for (chunk in plotChunks) {
+    plot(grid_plotter(chunk))
+  }
   plot(outPlot)
 }
 
