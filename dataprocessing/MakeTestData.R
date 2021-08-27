@@ -168,14 +168,14 @@ gen_all_test_data <- function() {
                   listed_species, obis_cet_sf, obis_fish_sf, rockweed_sf, 
                   RVCatch_sf, RVGSSPECIES, sei_whale_sf, sardist_sf, isdb_sf, ISSPECIESCODES, 
                   leatherback_sf, Legend, marfis_sf, MARFISSPECIESCODES, narwc_sf, whitehead_sf,
-                  wsdb_sf)
+                  wsdb_sf, ocearch_sf)
   sf_names <- c("NBNW_ImpHab_sf", "bioregion_sf", "BlueWhale_ImpHab_sf", "bounds_sf", "ClippedCritHab_sf", "EBSA_sf",
                 "fin_whale_sf", "harbour_porpoise_sf", "humpback_whale_sf", "land10m_sf", "land50k_sf", 
                 "listed_cetacean_species", "listed_fish_invert_species", "listed_other_species", 
                 "listed_species", "obis_cet_sf", "obis_fish_sf", "rockweed_sf", 
                 "RVCatch_sf", "RVGSSPECIES", "sei_whale_sf", "sardist_sf", "isdb_sf", "ISSPECIESCODES", 
                 "leatherback_sf", "Legend", "marfis_sf", "MARFISSPECIESCODES", "narwc_sf", "whitehead_sf",
-                "wsdb_sf")
+                "wsdb_sf", "ocearch_sf")
   
   exclude_list <- c("bounds_sf", "land10m_sf", "land50k_sf")
   
