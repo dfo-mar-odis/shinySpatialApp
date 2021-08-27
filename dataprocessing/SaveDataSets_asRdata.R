@@ -233,7 +233,7 @@ ISSPECIESCODES <- ISSPECIESCODES %>% rename("Common Name"= COMMON,
 MARFISSPECIESCODES <- SPECIES %>% rename("COMMONNAME"= SPECIES_NAME)
 
 # LOAD OCEARCH DATA #############
-ocearchDatafile <- here::here("app/data/ocearch_raw.csv")
+ocearchDatafile <- ("../Data/NaturalResources/Species/Sharks/OCEARCH/OCEARCH_08-27-2021.csv")
 lines <- readLines(ocearchDatafile)
 lines <- gsub('(^"|"$)', "", lines)
 ocearch <- read.csv(textConnection(lines), quote = '""')
