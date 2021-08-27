@@ -215,7 +215,16 @@ OCEARCH is a data-centric organization built to help scientists collect previous
 
 #### ***Area-specific OCEARCH Shark Tracker search results***
 *
-```{r, echo=FALSE, results='asis',}
+
+
+```{r ocearch-results, include=FALSE, cache=FALSE}
+outputList <- master_intersect(ocearch_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
+Samples_bbox <- outputList$mapPoints
+
+```
+
+
+```{r ocearch-check, echo=FALSE, results='asis',}
 Report_ocearch <- if (is.null(outputList)) {
   "There are no relevant White Shark records in the OCEARCH Shark Tracker for this search area."
 } else {
