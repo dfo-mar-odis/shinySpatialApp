@@ -104,3 +104,19 @@ clear_output <- function() {
   fls <- list.files("output", full.names = TRUE)
   file.remove(fls[fls != "output/.gitkeep"])
 }
+
+# adds a legend column to the input species table, with the sara and cosewic 
+# status of the species in each row.
+add_legend_col <- function(specTable) {
+  if (all(c("COSEWIC status", "Common Name", "SARA status") %in% names(specTable))){
+    specTable <-dplyr::mutate(specTable, Legend = ifelse(specTable$`COSEWIC status` != specTable$`SARA status`,
+                                                         paste(specTable$`Common Name`, ": ", specTable$`SARA status`, " (SARA) & ", specTable$`COSEWIC status`, " (COSEWIC)", sep = ""),
+                                                         paste(specTable$`Common Name`, ": ", specTable$`SARA status`, " (SARA & COSEWIC)", sep = "")))
+    return(specTable)
+    }
+  else {
+    return(NULL)
+  }                                           
+}
+
+

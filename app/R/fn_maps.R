@@ -122,10 +122,11 @@ plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis) {
   #for (i in 1:length(plotList)) {
   #  outPlot = outPlot + plotList[[i]]$layers[[7]]
   #}
+  # plot(outPlot)
+  
   for (chunk in plotChunks) {
     plot(grid_plotter(chunk))
   }
-  plot(outPlot)
 }
 
 
@@ -175,21 +176,24 @@ clean_isdb_marfis_sf <- function(data_sf, specNumList, marfis=FALSE){
 # helper function, 
 # converts a list of raw marfis/isdb column names to the common names of the species
 get_spec_names <- function(colNames, marfis=FALSE) {
+  legendLookup <- add_legend_col(listed_species)
   if (marfis) {
     attrNums <- col_to_marfis(colNames)
     lookupTable <- MARFISSPECIESCODES
     lookupCol <- "SPECIES_CODE"
     cnameCol <- "COMMONNAME"
+    legendLookupCol <- "Common_Name_MARFIS"
   }
   else {
     attrNums <- col_to_isdb(colNames)
     lookupTable <- ISSPECIESCODES
     lookupCol <- "SPECCD_ID"
-    cnameCol <- "Common Name"
-    
+    cnameCol <- "Scientific Name"
+    legendLookupCol <- "Scientific Name"
   }
   specNames <- filter(lookupTable, get(lookupCol) %in% attrNums)[[cnameCol]]
-  return(specNames)
+  legendNames <- filter(legendLookup, get(legendLookupCol) %in% specNames)[["Legend"]]
+  return(legendNames)
 }
 
 
@@ -202,13 +206,13 @@ plot_isdb_marfis <- function(colName, ggplotIn, data_sf, maxCnt) {
       outMap <- ggplotIn +
         geom_sf(data=plot_sf, aes(fill=get(colName)), color = NA) + 
         scale_fill_viridis_c(option = "plasma", limits=c(0, maxCnt)) + 
-        theme(legend.position = "none",
-              legend.direction = "horizontal") +
-        guides(fill=guide_colorbar(title="Estimated combined weight",
-                                   title.position="top", title.hjust = 0.5)) +
+        theme(legend.position = "none") + #,
+              #legend.direction = "horizontal") +
+        guides(fill=guide_colorbar(title="Estimated \ncombined \nweight",
+                                   title.position="right", title.hjust = 0.5)) +
         theme(axis.title.x=element_blank(),
               axis.title.y=element_blank())+
-        labs(subtitle = colName) 
+        labs(subtitle = paste(strwrap(colName, 55), collapse = "\n"))
       
       return(outMap)
     } # end of data results in area check
@@ -223,12 +227,12 @@ plot_isdb_marfis <- function(colName, ggplotIn, data_sf, maxCnt) {
 
 # plots an input list of plots onto a cowplot grid.
 grid_plotter <- function(plotList) {
-  legend <- cowplot::get_legend(plotList[[1]] + theme(legend.position = c(0.2, 0.8)))
-  p_grid <- cowplot::plot_grid(plotlist = plotList)
+  legend <- cowplot::get_legend(plotList[[1]] + theme(legend.position = c(0.05, 0.8)))
+  p_grid <- cowplot::plot_grid(plotlist = plotList, ncol = 2, align = "hv")
   cowplot::plot_grid(p_grid,
                      legend, 
                      ncol = 1, 
-                     rel_heights = c(2, 0.3),
+                     rel_heights = c(1, 0.15),
                      scale=0.9) +
     cowplot::draw_label(expression(paste("Longitude ",degree,"W",sep="")),
                         x=0.5, y= 0, vjust=-4, angle= 0) +
