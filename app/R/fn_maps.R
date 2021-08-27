@@ -101,7 +101,7 @@ whale_ggplot <- function(whale_sf, bound, landLayer, studyArea, plotTitle, plotB
 #
 plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis) {
   
-  cleanData <- clean_isdb_marfis_sf(data_sf, speciesCodeList, marfis)
+  cleanData <- clean_isdb_marfis_sf(data_sf, speciesCodeList, marfis, status = TRUE)
   
   # make all of the individual plots, get rid of any empty plots
   plotList <- lapply(cleanData$specList, plot_isdb_marfis, ggplotIn=baseGgplot, 
@@ -140,8 +140,8 @@ plot_marfis_grid<-function(baseGgplot, data_sf, speciesCodeList, marfis) {
 # specList: specNumList converted into commmon names
 # scaleLim: the maximum value in data_sf, used to coordinate heatmap scales.
 #
-#
-clean_isdb_marfis_sf <- function(data_sf, specNumList, marfis=FALSE){
+
+clean_isdb_marfis_sf <- function(data_sf, specNumList, marfis=FALSE, status = FALSE){
   
   # convert numeric list to list of col names:
   if (marfis) {
@@ -160,7 +160,7 @@ clean_isdb_marfis_sf <- function(data_sf, specNumList, marfis=FALSE){
   colNamesUsed <- names(noGeom)
   data_sf <- dplyr::select(data_sf, all_of(colNamesUsed))
 
-  specNames <-get_spec_names(colNamesUsed, marfis)
+  specNames <-get_spec_names(colNamesUsed, marfis, status = status)
   names(data_sf) <- append(specNames, "geometry")
   
   
@@ -175,7 +175,7 @@ clean_isdb_marfis_sf <- function(data_sf, specNumList, marfis=FALSE){
 
 # helper function, 
 # converts a list of raw marfis/isdb column names to the common names of the species
-get_spec_names <- function(colNames, marfis=FALSE) {
+get_spec_names <- function(colNames, marfis=FALSE, status=FALSE) {
   legendLookup <- add_legend_col(listed_species)
   if (marfis) {
     attrNums <- col_to_marfis(colNames)
@@ -193,7 +193,13 @@ get_spec_names <- function(colNames, marfis=FALSE) {
   }
   specNames <- filter(lookupTable, get(lookupCol) %in% attrNums)[[cnameCol]]
   legendNames <- filter(legendLookup, get(legendLookupCol) %in% specNames)[["Legend"]]
-  return(legendNames)
+  if (status) {
+    return(legendNames)  
+  }
+  else {
+    return(specNames)
+  }
+  
 }
 
 

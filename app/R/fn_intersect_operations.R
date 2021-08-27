@@ -201,59 +201,36 @@ create_table_RV <- function(data_sf, sarTable, speciesTable, ...) {
 #
 # Inputs:
 # 1. data_sf: an input point file of MARFIS data found within the studyArea
-# 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
-# 3. speciesTable: the MARFISSPECIESCODES species table to link species codes with names
-
 #
 # Outputs: list containing 2 items
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. sarData: datatable of only listed species found within the studyArea
-create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
-
-  # set record column and join with speciesTable
-  allSpeciesData <- aggregate(
-    x = list(Records = data_sf$SPECIES_CODE),
-    by = list(SPECIES_CODE = data_sf$SPECIES_CODE),
-    FUN = length)
+create_table_MARFIS <- function(data_sf) {
   
-  allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'SPECIES_CODE')
-  allSpeciesData <- allSpeciesData %>% rename("Common Name"= COMMONNAME)
+  cleanData <- clean_isdb_marfis_sf(data_sf, MARFISSPECIESCODES$SPECIES_CODE, marfis=TRUE)
+  allSpeciesData <- data.frame(
+    "Common Name" = str_to_sentence(cleanData$specList)
+  )
   
-  data1 <- merge(data_sf, speciesTable, by = 'SPECIES_CODE')
-  data1$Common_Name_MARFIS <- data1$COMMONNAME
-
-  # Merge the data_sf with the listed_species table
-  # and create a frequency table of all listed species
-  # caught
-  data1 <- merge(data1, sarTable, by = 'Common_Name_MARFIS')
-  # data1 <- data1 %>% rename("SCIENTIFICNAME" = Scientific_Name)
-
-  sarData <- aggregate(
-    x = list(Records = data1$'Scientific Name'),
-    by = list('Scientific Name' = data1$'Scientific Name'),
-    length)
-  sarData <- merge(sarData, sarTable, by = 'Scientific Name')
-
-
-
-  allSpeciesData <- dplyr::select(allSpeciesData, 'Common Name', Records)
-  allSpeciesData <- allSpeciesData %>% rename(CName = 'Common Name')
-  allSpeciesData <- allSpeciesData %>% transmute(allSpeciesData,
-                                                 CName = str_to_sentence(CName))
-  allSpeciesData <- allSpeciesData %>% rename('Common Name' = CName)
-  sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
-                           "SARA status","COSEWIC status", Records)
- 
+  sarSpecList <- filter(MARFISSPECIESCODES, COMMONNAME %in% listed_species$Common_Name_MARFIS)$SPECIES_CODE
+  sarCleanData <- clean_isdb_marfis_sf(data_sf, sarSpecList, marfis = TRUE)
+  sarStatus <- filter(listed_species, listed_species$Common_Name_MARFIS %in% cleanData$specList)
+  sarData <- data.frame(
+    "Scientific Name" = sarStatus$`Scientific Name`,
+    "Common Name" =  sarStatus$`Common Name`,
+    "SARA status" = sarStatus$`SARA status`,
+    "COSEWIC status" = sarStatus$`COSEWIC status`
+  )
   
-   # order the tables by number of Records (decreasing)
-  allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
-  sarData <- sarData[with(sarData, order(-Records)), ]
-  row.names(allSpeciesData) <- NULL
-  row.names(sarData) <- NULL
-  outList <- list(allSpeciesData, sarData)
+  allSpeciesData <- arrange(allSpeciesData, allSpeciesData$Common.Name)
+  sarData <- arrange(sarData, sarData$Common.Name)
+  
+  outList <- list(allSpecies=allSpeciesData, sarSpecies=sarData)
   return(outList)
-
+  
 }
+
+
 ##### - END create_table_MARFIS function ##################################
 
 ##### - create_table_ISDB function ##################################
@@ -262,47 +239,35 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
 #
 # Inputs:
 # 1. data_sf: an input point file of ISDB data found within the studyArea
-# 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
-# 3. speciesTable: the ISSPECIESCODES species table to link species codes with names
 #
 # Outputs: list containing 2 items
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. datatable2: datatable of only listed species found within the studyArea
 
-create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
+create_table_ISDB <- function(data_sf) {
 
-  # calculate frequency of ISDB samples and join
-  # to species lookup tables
-
-  allSpeciesData <- aggregate(
-    x = list(Records = data_sf$SPECCD_ID),
-    by = list(SPECCD_ID = data_sf$SPECCD_ID),
-    FUN = length)
-  data1 <- merge(data_sf, speciesTable, by = 'SPECCD_ID')
-  allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'SPECCD_ID')
-  # Merge the data_sf with the listed_species table
-  # and create a frequency table of all listed species
-  # caught
-  data1 <- merge(data1, sarTable, by = 'Scientific Name')
-
-  sarData <- aggregate(
-    x = list(Records = data1$'Scientific Name'),
-    by = list('Scientific Name' = data1$'Scientific Name'),
-    length)
-  sarData <- merge(sarData, sarTable, by = 'Scientific Name')
-
-
-  allSpeciesData <- dplyr::select(allSpeciesData, 'Scientific Name', 'Common Name', Records)
-  sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
-                           "SARA status","COSEWIC status",Records)
-  # order the tables by number of Records (decreasing)
-  allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
-  sarData <- sarData[with(sarData, order(-Records)), ]
-  row.names(allSpeciesData) <- NULL
-  row.names(sarData) <- NULL
-
-  outList <- list(allSpeciesData, sarData)
+  cleanData <- clean_isdb_marfis_sf(data_sf, ISSPECIESCODES$SPECCD_ID, marfis=FALSE)
+  allSpeciesData <- data.frame(
+    "Scientific Name" = cleanData$specList,
+    "Common Name" =  filter(ISSPECIESCODES, ISSPECIESCODES$`Scientific Name` %in% cleanData$specList)$`Common Name`
+  )
+  
+  sarSpecList <- filter(ISSPECIESCODES, get("Scientific Name") %in% listed_species$`Scientific Name`)$SPECCD_ID
+  sarCleanData <- clean_isdb_marfis_sf(data_sf, sarSpecList, marfis=FALSE)
+  sarStatus <- filter(listed_species, listed_species$`Scientific Name` %in% cleanData$specList)
+  sarData <- data.frame(
+    "Scientific Name" = sarCleanData$specList,
+    "Common Name" =  filter(ISSPECIESCODES, ISSPECIESCODES$`Scientific Name` %in% sarCleanData$specList)$`Common Name`,
+    "SARA status" = sarStatus$`SARA status`,
+    "COSEWIC status" = sarStatus$`COSEWIC status`
+    )
+  
+  allSpeciesData <- arrange(allSpeciesData, allSpeciesData$Common.Name)
+  sarData <- arrange(sarData, sarData$Common.Name)
+  
+  outList <- list(allSpecies=allSpeciesData, sarSpecies=sarData)
   return(outList)
+    
 }
 ##### - END create_table_ISDB function ##################################
 
