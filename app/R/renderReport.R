@@ -78,7 +78,8 @@ renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output",
     )
   
   } # end of language loop
-
+  msgInfo("Render complete")
+  
   if (all(ok)) {
     # this is done to generate an html preview (see "report" tab)
     htmlName <- switch_ext(basename(inFile), "html") 
