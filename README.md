@@ -9,7 +9,8 @@ R Shiny App to select search area(s) and generate reproducible reports (R Markdo
 ## Installation
 
 ## Set up Revn:
-```R
+
+``` r
 install.packages("renv")
 renv::activate()
 renv::equip() # loads needed installation libs
@@ -17,13 +18,26 @@ renv::restore() # loads all needed packages (may take 15+ mins the first time)
 ```
 
 Adding a package:
-```R
+
+``` r
 install.packages("new_package")
 renv::snapshot()
 ```
 
 After adding a new package, commit the updated renv.lock file to source control.
 
+## Download necessary data
+
+After making sure that you have the necessary permissions to access the data, run:
+
+``` r
+source(here::here("dataprocessing/CopyRData.R"))
+copy_rdata_files()
+```
+
+## Unit Tests:
+
+Once Renv is setup and data has been loaded, running `testthat::test_local()` should pass all unit tests.
 
 ## Run the application
 
@@ -43,6 +57,8 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 -   `app/R` includes the R files to be loaded (it loads packages and functions);
 -   `app/Rmd` includes all the `.Rmd` files needed to generate the report(s);
 -   `app/output` includes all outputs once generated: selected geometries as a `.geojson` and the report in all format (the different section are also added).
+-   `dataprocessing` contains all of the preprocessing scripts to prepare data for use in the application.
+-   `tests/testthat` contains the unit test scripts that are run when test_local() is called.
 
 # **Collaborative Workflow**
 
