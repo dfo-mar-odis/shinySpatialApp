@@ -191,13 +191,9 @@ Important usage considerations: model predictions in this section should not be 
 
 #### ***Area-specific SDM cetacean search results***
 ```{r sdm, include=FALSE, cache=FALSE}
-# Following line were moved to SaveDataSets_asRdata.R
-# fin_whale_sf<-stars::st_as_stars(fin_whale)%>%sf::st_as_sf()
-# harbour_porpoise_sf<-stars::st_as_stars(harbour_porpoise)%>%sf::st_as_sf()
-# humpback_whale_sf<-stars::st_as_stars(humpback_whale)%>%sf::st_as_sf()
-# sei_whale_sf<-stars::st_as_stars(sei_whale)%>%sf::st_as_sf()
 table_sdm <- sdm_table(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea)
 ```
+
 ```{r sdm-table}
  knitr::kable(table_sdm, align="cccc", caption="Quality Tier: Low. Security level: none. Results showing if the search area overlap with predicted Priority Areas to Enhance Monitoring of several species of cetaceans (Fin Whale, Harbour Porpoise, Humpback Whale and Sei Whale). TRUE = polygon does overlap with priority area; FALSE = polygon does NOT overlap with priority area.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```

@@ -19,6 +19,40 @@ Description de l’ensemble de données (tirée du dossier des données ouvertes
 
 **under-development**
 
-```{r EBSA-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA; pink) relative to the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue.'}
-#plot_EBSA(EBSA_sf, studyArea, land10m_sf, 300)
+```{r EBSA-results, echo=FALSE, results='asis'}
+#function for overlap
+EBSAoutput <- master_intersect(EBSA_sf, region, studyArea, bboxMap)
+
+# define polygon dataset and attribute to plot
+attribute <- "NONE"
+```
+
+```{r EBSA-check, echo=FALSE, results='asis'}
+#function for overlap
+Query_output_EBSA<-if(is.null(EBSAoutput)){
+    "The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSA)."
+  } else {
+    "The search area overlaps with identified Ecologically and Biologically Significant Areas (EBSA)."
+  }
+Query_output_EBSA2<-noquote(Query_output_EBSA)
+
+writeLines(Query_output_EBSA)
+
+```
+
+```{r EBSA-report, echo=FALSE, results='asis'}
+#function for report
+EBSA_report(EBSAoutput$studyData, lang="FR")
+```
+
+
+```{r EBSA-region-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).'}
+if (!is.null(EBSAoutput$regionData)){
+  plot_polygons(regionMap, regionBox, studyBox_geom, EBSAoutput$regionData, attribute)
+}
+```
+
+```{r EBSA-area-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area defined by the user (red outline).'}
+if(!is.null(EBSAoutput$studyData)){print(
+  plot_polygons(areaMap,bboxMap,studyBox_geom, EBSAoutput$mapData,attribute))}
 ```
