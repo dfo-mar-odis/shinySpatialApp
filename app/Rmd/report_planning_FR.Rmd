@@ -18,47 +18,40 @@ Description de l’ensemble de données (tirée du dossier des données ouvertes
 #### ***Résultats de la recherche des ZIEB par zone***  
 
 *
-```{r EBSA-overlap, echo=FALSE, results='asis'}
+```{r EBSA-results, echo=FALSE, results='asis'}
 #function for overlap
-EBSA_overlap(EBSA_sf, studyArea)
+EBSAoutput <- master_intersect(EBSA_sf, region, studyArea, bboxMap)
+
+# define polygon dataset and attribute to plot
+attribute <- "NONE"
+```
+
+```{r EBSA-check, echo=FALSE, results='asis'}
+#function for overlap
+Query_output_EBSA<-if(is.null(EBSAoutput)){
+  "La zone de recherche ne chevauche pas les zones d’importance écologique et biologique (ZIEB)."
+  } else {
+    "La zone de recherche chevauche les zones d’importance écologique et biologique (ZIEB)."
+  }
+Query_output_EBSA2<-noquote(Query_output_EBSA)
+
+writeLines(Query_output_EBSA)
+
 ```
 
 ```{r EBSA-report, echo=FALSE, results='asis'}
 #function for report
-EBSA_report(EBSA_sf, studyArea)
+EBSA_report(EBSAoutput$studyData, lang="FR")
 ```
 
-```{r EBSA-report-url, echo=FALSE, results='asis'}
-#function for report url
-EBSA_reporturl(EBSA_sf, studyArea)
-```
-
-```{r EBSA-loc, echo=FALSE, results='asis'}
-#function for location
-EBSA_location(EBSA_sf, studyArea)
-```
-
-```{r EBSA-bioregion, echo=FALSE, results='asis'}
-#function for bioregion
-EBSA_bioregion(EBSA_sf, studyArea)
-```
-
-```{r overlap-EBSA-plot, echo=FALSE, results='asis'}
-# define polygon dataset and attribute to plot
-poly_sf <- EBSA_sf
-attribute <- "NONE"
-
-# intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
-```
 
 ```{r EBSA-region-plot, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) par rapport à la zone de recherche définie par l’utilisateur (entourée de rouge).'}
-if (!is.null(clipped$regionData)){
-  plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionData, attribute)
+if (!is.null(EBSAoutput$regionData)){
+  plot_polygons(regionMap, regionBox, studyBox_geom, EBSAoutput$regionData, attribute)
 }
 ```
 
 ```{r EBSA-area-plot, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) dans la zone de recherche définie par l’utilisateur (entourée de rouge).'}
-if(!is.null(clipped$studyData)){print(
-  plot_polygons(areaMap,bboxMap, studyBox_geom, clipped$mapData, attribute))}
+if(!is.null(EBSAoutput$studyData)){print(
+  plot_polygons(areaMap,bboxMap,studyBox_geom, EBSAoutput$mapData,attribute))}
 ```

@@ -439,89 +439,27 @@ sdm_table <- function(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_
 
 ########## Spatial Planning Section ##########
 
-# #Ecologically and Biologically Significant Areas (EBSA)
-EBSA_overlap <- function(EBSA_sf, studyArea) {
-
-  EBSA_intersect <- does_sf_intersect(EBSA_sf,studyArea)
-  Query_output_EBSA<-if(EBSA_intersect){
-    "The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSA)."
-  } else {
-    "The search area overlaps with identified Ecologically and Biologically Significant Areas (EBSA)."
-  }
-
-  Query_output_EBSA2<-noquote(Query_output_EBSA)
-
-  writeLines(Query_output_EBSA2)
-
-}
-
 # # EBSA report
-EBSA_report <- function(EBSA_sf, studyArea) {
+EBSA_report <- function(EBSA_sf, lang="EN") {
 
-  EBSA_intersect <- sf::st_intersection(EBSA_sf, studyArea)
-  EBSA_result <- as.numeric(nrow(EBSA_intersect))
-  Query_output_EBSA_report <- if(EBSA_result < 1){
-    ""
-  } else {
-    paste("Report: ", EBSA_intersect$Report)
-  }
-
-  Query_output_EBSA_report2 <- unique(noquote(Query_output_EBSA_report))
-
-  writeLines(Query_output_EBSA_report2, sep="\n\n")
-
-}
-
-# # EBSA report URL
-EBSA_reporturl <- function(EBSA_sf, studyArea) {
-
-  intersect <- sf::st_intersection(EBSA_sf,studyArea)
-  x <- as.numeric(nrow(intersect))
-  Query_output_EBSA_reporturl <- if(x < 1){
-    ""
-  } else {
-    paste("Report URL:",intersect$Report_URL)
-  }
-
-  Query_output_EBSA_reporturl2 <- unique(noquote(Query_output_EBSA_reporturl))
-
-  writeLines(Query_output_EBSA_reporturl2, sep="\n\n")
+  EBSAreport <-  if (lang=="EN" & !is.null(EBSA_sf)) {
+    c(paste("Report: ", EBSA_sf$Report),
+      paste("Report URL:",EBSA_sf$Report_URL),
+      paste("Location: ",EBSA_sf$Name),
+      paste("Bioregion: ", EBSA_sf$Bioregion) 
+      )
+    } else if (lang=="FR" & !is.null(EBSA_sf)) {
+      c(paste("Report: ", EBSA_sf$Rapport),
+        paste("Report URL:",EBSA_sf$RapportURL),
+        paste("Location: ",EBSA_sf$Nom),
+        paste("Bioregion: ", EBSA_sf$Bioregion) 
+      )
+    } else {
+      ""
+    }
+  
+  uniqueEBSAreport <- unique(noquote(EBSAreport))
+  writeLines(uniqueEBSAreport, sep="\n\n")
 
 }
 
-# # Location intersect
-EBSA_location <- function(EBSA_sf, studyArea) {
-
-  intersect <- sf::st_intersection(EBSA_sf, studyArea)
-  x <- as.numeric(nrow(intersect))
-  Location_result <- if(x < 1){
-    ""
-  } else {
-    paste("Location: ",intersect$Name)
-  }
-
-  writeLines(Location_result, sep="\n\n")
-}
-
-#Bioregion intersect
-EBSA_bioregion <- function(EBSA_sf, studyArea) {
-
-  intersect <- sf::st_intersection(EBSA_sf,studyArea)
-  x<-as.numeric(nrow(intersect))
-  Query_output_area<-if(x < 1){
-    ""
-  } else {
-    paste("Bioregion: ",intersect$Bioregion)
-  }
-
-  Query_output_area2 <- paste(unique(Query_output_area), collapse = ' ')
-  Query_output_area3 <- noquote(Query_output_area2)
-
-  Bioregion_result <- if(x < 1){
-    ""
-  } else {
-    writeLines(Query_output_area3, sep="\n")
-  }
-
-
-}

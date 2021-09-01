@@ -186,11 +186,7 @@ Considérations importantes relatives à l’utilisation : les prévisions modé
 
 #### ***Résultats de la recherche du MRE pour les cétacés, par zone***
 ```{r sdm, include=FALSE, cache=FALSE}
-# Following line were moved to SaveDataSets_asRdata.R
-# fin_whale_sf<-stars::st_as_stars(fin_whale)%>%sf::st_as_sf()
-# harbour_porpoise_sf<-stars::st_as_stars(harbour_porpoise)%>%sf::st_as_sf()
-# humpback_whale_sf<-stars::st_as_stars(humpback_whale)%>%sf::st_as_sf()
-# sei_whale_sf<-stars::st_as_stars(sei_whale)%>%sf::st_as_sf()
+
 table_sdm <- sdm_table(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea)
 ```
 ```{r sdm-table}
