@@ -21,7 +21,7 @@ Description de l’ensemble de données (tirée du dossier des données ouvertes
 
 ```{r EBSA-results, echo=FALSE, results='asis'}
 #function for overlap
-EBSAoutput <- master_intersect(EBSA_sf, region, studyArea, bboxMap)
+EBSAoutput <- master_intersect(EBSA_sf, mapDataList)
 
 # define polygon dataset and attribute to plot
 attribute <- "NONE"
@@ -48,11 +48,11 @@ EBSA_report(EBSAoutput$studyData, lang="FR")
 
 ```{r EBSA-region-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).'}
 if (!is.null(EBSAoutput$regionData)){
-  plot_polygons(regionMap, regionBox, studyBox_geom, EBSAoutput$regionData, attribute)
+  plot_rr_sf(regionMap, EBSAoutput$regionData, attribute)
 }
 ```
 
 ```{r EBSA-area-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area defined by the user (red outline).'}
 if(!is.null(EBSAoutput$studyData)){print(
-  plot_polygons(areaMap,bboxMap,studyBox_geom, EBSAoutput$mapData,attribute))}
+  plot_rr_sf(areaMap, EBSAoutput$mapData, attribute))}
 ```

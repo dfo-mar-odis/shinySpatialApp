@@ -61,28 +61,25 @@ load_test_data <- function() {
                                                   "geoms_slc_coastal_test.geojson"))
     
     studyArea <- st_read(sample(studyAreaOpts, 1))
-    
     site <- sf::st_centroid(studyArea)
-    
-    studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1) 
-    
-    areaMapList <- area_map(studyArea, site, land50k_sf, 5, bounds_sf, studyBox_geom)
-    areaMap <- areaMapList[[1]]
-    bboxMap <- areaMapList[[2]] 
     region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-    regionBox <- sf::st_bbox(region) 
-    regionMap <- region_map(regionBox, studyArea, land10m_sf, bounds_sf)  
+    
+    mapDataList <- maps_setup(studyArea, site, region, land50k_sf, land10m_sf, bounds_sf)
+    list2env(mapDataList, envir = environment())
+    
+    
   })
   
   outList <- list("minYear" = 2010,
-                   "region" = region,
-                   "site" = site,
-                   "studyBox_geom" = studyBox_geom, 
-                   "areaMap" = areaMap, 
-                   "bboxMap" = bboxMap,
-                   "regionBox" = regionBox, 
-                   "regionMap" = regionMap,
-                   "studyArea" = studyArea)
+                  "region" = region,
+                  "site" = site,
+                  "studyBox_geom" = studyBox_geom, 
+                  "areaMap" = areaMap, 
+                  "bboxMap" = bboxMap,
+                  "regionBox" = regionBox, 
+                  "regionMap" = regionMap,
+                  "studyArea" = studyArea,
+                  "mapDataList" = mapDataList)
   return(outList)
   
   }
