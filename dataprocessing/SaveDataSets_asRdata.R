@@ -232,9 +232,16 @@ ISSPECIESCODES <- ISSPECIESCODES %>% rename("Common Name"= COMMON,
 
 MARFISSPECIESCODES <- SPECIES %>% rename("COMMONNAME"= SPECIES_NAME)
 
+# LOAD OCEARCH DATA #############
+ocearchDatafile <- ("../Data/NaturalResources/Species/Sharks/OCEARCH/OCEARCH_08-27-2021.csv")
+lines <- readLines(ocearchDatafile)
+lines <- gsub('(^"|"$)', "", lines)
+ocearch <- read.csv(textConnection(lines), quote = '""')
+ocearch <- dplyr::select(ocearch, c("Date", "long", "lat", "ID"))
+ocearch_sf <- st_as_sf(ocearch, coords = c("long","lat"), crs = 4326)
 
 # Save all objects to a single .Rdata file
-save(isdb_sf,ISSPECIESCODES,leatherback_sf,Legend, marfis_sf,MARFISSPECIESCODES,narwc_sf, whitehead_sf, wsdb_sf,
+save(isdb_sf,ISSPECIESCODES,leatherback_sf,Legend, marfis_sf,MARFISSPECIESCODES,narwc_sf, whitehead_sf, wsdb_sf, ocearch_sf,
      file = "../Data/Rdata/SecureData.Rdata")
 
 ########################################################-

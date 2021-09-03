@@ -209,3 +209,42 @@ if (!is.null(outputList)) {
   knitr::kable(table_obis1, align="l", caption="Quality Tier: Medium. Security level: none. Ocean Biodiversity Information System (OBIS) observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
+
+### **OCEARCH Shark Tracker**  
+Contact: Bryan Franks (bfranks@ju.edu) via Sean Butler (sean.butler@dfo-mpo.gc.ca)
+URL: <https://www.ocearch.org/tracker/>
+Last retrieved on: July 22 2021 by Sean Butler  
+Quality Tier: High  
+Search year: 2013-2020  
+Security level: none    
+Data use constraints: DFO INTERNAL USE ONLY
+
+OCEARCH is a data-centric organization built to help scientists collect previously unattainable data in the ocean while open sourcing our research and explorations. Open sourcing and inclusion at every level, and in real-time, allows the world to participate in their projects while being aware of the developing science. OCEARCH shares the data, including samples collected and tracking data, with collaborating institutions and students who request them for their studies. The tracking data is also open-sourced to the public via the OCEARCH Tracker. The OCEARCH Tracker is a free app that lets you observe the navigational pattern of animals that have been tagged with satellite tracking technology. White Shark locations from satellite trackers are summarized in this section from 1 Jan 2013 to 31 Oct 2020. Locations were clipped to only include locations within the Canadian EEZ. A speed filter was run with 3 m/s as the maximum speed and 2.5 km as the potential error of locations. This filter removed approximately 100 locations out of of 2,000. Resulting points ere then visualized in ArcGIS to identify potential errors and remove locations that seemed implausible. Each shark location was individually plotted to do a second visual examination and to remove or flag errors/outliers. There is additional QA/QC that could still be performed to this dataset to capture additional issues (e.g. there may be single shark locations in Canadian waters during a period of time that the speed filter would not remove or that were not captured in the visual inspection). The absence of White Sharks in this section map should be interpreted as an absence of tracking data, not necessarily as an absence of the species in the area.
+
+#### ***Area-specific OCEARCH Shark Tracker search results***
+*
+
+
+```{r ocearch-results, include=FALSE, cache=FALSE}
+ocearchOutputList <- master_intersect(ocearch_sf, mapDataList)
+
+```
+
+
+```{r ocearch-check, echo=FALSE, results='asis',}
+Report_ocearch <- if (is.null(ocearchOutputList)) {
+  "There are no relevant White Shark records in the OCEARCH Shark Tracker for this search area."
+} else {
+  numRecords <- length(ocearchOutputList$studyData$geometry)
+  distinctIndv <- dplyr::n_distinct(ocearchOutputList$studyData$ID)
+  paste("There are", numRecords, "relevant White Shark records for", distinctIndv, "individuals in OCEARCH Shark Tracker search results for this search area.")
+}
+Report_obis<-noquote(Report_ocearch)
+writeLines(Report_ocearch)
+```
+```{r ocearch-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline) was used to query information from OCEARCH Shark Tracker observation records, for White Shark. Dataset set has not yet been completely error-checked. The absence of a species in this figure should be interpreted as an absence of tracking data, not necessarily as an absence of the species in the area.'}
+if (!is.null(ocearchOutputList)) {
+  plot_rr_sf(areaMap, ocearchOutputList$mapPoints)
+}
+```
+
