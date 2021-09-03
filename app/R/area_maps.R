@@ -1,3 +1,59 @@
+# --------Maps Setup------------
+# This function produces a list of the necessary data used to generate plots in the report
+#
+# Inputs:
+# 1. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
+# 2. site: polygon of a study site (like aquaculture site);for now it is a centroid (a point, centre of studyArea)
+#    in the past we plotted the site polygon and site is kept for now as a placeholder for the future
+# 3. region: Polygon describing the region of the report
+# 4. areaLandLayer: land borders for the areaMap, could be 10K or 50K scale (preloaded)
+# 5. regionLandLayer: land borders for the regionMap, could be 10K or 50K scale (preloaded)
+# 6. CANborder: Canada border, including water (preloaded: bounds_sf)
+#
+# Outputs: list containing 8 items
+# 1. studyBox_geom, bounding box of the study area
+# 2. studyArea, input studyArea
+# 3. site, input site
+# 4. region, input region
+# 5. areaMap, map of the study area, used as a base map for plots in the report
+# 6. bboxMap, bounding box of the areaMap
+# 7. regionBox, bounding box of the region
+# 8. regionMap, map of the study region, used as a base map for plots in the report
+#
+# Written by Quentin Stoyel for reproducible reporting project, September 2, 2021
+
+maps_setup <- function(studyArea, site, region, areaLandLayer, regionLandLayer, CANborder){
+  # The following defines studyBox geometry "look". studyBox_geom is input into area map or can be added to any map later
+  studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1)
+  
+  # The following plots area map using function (output is a list)
+  areaMapList <- area_map(studyArea, site, areaLandLayer, 5, CANborder, studyBox_geom)
+  
+  # The following separates items in the output list: first item is a map and second is a bounding box of the map
+  areaMap <- areaMapList[[1]] # map
+  bboxMap <- areaMapList[[2]] #bounding box of the map
+  
+  # Bounding box for the region
+  regionBox <- sf::st_bbox(region)
+  
+  # Create the regional map
+  regionMap <- region_map(regionBox, studyArea, regionLandLayer, CANborder) 
+  
+  outlist <- list("studyBox_geom" = studyBox_geom,
+                  "studyArea" = studyArea,
+                  "site" = site,
+                  "areaMap" = areaMap,
+                  "bboxMap" = bboxMap,
+                  "region" = region,
+                  "regionBox" = regionBox,
+                  "regionMap" = regionMap
+                  )
+  return(outlist)
+}
+
+
+
+
 
 # ----- AREA MAP -----
 # This function produces a map of the area surrounding a box of the study area using ggplot.

@@ -9,8 +9,10 @@ R Shiny App to select search area(s) and generate reproducible reports (R Markdo
 ## Installation
 
 ## Set up Revn:
+Make sure that [RTools](https://cran.r-project.org/bin/windows/Rtools/) is installed.  
 
-``` r
+```r
+install.packages("devtools")
 install.packages("renv")
 renv::activate()
 renv::equip() # loads needed installation libs

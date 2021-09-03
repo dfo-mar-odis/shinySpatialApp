@@ -88,10 +88,3 @@ whale_ggplot <- function(whale_sf, bound, landLayer, studyArea, plotTitle, plotB
   return(outPlot)
 }
 
-
-
-
-
-
-
-

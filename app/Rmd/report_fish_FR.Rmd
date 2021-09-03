@@ -25,7 +25,7 @@ knitr::kable(table_RV, align="l",
 #### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes, par zone***
 
 ```{r RV-results, include=FALSE, cache=FALSE}
-  outputList <- master_intersect(RVCatch_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
+  outputList <- master_intersect(RVCatch_sf, mapDataList, Year = minYear)
 
 
 Samples_bbox <- outputList$mapPoints
@@ -91,8 +91,8 @@ Le Système d’information sur les pêches des Maritimes (SIPMAR) est une base 
 
 #### ***Résultats de recherche du SIPMAR et de la BDRI par zone***
 ```{r marfis-isdb-results, include=FALSE, cache=FALSE}
-outputListI <- master_intersect(isdb_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
-outputListM <- master_intersect(marfis_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
+outputListI <- master_intersect(isdb_sf, mapDataList, Year = minYear)
+outputListM <- master_intersect(marfis_sf, mapDataList, Year = minYear)
 Samples_bboxI <- outputListI$mapPoints
 Samples_bboxM <- outputListM$mapPoints
 
@@ -173,8 +173,7 @@ Le SIBO est un centre mondial de données et d’information en libre accès sur
 #### ***Résultats de recherche du SIBO sur les poissons et les invertébrés par zone***
 
 ```{r obis-results, include=FALSE, cache=FALSE}
-outputList <- master_intersect(obis_fish_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
-Samples_bbox <- outputList$mapPoints
+outputList <- master_intersect(obis_fish_sf, mapDataList, Year = minYear)
 
 if (!is.null(outputList)) {
   tableList <- create_table_OBIS(outputList[[1]])
@@ -193,8 +192,7 @@ writeLines(Report_obis)
 ```
 ```{r obis-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge) a été utilisée pour rechercher des informations dans les registres d’observation du SIBO sur les espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). Les observations sur terre indiquent que les données d’observation n’ont pas encore été complètement vérifiées ou que des animaux ont été observés depuis la côte. <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>'}
 if (!is.null(outputList)) {
-  areaMap +
-    geom_point(data = Samples_bbox, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
+  plot_rr_sf(areaMap, outputList$mapData)
 }
 ```
 

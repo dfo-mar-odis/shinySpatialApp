@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ## **FISH AND INVERTEBRATES**
 
 This section describes output derived from the following data sources: Maritimes Research Vessel (RV) Survey, Industry Survey Database (ISDB), The Maritimes Fishery Information System (MARFIS), and the Ocean Biodiversity Information System (OBIS). Area-specific outputs are provided in sub-sections labelled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
@@ -24,7 +29,7 @@ knitr::kable(table_RV, align="l",
 #### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
 
 ```{r RV-results, include=FALSE, cache=FALSE}
-  outputList <- master_intersect(RVCatch_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
+  outputList <- master_intersect(RVCatch_sf, mapDataList, Year = minYear)
 
 Samples_bbox <- outputList$mapPoints
 
@@ -47,7 +52,12 @@ writeLines(Report_RV)
 
 ```{r RV-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area'}
 if (!is.null(outputList)) {
-areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = Samples_bbox$ELONG, yend = endy <- Samples_bbox$ELAT),arrow=arrow(length = unit(0.2,"cm")), size = 0.5)
+  
+areaMap +
+    geom_segment(aes(x = Samples_bbox$long, 
+                     y = Samples_bbox$lat, 
+                     xend = Samples_bbox$ELONG, 
+                     yend = endy <- Samples_bbox$ELAT), arrow=arrow(length = unit(0.2,"cm")), size = 0.5)
 }
 ```
 <br>
@@ -90,8 +100,8 @@ The Maritimes Fishery Information System (MARFIS) is a DFO database, managed by 
 #### ***Area-specific MARFIS & ISDB search results***
 
 ```{r marfis-isdb-results, include=FALSE, cache=FALSE}
-outputListI <- master_intersect(isdb_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
-outputListM <- master_intersect(marfis_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
+outputListI <- master_intersect(isdb_sf, mapDataList, Year = minYear)
+outputListM <- master_intersect(marfis_sf, mapDataList, Year = minYear)
 Samples_bboxI <- outputListI$mapPoints
 Samples_bboxM <- outputListM$mapPoints
 
@@ -172,8 +182,7 @@ OBIS is a global, open-access data and information clearing-house on marine biod
 #### ***Area-specific OBIS fish and invertebrate search results***
 
 ```{r obis-results, include=FALSE, cache=FALSE}
-outputList <- master_intersect(obis_fish_sf, region, studyArea, mapBbox = bboxMap, Year = minYear)
-Samples_bbox <- outputList$mapPoints
+outputList <- master_intersect(obis_fish_sf, mapDataList, Year = minYear)
 
 if (!is.null(outputList)) {
   tableList <- create_table_OBIS(outputList$studyData)
@@ -192,8 +201,7 @@ writeLines(Report_obis)
 ```
 ```{r obis-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline) was used to query information from Ocean Biodiversity Information System (OBIS) observation records, for species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.'}
 if (!is.null(outputList)) {
-  areaMap +
-    geom_point(data = Samples_bbox, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
+  plot_rr_sf(areaMap, outputList$mapData)
 }
 ```
 ```{r obis-table, echo=FALSE, results='asis', caption="Priority species with observations contained in the OBIS database within the search polygon area."}
