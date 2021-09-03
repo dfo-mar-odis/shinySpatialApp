@@ -16,6 +16,6 @@ copy_rdata_files <- function() {
     updateFilePath <- rownames(filter(remoteInfo, remoteInfo$filename %in% updateFileList))
     copyResults <- file.copy(updateFilePath, localDataDir, overwrite = TRUE)
   }
-  return("Data files up to date")  
+  return("Data files up to date :)")  
 
 }
