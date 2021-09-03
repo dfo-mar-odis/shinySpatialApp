@@ -41,18 +41,15 @@ maps_setup <- function(studyArea, site, region, areaLandLayer, regionLandLayer, 
   
   outlist <- list("studyBox_geom" = studyBox_geom,
                   "studyArea" = studyArea,
-                  "site" =site,
-                  "region" = region,
+                  "site" = site,
                   "areaMap" = areaMap,
                   "bboxMap" = bboxMap,
+                  "region" = region,
                   "regionBox" = regionBox,
                   "regionMap" = regionMap
                   )
   return(outlist)
 }
-
-
-
 
 
 
