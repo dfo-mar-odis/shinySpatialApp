@@ -33,7 +33,7 @@ After adding a new package, commit the updated renv.lock file to source control.
 After making sure that you have the necessary permissions to access the data, run:
 
 ``` r
-source(here::here("dataprocessing/CopyRData.R"))
+source(here::here("app/R/CopyRData.R"))
 copy_rdata_files()
 ```
 
