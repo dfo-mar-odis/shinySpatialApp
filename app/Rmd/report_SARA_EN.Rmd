@@ -92,18 +92,18 @@ attribute <- "Common_Nam"
 legend_name <- "Common Name"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
+clipped <- master_intersect(poly_sf, mapDataList)
 ```
 
 ```{r crithab-region-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes critical habitat of Species at Risk listed as Endangered or Threatened under the <i>Species at Risk Act</i> (SARA) in the Scotian Shelf Bioregion. Please see table above for complimentary information. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species.” Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.', fig.height=6, fig.width=11}
 if (!is.null(clipped$regionData)){
-  plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionData, attribute, legendName = legend_name)
+  plot_rr_sf(regionMap, clipped$regionData, attribute, legendName = legend_name)
 }  
 ```
 <br>
 ```{r crithab-area-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with critical habitat of Species at Risk listed as Endangered or Threatened under the <i>Species at Risk Act</i> (SARA)', fig.height=6, fig.width=11}
 if (!is.null(clipped$mapData)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData, attribute, legendName = legend_name)
+  plot_rr_sf(areaMap, clipped$mapData, attribute, legendName = legend_name)
 }  
 ```
 <br>
@@ -113,17 +113,17 @@ poly_sf <- leatherback_sf
 attribute <- "NONE"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
+clipped <- master_intersect(poly_sf, mapDataList)
 ```
 
 ```{r leatherback-region-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes draft critical habitat of Leatherback Sea Turtle in the Scotian Shelf Bioregion, relative to the search area. Draft critical habitat for the species is based on information DFO published as an update to Science advice regarding important habitat for Leatherback Sea Turtle: https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ScR-RS/2020/2020_041-eng.html', fig.height=6, fig.width=11}
 if (!is.null(clipped$regionData)){
-  plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionData, attribute)
+  plot_rr_sf(regionMap, clipped$regionData, attribute)
 }   
 ```
 <br>
 ```{r leatherback-area-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with draft critical habitat of Leatherback Sea Turtle', fig.height=6, fig.width=11}
 if (!is.null(clipped$mapData)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData,attribute)
+  plot_rr_sf(areaMap,  studyBox_geom, clipped$mapData, attribute)
 }  
 ```

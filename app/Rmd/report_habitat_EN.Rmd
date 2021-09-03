@@ -27,7 +27,7 @@ poly_sf <- rockweed_sf
 attribute <- "RWP"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
+clipped <- master_intersect(poly_sf, mapDataList)
 ```
 *
 ```{r overlap-rockweed-output, echo=FALSE, results='asis'}
@@ -41,7 +41,7 @@ polyText <- if(is.null(clipped$studyData)){"There are no relevant records of pre
 
 ```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
 if(!is.null(clipped$studyData)){print(
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData, attribute))}
+  plot_rr_sf(areaMap, clipped$mapData, attribute))}
 ```
 
 ```{r table-rockweed, echo=FALSE, cache=FALSE, include = FALSE}
