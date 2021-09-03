@@ -16,10 +16,15 @@
 
 plot_rr_sf <- function(baseMap, data_sf, attribute=NULL, legendName="", legendColours=NULL) {
   if (inherits(sf::st_geometry(data_sf), "sfc_POINT")) {
+    
     outPlot <- plot_points(baseMap, data_sf, attribute=attribute, legendName=legendName, legendColours=legendColours)
+    
   } else if (inherits(sf::st_geometry(data_sf), c("sfc_POLYGON", "sfc_MULTIPOLYGON"))) {
+    
     outPlot <- plot_polygons(baseMap, data_sf, attribute=attribute, legendName=legendName)
+    
   }
+  
   else {
     stop("Geometry type not supported")
   }
