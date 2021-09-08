@@ -79,7 +79,7 @@ whale_ggplot <- function(whale_sf, bound, landLayer, studyArea, plotTitle, plotB
   rawPlot <- ggplot() +
     geom_sf(data=whale_sf, fill="#F3E73B", col="#F3E73B") +
     geom_sf(data=bound, col="darkgrey", linetype="dashed", size=1.1) +
-    geom_sf(data=landLayer, fill=c("grey90"), col="black") +
+    geom_sf(data=landLayer, fill=c("lightgrey"), col="lightgrey") +
     geom_sf(data=studyArea, fill=NA, col="red", size=1) + 
     ggtitle(plotTitle) 
   

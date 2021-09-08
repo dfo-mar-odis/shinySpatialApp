@@ -40,6 +40,13 @@ get_scale_bar_layer <- function(inPlot) {
   return(scaleBarLayer)
 }
 
+# helper function, extracts the watermark layer from either the areaMap or regionMap
+get_watermark_layer <- function(inPlot) {
+  watermarkLayer <- lapply(inPlot$layers, function(inLayer) if("GeomScaleBar" %in% class(inLayer$geom)) inLayer else NULL)
+  watermarkLayer <- watermarkLayer[!sapply(watermarkLayer, is.null)]
+  return(watermarkLayer)
+}
+
 
 # helper function, extracts the study_box_layer from either the areaMap or regionMap
 # selection criteria is based off of colour, use with care.
