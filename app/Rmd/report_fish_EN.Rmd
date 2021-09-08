@@ -33,7 +33,7 @@ knitr::kable(table_RV, align="l",
 
 Samples_bbox <- outputList$mapPoints
 
-if (!is.null(outputList)) {
+if (!is.null(outputList$studyData)) {
   tableList <- create_table_RV(outputList$studyData, listed_species, speciesTable = RVGSSPECIES)
   table_rv1 <- tableList[[1]]
   table_rv2 <- tableList[[2]]
@@ -41,7 +41,7 @@ if (!is.null(outputList)) {
 ```
 *
 ```{r RV-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_RV <- if (is.null(outputList)) {
+Report_RV <- if (is.null(outputList$studyData)) {
     "There are no relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
   } else {
     "There are relevant records in the Maritimes Research Vessel (RV) Survey for this search area."
@@ -51,7 +51,7 @@ writeLines(Report_RV)
 ```
 
 ```{r RV-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area'}
-if (!is.null(outputList)) {
+if (!is.null(outputList$studyData)) {
   
 areaMap +
     geom_segment(aes(x = Samples_bbox$long, 
@@ -62,13 +62,13 @@ areaMap +
 ```
 <br>
 ```{r RV-SAR-table}
-if (!is.null(outputList)) {
+if (!is.null(outputList$studyData)) {
  knitr::kable(table_rv2, align="l", caption="\\label{tab:rv_SAR_table} Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or species assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 <br>
 ```{r RV-freq-table}
-if (!is.null(outputList)) {
+if (!is.null(outputList$studyData)) {
 knitr::kable(table_rv1, align="l", caption="\\label{tab:rv_freq_table}Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
@@ -105,14 +105,14 @@ outputListM <- master_intersect(marfis_sf, mapDataList, Year = minYear)
 Samples_bboxI <- outputListI$mapPoints
 Samples_bboxM <- outputListM$mapPoints
 
-if (!is.null(outputListI)) {
+if (!is.null(outputListI$studyData)) {
   tableList <- create_table_ISDB(outputListI$studyData, listed_species,
                                  speciesTable = ISSPECIESCODES)
   table_isdb1 <- tableList[[1]]
   table_isdb2 <- tableList[[2]]
 }
 
-if (!is.null(outputListM)) {
+if (!is.null(outputListM$studyData)) {
   tableList <- create_table_MARFIS(outputListM$studyData, listed_species, speciesTable = MARFISSPECIESCODES)
   table_mar1 <- tableList[[1]]
   table_mar2 <- tableList[[2]]
@@ -120,18 +120,18 @@ if (!is.null(outputListM)) {
 ```
 *
 ```{r isdb-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_isdb <- if (is.null(outputListI)) {
+Report_isdb <- if (is.null(outputListI$studyData)) {
     "There are no relevant records in the Industry Survey Database (ISDB) for this search area."
   } else {
     "There are relevant records in the Industry Survey Database (ISDB) for this search area."
   }
-Report_isdb<-noquote(Report_isdb)
+Report_isdb <- noquote(Report_isdb)
 writeLines(Report_isdb)
 ```
 
 *
 ```{r marfis-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_marfis <- if (is.null(outputListM)) {
+Report_marfis <- if (is.null(outputListM$studyData)) {
     "There are no relevant records in the Maritimes Fishery Information System (MARFIS) for this search area."
   } else {
     "There are relevant records in the Maritimes Fishery Information System (MARFIS) for this search area."
@@ -141,31 +141,31 @@ writeLines(Report_marfis)
 ```
 
 ```{r marfis-isdb-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query aggregated information from Maritimes Fishery Information System (MARFIS) and/or Industry Survey Database (ISDB) observation records shown as black points, for all species. Rule of five was not applied.'}
-if (!is.null(outputListI) & !is.null(outputListM)) {
+if (!is.null(outputListI$studyData) & !is.null(outputListM$studyData)) {
   areaMap + geom_point(data = Samples_bboxI, aes(x = long, y = lat), size = 2, shape = 16, col = "black") + geom_point(data = Samples_bboxM, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
-} else if (!is.null(outputListI)) {
+} else if (!is.null(outputListI$studyData)) {
     areaMap + geom_point(data = Samples_bboxI, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
-} else if (!is.null(outputListM)) {
+} else if (!is.null(outputListM$studyData)) {
         areaMap + geom_point(data = Samples_bboxM, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
 }
 ```
 ```{r isdb-SAR-table}
-if (!is.null(outputListI)) {
+if (!is.null(outputListI$studyData)) {
 knitr::kable(table_isdb2, align="l", caption="Quality Tier: Medium. Security level: Protected B. Industry Survey Database (ISDB) observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 ```
 <br><br>
 ```{r isdb-all-table}
-if (!is.null(outputListI)) {
+if (!is.null(outputListI$studyData)) {
   knitr::kable(table_isdb1, align="l", caption="Quality Tier: Medium. Security level: Protected B. Industry Survey Database (ISDB) observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 ```
 
 ```{r marfis-SAR-table}
-if (!is.null(outputListM)) {
+if (!is.null(outputListM$studyData)) {
   knitr::kable(table_mar2, align="l", caption="Quality Tier: Medium. Security level: Protected B. Maritimes Fishery Information System (MARFIS) observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 ```
 <br><br>
 ```{r marfis-all-table}
-if (!is.null(outputListM)) {
+if (!is.null(outputListM$studyData)) {
   knitr::kable(table_mar1, caption="Quality Tier: Medium. Security level: Protected B. Maritimes Fishery Information System (MARFIS) observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")  %>% column_spec(1, width="15cm")
 } %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 ```
@@ -184,14 +184,14 @@ OBIS is a global, open-access data and information clearing-house on marine biod
 ```{r obis-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(obis_fish_sf, mapDataList, Year = minYear)
 
-if (!is.null(outputList)) {
+if (!is.null(outputList$studyData)) {
   tableList <- create_table_OBIS(outputList$studyData)
   table_obis1 <- tableList[[1]]
 }
 ```
 *
 ```{r obis-check, echo=FALSE, results='asis',}
-Report_obis <- if (is.null(outputList)) {
+Report_obis <- if (is.null(outputList$studyData)) {
   "There are no relevant records in the Ocean Biodiversity Information System (OBIS) for this search area."
 } else {
   "There are relevant records in the Ocean Biodiversity Information System (OBIS) for this search area."
@@ -200,12 +200,12 @@ Report_obis<-noquote(Report_obis)
 writeLines(Report_obis)
 ```
 ```{r obis-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline) was used to query information from Ocean Biodiversity Information System (OBIS) observation records, for species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.'}
-if (!is.null(outputList)) {
+if (!is.null(outputList$studyData)) {
   plot_rr_sf(areaMap, outputList$mapData)
 }
 ```
 ```{r obis-table, echo=FALSE, results='asis', caption="Priority species with observations contained in the OBIS database within the search polygon area."}
-if (!is.null(outputList)) {
+if (!is.null(outputList$studyData)) {
   knitr::kable(table_obis1, align="l", caption="Quality Tier: Medium. Security level: none. Ocean Biodiversity Information System (OBIS) observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
@@ -232,7 +232,7 @@ ocearchOutputList <- master_intersect(ocearch_sf, mapDataList)
 
 
 ```{r ocearch-check, echo=FALSE, results='asis',}
-Report_ocearch <- if (is.null(ocearchOutputList)) {
+Report_ocearch <- if (is.null(ocearchOutputList$studyData)) {
   "There are no relevant White Shark records in the OCEARCH Shark Tracker for this search area."
 } else {
   numRecords <- length(ocearchOutputList$studyData$geometry)
@@ -243,7 +243,7 @@ Report_obis<-noquote(Report_ocearch)
 writeLines(Report_ocearch)
 ```
 ```{r ocearch-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline) was used to query information from OCEARCH Shark Tracker observation records, for White Shark. Dataset set has not yet been completely error-checked. The absence of a species in this figure should be interpreted as an absence of tracking data, not necessarily as an absence of the species in the area.'}
-if (!is.null(ocearchOutputList)) {
+if (!is.null(ocearchOutputList$studyData)) {
   plot_rr_sf(areaMap, ocearchOutputList$mapPoints)
 }
 ```

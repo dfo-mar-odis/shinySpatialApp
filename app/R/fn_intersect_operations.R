@@ -342,7 +342,7 @@ create_table_OBIS <- function(data_sf, ...) {
 # Outputs: returns the datatable with new fields
 # for coordinates
 sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
-  stopifnot(inherits(data_sf,"sf") && inherits(sf::st_geometry(data_sf),"sfc_POINT"))
+  stopifnot(inherits(data_sf, "sf") && inherits(sf::st_geometry(data_sf),"sfc_POINT"))
   ret <- sf::st_coordinates(data_sf)
   ret <- tibble::as_tibble(ret)
   stopifnot(length(names) == ncol(ret))
@@ -358,21 +358,12 @@ sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
 ########## Species At Risk distribution and Critical Habitat data ##########
 #
 # #SAR distribution
-table_dist <- function(sardist_sf, studyArea) {
-  #table_dist <- function(sardist_sf, studyArea, listed_species) {
-  intersect_dist <- sf::st_intersection(sardist_sf, studyArea)
-  intersect_dist$Common_Nam[intersect_dist$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
-  dist_table <-  intersect_dist %>% dplyr::select(Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
-  #dist_table <- dist_table %>% dplyr::rename("Scientific_Name"=Scientific)
-  #dist_table <- merge(dist_table, listed_species, by='Scientific_Name')
-  #dist_table <- dist_table %>% dplyr::select(Common_Nam, Scientific, Population, Waterbody, Schedule.status, COSEWIC.status, Wild_Species)
+table_dist <- function(sardist_sf) {
+  sardist_sf$Common_Nam[sardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
+  dist_table <-  sardist_sf %>% dplyr::select(Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
   sf::st_geometry(dist_table) <- NULL
-  #dist_table <- dist_table %>% dplyr::rename("SARA status"=Schedule.status,
-  # "COSEWIC listing"=COSEWIC.status,
-  # "Wild Species listing"=Wild_Species,
-  # "Common Name"=Common_Name,
-  # "Scientific Name"=Scientific_Name)
   row.names(dist_table) <- NULL
+  names(dist_table) <- c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
   return(dist_table)
 }
 
@@ -404,38 +395,6 @@ table_crit <- function(ClippedCritHab_sf, studyArea, leatherback_sf) {
   return(crit_table)
 }
 
-# little helper function for sdm_table function below
-does_sf_intersect <- function(data_sf, studyArea) {
-  intersectResult <- sf::st_intersection(data_sf, studyArea)
-  nIntersectRows <- as.numeric(nrow(intersectResult))
-  intersectBool <- if(nIntersectRows < 1){
-    FALSE
-  } else {
-    TRUE
-  }
-  return(intersectBool)
-}
-
-# #Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans
-sdm_table <- function(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea) {
-  
-  finIntersect <- does_sf_intersect(fin_whale_sf, studyArea)
-  harbourIntersect <- does_sf_intersect(harbour_porpoise_sf, studyArea)
-  humpbackIntersect <- does_sf_intersect(humpback_whale_sf, studyArea)
-  seiIntersect <- does_sf_intersect(sei_whale_sf, studyArea)
-  
-  table_sdm <- data.frame(Fin_Whale = "", Habour_Porpoise = "", Humpback_Whale = "", Sei_Whale = "")
-  table_sdm[1,1] <- finIntersect
-  table_sdm[1,2] <- harbourIntersect
-  table_sdm[1,3] <- humpbackIntersect
-  table_sdm[1,4] <- seiIntersect
-  table_sdm <- table_sdm %>% dplyr::rename("Fin Whale" = Fin_Whale,
-                                          "Habour Porpoise" = Habour_Porpoise,
-                                          "Humpback Whale" = Humpback_Whale,
-                                          "Sei Whale" = Sei_Whale)
-  return(table_sdm)
-
-}
 
 ########## Spatial Planning Section ##########
 

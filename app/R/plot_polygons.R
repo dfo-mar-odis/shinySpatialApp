@@ -19,7 +19,7 @@ plot_rr_sf <- function(baseMap, data_sf, attribute=NULL, legendName="", legendCo
     
     outPlot <- plot_points(baseMap, data_sf, attribute=attribute, legendName=legendName, legendColours=legendColours)
     
-  } else if (inherits(sf::st_geometry(data_sf), c("sfc_POLYGON", "sfc_MULTIPOLYGON"))) {
+  } else if (inherits(sf::st_geometry(data_sf), c("sfc_POLYGON", "sfc_MULTIPOLYGON", "sfc_GEOMETRY"))) {
     
     outPlot <- plot_polygons(baseMap, data_sf, attribute=attribute, legendName=legendName)
     

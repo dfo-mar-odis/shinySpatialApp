@@ -35,14 +35,15 @@ Les habitats essentiels présentés dans cette section sont disponibles sur le p
 #### ***Répartition des espèces en péril et résultats des recherches sur l’habitat essentiel propres à une zone***
 
 ```{r sardist-load, echo=FALSE, results='asis'}
-#if(sardist_sf > 1){
-dist_table <- table_dist(sardist_sf, studyArea)
-#} else {NULL}
+outputListSardist <- master_intersect(sardist_sf, mapDataList)
+
+if (!is.null(outputListSardist$studyData)){
+  dist_table <- table_dist(outputListSardist$studyData)
+}
 ```
 *
 ```{r dist-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Dist_overlap_result <- nrow(dist_table)
-Query_output_dist <- if(Dist_overlap_result < 1){
+Query_output_dist <- if(is.null(outputListSardist$studyData)){
   "La zone de recherche ne chevauche pas l’aire de répartition des espèces en péril."
 } else {
   "La zone de recherche chevauche l’aire de répartition des espèces en péril."
@@ -64,12 +65,15 @@ crit_table <- table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
  writeLines(Query_output_crit)
 ```
 
-```{r dist-table, echo=FALSE, results='asis'}
-Dist_query_output_table <- if(Dist_overlap_result < 1){
+```{r  dist-table, echo=FALSE, results='asis'}
+Dist_query_output_table<-if(is.null(outputListSardist$studyData)){
   ""
 } else {
+
+  knitr::kable(dist_table[!duplicated(dist_table),], align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+
 }
-if(Dist_overlap_result > 1){Dist_query_output_table}
+if(!is.null(outputListSardist$studyData)){Dist_query_output_table}
 ```
 
 ```{r crithab-table, echo=FALSE, results='asis'}

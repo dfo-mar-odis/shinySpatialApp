@@ -35,14 +35,15 @@ Critical habitat presented in this section are available in the Government of Ca
 #### ***Area-specific SAR distribution and critical habitat search results***
 
 ```{r sardist-load, echo=FALSE, results='asis'}
-#if(sardist_sf > 1){
-dist_table <- table_dist(sardist_sf, studyArea)
-#} else {NULL}
+outputListSardist <- master_intersect(sardist_sf, mapDataList)
+
+if (!is.null(outputListSardist$studyData)){
+  dist_table <- table_dist(outputListSardist$studyData)
+}
 ```
 *
 ```{r dist-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Dist_overlap_result <- nrow(dist_table)
-Query_output_dist <- if(Dist_overlap_result < 1){
+Query_output_dist <- if(is.null(outputListSardist$studyData)){
   "The search area does not overlap with Species at Risk distribution range."
 } else {
   "The search area overlaps with Species at Risk distribution range."
@@ -65,14 +66,14 @@ crit_table <- table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
 ```
 <br>
 ```{r  dist-table, echo=FALSE, results='asis'}
-Dist_query_output_table<-if(Dist_overlap_result < 1){
+Dist_query_output_table<-if(is.null(outputListSardist$studyData)){
   ""
 } else {
 
   knitr::kable(dist_table[!duplicated(dist_table),], align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 
 }
-if(Dist_overlap_result > 1){Dist_query_output_table}
+if(!is.null(outputListSardist$studyData)){Dist_query_output_table}
 ```
 
 ```{r crit-table, echo=FALSE, results='asis'}
@@ -124,6 +125,6 @@ if (!is.null(clipped$regionData)){
 <br>
 ```{r leatherback-area-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with draft critical habitat of Leatherback Sea Turtle', fig.height=6, fig.width=11}
 if (!is.null(clipped$mapData)){
-  plot_rr_sf(areaMap,  studyBox_geom, clipped$mapData, attribute)
+  plot_rr_sf(areaMap, clipped$mapData, attribute)
 }  
 ```
