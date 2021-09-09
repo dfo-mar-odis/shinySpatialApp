@@ -6,7 +6,7 @@ context("Function Tests")
 test_that("default plot", {
   list2env(load_test_data(), envir = environment())
   emptyPlot <- ggplot2::ggplot()
-  testPlot <- format_ggplot(emptyPlot)
+  testPlot <- format_ggplot(emptyPlot, regionBox)
   expect_equal(length(testPlot$data), 0)
 })
 

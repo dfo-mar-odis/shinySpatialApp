@@ -14,14 +14,14 @@
 # 
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
-plot_rr_sf <- function(baseMap, data_sf, attribute=NULL, legendName="", legendColours=NULL) {
+plot_rr_sf <- function(baseMap, data_sf, attribute=NULL, ...) {
   if (inherits(sf::st_geometry(data_sf), "sfc_POINT")) {
     
-    outPlot <- plot_points(baseMap, data_sf, attribute=attribute, legendName=legendName, legendColours=legendColours)
+    outPlot <- plot_points(baseMap, data_sf, attribute=attribute, ...)
     
   } else if (inherits(sf::st_geometry(data_sf), c("sfc_POLYGON", "sfc_MULTIPOLYGON", "sfc_GEOMETRY"))) {
     
-    outPlot <- plot_polygons(baseMap, data_sf, attribute=attribute, legendName=legendName)
+    outPlot <- plot_polygons(baseMap, data_sf, attribute=attribute, ...)
     
   }
   
@@ -42,7 +42,7 @@ get_scale_bar_layer <- function(inPlot) {
 
 # helper function, extracts the watermark layer from either the areaMap or regionMap
 get_watermark_layer <- function(inPlot) {
-  watermarkLayer <- lapply(inPlot$layers, function(inLayer) if("GeomScaleBar" %in% class(inLayer$geom)) inLayer else NULL)
+  watermarkLayer <- lapply(inPlot$layers, function(inLayer) if("GeomCustomAnn" %in% class(inLayer$geom)) inLayer else NULL)
   watermarkLayer <- watermarkLayer[!sapply(watermarkLayer, is.null)]
   return(watermarkLayer)
 }
@@ -78,6 +78,7 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", legendC
   # extract scaleBar layer to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
+  watermarkLayer = get_watermark_layer(baseMap)
   
   # axis limits based on baseMap
   axLim = ggplot2::coord_sf(xlim=baseMap$coordinates$limits$x, 
@@ -98,6 +99,7 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", legendC
     dataLayer +
     legendLayer +
     axLim +
+    watermarkLayer +
     studyBoxLayer +
     scaleBarLayer
   
@@ -128,10 +130,11 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", legendC
 # Created by Gordana Lazin, July 2, 2021 for reproducible reporting project
 
 
-plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute) {
+plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute, outlines=TRUE) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
+  watermarkLayer = get_watermark_layer(baseMap)
   
   clr = "black" #color for outlining polygons
   
@@ -147,7 +150,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute) {
     polyData$Rockweed[which(polyData$RWP==0)] = "Not Present"
     
     attribute = "Rockweed"
-    clr = NA
+    clr = "red"# NA
   }
   
   # axis limits to the plot
@@ -167,11 +170,22 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute) {
     
     polyPlot <- geom_sf(data=polyData, fill="#56B4E9", col=clr)
     polyFill <- NULL
+    polyOutline <- NULL
+    
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
     
-    polyPlot <- geom_sf(data=polyData, aes(fill=!!sym(attribute)), colour=clr)
-    polyFill <- scale_fill_manual(values=legendColor, name=legendName) 
+    polyFill <- scale_fill_manual(values=legendColor, name=legendName)
+    if (outlines) {
+      polyOutline <- NULL
+      polyPlot <- geom_sf(data=polyData, aes(fill=!!sym(attribute)))
+      
+    }
+    else {
+      polyPlot <- geom_sf(data=polyData, aes(fill=!!sym(attribute), col=!!sym(attribute)))
+      polyOutline <- scale_color_manual(values=legendColor, guide=FALSE)  
+    }
+    
     
   }
  
@@ -180,8 +194,10 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute) {
     polyMap <- baseMap +
       polyPlot +
       polyFill +
-      studyBoxLayer +
+      polyOutline +
       axLim +
+      watermarkLayer +
+      studyBoxLayer +
       scaleBarLayer
     
     return(polyMap)

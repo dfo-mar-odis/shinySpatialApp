@@ -104,7 +104,7 @@ area_map <- function(studyArea, site, landLayer, bufKm, CANborder, studyBoxGeom)
   outPlot <- ggplot() + 
     geom_sf(data = site, fill = "yellow", col = "black", size = 0.6) +
     geom_sf(data = bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
-    geom_sf(data = land, fill = c("lightgrey"), col = "lightgrey", size = 0.7) +
+    geom_sf(data = land, fill = c("lightgrey"), col = "black", size = 0.3) +
     eval(studyBoxGeom) 
   
   outPlot <- format_ggplot(outPlot, bboxBuf)
@@ -142,7 +142,7 @@ region_map <- function(regionBbox, studyArea, landLayer, CANborder) {
   # configure the plot
   rawPlot <- ggplot() +
     geom_sf(data = bound, col = "darkgrey", linetype = "dashed", size = 1.1) + # creates US boundary line, 200 nm limit
-    geom_sf(data = land, fill = c("lightgrey"), col = "lightgrey", size = 0.7) +
+    geom_sf(data = land, fill = c("lightgrey"), col = "black", size = 0.3) +
     geom_sf(data = studyArea, fill = NA, col = "red", size = 1)
   
   outPlot <- format_ggplot(rawPlot, regionBbox)
@@ -158,13 +158,13 @@ region_map <- function(regionBbox, studyArea, landLayer, CANborder) {
 
 format_ggplot <- function(ggplotIn, bbox) {
   
-  
+  # convert to degrees, 0.7 is bad lat/long correction factor.  
   rotTheta <- (360 /(2* pi)) * atan((bbox$ymax[[1]] - bbox$ymin[[1]]) / 
-                 (bbox$xmax[[1]] - bbox$xmin[[1]]))
+                 (0.7 * (bbox$xmax[[1]] - bbox$xmin[[1]])))
   
   ggplotOut <- ggplotIn +
     annotation_custom(grid::textGrob("DFO Internal Use Only", rot=rotTheta,
-                                     gp=grid::gpar(fontsize=30, alpha=0.5, col="grey", fontface="bold")),
+                                     gp=grid::gpar(fontsize=30, alpha=0.5, col="grey70", fontface="bold")),
                       xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
     annotation_scale(location = "bl") +
     theme_bw()+

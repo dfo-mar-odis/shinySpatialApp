@@ -18,7 +18,7 @@ Security level: none
 Dataset description from the Open Data record [@OpenData_MAR_RV]: The Fisheries and Oceans Canada ecosystem Research Vessel (RV) surveys are conducted annually (since 1970) and are a source of integrated ecosystem monitoring data. These survey data are the primary data source for monitoring trends in species distribution, abundance, and biological condition within the region, and also provide data to the Atlantic Zonal Monitoring Program (AZMP) for monitoring hydrographic conditions, along with zooplankton and phytoplankton. The surveys follow a stratified random sampling design, and include sampling using a bottom otter trawl, CTD rosette and vertical plankton tows. Data from the bottom trawl catch are used to monitor the distribution and abundance of fish and invertebrates throughout the Scotian Shelf, Bay of Fundy and Georges Bank. 
 
 ```{r table-RV-read, echo=FALSE, cache=FALSE, include = FALSE}
-table_RV <- read.csv("../data/misc/table_RV_EN.csv")
+table_RV <- read.csv(here::here("app/data/misc/table_RV_EN.csv"))
 table_RV<- table_RV %>% dplyr::rename("Season/Months"=Season.Months,"Description of Geographic Range"=Description.of.Geographic.Range)
 ```
 ```{r RV-table-setup}

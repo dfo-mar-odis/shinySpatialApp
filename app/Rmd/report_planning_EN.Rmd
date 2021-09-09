@@ -18,7 +18,6 @@ Dataset description from the Open Data record [@OpenData_ebsa]: Ecologically and
 
 #### ***Area-specific EBSA search results***
 
--   
 
 ```{r EBSA-results, echo=FALSE, results='asis'}
 #function for overlap
@@ -27,7 +26,7 @@ EBSAoutput <- master_intersect(EBSA_sf, mapDataList)
 # define polygon dataset and attribute to plot
 attribute <- "NONE"
 ```
-
+*
 ```{r EBSA-check, echo=FALSE, results='asis'}
 #function for overlap
 Query_output_EBSA<-if(is.null(EBSAoutput$stuyData)){
