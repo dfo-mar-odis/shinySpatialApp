@@ -46,6 +46,8 @@ if(!is.null(clipped$studyData)){print(
 ```{r table-rockweed, echo=FALSE, cache=FALSE, include = FALSE}
 if(!is.null(clipped$studyData)){
   rwTable <- rockweedStats(clipped$studyData, studyArea)}
+  names(rwTable) <- c("Catégorie", "Nombre de polygones", "Superficie km2")
+
 ```
 
 ```{r rockweed-table}

@@ -180,7 +180,8 @@ clippedSei <- master_intersect(sei_whale_sf, mapDataList)
 table_sdm <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
                         "Habour Porpoise" = !is.null(clippedHp$studyData),
                         "Humpback Whale" = !is.null(clippedHump$studyData),
-                        "Sei Whale" = !is.null(clippedSei$studyData))
+                        "Sei Whale" = !is.null(clippedSei$studyData), 
+                        check.names = FALSE)
 
 ```
 ```{r sdm-table}
