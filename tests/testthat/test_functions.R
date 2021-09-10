@@ -31,14 +31,14 @@ test_that("master intersect", {
   testBbox <- sf::st_bbox(whitehead_sf)
   mapDataList$studyArea <- testBbox
   mapDataList$bboxMap <- testBbox
-  outputList <- master_intersect(whitehead_sf, mapDataList)
+  outputList <- master_intersect(whitehead_sf, mapDataList, getRegion = TRUE)
   expect_equal(nrow(outputList$regionData), nrow(whitehead_sf))
   
   # test with polygons
   testBbox <- sf::st_bbox(ClippedCritHab_sf)
   mapDataList$studyArea <- testBbox
   mapDataList$bboxMap <- testBbox
-  outputList <- master_intersect(ClippedCritHab_sf, mapDataList)
+  outputList <- master_intersect(ClippedCritHab_sf, mapDataList, getRegion = TRUE)
   expect_equal(nrow(outputList$regionData), nrow(ClippedCritHab_sf))
   
   # test null intersect (no data in the Gulf of Guinea):
@@ -47,9 +47,9 @@ test_that("master intersect", {
   testBbox["ymin"] <- 0
   testBbox["ymax"] <- 1
   mapDataList$region <- testBbox
-  mapDataList$mapBbox <- testBbox
+  mapDataList$bboxMap <- testBbox
   mapDataList$studyArea <- testBbox
-  outputList <- master_intersect(whitehead_sf, mapDataList)
+  outputList <- master_intersect(whitehead_sf, mapDataList, getRegion = TRUE)
   expect_null(c(outputList$regionData, outputList$studyData, outputList$mapData, outputList$mapPoints))
 })
 

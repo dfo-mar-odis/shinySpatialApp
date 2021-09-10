@@ -97,14 +97,14 @@ Samples_bboxI <- outputListI$mapPoints
 Samples_bboxM <- outputListM$mapPoints
 
 if (!is.null(outputListI$studyData)) {
-  tableList <- create_table_ISDB(outputListI[[1]], listed_species,
+  tableList <- create_table_ISDB(outputListI$studyData, listed_species,
                                  speciesTable = ISSPECIESCODES)
   table_isdb1 <- tableList[[1]]
   table_isdb2 <- tableList[[2]]
 }
 
 if (!is.null(outputListM$studyData)) {
-  tableList <- create_table_MARFIS(outputListM[[1]], listed_species, speciesTable = MARFISSPECIESCODES)
+  tableList <- create_table_MARFIS(outputListM$studyData, listed_species, speciesTable = MARFISSPECIESCODES)
   table_mar1 <- tableList[[1]]
   table_mar2 <- tableList[[2]]
 }
