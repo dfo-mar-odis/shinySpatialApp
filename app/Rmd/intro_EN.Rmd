@@ -9,10 +9,6 @@ output:
     theme: paper
     toc: true
     toc_depth: 5
-  pdf_document:
-    toc: true
-  word_document:
-    toc: true
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
@@ -42,7 +38,7 @@ load(here::here("app/data/SecureData.RData"))
 
 ```{r  Load-Search-Area, echo=FALSE, include=FALSE, cache=FALSE}
 studyArea <- sf::st_read("{{path_to_geoms}}")
-#studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
+# studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
 # Uncomment the following to test fixed polygon:
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_test.geojson")) #Offshore
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_coastal_test.geojson")) #coastal

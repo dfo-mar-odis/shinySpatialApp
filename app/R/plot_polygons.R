@@ -138,21 +138,6 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute, ou
   
   clr = "black" #color for outlining polygons
   
-  # this is part specific for rockweed, I included it in plotting for now
-  # Otherwise, it can be included in intersect function, or in pre-processing
-  if (attribute == "RWP") {
-    
-    # replace codes with words
-    polyData$Rockweed = ""
-    polyData$Rockweed[which(polyData$RWP==1)] = "1-Present"
-    polyData$Rockweed[which(polyData$RWP==2)] = "2-Likely Present"
-    polyData$Rockweed[which(polyData$RWP==5)] = "5-Unknown"
-    polyData$Rockweed[which(polyData$RWP==0)] = "Not Present"
-    
-    attribute = "Rockweed"
-    clr = "red"# NA
-  }
-  
   # axis limits to the plot
   axLim = ggplot2::coord_sf(xlim=baseMap$coordinates$limits$x, 
                             ylim=baseMap$coordinates$limits$y, expand=FALSE) 
@@ -178,7 +163,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute, ou
     polyFill <- scale_fill_manual(values=legendColor, name=legendName)
     if (outlines) {
       polyOutline <- NULL
-      polyPlot <- geom_sf(data=polyData, aes(fill=!!sym(attribute)))
+      polyPlot <- geom_sf(data=polyData, aes(fill=!!sym(attribute)), colour=clr)
       
     }
     else {

@@ -53,21 +53,21 @@ rockweedStats<- function(rockweed_sf, studyArea) {
   rw$area = sf::st_area(rw) # add column with areas of the polygons
 
   # make a table, sum the areas for different presences
-  noRecords = as.data.frame(table(rw$RWP))
-  noRecords$Var1 = as.numeric(noRecords$Var1)
-  totalArea = aggregate(as.numeric(rw$area), list(rw$RWP), sum)
+  noRecords = as.data.frame(table(rw$status))
+  totalArea = aggregate(as.numeric(rw$area), list(rw$status), sum)
   stats = merge(noRecords, totalArea, by.x="Var1", by.y="Group.1")
+  
+  statusCol <- totalArea$Group.1
+  stats <- dplyr::select(stats, c("Freq", "x"))
   stats = rbind(stats, colSums(stats))
-  names(stats) = c("RWP", "noPolygons", "Area_m2")
-  stats$Category = ""
-  stats$Category[stats$RWP==1] = "Rockweed present"
-  stats$Category[stats$RWP==2] = "Rockweed likely present"
-  stats$Category[stats$RWP==5] = "Unknown vegetation"
-  stats$Category[stats$RWP==0] = "Rockweed not present"
-  stats$Category[nrow(stats)] = "Total intertidal vegetation"
+  statusCol[nrow(stats)] = "Total intertidal vegetation"
+  stats$status <- statusCol
+  stats <- dplyr::select(stats, c("status", "Freq", "x"))
+  
+  names(stats) = c("Status", "noPolygons", "Area_m2")
 
   stats$Area_km2 = round(stats$Area_m2 / 1000) / 1000
-  stats = stats[, c("Category", "noPolygons", "Area_km2")]
+  stats = stats[, c("Status", "noPolygons", "Area_km2")]
 
   return(stats)
 

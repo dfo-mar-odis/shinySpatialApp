@@ -71,10 +71,9 @@ renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output",
     # First rendering
     ok[i] <- tryCatch({
         rmarkdown::render(rmdOut,
-         output_format = "all",
          output_dir = dirOut,
          output_file = langOutFile,
-         quiet = TRUE)
+         quiet = FALSE)
       TRUE
       }, 
       error = function(x) FALSE

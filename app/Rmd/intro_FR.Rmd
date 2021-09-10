@@ -9,10 +9,6 @@ output:
     theme: paper
     toc: true
     toc_depth: 5
-  pdf_document:
-    toc: true
-  word_document:
-    toc: true
 bibliography: ../data/mybiblio.bib
 ---
 
@@ -43,7 +39,7 @@ studyArea <- sf::st_read("{{path_to_geoms}}")
 # studyArea <- sf::st_read("geoms_slc.geojson")
 # Uncomment the following to test fixed polygon:
 # studyArea <- st_read("../studyAreaTest/geoms_slc_test.geojson")#Offshore
- studyArea <- st_read("../studyAreaTest/geoms_slc_coastal_test.geojson")#coastal
+# studyArea <- st_read("../studyAreaTest/geoms_slc_coastal_test.geojson")#coastal
 # studyArea <- st_read("../studyAreaTest/geoms_slc_no_land.geojson")#no land
 region <- st_read("../studyAreaTest/geoms_slc_MarBioRegion.geojson")
 site <- sf::st_centroid(studyArea)

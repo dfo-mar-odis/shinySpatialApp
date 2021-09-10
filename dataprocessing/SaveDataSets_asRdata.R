@@ -40,6 +40,13 @@ bioregion_sf <- st_read("../Data/Boundaries/MaritimesRegionBound/MaritimesRegion
 rockweed_sf <- st_read("../Data/NaturalResources/Species/Rockweed/MAR_rockweed_presence_validated.shp", stringsAsFactors = FALSE)
 rockweed_sf <- st_transform(rockweed_sf, 4326) # Project to WGS84
 rockweed_sf <- st_make_valid(rockweed_sf)
+# set status column
+poly_sf$status = ""
+poly_sf$status[which(poly_sf$RWP==1)] = "Present"
+poly_sf$status[which(poly_sf$RWP==2)] = "Likely Present"
+poly_sf$status[which(poly_sf$RWP==5)] = "Unknown"
+poly_sf$status[which(poly_sf$RWP==0)] = "Not Present"
+
 
 # Table of SARA listed species
 listed_species <- read.csv("../Data/NaturalResources/Species/MAR_listed_species.csv",
