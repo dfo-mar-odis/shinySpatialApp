@@ -9,6 +9,9 @@
 renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output", 
   dirIn = "Rmd") { 
   
+  #time report:
+  renderTimeStart <- Sys.time()
+  
   # rm all html 
   clear_www_html()
   clear_output()
@@ -78,6 +81,10 @@ renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output",
     )
   
   } # end of language loop
+  
+  renderTimeEnd <- Sys.time()
+  msgInfo("Report render time:")
+  msgInfo(renderTimeEnd - renderTimeStart)
   msgInfo("Render complete")
   
   if (all(ok)) {

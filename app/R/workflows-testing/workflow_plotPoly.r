@@ -11,7 +11,7 @@ attribute <- "Activity"           #"NONE"         #"NONE"            #"RWP"
 # THIS LINE WOULD BE THE SAME FOR ALL POLYGONS
 # intersect polyData with 3 polygons (region, map area, and study box)
 # master_intersect function is stored in fn_intersect_operations.R
-clipped <- master_intersect(poly_sf, mapDataList)
+clipped <- master_intersect(poly_sf, mapDataList, getRegion=TRUE)
 # outputs: clipped$regionData, clipped$mapData, and clipped$studyData
 
 # PLOT AREA MAP (using clipped$mapData)

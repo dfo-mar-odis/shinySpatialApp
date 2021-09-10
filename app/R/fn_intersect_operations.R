@@ -31,7 +31,7 @@
 # 4. mapPoints: Unique collection of points to be plotted on a map.
 
 
-master_intersect <- function(data_sf, mapDataList, ...) {
+master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
 
   # check that data_sf is an accepted format:
   if (!inherits(sf::st_geometry(data_sf), c("sfc_POINT", 
@@ -49,12 +49,17 @@ master_intersect <- function(data_sf, mapDataList, ...) {
   mapArea <- sf::st_as_sfc(mapDataList$bboxMap)
   
   # Crop data
-  regionData <- sf::st_crop(data_sf, mapDataList$region)
-  mapData <- sf::st_crop(regionData, mapArea)
+  if (getRegion) {
+    regionData <- sf::st_crop(data_sf, mapDataList$region)  
+    if (nrow(regionData) == 0) {regionData <- NULL}
+  } else {
+    regionData <- NULL
+  }
+  
+  mapData <- sf::st_crop(data_sf, mapArea)
   studyData <- sf::st_crop(mapData, mapDataList$studyArea)
   
   # if there is no intersect with the box, set return to NULL
-  if (nrow(regionData) == 0) {regionData <- NULL}
   if (nrow(mapData) == 0) {mapData <- NULL}
   
   if (nrow(studyData) > 0) {

@@ -21,7 +21,7 @@ Dataset description from the Open Data record [@OpenData_ebsa]: Ecologically and
 
 ```{r EBSA-results, echo=FALSE, results='asis'}
 #function for overlap
-EBSAoutput <- master_intersect(EBSA_sf, mapDataList)
+EBSAoutput <- master_intersect(EBSA_sf, mapDataList, getRegion=TRUE)
 
 # define polygon dataset and attribute to plot
 attribute <- "NONE"

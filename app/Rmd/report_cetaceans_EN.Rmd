@@ -216,7 +216,7 @@ poly_sf <- BlueWhale_ImpHab_sf
 attribute <- "Activity"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, mapDataList)
+clipped <- master_intersect(poly_sf, mapDataList, getRegion=TRUE)
 ```
 *
 ```{r bw-result, echo=FALSE, results='asis'}
@@ -265,7 +265,7 @@ poly_sf <- NBNW_ImpHab_sf
 attribute <- "NONE"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, mapDataList)
+clipped <- master_intersect(poly_sf, mapDataList, getRegion=TRUE)
 ```
 *
 ```{r nbw-result, echo=FALSE, results='asis'}
