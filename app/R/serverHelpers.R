@@ -1,3 +1,24 @@
+# Interactive map created with `leaflet` and called in `mapedit::callModule`.
+
+selectionMap <- function(geoms = NULL) {
+  
+  out <- leaflet::leaflet(height = 2000) %>% 
+    leaflet::addTiles() %>% 
+    leafem::addMouseCoordinates() %>%
+    leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7) %>%
+    leaflet::addProviderTiles('Esri.OceanBasemap', group = 'OceaBasemap') %>%
+    leaflet::addProviderTiles("OpenTopoMap", group = "OpenTopoMap") %>%
+    leaflet::addProviderTiles("OpenStreetMap", group = "OpenStreetMap") %>%
+    addLayersControl(
+      baseGroups = c('OpenStreetMap', 'Ocean Basemap', 'OpenTopoMap'),
+      position = 'bottomleft')
+  
+  if (!is.null(geoms)) out <- leafem::addFeatures(out, geoms)
+  
+  out
+}
+
+
 # The functions below ensure that input geometries are properly formatted.
 
 valid_bbox <- function(xmin, xmax, ymin, ymax, nm, crs_in = 4326) {
