@@ -176,17 +176,17 @@ Important usage considerations: model predictions in this section should not be 
 
 #### ***Area-specific SDM cetacean search results***
 ```{r sdm, include=FALSE, cache=FALSE}
-clippedFin <- master_intersect(fin_whale_sf, mapDataList)
-clippedHp <- master_intersect(harbour_porpoise_sf, mapDataList)
-clippedHump <- master_intersect(humpback_whale_sf , mapDataList)
-clippedSei <- master_intersect(sei_whale_sf, mapDataList)
+
+clippedFin <- master_intersect(fin_whale_sf, mapDataList, getRegion = TRUE)
+clippedHp <- master_intersect(harbour_porpoise_sf, mapDataList, getRegion = TRUE)
+clippedHump <- master_intersect(humpback_whale_sf , mapDataList, getRegion = TRUE)
+clippedSei <- master_intersect(sei_whale_sf, mapDataList, getRegion = TRUE)
 
 table_sdm <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
                         "Habour Porpoise" = !is.null(clippedHp$studyData),
                         "Humpback Whale" = !is.null(clippedHump$studyData),
                         "Sei Whale" = !is.null(clippedSei$studyData),
                         check.names = FALSE)
-
 ```
 
 ```{r sdm-table}
@@ -194,7 +194,9 @@ table_sdm <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
 ```
 
 ```{r sdm-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map shows consolidated Species Distribution Modelling outputs (60-100% relative predicted occurrence rate). Yellow polygons (habitats with high suitability) are to be interpreted as areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Due to the many reasons listed in the discussion section in Gomez et al. (2020), these cetacean modelling outputs do not represent a complete and current distribution of cetaceans in the region. They represent priority areas to direct cetacean monitoring efforts. Their use in marine spatial planning processes should be accompanied by complementary approaches such as the process summarized in the section below. The data product summarized in the section below (Blue Whale Important Habitat in the Western North Atlantic) represents an excellent framework in which to properly use the outputs of this figure.'}
-plot_cetaceans_4grid(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea, land10m_sf, 50, bounds_sf)
+plot_cetaceans_4grid(clippedFin$regionData, clippedHp$regionData, clippedHump$regionData, clippedSei$regionData, studyArea, land10m_sf, 50, bounds_sf)
+
+
 ```
 
 ### **Blue Whale Important Habitat**

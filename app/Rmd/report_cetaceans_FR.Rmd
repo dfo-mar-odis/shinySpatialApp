@@ -172,10 +172,10 @@ Considérations importantes relatives à l’utilisation : les prévisions modé
 #### ***Résultats de la recherche du MRE pour les cétacés, par zone***
 ```{r sdm, include=FALSE, cache=FALSE}
 
-clippedFin <- master_intersect(fin_whale_sf, mapDataList)
-clippedHp <- master_intersect(harbour_porpoise_sf, mapDataList)
-clippedHump <- master_intersect(humpback_whale_sf , mapDataList)
-clippedSei <- master_intersect(sei_whale_sf, mapDataList)
+clippedFin <- master_intersect(fin_whale_sf, mapDataList, getRegion = TRUE)
+clippedHp <- master_intersect(harbour_porpoise_sf, mapDataList, getRegion = TRUE)
+clippedHump <- master_intersect(humpback_whale_sf , mapDataList, getRegion = TRUE)
+clippedSei <- master_intersect(sei_whale_sf, mapDataList, getRegion = TRUE)
 
 table_sdm <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
                         "Habour Porpoise" = !is.null(clippedHp$studyData),
@@ -189,7 +189,7 @@ table_sdm <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
 ```
 
 ```{r sdm-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Faible. Niveau de sécurité : Aucun. La carte montre les résultats consolidés du modèle de répartition des espèces (taux d’occurrence prévu relatif de 60 à 100 %). Les polygones jaunes (habitats très appropriés) doivent être interprétés comme des zones où les efforts de surveillance des cétacés peuvent être priorisés et dont les résultats peuvent aider à diriger les activités de relevés dans le futur. En raison des nombreuses raisons énumérées dans la section de discussion de Gomez et al. (2020), ces données de modélisation sur les cétacés ne représentent pas une répartition complète et actuelle des cétacés dans la région. Elles représentent des zones prioritaires où diriger les efforts de surveillance des cétacés. Leur utilisation dans les processus de planification de l’espace marin devrait être accompagnée d’approches complémentaires telles que le processus résumé dans la section ci-dessous. Le produit de données résumé dans la section ci-dessous (habitat important pour le rorqual bleu dans l’ouest de l’Atlantique Nord) représente un excellent cadre dans lequel utiliser correctement les extrants de cette figure.'}
-plot_cetaceans_4grid(fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, sei_whale_sf, studyArea, land10m_sf, 50, bounds_sf)
+plot_cetaceans_4grid(clippedFin$regionData, clippedHp$regionData, clippedHump$regionData, clippedSei$regionData, studyArea, land10m_sf, 50, bounds_sf)
 ```
 
 ### **Habitat important pour le rorqual bleu**  

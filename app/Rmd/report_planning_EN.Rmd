@@ -29,7 +29,7 @@ attribute <- "NONE"
 *
 ```{r EBSA-check, echo=FALSE, results='asis'}
 #function for overlap
-Query_output_EBSA<-if(is.null(EBSAoutput$stuyData)){
+Query_output_EBSA<-if(is.null(EBSAoutput$studyData)){
     "The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSA)."
   } else {
     "The search area overlaps with identified Ecologically and Biologically Significant Areas (EBSA)."

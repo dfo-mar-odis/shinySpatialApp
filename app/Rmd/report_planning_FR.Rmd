@@ -28,7 +28,7 @@ attribute <- "NONE"
 
 ```{r EBSA-check, echo=FALSE, results='asis'}
 #function for overlap
-Query_output_EBSA<-if(is.null(EBSAoutput$stuyData)){
+Query_output_EBSA<-if(is.null(EBSAoutput$studyData)){
   "La zone de recherche ne chevauche pas les zones d’importance écologique et biologique (ZIEB)."
   } else {
     "La zone de recherche chevauche les zones d’importance écologique et biologique (ZIEB)."
