@@ -23,7 +23,15 @@ Remarques sur les données :
 ```{r overlap-rockweed, echo=FALSE, results='asis'}
 # define polygon dataset and attribute to plot
 poly_sf <- rockweed_sf
-attribute <- "RWP"
+attribute <- "status"
+
+
+# set status column
+poly_sf$status = ""
+poly_sf$status[which(poly_sf$RWP==1)] = "Present"
+poly_sf$status[which(poly_sf$RWP==2)] = "Likely Present"
+poly_sf$status[which(poly_sf$RWP==5)] = "Unknown"
+poly_sf$status[which(poly_sf$RWP==0)] = "Not Present"
 
 # intersect polyData with 3 polygons (region, map area, and study box)
 clipped <- master_intersect(poly_sf, mapDataList)
@@ -43,7 +51,7 @@ polyText<-if(is.null(clipped$studyData)){
 
 ```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur : l’emplacement du projet ou de l’activité proposé est surligné en jaune (polygone d’entrée), entouré d’une zone exposée ou d’une zone tampon définie par l’utilisateur en bleu. La figure illustre le chevauchement entre la zone de recherche et les cartes satellitaires de la végétation intertidale et des polygones de présence de fucus.'}
 if(!is.null(clipped$studyData)){
-  print(plot_rr_sf(areaMap, clipped$mapData, attribute, outlines=FALSE))
+  print(plot_rr_sf(areaMap, clipped$mapData, attribute, outlines=FALSE, legendName= "Végétation Intertidale"))
 }
 ```
 

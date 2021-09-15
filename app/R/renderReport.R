@@ -36,9 +36,14 @@ renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output",
   }
   
   # nasty trick (due to current rmarkdown behavior) to name final file properly 
-  if (!is.null(outFileName) & outFileName != "") {
-    outFileName <- rep(outFileName, 10)
-  } else outFileName <- rep("report_SMR", 10)
+  #if (!is.null(outFileName) & outFileName != "") {
+  #  outFileName <- rep(outFileName, 10)
+  #} else outFileName <- rep("report_SMR", 10)
+  
+  if (is.null(outFileName) | outFileName == "") {
+    outFileName <- "report_SMR"
+  }
+  
   
   # loop over language 
   for (i in seq_len(numLang)) {
@@ -67,14 +72,13 @@ renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output",
       add_appendix = add_sections(s_appendix, dirIn, dirOut)
     )  
     writeLines(whisker::whisker.render(template, whiskerData), rmdOut)
-
     # First rendering
     ok[i] <- tryCatch({
         rmarkdown::render(rmdOut,
          output_dir = dirOut,
          output_file = langOutFile,
-         quiet = FALSE)
-      TRUE
+         quiet = TRUE)
+      FALSE # flag to show report in app.  
       }, 
       error = function(x) FALSE
     )
@@ -89,17 +93,15 @@ renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output",
   if (all(ok)) {
     # this is done to generate an html preview (see "report" tab)
     htmlName <- switch_ext(basename(inFile), "html") 
-    htmlOut <- switch_ext(rmdOut, "html") 
+    htmlOut <- paste(dirOut, "/", langOutFile, ".html", sep="")
     # do not render again if html has already been generated
     if (file.exists(htmlOut)) {
-      file.copy(htmlOut, glue("www/{htmlName}"))
+      file.copy(htmlOut, glue(here::here("app", "www/{htmlName}")))
+      msg <- "Successfully rendered."
     } else {
-      rmarkdown::render(rmdOut,
-        output_format = "html_document",
-        output_dir = "www",
-        quiet = TRUE)
+      msg <- "Issue while rendering"
+      rmdOut <- htmlName <- NULL
     }
-    msg <- "Successfully rendered."
   } else {
     msg <- "Issue while rendering"
     rmdOut <- htmlName <- NULL

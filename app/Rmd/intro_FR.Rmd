@@ -21,7 +21,7 @@ a:hover {color: #006080;}
 </style>
 
 ```{r setup-and-libraries, echo=FALSE, include=FALSE, cache=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.align = "left")
 ```
 
 ```{r load-data-and-functions, echo=FALSE, include=FALSE, cache=FALSE}
@@ -72,7 +72,7 @@ Ce document résume les données régionales, y compris les renseignements sur l
 Le présent document est conçu comme un outil de rapport reproductible, appuyé par le langage de balisage R et généré par une interface d’application R-Shiny hébergée sur le réseau du MPO. Les résumés et les résultats des rapports sont basés sur des données extraites d’une zone de recherche fournie par l’utilisateur (un polygone d’intérêt focal) avec un tampon défini par l’utilisateur (figure x). Les instructions d’utilisation de l’interface R-Shiny sont fournies dans le manuel technique. En raison du caractère sensible potentiel de certaines données et informations, l’accès aux données de l’application doit être accordé, et le rapport est destiné à un usage interne uniquement.  
 
 ````{r area-map-plot, fig.height=8, fig.width=11, fig.cap='Carte montrant la zone de recherche définie par l’utilisateur (entourée en rouge) pour rechercher des informations et générer automatiquement ce rapport. '}
-areaMap
+mapDataList$areaMap
 # areaMap can be plotted once and then reused for other plots
 ```
 

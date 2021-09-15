@@ -23,3 +23,4 @@ catch_all_output({
 })
 
 message("Test data generation complete")
+
