@@ -36,7 +36,7 @@ Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList$studyData)) {
   tableList <- create_table_RV(outputList$studyData, listed_species, speciesTable = RVGSSPECIES)
-  rvAllTable <- tableList$allSpeciesData
+  rvAllTable <- tableList$allSpecies
   rvSarTable <- tableList$sarData
 }
 ```

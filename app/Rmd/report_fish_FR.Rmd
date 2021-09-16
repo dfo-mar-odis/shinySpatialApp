@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ## **POISSONS ET INVERTÉBRÉS**
 
 La présente section décrit les résultats tirés des sources de données suivantes : Enquête sur les navires de recherche (NR) dans les Maritimes, Base de données des relevés de l’industrie (BDRI), Système d’information sur les pêches des Maritimes (SIPMAR) et Système d’information sur la biodiversité des océans (SIBO). Les extrants propres à une zone sont fournis dans des sous-sections marquées selon la source de données. Des descriptions des données sources et des références et personnes-ressources appropriées sont fournis au début de chaque sous-section.
@@ -32,7 +37,7 @@ Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList$studyData)) {
   tableList <- create_table_RV(outputList$studyData, listed_species, speciesTable = RVGSSPECIES)
-  rvAllTable <- tableList$allSpeciesData
+  rvAllTable <- tableList$allSpecies
   rvSarTable <- tableList$sarData
 }
 ```

@@ -77,7 +77,7 @@ renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output",
         rmarkdown::render(rmdOut,
          output_dir = dirOut,
          output_file = langOutFile,
-         quiet = TRUE)
+         quiet = FALSE)
       TRUE # flag to show report in app.  
       }, 
       error = function(x) FALSE
