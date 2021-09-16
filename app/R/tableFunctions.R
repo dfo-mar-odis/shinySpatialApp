@@ -275,25 +275,25 @@ table_dist <- function(sardist_sf) {
 }
 
 #SAR critical habitat
-table_crit <- function(ClippedCritHab_sf, leatherback_sf) {
+table_crit <- function(CCH_sf, LB_sf) {
   
-  crit_table <- dplyr::select(ClippedCritHab_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
-  crit_table$geometry <- NULL
-  names(crit_table) <- c("CommonName", "Population", "Area", "SARA_status")
+  critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
+  critTable$geometry <- NULL
+  names(critTable) <- c("CommonName", "Population", "Area", "SARA_status")
   
-  if (!is.null(leatherback_sf)){
-    leatherback_row <- data.frame("Leatherback Sea Turtle", NA, paste(leatherback_sf$AreaName, collapse=', ' ), "Endangered" )
-    names(leatherback_row) <- names(crit_table)
-    crit_table <- bind_rows(crit_table, leatherback_row)
+  if (!is.null(LB_sf)){
+    leatherbackRow <- data.frame("Leatherback Sea Turtle", NA, paste(LB_sf$AreaName, collapse=', ' ), "Endangered" )
+    names(leatherbackRow) <- names(critTable)
+    critTable <- bind_rows(critTable, leatherbackRow)
   }
  
   # remove rows with NA area, dump duplicates:
-  crit_table <- distinct(crit_table[!is.na(crit_table$Area), ])
+  critTable <- distinct(critTable[!is.na(critTable$Area), ])
   
-  if (!nrow(crit_table) > 1){
+  if (!nrow(critTable) >= 1){
     return(NULL)
   } else {
-    return(crit_table)  
+    return(critTable)  
   }
 }
 

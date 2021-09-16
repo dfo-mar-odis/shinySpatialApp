@@ -76,7 +76,6 @@ This document is developed as a reproducible reporting tool, supported by the R 
 
 ````{r area-map-plot, fig.height=8, fig.width=11, fig.cap='Map showing the search area defined by the user (outlined in red) to query information and automatically generate this report. '}
 mapDataList$areaMap
-# areaMap can be plotted once and then reused for other plots
 ```
 
 The output from the search includes the following sections:

@@ -332,18 +332,29 @@ maps_setup <- function(studyArea, site, region, areaLandLayer, regionLandLayer, 
 area_map <- function(studyArea, site, landLayer, bufKm, CANborder, studyBoxGeom) {
   
   # buf is in km, and now converted to degrees
-  buf <- bufKm / 100
+  bufx <- bufKm / 100
+  bufy <- 0.72 * bufKm / 100 # scaled degrees
   
   # bounding box for study area
   bbox <- sf::st_bbox(studyArea)
   
+  widthBbox <- ((bbox$xmax) - (bbox$xmin)) * 0.72 # in scaled degrees
+  heightBbox <- (bbox$ymax) - (bbox$ymin)  # in degrees
+  
+  if (heightBbox > 2 * widthBbox) {
+    bufx <- bufx + (0.5 * (heightBbox - widthBbox))
+  } else if (widthBbox > 2 * heightBbox) {
+    bufy <- bufy + (0.5 * (widthBbox - heightBbox))
+  }
+  
+  
   # create bounding box for buffer (plot area)
   bboxBuf <- bbox
   
-  bboxBuf["xmin"] <- (bbox$xmin) - buf
-  bboxBuf["xmax"] <- (bbox$xmax) + buf
-  bboxBuf["ymin"] <- (bbox$ymin) - buf * 0.72
-  bboxBuf["ymax"] <- (bbox$ymax) + buf * 0.72
+  bboxBuf["xmin"] <- (bbox$xmin) - bufx
+  bboxBuf["xmax"] <- (bbox$xmax) + bufx
+  bboxBuf["ymin"] <- (bbox$ymin) - bufy
+  bboxBuf["ymax"] <- (bbox$ymax) + bufy
   
   
   # crop land to plot area to speed up plotting
