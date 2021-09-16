@@ -2,12 +2,6 @@
 # with the studyArea selected and summarize the data for tables within the final document.
 #
 # 1. master_intersect() - clips POINT and POLYGON data to the extent of the studyArea, previously main_intersect()
-# 2. create_table_RV() - creates summary tables of all species and listed species
-# 3. create_table_MARFIS() - creates summary tables of all species and listed species
-# 4. create_table_ISDB() - creates summary tables of all species and listed species
-# 5. create_table_OBIS() - creates summary table of listed species
-# 6. sfcoords_as_cols() - extracts latitude and longitude from geometry field
-#                         and add them to new columns
 #
 # Written by Philip Greyson for Reproducible Reporting project, May/2021
 

@@ -207,19 +207,21 @@ Veuillez consulter la liste de toutes les sources d’information utilisées dan
 #### ***Résultats de la recherche sur l’habitat important des rorquals bleus par zone***
 *
 ```{r overlap-bw-habitat, echo=FALSE, results='asis'}
-poly_sf <- BlueWhale_ImpHab_sf
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- master_intersect(BlueWhale_ImpHab_sf, mapDataList, getRegion=TRUE)
 attribute <- "Activity"
 
-# intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, mapDataList, getRegion=TRUE)
 ```
 *
 ```{r bw-result, echo=FALSE, results='asis'}
-polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
-} else {"La zone de recherche chevauche l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."}
+polyText<-if(is.null(clipped$studyData)){
+  "La zone de recherche ne chevauche pas l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
+} else {
+  "La zone de recherche chevauche l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
+}
 
- polyText<-noquote(polyText)
- writeLines(polyText)
+polyText<-noquote(polyText)
+writeLines(polyText)
 ```
 
 ```{r bw-region-plot, fig.height=4, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Habitat important pour le rorqual bleu dans l’ouest de l’Atlantique-Nord. Zones délimitées par des polygones dans les eaux canadiennes qui sont importantes pour les rorquals bleus pour l’alimentation et le transit. Ces zones d’habitat désignées dans le rapport par Lesage et al. (2018) sont considérées comme importantes pour la survie et le rétablissement des rorquals bleus de la population de l’ouest de l’Atlantique Nord. Les rorquals bleus ont fort probablement besoin d’utiliser plusieurs de ces habitats importants pour répondre à leurs besoins biologiques. Par conséquent, les corridors d’accès et l’habitat qu’ils relient doivent être considérés comme tout aussi importants pour la population.'}
@@ -253,11 +255,8 @@ Le polygone des zones d’habitat situées entre les canyons a été délimité 
 #### ***Résultats de la recherche sur l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais, par zone*** 
 *
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
-poly_sf <- NBNW_ImpHab_sf
-attribute <- "NONE"
-
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, mapDataList, getRegion=TRUE)
+clipped <- master_intersect(NBNW_ImpHab_sf, mapDataList, getRegion=TRUE)
 ```
 *
 ```{r nbw-result, echo=FALSE, results='asis'}
@@ -270,12 +269,12 @@ polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas 
 
 ```{r nbw-region-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Habitat important proposé pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais La baleine à bec commune est présente toute l’année dans les zones entre les canyons, qui servent d’habitat d’alimentation et de couloirs de déplacement. Veuillez prendre note que l’étendue de l’habitat important de la baleine à bec commune sur le plateau néo-écossais demeure inconnue. Veuillez consulter les renseignements complémentaires dans le document <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
 if (!is.null(clipped$regionData)){
-  plot_rr_sf(regionMap, clipped$regionData, attribute)
+  plot_rr_sf(regionMap, clipped$regionData, "NONE")
 }
 ```
 
 ```{r nbw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: noneNiveau de qualité : Élevée. Niveau de sécurité : Aucun. La carte résume les zones dans lesquelles le polygone de recherche chevauche l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais.'}
 if (!is.null(clipped$mapData)){
-  plot_rr_sf(areaMap, clipped$mapData, attribute)
+  plot_rr_sf(areaMap, clipped$mapData, "NONE")
 }
 ```

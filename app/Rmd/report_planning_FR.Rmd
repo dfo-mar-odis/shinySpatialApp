@@ -21,9 +21,6 @@ Description de l’ensemble de données (tirée du dossier des données ouvertes
 ```{r EBSA-results, echo=FALSE, results='asis'}
 #function for overlap
 EBSAoutput <- master_intersect(EBSA_sf, mapDataList, getRegion=TRUE)
-
-# define polygon dataset and attribute to plot
-attribute <- "NONE"
 ```
 
 ```{r EBSA-check, echo=FALSE, results='asis'}
@@ -47,11 +44,12 @@ EBSA_report(EBSAoutput$studyData, lang="FR")
 
 ```{r EBSA-region-plot, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) par rapport à la zone de recherche définie par l’utilisateur (entourée de rouge).'}
 if (!is.null(EBSAoutput$regionData)){
-  plot_rr_sf(regionMap, EBSAoutput$regionData, attribute)
+  plot_rr_sf(regionMap, EBSAoutput$regionData, "NONE")
 }
 ```
 
 ```{r EBSA-area-plot, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) dans la zone de recherche définie par l’utilisateur (entourée de rouge).'}
-if(!is.null(EBSAoutput$studyData)){print(
-  plot_rr_sf(areaMap, EBSAoutput$mapData, attribute))}
+if(!is.null(EBSAoutput$studyData)){
+  plot_rr_sf(areaMap, EBSAoutput$mapData, "NONE")
+}
 ```

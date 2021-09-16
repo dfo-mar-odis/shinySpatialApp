@@ -10,10 +10,10 @@
 #
 
 # Rockweed stats
-rockweedStats<- function(rockweed_sf, studyArea) {
+rockweedStats<- function(rockweed_sf) {
 
   # clip rockweed to study area
-  rw = sf::st_crop(sf::st_make_valid(rockweed_sf), studyArea)
+  rw = sf::st_make_valid(rockweed_sf)
   rw$area = sf::st_area(rw) # add column with areas of the polygons
 
   # make a table, sum the areas for different presences
@@ -51,7 +51,7 @@ rockweedStats<- function(rockweed_sf, studyArea) {
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. sarData: datatable of only listed species found within the studyArea
 
-create_table_RV <- function(data_sf, sarTable, speciesTable, ...) {
+create_table_RV <- function(data_sf, sarTable, speciesTable) {
   
   # calculate the number of unique sample locations
   Samples_study_no <- dim(unique(data_sf[, c("geometry")]))[1]
@@ -95,10 +95,12 @@ create_table_RV <- function(data_sf, sarTable, speciesTable, ...) {
   sarData <- sarData[with(sarData, order(-Individuals)), ]
   row.names(allSpeciesData) <- NULL
   row.names(sarData) <- NULL
-  outList <- list(allSpeciesData, sarData)
+  outList <- list("allSpecies" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
 ##### - END create_table_RV function ##################################
+
+
 
 ##### - create_table_MARFIS function ##################################
 # This function creates summary tables of the MARFIS data
@@ -199,7 +201,7 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   
   allSpeciesData <- dplyr::select(allSpeciesData, 'Scientific Name', 'Common Name', Records)
   sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
-                           "SARA status","COSEWIC status",Records)
+                           "SARA status","COSEWIC status", Records)
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
   sarData <- sarData[with(sarData, order(-Records)), ]
@@ -223,7 +225,7 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
 # Outputs: list containing 1 items
 # 1. outTable: datatable of all species found within the studyArea
 
-create_table_OBIS <- function(data_sf, ...) {
+create_table_OBIS <- function(data_sf) {
   
   # calculate frequency of OBIS samples
   outTable <- data_sf
@@ -234,8 +236,7 @@ create_table_OBIS <- function(data_sf, ...) {
   outTable <- unique(outTable)
   
   row.names(outTable) <- NULL
-  outList <- list(outTable)
-  return(outList)
+  return(outTable)
 }
 
 
@@ -265,39 +266,35 @@ sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
 # #SAR distribution
 table_dist <- function(sardist_sf) {
   sardist_sf$Common_Nam[sardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
-  dist_table <-  sardist_sf %>% dplyr::select(Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
+  dist_table <- dplyr::select(sardist_sf, Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
   sf::st_geometry(dist_table) <- NULL
   row.names(dist_table) <- NULL
+  dist_table <- unique(dist_table)
   names(dist_table) <- c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
   return(dist_table)
 }
 
-# #SAR critical habitat
-table_crit <- function(ClippedCritHab_sf, studyArea, leatherback_sf) {
+#SAR critical habitat
+table_crit <- function(ClippedCritHab_sf, leatherback_sf) {
   
-  intersect_crit <- sf::st_intersection(ClippedCritHab_sf, studyArea)
-  intersect_crit_result <- nrow(intersect_crit)
-  crit_table <- data.frame(CommonName = intersect_crit$Common_Nam,
-                           Population = intersect_crit$Population,
-                           Area = intersect_crit$Waterbody,
-                           SARA_status = intersect_crit$SARA_Statu)
+  crit_table <- dplyr::select(ClippedCritHab_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
+  crit_table$geometry <- NULL
+  names(crit_table) <- c("CommonName", "Population", "Area", "SARA_status")
   
-  leatherback_table <- data.frame(CommonName="", Population="", Area="", SARA_status="")
-  intersect_leatherback <- sf::st_intersection(leatherback_sf, studyArea)
-  leatherback_result <- nrow(intersect_leatherback)
-  leatherback_table[1,1] <- "Leatherback Sea Turtle"
-  leatherback_table[1,2] <- NA
-  if(leatherback_result >= 1){
-    # handle case where result > 1
-    leatherback_table[1,3] <- paste(intersect_leatherback$AreaName, collapse=', ' )
-  }else{
-    leatherback_table[1,3] <- NA
+  if (!is.null(leatherback_sf)){
+    leatherback_row <- data.frame("Leatherback Sea Turtle", NA, paste(leatherback_sf$AreaName, collapse=', ' ), "Endangered" )
+    names(leatherback_row) <- names(crit_table)
+    crit_table <- bind_rows(crit_table, leatherback_row)
   }
-  leatherback_table[1,4] <- "Endangered"
-  crit_table <- bind_rows(crit_table, leatherback_table)
-  crit_table <- crit_table[!is.na(crit_table$Area), ]
+ 
+  # remove rows with NA area, dump duplicates:
+  crit_table <- distinct(crit_table[!is.na(crit_table$Area), ])
   
-  return(crit_table)
+  if (!nrow(crit_table) > 1){
+    return(NULL)
+  } else {
+    return(crit_table)  
+  }
 }
 
 

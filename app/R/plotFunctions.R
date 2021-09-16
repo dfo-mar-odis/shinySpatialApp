@@ -161,6 +161,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute, ou
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
     
     polyFill <- scale_fill_manual(values=legendColor, name=legendName)
+    
     if (outlines) {
       polyOutline <- NULL
       polyPlot <- geom_sf(data=polyData, aes(fill=!!sym(attribute)), colour=clr)

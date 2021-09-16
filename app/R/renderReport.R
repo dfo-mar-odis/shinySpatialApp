@@ -78,7 +78,7 @@ renderReport <- function(input, geoms, outFileName = NULL, dirOut = "output",
          output_dir = dirOut,
          output_file = langOutFile,
          quiet = TRUE)
-      FALSE # flag to show report in app.  
+      TRUE # flag to show report in app.  
       }, 
       error = function(x) FALSE
     )

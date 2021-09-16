@@ -32,8 +32,8 @@ Samples_bbox <- outputList$mapPoints
 
 if (!is.null(outputList$studyData)) {
   tableList <- create_table_RV(outputList$studyData, listed_species, speciesTable = RVGSSPECIES)
-  table_rv1 <- tableList[[1]]
-  table_rv2 <- tableList[[2]]
+  rvAllTable <- tableList$allSpeciesData
+  rvSarTable <- tableList$sarData
 }
 ```
 *
@@ -55,13 +55,13 @@ areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = S
 <br>
 ```{r RV-SAR-table}
 if (!is.null(outputList$studyData)) {
- knitr::kable(table_rv2, align="l", caption="\\label{tab:rv_SAR_table} Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(rvSarTable, align="l", caption="\\label{tab:rv_SAR_table} Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 <br>
 ```{r RV-freq-table}
 if (!is.null(outputList$studyData)) {
-knitr::kable(table_rv1, align="l", caption="\\label{tab:rv_freq_table}QNiveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes de <u>toutes les espèces</u> contenues dans la zone de recherche, résumées par espèce ou groupe d’espèces. <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(rvAllTable, align="l", caption="\\label{tab:rv_freq_table}QNiveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes de <u>toutes les espèces</u> contenues dans la zone de recherche, résumées par espèce ou groupe d’espèces. <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 
@@ -177,8 +177,7 @@ Le SIBO est un centre mondial de données et d’information en libre accès sur
 outputList <- master_intersect(obis_fish_sf, mapDataList, Year = minYear)
 
 if (!is.null(outputList$studyData)) {
-  tableList <- create_table_OBIS(outputList$studyData)
-  table_obis1 <- tableList[[1]]
+  obisTable <- create_table_OBIS(outputList$studyData)
 }
 ```
 *
@@ -199,6 +198,6 @@ if (!is.null(outputList$studyData)) {
 
 ```{r obis-table, echo=FALSE, results='asis', caption="Les espèces prioritaires avec des observations contenues dans la base de données du SIBO, dans la zone de recherche."}
 if (!is.null(outputList$studyData)) {
-  knitr::kable(table_obis1, align="l", caption="Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Registres d’observation du système d’information sur la biodiversité des océans (SIBO) des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(obisTable, align="l", caption="Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Registres d’observation du système d’information sur la biodiversité des océans (SIBO) des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
