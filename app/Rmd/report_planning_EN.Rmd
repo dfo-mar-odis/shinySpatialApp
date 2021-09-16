@@ -18,19 +18,16 @@ Dataset description from the Open Data record [@OpenData_ebsa]: Ecologically and
 
 #### ***Area-specific EBSA search results***
 
--   
 
 ```{r EBSA-results, echo=FALSE, results='asis'}
 #function for overlap
-EBSAoutput <- master_intersect(EBSA_sf, mapDataList)
+EBSAoutput <- master_intersect(EBSA_sf, mapDataList, getRegion=TRUE)
 
-# define polygon dataset and attribute to plot
-attribute <- "NONE"
 ```
-
+*
 ```{r EBSA-check, echo=FALSE, results='asis'}
 #function for overlap
-Query_output_EBSA<-if(is.null(EBSAoutput)){
+Query_output_EBSA<-if(is.null(EBSAoutput$studyData)){
     "The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSA)."
   } else {
     "The search area overlaps with identified Ecologically and Biologically Significant Areas (EBSA)."
@@ -49,11 +46,12 @@ EBSA_report(EBSAoutput$studyData, lang="EN")
 
 ```{r EBSA-region-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).'}
 if (!is.null(EBSAoutput$regionData)){
-  plot_rr_sf(regionMap, EBSAoutput$regionData, attribute)
+  plot_rr_sf(regionMap, EBSAoutput$regionData, "NONE")
 }
 ```
 
 ```{r EBSA-area-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area defined by the user (red outline).'}
-if(!is.null(EBSAoutput$studyData)){print(
-  plot_rr_sf(areaMap, EBSAoutput$mapData, attribute))}
+if(!is.null(EBSAoutput$studyData)){
+  plot_rr_sf(areaMap, EBSAoutput$mapData, "NONE")
+}
 ```
