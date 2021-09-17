@@ -1,4 +1,4 @@
-server <- function(input, output, session) {re
+server <- function(input, output, session) {
 
 
   # INITIATE MAP
