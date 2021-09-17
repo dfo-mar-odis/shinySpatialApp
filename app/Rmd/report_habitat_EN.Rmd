@@ -11,7 +11,8 @@ Satellite-based Maps of Intertidal Vegetation and Rockweed presence polygons
 Contact: <Gordana.Lazin@dfo-mpo.gc.ca>  
 Last retrieved on: February 17 2021  
 Quality Tier: Medium  
-Security level: none.  
+Security level: none
+Data use constraints: none
 
 Rockweed (_Ascophyllum nodosum_) is a common, cold-water, intertidal, brown algae with long-lived holdfasts attached to rocky substrates. It dominates the rocky intertidal zone of Atlantic Canada and provides habitat for fish, invertebrates, and birds. There is little information available on spatial distribution of rockweed and intertidal vegetation in the Maritimes Region. The existing industry survey data are deemed proprietary and are not available. Consequently, regional scale satellite-derived maps were developed to indicate location, relative density of the intertidal vegetation, and polygons delineating areas likely occupied by rockweed [@Lazin2021].
 

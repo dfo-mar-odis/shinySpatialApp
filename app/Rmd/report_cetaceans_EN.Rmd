@@ -27,6 +27,7 @@ Last retrieved on: October 27 2020  by Shelley Lang
 Quality Tier: Low  
 Search year: 2010-2020  
 Security level: none  
+Data use constraints: DFO INTERNAL USE ONLY
 
 The Marine Mammal and Pelagic Animals, or Whale Sighting Database (WSDB), was implemented in 2002 by DFO to provide a central repository for reported sightings of marine animals, especially cetaceans, and to improve accessibility to sightings data from a variety of sources, including some data from marine mammal surveys and research activities [@WSDB]. Most efforts to collate available sightings data focused on the collecting data from various sources operating in Nova Scotia waters (including the Bay of Fundy and Scotian Shelf), and more recently in the Gulf of St. Lawrence, while less efforts were made to obtain available data from other regions. Most sightings were collected on an opportunistic basis and observations came from individuals with a wide range of expertise and experience in marine mammal identification. For more information see: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database> or @WSDB <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf>.
 
@@ -75,6 +76,7 @@ Last retrieved on: January 12 2021  by Laura Feyrer
 Quality Tier: High    
 Search year: 2010-2019    
 Security level: none   
+Data use constraints: DFO INTERNAL USE ONLY 
 
 The following information is summarized in this website (<https://whiteheadlab.weebly.com/>). The Whitehead Lab is based out of the Dalhousie University Department of Biology (Halifax, Nova Scotia). Since its inception in 1987, the Whitehead Lab has been home to over 75 postdoctoral, Ph.D., M.Sc., and undergraduate students. These students primarily conduct conservation-based research on the behavior, ecology, and population biology of cetacean species (primarily, Sperm Whales, Northern Bottlenose Whales, and Long-Finned Pilot Whales), with many studies focused on species in eastern Canadian waters.
 
@@ -106,7 +108,8 @@ URL: <https://www.narwc.org/sightings-database.html>
 Last retrieved on: September 18 2020  
 Quality Tier: High  
 Search year: 2010-2019  
-Security level: none  
+Security level: none 
+Data use constraints: DFO INTERNAL USE ONLY
 
 The NARWC Sightings Database contains records of thousands of sightings of Right Whales in the North Atlantic Ocean, as well as sightings of other species of whales, dolphins, sea turtles, seals, and large fishes. It also contains survey data associated with many of these sightings, which could be used to determine the associated survey effort. However, the database does not include the sighting distance data required to determine species density or abundance from these surveys. The sightings contained in the database come from a wide variety of contributors including NARWC members and others. Each record in the Sightings Database represents a group of whales (i.e., a group of 3 whales has a single record just as a group of 1 does), and there may or may not be photographic proof of a given Right Whale sighting. The Sightings and Photo-Identification databases are periodically cross-referenced, so that individual identification data from the latter can be linked to sighting data from the former. For that reason, all sightings in the Identification Database are eventually included in the Sightings Database (with an approximate 1-2 year lag). Although the individual identifications of animals are not included in the Sightings Database, the two databases can be linked on common fields. This review article of the Sightings Database  provides potential users with important information:  https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf
 
@@ -136,7 +139,8 @@ URL: <https://obis.org/>
 Last retrieved on: January 27 2021 by Gregory Puncher from OBIS      
 Quality Tier: Medium    
 Search year: 2010-2020    
-Security level: none    
+Security level: none   
+Data use constraints: none
 
 An OBIS search [@OBIS] was conducted to find additional relevant records for cetaceans listed by SARA, or assessed by COSEWIC. A first level QC process was performed by removing duplicate reports that are also present in WSDB. Subsequent versions of this report will aim at expanding our QC efforts for this source of information.
 
@@ -207,6 +211,7 @@ URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>\
 Last retrieved on: October 30 2020 from Open Data <https://open.canada.ca/data/en/dataset/8fafd919-fcbe-43a3-a911-3d9461273441>\
 Quality Tier: High\
 Security level: none
+Data use constraints: none
 
 Dataset description from the Open Data record [@OpenData_blue_imphabitat]: The distribution of Blue Whales (*Balaenoptera musculus*) is mainly dictated by key environmental drivers such as food requirements and availability, sea ice, and sometimes predation risks. It is common to find Blue Whales in upwelling regions, depending on topography (banks, slopes and shallow water) and thermal fronts, which are actually related to krill aggregations. Blue Whales feed almost exclusively on euphausiids (krill) and have the highest absolute metabolic demands. A shapefile on the distribution of significant perennial areas of krill aggregation is available (DFO-ECCC). Important habitats for Blue Whales have therefore been identified by combining information on their distribution with krill aggregation areas (observed or predicted). In the waters of the St. Lawrence estuary, the presence of Blue Whales for foraging, feeding and migration has been observed throughout the year, with increased activity during the summer. It has been observed that feeding rates of Blue Whales are higher in shallow waters and during nocturnal periods (krill at surface), confirming that foraging near the surface is beneficial when possible. Their presence, their great fidelity to this important habitat for their activities and their behavior in the waters of the St. Lawrence in all seasons, show that Blue Whales are vulnerable to oil spills. They are vulnerable, not only indirectly through the reduction of prey and loss of suitable habitat, but also by their behavior requiring active activity on the surface and near the coast. The data used to create the polygons using the bounding box method comes from multiple sources of information: hunting records, photo-identification, coastal, airborne and boat surveys, passive acoustic monitoring, radio and satellite telemetry, ice trapping, anecdotal observations and modeling.
 
@@ -254,6 +259,7 @@ URL: <http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-
 Last retrieved on: June 15 2021 from Open Data <https://open.canada.ca/data/en/dataset/9fd7d004-970c-11eb-a2f3-1860247f53e3>\
 Quality Tier: High\
 Security level: none
+Data use constraints: none
 
 The Scotian Shelf population of Northern Bottlenose Whales (*Hyperoodon ampullatus*) is listed as Endangered under Canada's Species at Risk Act. Partial critical habitat was identified for this population in the Recovery Strategy first published in 2010 [@DFO2016_recoverynbw], and three critical habitat areas were designated along the eastern Scotian Shelf, encompassing the Gully, Shortland Canyon, and Haldimand Canyon (shapefile available online: <https://open.canada.ca/data/en/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c>). However, the Recovery Strategy recognized that additional areas may constitute critical habitat for the population and recommended further studies based on acoustic and visual monitoring to assess the importance of inter-canyon areas as foraging habitat and transit corridors for Northern Bottlenose Whales.
 
