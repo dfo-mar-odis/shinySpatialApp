@@ -277,9 +277,13 @@ table_dist <- function(sardist_sf) {
 #SAR critical habitat
 table_crit <- function(CCH_sf, LB_sf) {
   
-  critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
-  critTable$geometry <- NULL
-  names(critTable) <- c("CommonName", "Population", "Area", "SARA_status")
+  if (!is.null(CCH_sf)){
+    critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
+    critTable$geometry <- NULL
+    names(critTable) <- c("CommonName", "Population", "Area", "SARA_status")
+  } else {
+    critTable <- data.frame("CommonName"=NA, "Population"=NA, "Area"=NA, "SARA_status"=NA)
+  }
   
   if (!is.null(LB_sf)){
     leatherbackRow <- data.frame("Leatherback Sea Turtle", NA, paste(LB_sf$AreaName, collapse=', ' ), "Endangered" )
