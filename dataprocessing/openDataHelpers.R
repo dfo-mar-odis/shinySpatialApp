@@ -3,6 +3,8 @@ renv::install("ckanr") #you need to install the packages every time since it is 
 library(ckanr)
 
 ckanr_setup(url="https://open.canada.ca/data")
+
+
 get_opendata_rr <- function(pkgId, resId) {
   opendataPKG <- package_show(pkgId)
   pkgTitle <- opendataPKG$title_translated
@@ -28,8 +30,8 @@ get_opendata_rr <- function(pkgId, resId) {
 
 get_opendata_sf <- function(resId) {
   res <- resource_show(resId)
-  outSf <- download_extract_validate_sf(res$url)
-  return(outSf)
+  out_sf <- download_extract_validate_sf(res$url)
+  return(out_sf)
 }
 
 download_extract_validate_sf <- function(zipUrl) {
@@ -37,10 +39,19 @@ download_extract_validate_sf <- function(zipUrl) {
   temp <- here::here("dataprocessing/temp/temp.zip")
   
   download.file(zipUrl, temp)
-  utils::unzip(temp, exdir =tempDir)
+  utils::unzip(temp, exdir = tempDir)
+  # if there's a shape file read that:
   shpFile <- list.files(tempDir, recursive=TRUE, pattern="\\.shp$", full.names = TRUE)
+  gdbDir <- list.files(tempDir, recursive=FALSE, pattern="\\.gdb$", full.names = TRUE)
+    
+  if (length(shpFile) > 0) {
+    outSf <- st_read(shpFile, stringsAsFactors = FALSE)
+  } else if (length(gdbDir) > 0) {
+    out_gdb <- st_read(gdbDir)
+    out_sf <- out_gdb
+    out_sf$geometry <- st_geometry(out_gdb)
+  }
   
-  out_sf <- st_read(shpFile, stringsAsFactors = FALSE)
   out_sf <- st_transform(out_sf, crs = 4326)
   out_sf <- st_make_valid(out_sf)
   
