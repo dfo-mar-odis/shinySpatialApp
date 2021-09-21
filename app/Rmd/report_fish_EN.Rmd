@@ -217,10 +217,10 @@ if (!is.null(outputList$studyData)) {
 ### **OCEARCH Shark Tracker**  
 Contact: Bryan Franks (bfranks@ju.edu) via Sean Butler (sean.butler@dfo-mpo.gc.ca)\
 URL: <https://www.ocearch.org/tracker/>\
-Last retrieved on: July 22 2021 by Sean Butler\  
-Quality Tier: High\  
-Search year: 2013-2020\  
-Security level: none\    
+Last retrieved on: July 22 2021 by Sean Butler\
+Quality Tier: High\
+Search year: 2013-2020\
+Security level: none\
 Data use constraints: DFO INTERNAL USE ONLY
 
 OCEARCH is a data-centric organization built to help scientists collect previously unattainable data in the ocean while open sourcing our research and explorations. Open sourcing and inclusion at every level, and in real-time, allows the world to participate in their projects while being aware of the developing science. OCEARCH shares the data, including samples collected and tracking data, with collaborating institutions and students who request them for their studies. The tracking data is also open-sourced to the public via the OCEARCH Tracker. The OCEARCH Tracker is a free app that lets you observe the navigational pattern of animals that have been tagged with satellite tracking technology. White Shark locations from satellite trackers are summarized in this section from 1 Jan 2013 to 31 Oct 2020. Locations were clipped to only include locations within the Canadian EEZ. A speed filter was run with 3 m/s as the maximum speed and 2.5 km as the potential error of locations. This filter removed approximately 100 locations out of of 2,000. Resulting points ere then visualized in ArcGIS to identify potential errors and remove locations that seemed implausible. Each shark location was individually plotted to do a second visual examination and to remove or flag errors/outliers. There is additional QA/QC that could still be performed to this dataset to capture additional issues (e.g. there may be single shark locations in Canadian waters during a period of time that the speed filter would not remove or that were not captured in the visual inspection). The absence of White Sharks in this section map should be interpreted as an absence of tracking data, not necessarily as an absence of the species in the area.
