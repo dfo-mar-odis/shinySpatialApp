@@ -89,7 +89,7 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", legendC
     dataLayer <- geom_sf(data = data_sf, size = 2, shape = 20) 
     legendLayer <- NULL
   } else {
-    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = 2, shape = 20)
+    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = 2.5, shape = 20)
     if (!is.null(legendColours)){
       legendLayer <- ggplot2::scale_colour_manual(values=legendColours, name=legendName)  
     }

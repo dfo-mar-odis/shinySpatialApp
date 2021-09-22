@@ -70,7 +70,7 @@ list2env(mapDataList, envir = environment())
 
 Ce document résume les données régionales, y compris les renseignements sur les espèces et les habitats, disponibles au moment de la création du rapport. Les résumés de données et les produits (p. ex., graphiques et tableaux) sont présentés accompagnés de descriptions des sources, de mises en garde, d’avis de non-responsabilité, de sources d’incertitude, de références à la documentation et de coordonnées des membres du personnel pertinents qui peuvent fournir une interprétation plus poussée. Ce rapport simplifie le processus de production d’information et de conseils scientifiques pertinents pour diverses évaluations interministérielles, examens réglementaires et activités de production de rapports.
 
-Le présent document est conçu comme un outil de rapport reproductible, appuyé par le langage de balisage R et généré par une interface d’application R-Shiny hébergée sur le réseau du MPO. Les résumés et les résultats des rapports sont basés sur des données extraites d’une zone de recherche fournie par l’utilisateur (un polygone d’intérêt focal) avec un tampon défini par l’utilisateur (figure x). Les instructions d’utilisation de l’interface R-Shiny sont fournies dans le manuel technique. En raison du caractère sensible potentiel de certaines données et informations, l’accès aux données de l’application doit être accordé, et le rapport est destiné à un usage interne uniquement.  
+Le présent document est conçu comme un outil de rapport reproductible, appuyé par le langage de balisage R et généré par une interface d’application R-Shiny hébergée sur le réseau du MPO. Les résumés et les résultats des rapports sont basés sur des données extraites d’une zone de recherche fournie par l’utilisateur (un polygone d’intérêt focal) avec un tampon défini par l’utilisateur (Figure 1). Les instructions d’utilisation de l’interface R-Shiny sont fournies dans le manuel technique. En raison du caractère sensible potentiel de certaines données et informations, l’accès aux données de l’application doit être accordé, et le rapport est destiné à un usage interne uniquement.  
 
 ````{r area-map-plot, fig.height=8, fig.width=11, fig.cap='Carte montrant la zone de recherche définie par l’utilisateur (entourée en rouge) pour rechercher des informations et générer automatiquement ce rapport. '}
 mapDataList$areaMap
@@ -97,7 +97,8 @@ Le présent rapport comprend des renseignements provenant de diverses sources ay
 
 
 ```{r table-tiers-read, echo=FALSE, cache=FALSE, include = FALSE}
-table_tier <- read.csv("../data/misc/table_tiers_EN.csv")
+table_tier <- read.csv("../data/misc/table_tiers_FR.csv")
+table_tier<- table_tier %>% dplyr::rename("Recommandations d’utilisation"=Recommandations.d.utilisation)
 ```
 ```{r tier-table}
 knitr::kable(table_tier,align="l",
