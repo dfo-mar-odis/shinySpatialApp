@@ -302,11 +302,11 @@ table_crit <- function(CCH_sf, LB_sf) {
   if (!is.null(CCH_sf)){
     critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
     critTable$geometry <- NULL
-    names(critTable) <- c("`Common Name`", "Population", "Area", "`SARA status`")
+    names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
   } else {
     # only set names after init to preserve spaces etc.
     critTable <- data.frame("a"=NA, "b"=NA, "c"=NA, "d"=NA) 
-    names(critTable) <- c("`Common Name`", "Population", "Area", "`SARA status`")
+    names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
     
   }
   
