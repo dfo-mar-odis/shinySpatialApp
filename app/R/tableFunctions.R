@@ -89,6 +89,8 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
   sarData <- dplyr::select(sarData, "Scientific Name", "Common Name",
                            "SARA status", "COSEWIC status", Individuals, Frequency)
   
+  allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
+  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
   
   # order the tables by number of individuals caught (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Individuals)), ]
@@ -151,6 +153,8 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
                            "SARA status","COSEWIC status", Records)
   
+  allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
+  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
   
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
@@ -202,6 +206,10 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   allSpeciesData <- dplyr::select(allSpeciesData, 'Scientific Name', 'Common Name', Records)
   sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
                            "SARA status","COSEWIC status", Records)
+  
+  allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
+  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
+  
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
   sarData <- sarData[with(sarData, order(-Records)), ]
@@ -235,6 +243,8 @@ create_table_OBIS <- function(data_sf) {
   outTable$geometry <- NULL
   outTable <- unique(outTable)
   
+  outTable$`Scientific Name` <- italicize_col(outTable$`Scientific Name`)
+  
   row.names(outTable) <- NULL
   return(outTable)
 }
@@ -264,14 +274,26 @@ sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
 ########## Species At Risk distribution and Critical Habitat data ##########
 #
 # #SAR distribution
-table_dist <- function(sardist_sf) {
-  sardist_sf$Common_Nam[sardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
-  dist_table <- dplyr::select(sardist_sf, Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
+table_dist <- function(clippedSardist_sf) {
+  clippedSardist_sf$Common_Nam[clippedSardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
+  dist_table <- dplyr::select(clippedSardist_sf, Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
   sf::st_geometry(dist_table) <- NULL
   row.names(dist_table) <- NULL
   dist_table <- unique(dist_table)
+  dist_table$Scientific <- italicize_col(dist_table$Scientific)
   names(dist_table) <- c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
+  
   return(dist_table)
+}
+
+
+italicize_col <- function(tableCol) {
+  if (length(tableCol > 0)) {
+    return(paste("_", tableCol, "_", sep = ""))  
+  } else {
+    return(NULL)
+  }
+  
 }
 
 #SAR critical habitat
@@ -280,9 +302,12 @@ table_crit <- function(CCH_sf, LB_sf) {
   if (!is.null(CCH_sf)){
     critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
     critTable$geometry <- NULL
-    names(critTable) <- c("CommonName", "Population", "Area", "SARA_status")
+    names(critTable) <- c("`Common Name`", "Population", "Area", "`SARA status`")
   } else {
-    critTable <- data.frame("CommonName"=NA, "Population"=NA, "Area"=NA, "SARA_status"=NA)
+    # only set names after init to preserve spaces etc.
+    critTable <- data.frame("a"=NA, "b"=NA, "c"=NA, "d"=NA) 
+    names(critTable) <- c("`Common Name`", "Population", "Area", "`SARA status`")
+    
   }
   
   if (!is.null(LB_sf)){

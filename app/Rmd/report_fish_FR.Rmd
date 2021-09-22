@@ -60,7 +60,9 @@ areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = S
 <br>
 ```{r RV-SAR-table}
 if (!is.null(outputList$studyData)) {
-  knitr::kable(rvSarTable, align="l", caption="\\label{tab:rv_SAR_table} Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  if (nrow(rvSarTable) > 0) {
+    knitr::kable(rvSarTable, align="l", caption="\\label{tab:rv_SAR_table} Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  }
 }
 ```
 <br>
