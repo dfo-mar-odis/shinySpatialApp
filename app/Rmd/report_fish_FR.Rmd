@@ -19,7 +19,7 @@ Description de l’ensemble de données (tirée du dossier des données ouvertes
 
 
 ```{r table-RV-read, echo=FALSE, cache=FALSE, include = FALSE}
-table_RV <- read.csv("../data/misc/table_RV_FR.csv")
+table_RV <- read.csv(here::here("app/data/misc/table_RV_FR.csv"))
 table_RV<- table_RV %>% dplyr::rename("Enquête d' sur les navires"=Enquête.d..sur.les.navires,"Saison/mois"=Saison.mois,"Description de l’étendue géographique"= Description.de.l.étendue.géographique)
 ```
 ```{r RV-table-setup}

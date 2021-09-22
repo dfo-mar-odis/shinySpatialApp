@@ -16,7 +16,15 @@ Please refer to the Passive Acoustic Cetacean Map (PACM) to explore when and whe
 This section does not endeavor to describe every source of information available; the data presented does not represent all available cetacean sightings data within the search area and additional sightings may be available from other sources, or more recent data may be available than what is presented here. In addition to the presence-only data, there may be data available that can be used to support species-specific conclusions about habitat preferences and possible or known occurrence near and within the search area. Please refer to the cited publications for additional information and contact Angelia Vanderlaan (North Atlantic Right Whales) and Hilary Moors-Murphy (other cetacean species) to discuss additional sources of information (e.g., acoustic detections). Data and sources not explicitly included in this report include information from past studies/publications, acoustic detections, prey sampling and tagging. While the value of these data in predicting and describing cetacean occurrences is vital, these types of data are not available for all species and are not yet available for data querying. In the future, as information from other data sources becomes available, these new data will help to provide a more comprehensive understanding of cetacean habitat use and occurrence in the search areas.
 
 ```{r cetacean-setup, echo=FALSE, include=FALSE, cache=FALSE}
-whale_col=values=c("Beluga Whale: Endangered (SARA & COSEWIC)"="cyan3","Blue Whale: Endangered (SARA & COSEWIC)"="black", "Fin Whale: Special Concern (SARA & COSEWIC)"="chartreuse4", "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)"="red","Killer Whale: No Status (SARA) & Special Concern (COSEWIC)"="#00AFBB", "North Atlantic Right Whale: Endangered (SARA & COSEWIC)"="darkorchid4", "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)"="#0827EF", "Sei Whale: No Status (SARA) & Endangered (COSEWIC)"="#EF6408",  "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)"="#F5A4E7")
+whale_col <- c("Beluga Whale: Endangered (SARA & COSEWIC)"="cyan3",
+               "Blue Whale: Endangered (SARA & COSEWIC)"="black", 
+               "Fin Whale: Special Concern (SARA & COSEWIC)"="chartreuse4",
+               "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)"="red",
+               "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)"="#00AFBB", 
+               "North Atlantic Right Whale: Endangered (SARA & COSEWIC)"="darkorchid4", 
+               "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)"="#0827EF", 
+               "Sei Whale: No Status (SARA) & Endangered (COSEWIC)"="#EF6408", 
+               "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)"="#F5A4E7")
 ```
 
 ### **Whale Sightings Database (WSDB)**
@@ -66,7 +74,7 @@ writeLines(Report_wsdb)
 ```
 ```{r wsdb-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
 if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, wsdb_points, attribute="Legend", legendColours = whale_col)
+  plot_rr_sf(areaMap, wsdb_points, attribute="Legend", colorMap = whale_col, diffShapes=TRUE)
 }
 ```
 
@@ -98,7 +106,7 @@ writeLines(Report_whitehead)
 ```
 ```{r whitehead-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whitehead Lab, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Field efforts were primarily conducted in the Gully Marine Protected Area, and adjacent canyons along the edge of the eastern Scotian Shelf, during good weather conditions (for example, see Whitehead 2013 for a map of effort between 1988-2011), though some data from surveys along the shelf edge off Nova Scotia, Newfoundland and Labrador are included. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. This map also does not include acoustic detections. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. For more information, please visit: <https://whiteheadlab.weebly.com/contact.html>'}
 if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", legendColours = whale_col)
+  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whale_col, diffShapes=TRUE)
 }
 ```
 
@@ -129,7 +137,7 @@ writeLines(Report_narwc)
 ```
 ```{r narwc-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the North Atlantic Right Whale Consortium (NARWC) Sightings Database, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>Absence of a species in the map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area</b> since survey effort is biased towards the Northeast US, and data on species presence from acoustic detections is not included. For more information, please visit: <https://www.narwc.org/sightings-database.html>'}
 if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", legendColours = whale_col)
+  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whale_col, diffShapes=TRUE)
 }
 ```
 
@@ -161,7 +169,7 @@ writeLines(Report_obis_cet)
 ```
 ```{r obis-cetecean-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Ocean Biodiversity Information System (OBIS), for cetacean species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
 if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", legendColours = whale_col)
+  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whale_col, diffShapes=TRUE)
 }
 ```
 
@@ -222,8 +230,8 @@ Please see a list of all sources of information used in @Lesage2018 and the Open
 
 ```{r overlap-bw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(BlueWhale_ImpHab_sf, mapDataList, getRegion=TRUE)
 attribute <- "Activity"
+clipped <- master_intersect(BlueWhale_ImpHab_sf, mapDataList, getRegion=TRUE)
 
 ```
 *
@@ -240,14 +248,15 @@ writeLines(polyText)
 
 ```{r bw-region-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Blue Whale Important Habitat in the Western North Atlantic. Polygons delimit areas in Canadian waters that are important to Blue Whales for foraging and migration. These areas identified in the report by Lesage et al. (2018) are considered important for the survival and recovery of Blue Whales from the western North Atlantic population. Blue Whales most likely need to use several of these important habitats to fulfill their biological needs. As a result, access corridors and habitat they connect need to be considered equally important for the population.'}
 if (!is.null(clipped$regionData)){
-  plot_rr_sf(regionMap, clipped$regionData, attribute)
+  bwPlotList <- plot_rr_sf(regionMap, clipped$regionData, attribute, getColorMap=TRUE)
+  bwPlotList$polyMap
 }  
 ```
 
 
 ```{r bw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with Blue Whale Important Habitat.'}
 if (!is.null(clipped$mapData)){
-  plot_rr_sf(areaMap, clipped$mapData,attribute)
+  plot_rr_sf(areaMap, clipped$mapData, attribute, colorMap=bwPlotList$colorMap)
 }
 ```
 

@@ -25,7 +25,7 @@
 # 4. mapPoints: Unique collection of points to be plotted on a map.
 
 
-master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
+master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, attribute=NULL, ...) {
 
   # check that data_sf is an accepted format:
   if (!inherits(sf::st_geometry(data_sf), c("sfc_POINT", 
@@ -80,6 +80,7 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
     studyData <- NULL
     mapPoints <- NULL
   }
+  
   outList <- list(regionData = regionData,
                   studyData = studyData, 
                   mapData = mapData, 

@@ -42,9 +42,11 @@ Critical habitat presented in this section are available in the Government of Ca
 outputListSardist <- master_intersect(sardist_sf, mapDataList)
 
 # plotted with colour
-outputListCrithab <- master_intersect(ClippedCritHab_sf, mapDataList, getRegion=TRUE)
 attributeCrithab <- "Common_Nam"
 legendNameCrithab <- "Common Name"
+outputListCrithab <- master_intersect(ClippedCritHab_sf, mapDataList,
+                                      getRegion=TRUE)
+
 
 # plotted in single colour
 outputListLB <- master_intersect(leatherback_sf, mapDataList, getRegion=TRUE)
@@ -96,13 +98,16 @@ if(critHabCheck){
 
 ```{r crithab-region-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes critical habitat of Species at Risk listed as Endangered or Threatened under the <i>Species at Risk Act</i> (SARA) in the Scotian Shelf Bioregion. Please see table above for complimentary information. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species.” Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.', fig.height=6, fig.width=11}
 if (!is.null(outputListCrithab$regionData)){
-  plot_rr_sf(regionMap, outputListCrithab$regionData, attributeCrithab, legendName = legendNameCrithab)
+  critPlotList <- plot_rr_sf(regionMap, outputListCrithab$regionData, 
+                             attributeCrithab, legendName = legendNameCrithab, getColorMap=TRUE)
+  critPlotList$polyMap
 }  
 ```
 <br>
 ```{r crithab-area-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with critical habitat of Species at Risk listed as Endangered or Threatened under the <i>Species at Risk Act</i> (SARA)', fig.height=6, fig.width=11}
 if (!is.null(outputListCrithab$mapData)){
-  plot_rr_sf(areaMap, outputListCrithab$mapData, attributeCrithab, legendName = legendNameCrithab)
+  plot_rr_sf(areaMap, outputListCrithab$mapData, attributeCrithab, 
+             legendName = legendNameCrithab, colorMap = critPlotList$colorMap)
 }  
 ```
 <br>
