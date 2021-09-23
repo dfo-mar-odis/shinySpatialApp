@@ -73,7 +73,7 @@ get_study_box_layer <- function(inPlot) {
 # 
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
-plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMap=NULL, diffShapes=FALSE) {
+plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMap=NULL, shapeMap=NULL) {
   
   # extract scaleBar layer to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
@@ -96,9 +96,10 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
       colorMap <- get_rr_color_map(data_sf[[attribute]])
     } else {
       colorMap <- colorMap[names(colorMap) %in% data_sf[[attribute]]]
-      if (diffShapes){
-        shapeLabels <- names(colorMap)
-        shapeValues <- rep_len(15:20, length(shapeLabels))
+      if (!is.null(shapeMap)){
+        shapeMap <- shapeMap[names(shapeMap) %in% data_sf[[attribute]]]
+        shapeLabels <- names(shapeMap)
+        shapeValues <- unname(shapeMap) 
         dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute), shape=!!sym(attribute)), size = 2.5)
         shapeLayer <- scale_shape_manual(labels = shapeLabels, values = shapeValues, name=legendName)  
       }

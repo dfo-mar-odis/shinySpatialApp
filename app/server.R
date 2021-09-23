@@ -1,6 +1,5 @@
 server <- function(input, output, session) {
 
-
   # INITIATE MAP
   map <- selectionMap()
   edits <- callModule(editMod, leafmap = map, id = "map")
