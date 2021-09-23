@@ -2,6 +2,7 @@
 # with the studyArea selected and summarize the data for tables within the final document.
 #
 # 1. master_intersect() - clips POINT and POLYGON data to the extent of the studyArea, previously main_intersect()
+# 2. raster_intersect() -Clips RASTER data to the extend of the studyArea
 #
 # Written by Philip Greyson for Reproducible Reporting project, May/2021
 
@@ -14,17 +15,14 @@
 #
 # Inputs:
 # 1. data_sf: an input polygon vector file
-# 2. region: a spatial file of the region
-# 3. studyArea: polygon of the study area (sf object, defined by the user in the shiny app)
-# 4. mapBbox: Coordinates of the map bounding box exported from area_map() function (bboxMap)
+# 2. mapDataList: list output from maps_setup, contains needed study area info
+# 3. getRegion: If false, region data will not be calculated which speeds up runtime.
 #
 # Outputs: list containing 4 items
 # 1. studyData: the full dataset from clipping data_sf by the studyArea
 # 2. mapData: the full dataset from clipping data_sf by the Bounding box
 # 3. regionData: the full dataset from clipping data_sf by the region
 # 4. mapPoints: Unique collection of points to be plotted on a map.
-
-
 master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
 
   # check that data_sf is an accepted format:

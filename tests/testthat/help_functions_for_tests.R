@@ -43,7 +43,6 @@ render_check_delete <- function(sectionPath, deleteFile=TRUE) {
 #
 # Developed by Quentin Stoyel, Summer 2021
 
-
 load_test_data <- function() {
   catch_all_output({
     # check if globalenv data is loaded, if not load it:
@@ -66,8 +65,6 @@ load_test_data <- function() {
     
     mapDataList <- maps_setup(studyArea, site, region, land50k_sf, land10m_sf, bounds_sf)
     list2env(mapDataList, envir = environment())
-    
-    
   })
   
   outList <- list("minYear" = 2010,
@@ -81,9 +78,7 @@ load_test_data <- function() {
                   "studyArea" = studyArea,
                   "mapDataList" = mapDataList)
   return(outList)
-  
-  }
-
+}
 
 
 # ----- Catch all output -----
@@ -97,8 +92,6 @@ load_test_data <- function() {
 # Outputs: None
 #
 # Developed by Quentin Stoyel, Summer 2021
-
-
 
 catch_all_output <- function(codeChunk) {
   suppressWarnings({
