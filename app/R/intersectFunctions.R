@@ -6,8 +6,6 @@
 #
 # Written by Philip Greyson for Reproducible Reporting project, May/2021
 
-
-
 ##### - master_intersect function ##################################
 # This function clips various data sources (e.g. MARFIS, ISDB, etc.)
 # to the extent of the studyArea and the map bounding box.

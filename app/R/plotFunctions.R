@@ -14,11 +14,11 @@
 plot_rr_sf <- function(baseMap, data_sf, ...) {
   if (inherits(sf::st_geometry(data_sf), "sfc_POINT")) {
     
-    outPlot <- plot_points(baseMap, data_sf, attribute=attribute, ...)
+    outPlot <- plot_points(baseMap, data_sf, ...)
     
   } else if (inherits(sf::st_geometry(data_sf), c("sfc_POLYGON", "sfc_MULTIPOLYGON", "sfc_GEOMETRY"))) {
     
-    outPlot <- plot_polygons(baseMap, data_sf, attribute=attribute, ...)
+    outPlot <- plot_polygons(baseMap, data_sf, ...)
     
   }
   
