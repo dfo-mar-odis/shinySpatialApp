@@ -73,7 +73,7 @@ get_study_box_layer <- function(inPlot) {
 # 
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
-plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", legendColours=NULL) {
+plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMap=NULL, shapeMap=NULL) {
   
   # extract scaleBar layer to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
@@ -83,20 +83,37 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", legendC
   # axis limits based on baseMap
   axLim = ggplot2::coord_sf(xlim=baseMap$coordinates$limits$x, 
                             ylim=baseMap$coordinates$limits$y, expand=FALSE) 
-
+  shapeLayer <- NULL
+  
   if (is.null(attribute)) {
-    # just plot raw data
+    # just plot raw data (no colors)
     dataLayer <- geom_sf(data = data_sf, size = 2, shape = 20) 
     legendLayer <- NULL
   } else {
-    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = 2.5, shape = 20)
-    if (!is.null(legendColours)){
-      legendLayer <- ggplot2::scale_colour_manual(values=legendColours, name=legendName)  
+    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = 2.5, shape = 20)  
+    
+    if (is.null(colorMap)){
+      colorMap <- get_rr_color_map(data_sf[[attribute]])
+    } else {
+      colorMap <- colorMap[names(colorMap) %in% data_sf[[attribute]]]
+      if (!is.null(shapeMap)){
+        shapeMap <- shapeMap[names(shapeMap) %in% data_sf[[attribute]]]
+        shapeLabels <- names(shapeMap)
+        shapeValues <- unname(shapeMap) 
+        dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute), shape=!!sym(attribute)), size = 2.5)
+        shapeLayer <- scale_shape_manual(labels = shapeLabels, values = shapeValues, name=legendName)  
+      }
     }
+    legendLayer <- scale_colour_manual(values=colorMap, name=legendName)  
+    
+
+    
+    
   }
     
   pointMap <- baseMap +
     dataLayer +
+    shapeLayer +
     legendLayer +
     axLim +
     watermarkLayer +
@@ -130,7 +147,8 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", legendC
 # Created by Gordana Lazin, July 2, 2021 for reproducible reporting project
 
 
-plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute, outlines=TRUE) {
+plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
+                          outlines=TRUE, colorMap=NULL, getColorMap=FALSE) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -141,10 +159,6 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute, ou
   # axis limits to the plot
   axLim = ggplot2::coord_sf(xlim=baseMap$coordinates$limits$x, 
                             ylim=baseMap$coordinates$limits$y, expand=FALSE) 
-  
-  # color-blind options for the legend
-  legendColor=c("#009E73", "#E69F00", "#0072B2", "#CC79A7", "#F0E442", 
-                "#D55E00", "#56B4E9","#999999", "black")
   
   
   # there are two types of plots: 
@@ -160,7 +174,13 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute, ou
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
     
-    polyFill <- scale_fill_manual(values=legendColor, name=legendName)
+    if (is.null(colorMap)){
+      colorMap <- get_rr_color_map(polyData[[attribute]])
+    } else {
+      colorMap <- colorMap[names(colorMap) %in% polyData[[attribute]]]
+    }
+
+    polyFill <- scale_fill_manual(values=colorMap, name=legendName)
     
     if (outlines) {
       polyOutline <- NULL
@@ -169,7 +189,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute, ou
     }
     else {
       polyPlot <- geom_sf(data=polyData, aes(fill=!!sym(attribute), col=!!sym(attribute)))
-      polyOutline <- scale_color_manual(values=legendColor, guide=FALSE)  
+      polyOutline <- scale_color_manual(values=colorMap, guide="none")  
     }
     
     
@@ -186,8 +206,33 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute, ou
       studyBoxLayer +
       scaleBarLayer
     
-    return(polyMap)
+    if (getColorMap) {
+      outList <- list(colorMap=colorMap,
+                      polyMap=polyMap)
+      return(outList)
+    } else {
+      return(polyMap)  
+    }
+    
   
+}
+
+
+get_rr_color_map <- function(dataCol) {
+  colorNames <- unique(dataCol)
+  colorNames <- colorNames[order(colorNames)]
+  numColors <- length(colorNames)
+  rrColorPalette <- c("#009E73", "#E69F00", "#0072B2", "#CC79A7", "#F0E442", 
+                      "#D55E00", "#56B4E9","#999999")
+  if (numColors > 0) {
+    if(numColors > length(rrColorPalette)){
+      colorMap <- hcl.colors(length(colorNames))
+    } else {
+      colorMap <- rrColorPalette[1:numColors]
+    }
+    names(colorMap) <- colorNames
+  }
+  return(colorMap)
 }
 
 

@@ -80,6 +80,7 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
     studyData <- NULL
     mapPoints <- NULL
   }
+  
   outList <- list(regionData = regionData,
                   studyData = studyData, 
                   mapData = mapData, 
