@@ -2,11 +2,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 
 
-# ----------------EBSA-----------------
+# ----------------EBSA----------------- #good
 EBSApkgId <- "d2d6057f-d7c4-45d9-9fd9-0a58370577e0"
 EBSAresId <- "ec990fd7-91b0-4dbb-a0f4-bb11070a84c1"
 
-EBSA_rr <- get_opendata_rr(pkgId, resId)
+EBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId)
 EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL, ".pdf", ".html")
 
 
@@ -19,31 +19,26 @@ sardistResId <- "84f84608-d045-4305-b5a3-47f22281a5f1"
 
 
 
-# -----------CritHab--------------
+# -----------CritHab-------------- # check table cols.
 crithabPkgId <- "db177a8c-5d7d-49eb-8290-31e6a45d786c"
 crithabResId <- "394df1b9-0c01-476b-b9e3-8abbf4559623"
-
-crithab_rr <- get_opendata_rr(crithabPkgId, crithabResId)
-
+critHabLayer <- "DFO_SARA_CritHab_2021_FGP_EN"
+crithab_rr <- get_opendata_rr(crithabPkgId, crithabResId, gdbLayer = critHabLayer)
+crithab_rr$data_sf$Common_Nam <- crithab_rr$data_sf$Common_Name_EN
 
 
 # -----------SDM--------------
 sdmPkgId <- "c094782e-0d6f-4cc0-b5a3-58908493a433"
 sdmResId <- "1ac4df6a-ba45-4f13-a488-bd12e90a8bc7"
 
-crithab_rr <- get_opendata_rr(sdmPkgId, sdmResId)
+sdm_rr <- get_opendata_rr(sdmPkgId, sdmResId)
 
 
-
-
-# -----------NBW--------------
+# -----------NBW-------------- # good
 nbwPkgId <- "9fd7d004-970c-11eb-a2f3-1860247f53e3"
 nbwResId <- "f69a7d34-7c18-485b-98d7-8d45b7f8a3ce"
 
 nbw_rr <- get_opendata_rr(nbwPkgId, nbwResId)
-
-
-
 
 
 # -----------BW hab--------------
