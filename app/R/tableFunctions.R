@@ -10,6 +10,11 @@
 #
 
 # Rockweed stats
+# Inputs:
+# rockweed_sf: clipped rockweed_sf data
+#
+# Outputs:
+# stats: three column table used in the report.
 rockweedStats<- function(rockweed_sf) {
 
   # clip rockweed to study area
@@ -44,8 +49,8 @@ rockweedStats<- function(rockweed_sf) {
 #
 # Inputs:
 # 1. data_sf: an input point file of RV survey data found within the studyArea (eg. output from master_intersect)
-# 2. listed_table: a table of species at risk listed by SARA and/or COSEWIC
-# 3. speciestable: the RVGSSPECIES species table to link species codes with names
+# 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
+# 3. speciesTable: the RVGSSPECIES species table to link species codes with names
 #
 # Outputs: list containing 2 items
 # 1. allSpeciesData: datatable of all species found within the studyArea
@@ -89,6 +94,8 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
   sarData <- dplyr::select(sarData, "Scientific Name", "Common Name",
                            "SARA status", "COSEWIC status", Individuals, Frequency)
   
+  allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
+  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
   
   # order the tables by number of individuals caught (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Individuals)), ]
@@ -101,7 +108,6 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
 ##### - END create_table_RV function ##################################
 
 
-
 ##### - create_table_MARFIS function ##################################
 # This function creates summary tables of the MARFIS data
 # found within the studyArea
@@ -110,7 +116,6 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
 # 1. data_sf: an input point file of MARFIS data found within the studyArea
 # 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
 # 3. speciesTable: the MARFISSPECIESCODES species table to link species codes with names
-
 #
 # Outputs: list containing 2 items
 # 1. allSpeciesData: datatable of all species found within the studyArea
@@ -141,8 +146,6 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
     length)
   sarData <- merge(sarData, sarTable, by = 'Scientific Name')
   
-  
-  
   allSpeciesData <- dplyr::select(allSpeciesData, 'Common Name', Records)
   allSpeciesData <- allSpeciesData %>% rename(CName = 'Common Name')
   allSpeciesData <- allSpeciesData %>% transmute(allSpeciesData,
@@ -151,6 +154,8 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
                            "SARA status","COSEWIC status", Records)
   
+  allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
+  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
   
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
@@ -159,9 +164,9 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   row.names(sarData) <- NULL
   outList <- list(allSpeciesData, sarData)
   return(outList)
-  
 }
 ##### - END create_table_MARFIS function ##################################
+
 
 ##### - create_table_ISDB function ##################################
 # This function creates summary tables of the ISDB data
@@ -202,6 +207,10 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   allSpeciesData <- dplyr::select(allSpeciesData, 'Scientific Name', 'Common Name', Records)
   sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
                            "SARA status","COSEWIC status", Records)
+  
+  allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
+  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
+  
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
   sarData <- sarData[with(sarData, order(-Records)), ]
@@ -212,6 +221,7 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   return(outList)
 }
 ##### - END create_table_ISDB function ##################################
+
 
 ##### - create_table_OBIS function ##################################
 # This function creates a summary table of the OBIS data
@@ -235,6 +245,8 @@ create_table_OBIS <- function(data_sf) {
   outTable$geometry <- NULL
   outTable <- unique(outTable)
   
+  outTable$`Scientific Name` <- italicize_col(outTable$`Scientific Name`)
+  
   row.names(outTable) <- NULL
   return(outTable)
 }
@@ -243,7 +255,6 @@ create_table_OBIS <- function(data_sf) {
 ##### - sfcoords_as_cols function ##################################
 # This function extracts X and Y coordinates from the
 # sf geometry field and puts them in new fields ("long", "lat")
-#
 #
 # Outputs: returns the datatable with new fields
 # for coordinates
@@ -262,24 +273,59 @@ sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
 
 ####### - Other functions (by Greg Puncher) ##########################################
 ########## Species At Risk distribution and Critical Habitat data ##########
+
+# ---------TABLE DIST-------
+# Generates table for SAR distribution data
+# Inputs:
+# clippedSardist_sf: Sardist data clipped to area of interest
+# 
+# Outputs:
+# distTable: table used in the report
 #
-# #SAR distribution
-table_dist <- function(sardist_sf) {
-  sardist_sf$Common_Nam[sardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
-  dist_table <- dplyr::select(sardist_sf, Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
-  sf::st_geometry(dist_table) <- NULL
-  row.names(dist_table) <- NULL
-  dist_table <- unique(dist_table)
-  names(dist_table) <- c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
-  return(dist_table)
+table_dist <- function(clippedSardist_sf) {
+  clippedSardist_sf$Common_Nam[clippedSardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
+  distTable <- dplyr::select(clippedSardist_sf, Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
+  sf::st_geometry(distTable) <- NULL
+  row.names(distTable) <- NULL
+  distTable <- unique(distTable)
+  distTable$Scientific <- italicize_col(distTable$Scientific)
+  names(distTable) <- c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
+  
+  return(distTable)
 }
 
+
+# helper function that italicizes a column of a table in RMD.
+italicize_col <- function(tableCol) {
+  if (length(tableCol > 0)) {
+    return(paste("_", tableCol, "_", sep = ""))  
+  } else {
+    return(NULL)
+  }
+}
+
+
 #SAR critical habitat
+# ---------TABLE CRIT-------
+# Generates table for SAR SAR critical habitat data
+# Inputs:
+# CCH_sf: Critical habitat data clipped to area of interest
+# LB_sf: Leatherback data clipped to area of interest
+# 
+# Outputs:
+# critTable: table used in the report
+#
 table_crit <- function(CCH_sf, LB_sf) {
   
-  critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
-  critTable$geometry <- NULL
-  names(critTable) <- c("CommonName", "Population", "Area", "SARA_status")
+  if (!is.null(CCH_sf)){
+    critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
+    critTable$geometry <- NULL
+    names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
+  } else {
+    # only set names after init to preserve spaces etc.
+    critTable <- data.frame("a"=NA, "b"=NA, "c"=NA, "d"=NA) 
+    names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
+  }
   
   if (!is.null(LB_sf)){
     leatherbackRow <- data.frame("Leatherback Sea Turtle", NA, paste(LB_sf$AreaName, collapse=', ' ), "Endangered" )
@@ -300,28 +346,35 @@ table_crit <- function(CCH_sf, LB_sf) {
 
 ########## Spatial Planning Section ##########
 
-# # EBSA report
+# ---------EBSA_report-------
+# Generates table for SAR SAR critical habitat data
+# Inputs:
+# EBSA_sf: EBSA data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+# 
+# Outputs:
+# Directly writes table
+#
 EBSA_report <- function(EBSA_sf, lang="EN") {
   
   EBSAreport <-  if (lang=="EN" & !is.null(EBSA_sf)) {
     c(paste("Report: ", EBSA_sf$Report),
-      paste("Report URL:",EBSA_sf$Report_URL),
-      paste("Location: ",EBSA_sf$Name),
+      paste("Report URL:", EBSA_sf$Report_URL),
+      paste("Location: ", EBSA_sf$Name),
       paste("Bioregion: ", EBSA_sf$Bioregion) 
     )
   } else if (lang=="FR" & !is.null(EBSA_sf)) {
     c(paste("Report: ", EBSA_sf$Rapport),
-      paste("Report URL:",EBSA_sf$RapportURL),
-      paste("Location: ",EBSA_sf$Nom),
+      paste("Report URL:", EBSA_sf$RapportURL),
+      paste("Location: ", EBSA_sf$Nom),
       paste("Bioregion: ", EBSA_sf$Bioregion) 
     )
   } else {
     ""
   }
-  
-  uniqueEBSAreport <- unique(noquote(EBSAreport))
+
+    uniqueEBSAreport <- unique(noquote(EBSAreport))
   writeLines(uniqueEBSAreport, sep="\n\n")
-  
 }
 
 

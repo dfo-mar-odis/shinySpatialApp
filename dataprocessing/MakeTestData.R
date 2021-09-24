@@ -3,10 +3,8 @@
 # Primary function to configure/use is: gen_all_test_data() which will generate
 # a .Rdata file with usable test data.  
 #
-#
 # Usage: gen_all_test_data()
 # Output file will be saved under app/data/testData.Rdata
-
 
 
 ##### - get random points ##################################
@@ -37,7 +35,6 @@ get_random_points <- function(mult = 10) {
 }
 
 
-
 ##### - get random polys ##################################
 # This function generates a collection of random polygons inside the region.
 # It first generates random points, and then return their associated voronoi 
@@ -51,8 +48,6 @@ get_random_points <- function(mult = 10) {
 # Outputs:
 # 1. out_polys: vector of polys geometries with length = out_num 
 
-
-
 get_random_polys <- function(mult = 10, out_num = 0.1 * mult) {
   out_samp <- get_random_points(mult)
   out_polys <- st_geometry(out_samp) %>% # make them a geometry
@@ -62,7 +57,6 @@ get_random_polys <- function(mult = 10, out_num = 0.1 * mult) {
     sample(out_num)# split up the result into a poly sfc
   return(out_polys)
 }
-
 
 
 ##### - get test point sf ##################################
@@ -119,8 +113,6 @@ gen_test_poly_sf <- function(real_sf, n_poly=10) {
 # Outputs:
 # 1. test_sf: reduced sf filled with test data
 
-
-
 gen_test_sf <- function(real_sf) {
   # Geometry type
   point_factor <- sf::st_geometry_type(sf::st_point())
@@ -147,16 +139,12 @@ gen_test_sf <- function(real_sf) {
 }
 
 
-
-
 ##### - gen all test data ##################################
 # This function generates a test version of all of the sf loaded in in the standard 
 # data files.  
 #
 # Outputs:
 #  None.  Data is saved to a file in the data directory.
-
-
 gen_all_test_data <- function() {
   load(here::here("app/data/OpenData.RData"))
   load(here::here("app/data/OpenData_sardist.RData"))
