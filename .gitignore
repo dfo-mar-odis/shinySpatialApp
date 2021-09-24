@@ -27,6 +27,8 @@ renv/
 tests/temp/*
 tests/*.RData
 !tests/temp/.gitkeep
+dataprocessing/temp/*
+!dataprocessing/temp/.gitkeep
 # History files
 .Rhistory
 .Rapp.history
