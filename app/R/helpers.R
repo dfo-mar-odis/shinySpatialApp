@@ -21,8 +21,6 @@ library(stars) # transform features and assign or modify coordinate reference sy
 library(ggspatial) #required for mapping
 #next lines are necessary for the generation of the water mark on plots
 #install.packages("remotes")
-#remotes::install_github("terminological/standard-print-output")
-library(standardPrintOutput) # required for watermarks on maps
 
 ## R messages 
 msgInfo <- function(..., appendLF = TRUE) {

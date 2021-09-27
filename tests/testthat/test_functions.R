@@ -4,7 +4,7 @@ context("Function Tests")
 test_that("default plot", {
   list2env(load_test_data(), envir = environment())
   emptyPlot <- ggplot2::ggplot()
-  testPlot <- format_ggplot(emptyPlot)
+  testPlot <- format_ggplot(emptyPlot, regionBox)
   expect_equal(length(testPlot$data), 0)
 })
 
@@ -27,12 +27,16 @@ test_that("master intersect", {
   list2env(load_test_data(), envir = environment())
   # test with points
   testBbox <- sf::st_bbox(whitehead_sf)
-  outputList <- master_intersect(whitehead_sf, region, testBbox, mapBbox = testBbox)
+  mapDataList$studyArea <- testBbox
+  mapDataList$bboxMap <- testBbox
+  outputList <- master_intersect(whitehead_sf, mapDataList, getRegion = TRUE)
   expect_equal(nrow(outputList$regionData), nrow(whitehead_sf))
 
   # test with polygons
   testBbox <- sf::st_bbox(ClippedCritHab_sf)
-  outputList <- master_intersect(ClippedCritHab_sf, region, testBbox, mapBbox = testBbox)
+  mapDataList$studyArea <- testBbox
+  mapDataList$bboxMap <- testBbox
+  outputList <- master_intersect(ClippedCritHab_sf, mapDataList, getRegion = TRUE)
   expect_equal(nrow(outputList$regionData), nrow(ClippedCritHab_sf))
 
   # test null intersect (no data in the Gulf of Guinea):
@@ -40,6 +44,9 @@ test_that("master intersect", {
   testBbox["xmax"] <- 1
   testBbox["ymin"] <- 0
   testBbox["ymax"] <- 1
-  outputList <- master_intersect(whitehead_sf, testBbox, testBbox, mapBbox = testBbox)
+  mapDataList$region <- testBbox
+  mapDataList$bboxMap <- testBbox
+  mapDataList$studyArea <- testBbox
+  outputList <- master_intersect(whitehead_sf, mapDataList, getRegion = TRUE)
   expect_null(c(outputList$regionData, outputList$studyData, outputList$mapData, outputList$mapPoints))
 })

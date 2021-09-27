@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ## **INFORMATION SUR L’HABITAT**
 
 ### **Végétation intertidale et fucus**
@@ -5,11 +10,11 @@ Cartes satellitaires de la végétation intertidale et des polygones de présenc
 Personne-ressource : <Gordana.Lazin@dfo-mpo.gc.ca>  
 Consulté le : 17 février 2021  
 Niveau de qualité : Moyennem  
-Niveau de sécurité : Aucun. 
+Niveau de sécurité : Aucun.
 
 Le fucus (Ascophyllum nodosum) est une algue brune intertidale d’eau froide commune dont les crampons de longue durée s’agrippent à des substrats rocheux. Il domine la zone intertidale rocheuse du Canada atlantique et fournit un habitat pour les poissons, les invertébrés et les oiseaux. Il y a peu d’information disponible sur la répartition spatiale du fucus et de la végétation intertidale dans la région des Maritimes. Les données d’enquête existantes de l’industrie sont considérées comme exclusives et ne sont pas disponibles. Par conséquent, des cartes satellitaires à l’échelle régionale ont été élaborées pour indiquer l’emplacement, la densité relative de la végétation intertidale et les polygones qui délimitent les zones probablement occupées par le fucus (Lazin et al., en préparation).
 
-Les cartes sont produites à l’aide de données satellitaires Sentinel-2 de ciel dégagé à une résolution au sol de 10 mètres, en appliquant un indice de végétation par différence normalisée (IVDN) bien établi pour détecter la végétation intertidale exposée à marée basse. Les parcelles de végétation sont délimitées à l’aide de seuils, et la probabilité de présence de fucus est attribuée en fonction de la classification du substrat riverain, des archives photographiques/vidéo aériennes et des données des bases de données sur la biodiversité en libre accès. Les produits finaux seront conservés sur le portail des données ouvertes du gouvernement du Canada et seront continuellement améliorés à mesure que de nouvelles données de terrain seront disponibles. 
+Les cartes sont produites à l’aide de données satellitaires Sentinel-2 de ciel dégagé à une résolution au sol de 10 mètres, en appliquant un indice de végétation par différence normalisée (IVDN) bien établi pour détecter la végétation intertidale exposée à marée basse. Les parcelles de végétation sont délimitées à l’aide de seuils, et la probabilité de présence de fucus est attribuée en fonction de la classification du substrat riverain, des archives photographiques/vidéo aériennes et des données des bases de données sur la biodiversité en libre accès. Les produits finaux seront conservés sur le portail des données ouvertes du gouvernement du Canada et seront continuellement améliorés à mesure que de nouvelles données de terrain seront disponibles.
 
 Remarques sur les données :
 
@@ -21,62 +26,51 @@ Remarques sur les données :
 #### ***Résultats de la recherche sur la végétation intertidale et le fucus, par zone***  
 
 ```{r overlap-rockweed, echo=FALSE, results='asis'}
-rockweed_intersect <- st_intersection(studyArea, st_make_valid(rockweed_sf))
-rockweed_result <- as.numeric(nrow(rockweed_intersect))
+# define polygon dataset and attribute to plot
+poly_sf <- rockweed_sf
+attribute <- "status"
+
+
+# set status column
+poly_sf$status = ""
+poly_sf$status[which(poly_sf$RWP==1)] = "Present"
+poly_sf$status[which(poly_sf$RWP==2)] = "Likely Present"
+poly_sf$status[which(poly_sf$RWP==5)] = "Unknown"
+poly_sf$status[which(poly_sf$RWP==0)] = "Not Present"
+
+# intersect polyData with 3 polygons (region, map area, and study box)
+clippedRW <- master_intersect(poly_sf, mapDataList)
 ```
 *
-```{r overlap-rockweed-output, echo=FALSE, results='asis'}
- Query_output_rockweed <- if(rockweed_result < 1){"There are no relevant records of predicted intertidal vegetation for this search area."
-   } else {"There are relevant records of predicted intertidal vegetation for this search area."}
- Query_output_rockweed<-noquote(Query_output_rockweed)
- writeLines(Query_output_rockweed)
+```{r overlap rockweed output, echo=FALSE, results='asis'}
+
+polyText<-if(is.null(clippedRW$studyData)){
+  "Il n’existe aucun registre pertinent sur la végétation intertidale prévue pour cette zone de recherche."
+} else {
+  "Il existe des registres pertinentes sur la végétation intertidale prévue pour cette zone de recherche."
+}
+
+ polyText<-noquote(polyText)
+ writeLines(polyText)
 ```
 
-```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
-  plot_rockweed <- function(rockweed_sf, areaMap, bboxMap) {
-  
-    # crop rockweed layer to the map area to speed up plotting
-    rockweed <- st_crop(st_make_valid(rockweed_sf), bboxMap)
-    
-    if (dim(rockweed)[1] == 0){
-      rockweedMap <- NULL
-    }else{
-      
-      # define axis limit
-      axLim <-ggplot2::coord_sf(xlim = c(bboxMap["xmin"], bboxMap["xmax"]),
-                                ylim = c(bboxMap["ymin"], bboxMap["ymax"]), 
-                                expand = FALSE)
-      
-      # replace codes with words
-      rockweed$Rockweed <- ""
-      rockweed$Rockweed[which(rockweed$RWP == 1)] <- "1-Present"
-      rockweed$Rockweed[which(rockweed$RWP == 2)] <- "2-Likely Present"
-      rockweed$Rockweed[which(rockweed$RWP == 5)] <- "5-Unknown"
-      rockweed$Rockweed[which(rockweed$RWP == 0)] <- "Not Present"
-      
-      rockweedMap <- areaMap +
-        geom_sf(data = rockweed, aes(fill = Rockweed), colour = NA) +
-        scale_fill_manual(values = c("#009E73", "#E69F00", "#0072B2","#999999")) +
-        studyBox_geom +
-        axLim
-  }
-  
-  return(rockweedMap)
-  
+```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur : l’emplacement du projet ou de l’activité proposé est surligné en jaune (polygone d’entrée), entouré d’une zone exposée ou d’une zone tampon définie par l’utilisateur en bleu. La figure illustre le chevauchement entre la zone de recherche et les cartes satellitaires de la végétation intertidale et des polygones de présence de fucus.'}
+if(!is.null(clippedRW$studyData)){
+  plot_rr_sf(areaMap, clippedRW$mapData, attribute, outlines=FALSE, legendName= "Végétation Intertidale")
 }
-if(rockweed_result > 1){print(
-  plot_rockweed(rockweed_sf, areaMap, bboxMap))}
 ```
 
 ```{r table-rockweed, echo=FALSE, cache=FALSE, include = FALSE}
-if(rockweed_result > 1){
-  rwTable <- rockweedStats(rockweed_sf, studyArea)}
-```
-```{r rockweed-table}
-if(rockweed_result > 1){
-knitr::kable(rwTable, align="l",
-             caption = "Number of vegetation polygons and surface area occupied by each category for the study area. Total intertidal vegetations is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
-  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
-} 
+if(!is.null(clippedRW$studyData)){
+  rwTable <- rockweedStats(clippedRW$studyData)
+  names(rwTable) <- c("Catégorie", "Nombre de polygones", "Superficie km2")
+}
+
 ```
 
+```{r rockweed-table}
+if(!is.null(clippedRW$studyData)){
+  knitr::kable(rwTable,align="l", caption = "Nombre de polygones de végétation et la superficie occupée par chaque catégorie pour la zone d’étude. La végétation intertidale totale est la somme de tous les catégories.", booktabs = T, escape = F, linesep="") %>%
+  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+}
+```

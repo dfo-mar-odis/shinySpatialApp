@@ -18,6 +18,7 @@ Contact: <info@dfo-mpo.gc.ca>
 Last retrieved on: October 1 2020 from Open Data  <https://open.canada.ca/data/en/dataset/e0fabad5-9379-4077-87b9-5705f28c490b>  
 Quality Tier: High  
 Security level: none  
+Data use constraints: none
 
 Dataset description from the Open Data record [@OpenData_SARrange]: The Species at Risk Program is responsible for carrying out DFO’s mandate under the _Species at Risk Act_ (SARA) to protect, recover and conserve all listed aquatic Species at Risk in Canada. As part of this mandate, this spatial database has been developed to identify areas in which aquatic species listed under SARA may be found. Distribution (range) polygons and lines were assembled by regional SARA biologists using the best available information, including COSEWIC status reports, recovery potential assessments, academic literature, and expert opinion. These spatial data support the protection, recovery and conservation of species listed as Endangered, Threatened or Special Concern under SARA. Species distributions are also described and displayed in Recovery Strategies, Action Plans and/or Management Plans. Discrepancies may exist between the distribution data shown in a species’ SARA recovery document and the current spatial data available through the GIS tool; please contact DFO for more information on any data discrepancies.
 
@@ -25,8 +26,10 @@ Dataset description from the Open Data record [@OpenData_SARrange]: The Species 
 
 Contact: <info@dfo-mpo.gc.ca>  
 Last retrieved on: October 1 2020 from Open Data  <https://open.canada.ca/data/en/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c>  
-Quality Tier: High    
-Security level: none    
+Quality Tier: High\    
+Security level: none\    
+Data use constraints for critical habitat: none\
+Data use constraints for Leatherback Sea Turtle draft critical habitat: DFO INTERNAL USE ONLY
 
 Dataset description from the Open Data record [@OpenData_SARcriticalhabitat]: The Species at Risk Program is responsible for carrying out DFO’s mandate under the _Species at Risk Act_ (SARA) to protect, recover and conserve all listed aquatic Species at Risk in Canada. Critical habitat is identified for species listed as Endangered or Threatened under the _Species at Risk Act_ (SARA). Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Section 49(1)(a) of SARA requires that a species’ Recovery Strategy/Action Plan include an identification of the species’ critical habitat to the extent possible, based on the best available information, including information provided by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). SARA makes it illegal to destroy any part of the critical habitat of SAR and may impose restrictions on development and construction. Critical habitats were assembled by SARA regional biologists and recovery teams. They are designed to support the protection and recovery of species listed as Endangered or Threatened under the _Species at Risk Act_. They are also described and displayed in species’ Recovery Documents and Action Plans.
 
@@ -34,15 +37,29 @@ Critical habitat presented in this section are available in the Government of Ca
 
 #### ***Area-specific SAR distribution and critical habitat search results***
 
-```{r sardist-load, echo=FALSE, results='asis'}
-#if(sardist_sf > 1){
-dist_table <- table_dist(sardist_sf, studyArea)
-#} else {NULL}
+```{r all-sar-load, echo=FALSE, results='asis'}
+# not plotted
+outputListSardist <- master_intersect(sardist_sf, mapDataList)
+
+# plotted with colour
+attributeCrithab <- "Common_Nam"
+legendNameCrithab <- "Common Name"
+outputListCrithab <- master_intersect(ClippedCritHab_sf, mapDataList,
+                                      getRegion=TRUE)
+
+
+# plotted in single colour
+outputListLB <- master_intersect(leatherback_sf, mapDataList, getRegion=TRUE)
+
+critHabCheck <- !is.null(outputListCrithab$studyData) | !is.null(outputListLB$studyData)
+
+if (!is.null(outputListSardist$studyData)){
+  dist_table <- table_dist(outputListSardist$studyData)
+}
 ```
 *
-```{r dist-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Dist_overlap_result <- nrow(dist_table)
-Query_output_dist <- if(Dist_overlap_result < 1){
+```{r sardist-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Query_output_dist <- if(is.null(outputListSardist$studyData)){
   "The search area does not overlap with Species at Risk distribution range."
 } else {
   "The search area overlaps with Species at Risk distribution range."
@@ -50,80 +67,59 @@ Query_output_dist <- if(Dist_overlap_result < 1){
 writeLines(Query_output_dist)
 ```
 
-```{r leatherback-table, echo=FALSE, results='asis'}
-crit_table <- table_crit(ClippedCritHab_sf, studyArea, leatherback_sf)
+```{r crithab-table-gen, echo=FALSE, results='asis'}
+if (critHabCheck) {
+  critTable <- table_crit(outputListCrithab$studyData, outputListLB$studyData)  
+}
 ```
 *
-```{r crit-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
- crit_result <- nrow(crit_table)
- Query_output_crit <- if(crit_result < 1){
-   "The search area does not overlap with defined Species at Risk Critical Habitat."
- } else {
+```{r crithab-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+ Query_output_crit <- if(critHabCheck){
    "The search area overlaps with defined Species at Risk Critical Habitat."
+ } else {
+   "The search area does not overlap with defined Species at Risk Critical Habitat."
  }
  writeLines(Query_output_crit)
 ```
 <br>
-```{r  dist-table, echo=FALSE, results='asis'}
-Dist_query_output_table<-if(Dist_overlap_result < 1){
-  ""
-} else {
-
-  knitr::kable(dist_table[!duplicated(dist_table),], align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
-
+```{r sardist-table, echo=FALSE, results='asis'}
+if(!is.null(outputListSardist$studyData)){
+  knitr::kable(dist_table, align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 }
-if(Dist_overlap_result > 1){Dist_query_output_table}
 ```
 
-```{r crit-table, echo=FALSE, results='asis'}
-crit_table <- unique( crit_table[ , 1:3 ] )
-Crithab_query_output_table <- if(crit_result <= 1){
-  ""
-} else {
-  knitr::kable(crit_table, caption="Quality Tier: High. Security level: none. Species at Risk listed as Endangered or Threatened under the <i>Species at Risk Act</i> (SARA) for which the search polygon overlaps with their critical habitat. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is <b>not</b> the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report.", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
-if(crit_result > 0){Crithab_query_output_table}
+```{r crithab-table, echo=FALSE, results='asis'}
+if(critHabCheck){
+  knitr::kable(critTable, caption="Quality Tier: High. Security level: none. Species at Risk listed as Endangered or Threatened under the <i>Species at Risk Act</i> (SARA) for which the search polygon overlaps with their critical habitat. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species”. Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is <b>not</b> the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+}
+
 ```
 <br>
 
-```{r crithab-plot-setup, echo=FALSE, results='asis'}
-# define polygon dataset and attribute to plot
-poly_sf <- ClippedCritHab_sf
-attribute <- "Common_Nam"
-legend_name <- "Common Name"
-
-# intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
-```
-
 ```{r crithab-region-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes critical habitat of Species at Risk listed as Endangered or Threatened under the <i>Species at Risk Act</i> (SARA) in the Scotian Shelf Bioregion. Please see table above for complimentary information. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species.” Critical Habitat is identified in a species’ recovery strategy or action plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.', fig.height=6, fig.width=11}
-if (!is.null(clipped$regionData)){
-  plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionData, attribute, legendName = legend_name)
+if (!is.null(outputListCrithab$regionData)){
+  critPlotList <- plot_rr_sf(regionMap, outputListCrithab$regionData, 
+                             attributeCrithab, legendName = legendNameCrithab, outlines=FALSE, getColorMap=TRUE)
+  critPlotList$polyMap
 }  
 ```
 <br>
 ```{r crithab-area-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with critical habitat of Species at Risk listed as Endangered or Threatened under the <i>Species at Risk Act</i> (SARA)', fig.height=6, fig.width=11}
-if (!is.null(clipped$mapData)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData, attribute, legendName = legend_name)
+if (!is.null(outputListCrithab$mapData)){
+  plot_rr_sf(areaMap, outputListCrithab$mapData, attributeCrithab, 
+             legendName = legendNameCrithab, outlines=FALSE, colorMap = critPlotList$colorMap)
 }  
 ```
 <br>
-```{r leatherback-plot-setup,  echo=FALSE, results='asis'}
-# define polygon dataset and attribute to plot
-poly_sf <- leatherback_sf
-attribute <- "NONE"
-
-# intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(poly_sf, region, studyArea, bboxMap)
-```
 
 ```{r leatherback-region-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes draft critical habitat of Leatherback Sea Turtle in the Scotian Shelf Bioregion, relative to the search area. Draft critical habitat for the species is based on information DFO published as an update to Science advice regarding important habitat for Leatherback Sea Turtle: https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ScR-RS/2020/2020_041-eng.html', fig.height=6, fig.width=11}
-if (!is.null(clipped$regionData)){
-  plot_polygons(regionMap, regionBox, studyBox_geom, clipped$regionData, attribute)
+if (!is.null(outputListLB$regionData)){
+  plot_rr_sf(regionMap, outputListLB$regionData, "NONE")
 }   
 ```
 <br>
-```{r leatherback-area-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with draft critical habitat of Leatherback Sea Turtle', fig.height=6, fig.width=11}
-if (!is.null(clipped$mapData)){
-  plot_polygons(areaMap, bboxMap, studyBox_geom, clipped$mapData,attribute)
-}  
+```{r leatherback-area-plot, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with draft critical habitat of Leatherback Sea Turtle.', fig.height=6, fig.width=11}
+if (!is.null(outputListLB$mapData)){
+  plot_rr_sf(areaMap, outputListLB$mapData, "NONE")
+}
 ```
