@@ -39,8 +39,8 @@ load(here::here("app/data/SecureData.RData"))
 
 ```{r  Load-Search-Area, echo=FALSE, include=FALSE, cache=FALSE}
 studyArea <- sf::st_read("{{path_to_geoms}}")
-# studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) # last area from app.
 # Uncomment the following to test fixed polygon:
+# studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) # last area from app.
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_test.geojson")) #Offshore
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_coastal_test.geojson")) #coastal
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_no_land.geojson")) #no land
