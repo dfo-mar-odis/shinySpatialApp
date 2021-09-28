@@ -378,3 +378,22 @@ EBSA_report <- function(EBSA_sf, lang="EN") {
 }
 
 
+add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
+  if (!is.null(data_sf)){
+    data_sf$summaryCol <- data_sf[[attribute]]
+    data_sf <- st_drop_geometry(data_sf)
+    data_sf <-data_sf %>% dplyr::select(summaryCol) %>% 
+      group_by(summaryCol) %>% 
+      summarise(noRecords = length(summaryCol)) 
+  } else {
+    data_sf <- whaleSummary
+    data_sf$summaryCol <- data_sf$Species
+    data_sf[["noRecords"]] <- rep(0, nrow(whaleSummary))
+  }
+  
+  whaleSummary[[dbName]] <- merge(whaleSummary, data_sf, by.x="Species", by.y ="summaryCol", all=TRUE)$noRecords 
+  whaleSummary[is.na(whaleSummary)] <- 0
+  return(whaleSummary)
+}
+
+

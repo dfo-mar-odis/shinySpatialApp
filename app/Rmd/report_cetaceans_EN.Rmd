@@ -27,6 +27,7 @@ whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
                "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
+whaleSummaryTable <- data.frame("Species" = names(whaleShape))
 ```
 
 ### **Whale Sightings Database (WSDB)**
@@ -59,15 +60,19 @@ Please note the following important disclaimers and caveats associated with sigh
 #### ***Area-specific WSDB search results***
 
 ```{r wsdb, include=FALSE, cache=FALSE}
-outputList <- master_intersect(wsdb_sf, mapDataList)
+wsdbClipped <- master_intersect(wsdb_sf, mapDataList)
 
-if (!is.null(outputList$mapData)) {
-  wsdb_points <- sfcoords_as_cols(outputList$mapData)
+if (!is.null(wsdbClipped$mapData)) {
+  wsdb_points <- sfcoords_as_cols(wsdbClipped$mapData)
+}
+
+if (!is.null(wsdbClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, "WSDB", wsdbClipped$studyData, "Legend")
 }
 ```
 *
 ```{r wsdb-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_wsdb <- if (is.null(outputList$studyData)) {
+Report_wsdb <- if (is.null(wsdbClipped$studyData)) {
    "There are no relevant records in the WSDB for this search area."
  } else {
    "There are relevant records in the WSDB for this search area."
@@ -75,7 +80,7 @@ Report_wsdb <- if (is.null(outputList$studyData)) {
 writeLines(Report_wsdb)
 ```
 ```{r wsdb-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
-if (!is.null(outputList$studyData)) {
+if (!is.null(wsdbClipped$studyData)) {
   plot_rr_sf(areaMap, wsdb_points, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
@@ -95,11 +100,15 @@ The following description of cetacean sightings data collection methods used by 
 #### ***Area-specific Whitehead Lab search results***
 
 ```{r whitehead, include=FALSE, cache=FALSE}
-outputList <- master_intersect(whitehead_sf, mapDataList)
+whiteheadClipped <- master_intersect(whitehead_sf, mapDataList)
+
+if (!is.null(whiteheadClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, "Whitehead", whiteheadClipped$studyData, "Legend")
+}
 ```
 *
 ```{r whitehead-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_whitehead <-  if (is.null(outputList$studyData)) {
+Report_whitehead <-  if (is.null(whiteheadClipped$studyData)) {
    "There are no relevant records in the Whitehead Lab database for this search area."
  } else {
    "There are relevant records in the Whitehead Lab database for this search area."
@@ -107,8 +116,8 @@ Report_whitehead <-  if (is.null(outputList$studyData)) {
 writeLines(Report_whitehead)
 ```
 ```{r whitehead-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whitehead Lab, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Field efforts were primarily conducted in the Gully Marine Protected Area, and adjacent canyons along the edge of the eastern Scotian Shelf, during good weather conditions (for example, see Whitehead 2013 for a map of effort between 1988-2011), though some data from surveys along the shelf edge off Nova Scotia, Newfoundland and Labrador are included. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. This map also does not include acoustic detections. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. For more information, please visit: <https://whiteheadlab.weebly.com/contact.html>'}
-if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+if (!is.null(whiteheadClipped$studyData)) {
+  plot_rr_sf(areaMap, whiteheadClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
@@ -125,12 +134,17 @@ The NARWC Sightings Database contains records of thousands of sightings of Right
 
 #### ***Area-specific NARWC search results***
 ```{r narwc, include=FALSE, cache=FALSE}
-outputList <- master_intersect(narwc_sf, mapDataList)
+narwcClipped <- master_intersect(narwc_sf, mapDataList)
+
+
+if (!is.null(narwcClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, "NARWC", narwcClipped$studyData, "Legend")
+}
 
 ```
 *
 ```{r narwc-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_narwc <- if (is.null(outputList$studyData)) {
+Report_narwc <- if (is.null(narwcClipped$studyData)) {
    "There are no relevant records in the NARWC database for this search area."
  } else {
    "There are relevant records in the NARWC database for this search area."
@@ -138,8 +152,8 @@ Report_narwc <- if (is.null(outputList$studyData)) {
 writeLines(Report_narwc)
 ```
 ```{r narwc-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the North Atlantic Right Whale Consortium (NARWC) Sightings Database, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>Absence of a species in the map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area</b> since survey effort is biased towards the Northeast US, and data on species presence from acoustic detections is not included. For more information, please visit: <https://www.narwc.org/sightings-database.html>'}
-if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+if (!is.null(narwcClipped$studyData)) {
+  plot_rr_sf(areaMap, narwcClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
@@ -156,13 +170,17 @@ An OBIS search [@OBIS] was conducted to find additional relevant records for cet
 
 #### ***Area-specific OBIS cetacean search results***
 
-```{r obis-cetecean, include=FALSE, cache=FALSE}
-outputList <- master_intersect(obis_cet_sf, mapDataList)
+```{r obis-cetecean, cache=FALSE, include=FALSE}
+obisClipped <- master_intersect(obis_cet_sf, mapDataList)
+
+if (!is.null(obisClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, "OBIS", obisClipped$studyData, "Legend")
+}
 
 ```
 *
 ```{r obis-cetecean-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_obis_cet <-  if (is.null(outputList$studyData)) {
+Report_obis_cet <-  if (is.null(obisClipped$studyData)) {
   "There are no relevant records of cetaceans in the Ocean Biodiversity Information System (OBIS) for this search area."
 } else {
   "There are relevant records of cetaceans in the Ocean Biodiversity Information System (OBIS) for this search area."
@@ -170,10 +188,24 @@ Report_obis_cet <-  if (is.null(outputList$studyData)) {
 writeLines(Report_obis_cet)
 ```
 ```{r obis-cetecean-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Ocean Biodiversity Information System (OBIS), for cetacean species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
-if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+if (!is.null(obisClipped$studyData)) {
+  plot_rr_sf(areaMap, obisClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
+
+```{r cetacean-summary-table, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+
+areaSums <- colSums(subset(whaleSummaryTable, select = -c(Species)))
+areaSums$Species <- "Area Total"
+whaleSummaryTable <- rbind(whaleSummaryTable, areaSums)
+
+knitr::kable(whaleSummaryTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of records present in cetacean databases used in this report. ", booktabs = T, escape = F, linesep = "") %>%
+  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+
+
+```
+
+
 
 ### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans**  
 
