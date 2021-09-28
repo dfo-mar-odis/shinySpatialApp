@@ -43,7 +43,8 @@ download_extract_validate_sf <- function(zipUrl, gdbLayer=NULL) {
   utils::unzip(temp, exdir = tempDir)
   # if there's a shape file read that:
   shpFile <- list.files(tempDir, recursive=TRUE, pattern="\\.shp$", full.names = TRUE)
-  gdbDir <- list.files(tempDir, recursive=FALSE, pattern="\\.gdb$", full.names = TRUE)
+  gdbDir <- list.files(tempDir, recursive=TRUE, pattern="\\.gdb$", 
+                       include.dirs	= TRUE, full.names = TRUE)
     
   if (length(shpFile) > 0) {
     out_sf <- st_read(shpFile, stringsAsFactors = FALSE)

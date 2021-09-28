@@ -30,18 +30,19 @@ crithab_rr$data_sf$Common_Nam <- crithab_rr$data_sf$Common_Name_EN
 # -----------SDM--------------
 sdmPkgId <- "c094782e-0d6f-4cc0-b5a3-58908493a433"
 sdmResId <- "1ac4df6a-ba45-4f13-a488-bd12e90a8bc7"
+sdmLayer <- "StudyArea"
 
-sdm_rr <- get_opendata_rr(sdmPkgId, sdmResId)
+#sdm_rr <- get_opendata_rr(sdmPkgId, sdmResId, gdbLayer = sdmLayer)
 
 
 # -----------NBW-------------- # good
 nbwPkgId <- "9fd7d004-970c-11eb-a2f3-1860247f53e3"
 nbwResId <- "f69a7d34-7c18-485b-98d7-8d45b7f8a3ce"
+nbwLayer <- "NorthernBottlenoseWhale_InterCanyonHabitat"
+nbw_rr <- get_opendata_rr(nbwPkgId, nbwResId, gdbLayer = nbwLayer)
 
-nbw_rr <- get_opendata_rr(nbwPkgId, nbwResId)
 
-
-# -----------BW hab--------------
+# -----------BW hab-------------- # good
 bwhabPkgId <- "8fafd919-fcbe-43a3-a911-3d9461273441"
 bwResId <- "3af8ad03-c0da-4cfa-940d-d757c0c24cb7"
 
@@ -54,10 +55,17 @@ bwTemp_sf$months[bwTemp_sf$months == "all year"] <- "All year"
 bwTemp_sf$months[bwTemp_sf$months == "December to February/March to May"] <- "Dec-Feb/Mar-May"
 bwTemp_sf$months[bwTemp_sf$months == "December to February/June to August"] <- "Dec-Feb/Jun-Aug"
 bwTemp_sf$months[bwTemp_sf$months == "March to May/June to August"] <- "Mar-May/Jun-Aug"
-bwTemp_sf$Activity <- paste(bwTemp_sf$activity,"-",bwTemp_sf$months)
+bwTemp_sf$Activity <- paste(bwTemp_sf$activity,"-", bwTemp_sf$months)
 bwhab_rr$data_sf <- bwTemp_sf
 
 
 
 
+save(EBSA_rr, 
+     #sardist_rr,
+     crithab_rr, 
+     #sdm_rr, 
+     nbw_rr, 
+     bwhab_rr,
+     file = here::here("app/data/TESTOpenData.RData"))
 
