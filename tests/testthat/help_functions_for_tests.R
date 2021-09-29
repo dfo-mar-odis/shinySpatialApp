@@ -69,6 +69,9 @@ load_test_data <- function() {
   
   outList <- list("minYear" = 2010,
                   "region" = region,
+                  "absentCode" = "A",
+                  "presentCode" = "P",
+                  "summarySarTable" = data.frame("Species" = listed_species$`Common Name`),
                   "site" = site,
                   "studyBox_geom" = studyBox_geom, 
                   "areaMap" = areaMap, 

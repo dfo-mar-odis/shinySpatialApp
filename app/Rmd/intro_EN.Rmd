@@ -58,8 +58,7 @@ list2env(mapDataList, envir = environment())
 
 ```{r set up summary and gap tables, echo=FALSE, include=FALSE, cache=FALSE}
 summarySarTable <- data.frame("Species" = listed_species$`Common Name`)
-absentCode <- "A"
-presentCode <- "P"
+
 ```
 
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
@@ -136,12 +135,16 @@ The following are definitions relevant for species listed by the _Species at Ris
 {{add_ebsa_section}}
 
 <!-- GENERIC END -->
+## **SAR DATABASE SUMMARY**
+
+TO BE CHECKED BEFORE MERGING! 
+This section summarizes the SAR coverage of the data sources used in the report. A summary of the data sources containing records of each species with a status under COSEWIC or SARA in the study area is provided.  The caveats and conditions for each individual data source are detailed above in their dedicated sections of the report. An absence of records is not necessarily an absence of the species in the area.  Data sources summerized are limited to species point data.  
 
 ```{r sar-summary-table}
  formatedTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", "black"),
                   background = ifelse(. == presentCode, "green", "white")))
 
-knitr::kable(formatedTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of SAR records present in databases used in this report. ", booktabs = T, escape = F, linesep = "") %>%
+knitr::kable(formatedTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of SAR records present in data sources used in this report. ", booktabs = T, escape = F, linesep = "") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 

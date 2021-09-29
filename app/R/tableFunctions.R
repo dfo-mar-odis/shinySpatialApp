@@ -420,6 +420,8 @@ add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
 # sarSummary: updated sarSummary with added column
 #
 add_col_to_sar_summary <- function(sarSummary, dbName, data_sf, indexCol, attributeCol) {
+  absentCode <- "A"
+  presentCode <- "P"
   if (!is.null(data_sf)){
     data_sf$summaryCol <-ifelse(data_sf[[attributeCol]] > 0, presentCode, absentCode)
     data_sf$speciesCol <- data_sf[[indexCol]]
