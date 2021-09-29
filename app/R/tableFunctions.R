@@ -162,7 +162,7 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   sarData <- sarData[with(sarData, order(-Records)), ]
   row.names(allSpeciesData) <- NULL
   row.names(sarData) <- NULL
-  outList <- list(allSpeciesData, sarData)
+  outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
 ##### - END create_table_MARFIS function ##################################
@@ -195,7 +195,7 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   # Merge the data_sf with the listed_species table
   # and create a frequency table of all listed species
   # caught
-  data1 <- merge(data1,sarTable, by = 'Scientific Name')
+  data1 <- merge(data1, sarTable, by = 'Scientific Name')
   
   sarData <- aggregate(
     x = list(Records = data1$'Scientific Name'),
@@ -217,7 +217,7 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   row.names(allSpeciesData) <- NULL
   row.names(sarData) <- NULL
   
-  outList <- list(allSpeciesData, sarData)
+  outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
 ##### - END create_table_ISDB function ##################################
@@ -394,6 +394,22 @@ add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
   whaleSummary[[dbName]] <- merge(whaleSummary, data_sf, by.x="Species", by.y ="summaryCol", all=TRUE)$noRecords 
   whaleSummary[is.na(whaleSummary)] <- 0
   return(whaleSummary)
+}
+
+add_col_to_sar_summary <- function(sarSummary, dbName, data_sf, indexCol, attributeCol) {
+  if (!is.null(data_sf)){
+    data_sf$summaryCol <-ifelse(data_sf[[attributeCol]] > 0, presentCode, absentCode)
+    data_sf$speciesCol <- data_sf[[indexCol]]
+    data_sf <- filter(data_sf, speciesCol %in% sarSummary$Species)
+  } else {
+    data_sf <- sarSummary
+    data_sf$speciesCol <- data_sf$Species
+    data_sf$summaryCol <- rep(absentCode, nrow(sarSummary))
+  }
+  
+  sarSummary[[dbName]] <- merge(sarSummary, data_sf, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol 
+  sarSummary[is.na(sarSummary)] <- absentCode
+  return(sarSummary)
 }
 
 

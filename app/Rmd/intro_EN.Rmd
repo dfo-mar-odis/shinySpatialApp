@@ -33,6 +33,7 @@ copy_rdata_files() # make sure data files are up to date.
 load(here::here("app/data/OpenData.RData"))
 load(here::here("app/data/OpenData_sardist.RData"))
 load(here::here("app/data/SecureData.RData"))
+
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
 
 ```
@@ -51,13 +52,18 @@ site <- sf::st_centroid(studyArea)
 ```{r parameters-for-area_map.r, echo=FALSE, include=FALSE, cache=FALSE}
 mapDataList <- maps_setup(studyArea, site, region, land50k_sf, land10m_sf, bounds_sf)
 list2env(mapDataList, envir = environment())
+```
 
+```{r set up summary and gap tables, echo=FALSE, include=FALSE, cache=FALSE}
+summarySarTable <- data.frame("Species" = listed_species$`Common Name`)
+absentCode <- "A"
+presentCode <- "P"
 ```
 
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
-<!--```{r child = '../Rmd/report_cetaceans_EN.Rmd'}
-```-->
+```{r child = '../Rmd/report_fish_EN.Rmd'}
+```
 
 <!-- END  -->
 
@@ -128,6 +134,16 @@ The following are definitions relevant for species listed by the _Species at Ris
 {{add_ebsa_section}}
 
 <!-- GENERIC END -->
+
+```{r sar-summary-table}
+ formatedTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", "black"),
+                  background = ifelse(. == presentCode, "green", "white")))
+
+knitr::kable(formatedTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of SAR records present in databases used in this report. ", booktabs = T, escape = F, linesep = "") %>%
+  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+```
+
+
 
 # **CONTRIBUTORS**
 ```{r read-contributors, echo=FALSE, cache=FALSE, include = FALSE}
