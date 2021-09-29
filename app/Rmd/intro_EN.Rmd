@@ -33,6 +33,7 @@ copy_rdata_files() # make sure data files are up to date.
 load(here::here("app/data/OpenData.RData"))
 load(here::here("app/data/OpenData_sardist.RData"))
 load(here::here("app/data/SecureData.RData"))
+
 listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
 row.names(listed_species) <- NULL
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")

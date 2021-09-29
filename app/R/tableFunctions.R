@@ -372,12 +372,21 @@ EBSA_report <- function(EBSA_sf, lang="EN") {
   } else {
     ""
   }
-
-    uniqueEBSAreport <- unique(noquote(EBSAreport))
+  uniqueEBSAreport <- unique(noquote(EBSAreport))
   writeLines(uniqueEBSAreport, sep="\n\n")
 }
 
-
+# ---------add_col_to_whale_summary-------
+# Adds a column with number of records to the cetacean summary table
+# Inputs:
+# whaleSummary: Table generated in cetacean setup chunk. Contains a "Species" column.
+# dbName: Name of column header to add to summary table
+# data_sf: cetacean sf object clipped to study area
+# attribute: column header of column in data_sf with species names matching whaleSummary column
+# 
+# Outputs:
+# whaleSummary: updated whaleSummary with added column
+#
 add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
   if (!is.null(data_sf)){
     data_sf$summaryCol <- data_sf[[attribute]]
@@ -396,6 +405,20 @@ add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
   return(whaleSummary)
 }
 
+
+# ---------add_col_to_sar_summary-------
+# Adds a column with number of records to the cetacean summary table
+# Inputs:
+# sarSummary: Table generated in intro setup chunk. Contains a "Species" column.
+# dbName: Name of column header to add to summary table
+# data_sf: sf object clipped to study area
+# indexCol: column header of column in data_sf with species names matching sarSummary column
+# attributeCol: column header of column in data_sf with species presence/absence 
+#               matching sarSummary column. Can also be set to indexCol if not present.
+# 
+# Outputs:
+# sarSummary: updated sarSummary with added column
+#
 add_col_to_sar_summary <- function(sarSummary, dbName, data_sf, indexCol, attributeCol) {
   if (!is.null(data_sf)){
     data_sf$summaryCol <-ifelse(data_sf[[attributeCol]] > 0, presentCode, absentCode)
