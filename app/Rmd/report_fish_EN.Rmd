@@ -71,7 +71,6 @@ if (!is.null(outputList$studyData)) {
   if (nrow(rvSarTable) > 0) {
     knitr::kable(rvSarTable, align="l", caption="\\label{tab:rv_SAR_table} Quality Tier: High. Security level: none. Maritimes Research Vessel (RV) Survey observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or species assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
   }
-  
 }
 ```
 <br>
@@ -245,10 +244,10 @@ OCEARCH is a data-centric organization built to help scientists collect previous
 ocearchOutputList <- master_intersect(ocearch_sf, mapDataList)
 
  if (!is.null(ocearchOutputList$studyData)) {
-   ocearchSummaryRow <- list("Common Name" = "White Shark")
-   summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH", ocearchSummaryRow, "Common Name", "Common Name")
+   ocearchSummaryRow <- data.frame("CommonName" = c("White Shark"))
+   summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH", ocearchSummaryRow, "CommonName", "CommonName")
  } else {
-   summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH", NULL, "Common Name", "Common Name")
+   summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH", NULL, "CommonName", "CommonName")
  }
 
 ```
