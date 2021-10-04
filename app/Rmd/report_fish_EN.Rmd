@@ -7,7 +7,7 @@ editor_options:
 
 This section describes output derived from the following data sources: Maritimes Research Vessel (RV) Survey, Industry Survey Database (ISDB), The Maritimes Fishery Information System (MARFIS), and the Ocean Biodiversity Information System (OBIS). Area-specific outputs are provided in sub-sections labelled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
 
-### **Maritimes Research Vessel (RV) Survey**   
+### **Maritimes Research Vessel (RV) Survey**{#RV-section}
 
 Contact: <DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca>   
 Last retrieved on: January 21, 2021 from Open Data <https://open.canada.ca/data/en/dataset/8ddcaeea-b806-4958-a79f-ba9ab645f53b>    
@@ -39,9 +39,9 @@ if (!is.null(outputList$studyData)) {
   tableList <- create_table_RV(outputList$studyData, listed_species, speciesTable = RVGSSPECIES)
   rvAllTable <- tableList$allSpecies
   rvSarTable <- tableList$sarData
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "RV", rvSarTable, "Common Name", "Individuals")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[RV](#RV-section)", rvSarTable, "Common Name", "Individuals")
 } else {
-    summarySarTable <- add_col_to_sar_summary(summarySarTable, "RV", outputList$studyData, "Common Name", "Individuals")
+    summarySarTable <- add_col_to_sar_summary(summarySarTable, "[RV](#RV-section)", outputList$studyData, "Common Name", "Individuals")
 }
 
 ```
@@ -82,7 +82,7 @@ knitr::kable(rvAllTable, align="l", caption="\\label{tab:rv_freq_table}Quality T
 
 ### **Industry Survey and Maritimes Fishery Databases**  
 
-#### ***Industry Survey Database (ISDB)***  
+#### ***Industry Survey Database (ISDB)*** {#ISDB-section}
 
 Contact: <Claire.Mussells@dfo-mpo.gc.ca>  
 Last retrieved on: 2019    
@@ -95,7 +95,7 @@ The Industry Survey Database (ISDB) is a departmental database containing at-sea
 
 Without written consent, DFO is not permitted to release information or data products from ISDB (e.g., maps and data layers) that might reveal personal or third party information such as catch, landed values, and vessel-specific fishing locations, as this information is considered confidential. Information on privacy policy is available in the DFO staff informal release guidelines (i.e., Appendix B – “Catch and Effort and Quota Information: Do’s and Don’ts for Informal Release” (\\\\ent.dfo-mpo.ca\\ATLShares\\Shared\\ATIP Information\\Information_Release_Guidelines-eng.docx). If you are interested in including observer data in a publication, please remember to aggregate it (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r). 
 
-#### ***The Maritime Fishery Information System (MARFIS)***  
+#### ***The Maritime Fishery Information System (MARFIS)***{#MARFIS-section}
 
 Contact: <XMARComData@dfo-mpo.gc.ca>    
 Last retrieved on: 2019  
@@ -119,18 +119,18 @@ if (!is.null(outputListI$studyData)) {
                                  speciesTable = ISSPECIESCODES)
   isdbAllTable <- tableList$allSpeciesData
   isdbSarTable <- tableList$sarData
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "ISDB", isdbSarTable, "Common Name", "Records")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ISDB](#ISDB-section)", isdbSarTable, "Common Name", "Records")
 } else {
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "ISDB", NULL, "Common Name", "Records")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ISDB](#ISDB-section)", NULL, "Common Name", "Records")
 }
 
 if (!is.null(outputListM$studyData)) {
   tableList <- create_table_MARFIS(outputListM$studyData, listed_species, speciesTable = MARFISSPECIESCODES)
   marfisAllTable <- tableList$allSpeciesData
   marfisSarTable <- tableList$sarData
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "MARFIS", marfisSarTable, "Common Name", "Records")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[MARFIS](#MARFIS-section)", marfisSarTable, "Common Name", "Records")
 } else {
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "MARFIS", NULL, "Common Name", "Records")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[MARFIS](#MARFIS-section)", NULL, "Common Name", "Records")
 }
 ```
 *
@@ -184,7 +184,7 @@ if (!is.null(outputListM$studyData)) {
   knitr::kable(marfisAllTable, caption="Quality Tier: Medium. Security level: Protected B. Maritimes Fishery Information System (MARFIS) observation records of <u>all species</u> contained within the search area, summarized by species or species group. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>", booktabs = T, escape = F, linesep="")  %>% column_spec(1, width="15cm")
 } %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 ```
-### **Ocean Biodiversity Information System (OBIS)**  
+### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
 Contact: helpdesk@obis.org  
 URL: <https://obis.org/>    
 Last retrieved on: January 27 2021 by Gregory Puncher from OBIS  
@@ -202,9 +202,9 @@ outputList <- master_intersect(obis_fish_sf, mapDataList, Year = minYear)
 
 if (!is.null(outputList$studyData)) {
   obisTable <- create_table_OBIS(outputList$studyData)
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "OBIS", obisTable, "Common Name", "Common Name")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", obisTable, "Common Name", "Common Name")
 } else {
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "OBIS", NULL, "Common Name", "Common Name")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", NULL, "Common Name", "Common Name")
 }
 ```
 *
@@ -228,7 +228,7 @@ if (!is.null(outputList$studyData)) {
 }
 ```
 
-### **OCEARCH Shark Tracker**  
+### **OCEARCH Shark Tracker** {#OCEARCH-section}
 Contact: Bryan Franks (bfranks@ju.edu) via Sean Butler (sean.butler@dfo-mpo.gc.ca)\
 URL: <https://www.ocearch.org/tracker/>\
 Last retrieved on: July 22 2021 by Sean Butler\
@@ -245,9 +245,9 @@ ocearchOutputList <- master_intersect(ocearch_sf, mapDataList)
 
  if (!is.null(ocearchOutputList$studyData)) {
    ocearchSummaryRow <- data.frame("CommonName" = c("White Shark"))
-   summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH", ocearchSummaryRow, "CommonName", "CommonName")
+   summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OCEARCH](#OCEARCH-section)", ocearchSummaryRow, "CommonName", "CommonName")
  } else {
-   summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH", NULL, "CommonName", "CommonName")
+   summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OCEARCH](#OCEARCH-section)", NULL, "CommonName", "CommonName")
  }
 
 ```

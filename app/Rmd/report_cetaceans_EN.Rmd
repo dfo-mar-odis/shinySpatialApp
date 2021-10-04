@@ -30,7 +30,7 @@ names(whaleShape) <- names(whaleCol)
 whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
 ```
 
-### **Whale Sightings Database (WSDB)**
+### **Whale Sightings Database (WSDB)** {#WSDB-section}
 
 Contact: <XMARWhaleSightings@dfo-mpo.gc.ca>
 URL: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>    
@@ -61,12 +61,12 @@ Please note the following important disclaimers and caveats associated with sigh
 
 ```{r wsdb, include=FALSE, cache=FALSE}
 wsdbClipped <- master_intersect(wsdb_sf, mapDataList)
-
+linkedSectionText <- "[WSDB](#WSDB-section)"
 if (!is.null(wsdbClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, "WSDB", wsdbClipped$studyData, "Legend")
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "WSDB", whaleSummaryTable, "specIndex", "WSDB")
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
- summarySarTable <- add_col_to_sar_summary(summarySarTable, "WSDB", NULL, "specIndex", "WSDB")
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
 }
 ```
 *
@@ -84,7 +84,7 @@ if (!is.null(wsdbClipped$studyData)) {
 }
 ```
 
-### **The Whitehead Lab, Dalhousie University**
+### **The Whitehead Lab, Dalhousie University** {#Whitehead-section}
 URL: <https://whiteheadlab.weebly.com/contact.html>  
 Last retrieved on: January 12 2021  by Laura Feyrer    
 Quality Tier: High    
@@ -101,12 +101,15 @@ The following description of cetacean sightings data collection methods used by 
 ```{r whitehead, include=FALSE, cache=FALSE}
 whiteheadClipped <- master_intersect(whitehead_sf, mapDataList)
 
+linkedSectionText <- "[Whitehead](#Whitehead-section)"
 if (!is.null(whiteheadClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, "Whitehead", whiteheadClipped$studyData, "Legend")
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "Whitehead", whaleSummaryTable, "specIndex", "Whitehead")
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
- summarySarTable <- add_col_to_sar_summary(summarySarTable, "Whitehead", NULL, "specIndex", "Whitehead")
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
 }
+
+
 ```
 *
 ```{r whitehead-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
@@ -123,7 +126,7 @@ if (!is.null(whiteheadClipped$studyData)) {
 }
 ```
 
-### **North Atlantic Right Whale Consortium (NARWC) Sightings Database**  
+### **North Atlantic Right Whale Consortium (NARWC) Sightings Database**{#NARWC-section}
 Contact: <hpettis@neaq.org>  
 URL: <https://www.narwc.org/sightings-database.html>  
 Last retrieved on: September 18 2020  
@@ -138,13 +141,13 @@ The NARWC Sightings Database contains records of thousands of sightings of Right
 ```{r narwc, include=FALSE, cache=FALSE}
 narwcClipped <- master_intersect(narwc_sf, mapDataList)
 
-
-if (!is.null(narwcClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, "NARWC", narwcClipped$studyData, "Legend")
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "NARWC", whaleSummaryTable, "specIndex", "NARWC")
- } else {
-   summarySarTable <- add_col_to_sar_summary(summarySarTable, "NARWC", NULL, "specIndex", "NARWC")
- }
+linkedSectionText <- "[NARWC](#NARWC-section)"
+if (!is.null(whiteheadClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
 
 
 ```
@@ -163,7 +166,7 @@ if (!is.null(narwcClipped$studyData)) {
 }
 ```
 
-### **Ocean Biodiversity Information System (OBIS) [for cetaceans]**  
+### **Ocean Biodiversity Information System (OBIS) [for cetaceans]** {#obis-cetacean-section}
 Contact: <helpdesk@obis.org>  
 URL: <https://obis.org/>    
 Last retrieved on: January 27 2021 by Gregory Puncher from OBIS      
@@ -179,12 +182,13 @@ An OBIS search [@OBIS] was conducted to find additional relevant records for cet
 ```{r obis-cetecean, cache=FALSE, include=FALSE}
 obisClipped <- master_intersect(obis_cet_sf, mapDataList)
 
+linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
 if (!is.null(obisClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, "OBIS", obisClipped$studyData, "Legend")
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "OBIS-Cetaceans", whaleSummaryTable, "specIndex", "OBIS")
- } else {
-   summarySarTable <- add_col_to_sar_summary(summarySarTable, "OBIS-Cetaceans", NULL, "specIndex", "OBIS")
- }
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
 
 
 ```
