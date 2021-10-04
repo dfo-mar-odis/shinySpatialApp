@@ -372,9 +372,34 @@ EBSA_report <- function(EBSA_sf, lang="EN") {
   } else {
     ""
   }
-
-    uniqueEBSAreport <- unique(noquote(EBSAreport))
+  uniqueEBSAreport <- unique(noquote(EBSAreport))
   writeLines(uniqueEBSAreport, sep="\n\n")
+}
+
+# ---------MPA_REPPRT-------
+# Generates table for Marine protected area (MPA) data
+# Inputs:
+# mpa_sf: MPA data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+# 
+# Outputs:
+#  mpaTable
+#
+mpa_table <- function(mpa_sf, lang="EN") {
+  
+  mpaTable <- dplyr::select(mpa_sf, c("Id", "NAME", "AreaKM2"))
+  mpaTable$AreaKM2 <- as.integer(mpaTable$AreaKM2)
+  mpaTable$geometry <- NULL
+  
+  if (lang=="EN" & !is.null(mpa_sf)) {
+    names(mpaTable) <- c("Site #", "Site Name", "Size (km2)")
+  } else if (lang=="FR" & !is.null(mpa_sf)) {
+    names(mpaTable) <- c("Site #", "Site Name", "Size (km2)")
+  } else {
+    names(mpaTable) <- c("Site #", "Site Name", "Size (km2)")
+  }
+  mpaTable <- distinct(mpaTable)
+  return(mpaTable)
 }
 
 

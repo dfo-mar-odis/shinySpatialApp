@@ -171,6 +171,30 @@ sardist_sf <- st_make_valid(sardist_sf)
 save(sardist_sf, file = "../Data/Rdata/OpenData_sardist.RData")
 
 
+# Marine Protected Areas
+mpa_raw <- st_read("../Data/Management/MPAN-Draft/MPAN_DraftDesign_Maritimes/MPAN_DraftDesign_Maritimes.shp", stringsAsFactors = FALSE)
+mpa_sf <- st_transform(mpa_raw, crs = 4326)
+mpa_sf <- st_make_valid(mpa_sf)
+mpa_rr <- list("title" = "Draft Conservation Network Design: existing and potential future marine protected areas (MPAs) and other spatial conservation areas",
+               "contact" = "Marty King ([Marty.King@dfo-mpo.gc.ca](mailto:Marty.King@dfo-mpo.gc.ca){.email})", 
+               "attribute" = "STATUS",
+               "accessedOn" =" October 2021" ,
+               "data_sf" = mpa_sf,
+               "securityLevel" = "None",
+               "qualityTier" = "High",
+               "constraints" = "DFO INTERNAL USE ONLY",
+               "text" = "A key milestone and focal point for the planning process is the Draft Conservation Network Design, which is a map of both existing and potential future marine protected areas (MPAs) and other spatial conservation areas that would contribute to the long-term conservation of marine biodiversity in the bioregion. The Draft Design was originally drafted in 2017 following an extensive spatial conservation analysis led by Fisheries and Oceans Canada (DFO). While some discussion on the Draft Design has been ongoing with our provincial and First Nations partners since that time, events such as the COVID-19 pandemic have limited the scope and pace of the overall engagement process.  \n\n
+Marine Planning and Conservation at DFO has initiated a two-phased engagement process on the Draft Design to inform the completion of a Conservation Network Plan for the Scotian Shelf-Bay of Fundy bioregion. During Phase 1, DFO will be undertaking targeted discussions with federal and provincial departments, First Nations and Indigenous groups, and key stakeholders, such as the fishing industry. The primary purpose of Phase 1 is to provide those with previous involvement in the process with an opportunity to review and provide written feedback on the Draft Design by December 31, 2021. In 2022, the Draft Design will be revised based on the feedback received. Phase 2 is planned for early 2023 and will include a broader public engagement process. The Marine Conservation Network Plan will be completed by 2024 and will be updated periodically as new information becomes available.  \n\n
+It is important to note that Marine Conservation Network Plan will be aligned with a future Marine Spatial Plan for the Scotian Shelf-Bay of Fundy bioregion. The overall intent is to ensure an effective balance among ecological, socio-economic and cultural objectives in the use, management and conservation of our marine environment and spaces. DFO and its partners will be providing further information on the bioregional Marine Spatial Planning (MSP) process in the near future.
+")
+
+
+
+sardist_sf <- st_make_valid(sardist_sf)
+
+save(sardist_sf, file = "../Data/Rdata/OpenData_sardist.RData")
+
+
 ########################################################################-
 # save secure data as single .Rdata file
 
@@ -248,7 +272,6 @@ ocearch <- dplyr::select(ocearch, c("Date", "long", "lat", "ID"))
 ocearch_sf <- st_as_sf(ocearch, coords = c("long","lat"), crs = 4326)
 
 # Save all objects to a single .Rdata file
-save(isdb_sf,ISSPECIESCODES,leatherback_sf,Legend, marfis_sf,MARFISSPECIESCODES,narwc_sf, whitehead_sf, wsdb_sf, ocearch_sf,
+save(isdb_sf,ISSPECIESCODES,leatherback_sf, Legend, marfis_sf,MARFISSPECIESCODES, narwc_sf, whitehead_sf, wsdb_sf, ocearch_sf,
      file = "../Data/Rdata/SecureData.Rdata")
-
 ########################################################-
