@@ -88,6 +88,7 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
     dataLayer <- geom_sf(data = data_sf, size = 2, shape = 20) 
     legendLayer <- NULL
   } else {
+    data_sf[[attribute]] = as.factor(data_sf[[attribute]])
     dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = 2.5, shape = 20)  
     
     if (is.null(colorMap)){
@@ -146,7 +147,8 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
 
 
 plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
-                          outlines=TRUE, colorMap=NULL, getColorMap=FALSE) {
+                          outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
+                          labelData=NULL, labelAttribute=NULL) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -162,6 +164,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   # there are two types of plots: 
   # Case 1: all polygons are one color, no legend,
   # case 2: polygons are colored based on the "attribute" column, legend is included
+  polyLabels <- NULL
   
   if (toupper(attribute) == "NONE") { # Case 1: plotting all polygons in one color
     
@@ -171,6 +174,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
+    polyData[[attribute]] = as.factor(polyData[[attribute]])
     
     if (is.null(colorMap)){
       colorMap <- get_rr_color_map(polyData[[attribute]])
@@ -190,11 +194,17 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
       polyOutline <- scale_color_manual(values=colorMap, guide="none")  
     }
   }
+  
+  if(!is.null(labelData)) {
+    polyLabels <- geom_sf_label(data = labelData, aes(label = !!sym(labelAttribute)))
+  }
+  
     
   polyMap <- baseMap +
       polyPlot +
       polyFill +
       polyOutline +
+      polyLabels +
       axLim +
       watermarkLayer +
       studyBoxLayer +
