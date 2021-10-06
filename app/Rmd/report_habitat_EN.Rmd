@@ -5,6 +5,8 @@ editor_options:
 ---
 ## **HABITAT INFORMATION**
 
+This section describes habitat information derived from a variety of data sources, internal and external to DFO. Area-specific outputs are provided in sub-sections labelled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
+
 ### **Intertidal Vegetation and Rockweed**
 
 Satellite-based Maps of Intertidal Vegetation and Rockweed presence polygons  

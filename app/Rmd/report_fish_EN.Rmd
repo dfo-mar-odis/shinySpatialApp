@@ -5,7 +5,7 @@ editor_options:
 ---
 ## **FISH AND INVERTEBRATES**
 
-This section describes output derived from the following data sources: Maritimes Research Vessel (RV) Survey, Industry Survey Database (ISDB), The Maritimes Fishery Information System (MARFIS), and the Ocean Biodiversity Information System (OBIS). Area-specific outputs are provided in sub-sections labelled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
+This section describes outputs derived from a variety of data sources, internal and external to DFO. Area-specific outputs are provided in sub-sections labelled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
 
 ### **Maritimes Research Vessel (RV) Survey**   
 
