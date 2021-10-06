@@ -407,7 +407,7 @@ add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
 
 
 # ---------add_col_to_sar_summary-------
-# Adds a column with number of records to the cetacean summary table
+# Adds a column with presence/absence to the SAR summary table
 # Inputs:
 # sarSummary: Table generated in intro setup chunk. Contains a "Species" column.
 # dbName: Name of column header to add to summary table
@@ -419,22 +419,59 @@ add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
 # Outputs:
 # sarSummary: updated sarSummary with added column
 #
-add_col_to_sar_summary <- function(sarSummary, dbName, data_sf, indexCol, attributeCol) {
+add_col_to_sar_summary <- function(sarSummary, dbName, dataTable, indexCol, attributeCol) {
   absentCode <- "A"
   presentCode <- "P"
-  if (!is.null(data_sf)){
-    data_sf$summaryCol <-ifelse(data_sf[[attributeCol]] > 0, presentCode, absentCode)
-    data_sf$speciesCol <- data_sf[[indexCol]]
-    data_sf <- filter(data_sf, speciesCol %in% sarSummary$Species)
+  
+  if (!is.null(dataTable)){
+    if (indexCol == attributeCol) {
+      dataTable <- distinct(dataTable, !!sym(indexCol))
+    }
+    dataTable$summaryCol <-ifelse(dataTable[[attributeCol]] > 0, presentCode, absentCode)
+    dataTable$speciesCol <- dataTable[[indexCol]]
+    dataTable <- filter(dataTable, speciesCol %in% sarSummary$Species)
   } else {
-    data_sf <- sarSummary
-    data_sf$speciesCol <- data_sf$Species
-    data_sf$summaryCol <- rep(absentCode, nrow(sarSummary))
+    dataTable <- sarSummary
+    dataTable$speciesCol <- dataTable$Species
+    dataTable$summaryCol <- rep(absentCode, nrow(sarSummary))
   }
   
-  sarSummary[[dbName]] <- merge(sarSummary, data_sf, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol 
-  sarSummary[is.na(sarSummary)] <- absentCode
+  sarSummary[[dbName]] <- merge(sarSummary, dataTable, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol 
   return(sarSummary)
+}
+# ---------add_to_hab_summary-------
+# Adds a column with number of records to the cetacean summary table
+# Inputs:
+# summaryTable: One row table generated in intro setup chunk. 
+# dbName: Name of column header to add to summary table
+# present: boolean indicating whether or not data was found in database for this table
+# Outputs:
+# summaryTable: updated summaryTable with added column
+#
+add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCol, attributeCol) {
+  
+  if (!is.null(dataTable)){
+    if (indexCol == attributeCol) {
+      dataTable <- distinct(dataTable, !!sym(indexCol))
+    }
+    dataTable$summaryCol <-ifelse(dataTable[[attributeCol]] > 0, dbName, NA)
+    dataTable$speciesCol <- dataTable[[indexCol]]
+    dataTable <- filter(dataTable, speciesCol %in% summaryTable$Species)
+    dataTable <- filter(dataTable, lengths(summaryCol) > 0)
+    tempCol <- merge(summaryTable, dataTable, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol   
+    
+    
+    # nested ifelse to set column value to either new value if not NA, or 
+    # combination of old and new if both were present
+    summaryTable[[colName]] <- ifelse(!(tempCol %in% c(NA)), 
+                                      ifelse(summaryTable[[colName]] %in% c(NA), 
+                                             tempCol,
+                                             paste(summaryTable[[colName]], 
+                                                   tempCol, sep = ", ")),
+                                      summaryTable[[colName]])
+  }  
+  
+  return(summaryTable)
 }
 
 

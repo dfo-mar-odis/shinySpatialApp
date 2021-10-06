@@ -221,7 +221,7 @@ knitr::kable(whaleSummaryTable, align="l", caption = "INITIAL TEXT FINALIZE BEFO
 
 
 
-### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans**  
+### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans** {#sdm-section}  
 
 Contact: [Hilary.Moors-Murphy\@dfo-mpo.gc.ca](mailto:Hilary.Moors-Murphy@dfo-mpo.gc.ca){.email}\
 URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>\
@@ -243,15 +243,19 @@ clippedHp <- master_intersect(harbour_porpoise_sf, mapDataList, getRegion = TRUE
 clippedHump <- master_intersect(humpback_whale_sf , mapDataList, getRegion = TRUE)
 clippedSei <- master_intersect(sei_whale_sf, mapDataList, getRegion = TRUE)
 
-table_sdm <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
-                        "Habour Porpoise" = !is.null(clippedHp$studyData),
+tableSDM <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
+                        "Harbour Porpoise" = !is.null(clippedHp$studyData),
                         "Humpback Whale" = !is.null(clippedHump$studyData),
                         "Sei Whale" = !is.null(clippedSei$studyData),
                         check.names = FALSE)
+summarySDMTable <- data.frame("Species" = names(tableSDM), "present" = transpose(tableSDM)$V1)
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "[SDM](#sdm-section)", summarySDMTable, "Species", "present")
+
+
 ```
 
 ```{r sdm-table}
- knitr::kable(table_sdm, align="cccc", caption="Quality Tier: Low. Security level: none. Results showing if the search area overlap with predicted Priority Areas to Enhance Monitoring of several species of cetaceans (Fin Whale, Harbour Porpoise, Humpback Whale and Sei Whale). TRUE = polygon does overlap with priority area; FALSE = polygon does NOT overlap with priority area.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+ knitr::kable(tableSDM, align="cccc", caption="Quality Tier: Low. Security level: none. Results showing if the search area overlap with predicted Priority Areas to Enhance Monitoring of several species of cetaceans (Fin Whale, Harbour Porpoise, Humpback Whale and Sei Whale). TRUE = polygon does overlap with priority area; FALSE = polygon does NOT overlap with priority area.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
 ```{r sdm-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map shows consolidated Species Distribution Modelling outputs (60-100% relative predicted occurrence rate). Yellow polygons (habitats with high suitability) are to be interpreted as areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Due to the many reasons listed in the discussion section in Gomez et al. (2020), these cetacean modelling outputs do not represent a complete and current distribution of cetaceans in the region. They represent priority areas to direct cetacean monitoring efforts. Their use in marine spatial planning processes should be accompanied by complementary approaches such as the process summarized in the section below. The data product summarized in the section below (Blue Whale Important Habitat in the Western North Atlantic) represents an excellent framework in which to properly use the outputs of this figure.'}
@@ -260,7 +264,7 @@ plot_cetaceans_4grid(clippedFin$regionData, clippedHp$regionData, clippedHump$re
 
 ```
 
-### **Blue Whale Important Habitat**
+### **Blue Whale Important Habitat** {#bwhab-section}
 
 Blue Whale Important Habitat in the Western North Atlantic\
 Contact: [gddaiss-dmsaisb\@dfo-mpo.gc.ca](mailto:gddaiss-dmsaisb@dfo-mpo.gc.ca){.email}\
@@ -280,6 +284,10 @@ Please see a list of all sources of information used in @Lesage2018 and the Open
 # intersect polyData with 3 polygons (region, map area, and study box)
 attribute <- "Activity"
 clipped <- master_intersect(BlueWhale_ImpHab_sf, mapDataList, getRegion=TRUE)
+if(is.null(clipped$studyData)){
+  summaryBWTable <- data.frame("Species" = "Blue Whale")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[BW Habitat](#bwhab-section)", summaryBWTable, "Species", "Species")
+}
 
 ```
 *
@@ -309,7 +317,7 @@ if (!is.null(clipped$mapData)){
 ```
 
 
-### **Northern bottlenose whale important habitat in inter-canyon areas on the eastern Scotian Shelf**  
+### **Northern bottlenose whale important habitat in inter-canyon areas on the eastern Scotian Shelf**  {#nbw-hab-section}
 
 Northern bottlenose whales important habitat in inter-canyon areas on the eastern Scotian Shelf\
 Contact: [MaritimesRAP.XMAR\@dfo-mpo.gc.ca](mailto:MaritimesRAP.XMAR@dfo-mpo.gc.ca){.email}\
@@ -332,6 +340,10 @@ The inter-canyon habitat area polygon was delineated using the 500 m depth conto
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
 clipped <- master_intersect(NBNW_ImpHab_sf, mapDataList, getRegion=TRUE)
+if(is.null(clipped$studyData)){
+  summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[NBW Habitat](#nbw-hab-section)", summaryNBWTable, "Species", "Species")
+}
 ```
 *
 ```{r nbw-result, echo=FALSE, results='asis'}

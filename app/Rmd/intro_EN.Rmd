@@ -58,12 +58,13 @@ list2env(mapDataList, envir = environment())
 
 ```{r set up summary and gap tables, echo=FALSE, include=FALSE, cache=FALSE}
 summarySarTable <- data.frame("Species" = listed_species$`Common Name`)
+summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, "Obs"=NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA)
 
 ```
 
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
-<!--```{r child = '../Rmd/report_cetaceans_EN.Rmd'}
+<!--```{r child = '../Rmd/report_SARA_EN.Rmd'}
 ```-->
 
 <!-- END  -->
@@ -140,13 +141,30 @@ The following are definitions relevant for species listed by the _Species at Ris
 TO BE CHECKED BEFORE MERGING! 
 This section summarizes the SAR coverage of the data sources used in the report. A summary of the data sources containing records of each species with a status under COSEWIC or SARA in the study area is provided.  The caveats and conditions for each individual data source are detailed above in their dedicated sections of the report. An absence of records is not necessarily an absence of the species in the area.  Data sources included below are limited to species point data. A description of the different sources of information for Species at Risk is also available in the infographic: <https://github.com/dfo-mar-odis/shinySpatialApp/blob/master/app/data/misc/SAR-information-type-reproducible-reports.pdf>)
 
-```{r sar-summary-table}
+```{r sar-obs-summary-table}
   absentCode <- "A"
   presentCode <- "P"
+  summarySarTable[is.na(summarySarTable)] <- absentCode
  formatedTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", "black"),
                   background = ifelse(. == presentCode, "green", "white")))
 
 knitr::kable(formatedTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of SAR records present in data sources used in this report. ", booktabs = T, escape = F, linesep = "") %>%
+  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+```
+
+```{r sar-hab-summary-table}
+  summaryHabTable[is.na(summaryHabTable)] <- ""
+
+  # add column for observations from sar table
+  obsColumn <- apply(summarySarTable, 1, function(r) any(r %in% c(presentCode)))
+  summaryHabTable$Obs <- ifelse(obsColumn, presentCode, absentCode)
+  
+  summaryHabTable <- mutate_all(summaryHabTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", "black"),
+                  background = ifelse(. == presentCode, "green", "white")))
+
+  names(summaryHabTable) <- c("Species", "Observations", "[SAR Distribution](#sardist-section)", "SDM", "Important Habitat", "Critical Habitat")
+
+knitr::kable(summaryHabTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of Observation, Range, Modeling and Habitat results present in data sources used in this report. ", booktabs = T, escape = F, linesep = "") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
