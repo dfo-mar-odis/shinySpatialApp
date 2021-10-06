@@ -184,7 +184,7 @@ obisClipped <- master_intersect(obis_cet_sf, mapDataList)
 
 linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
 if (!is.null(obisClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped$studyData, "Legend")
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
