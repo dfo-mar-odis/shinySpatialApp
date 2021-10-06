@@ -72,7 +72,7 @@ load_test_data <- function() {
                   "absentCode" = "A",
                   "presentCode" = "P",
                   "summarySarTable" = data.frame("Species" = listed_species$`Common Name`),
-                  "summarySarTablesummaryHabTable" <- data.frame("Species" = listed_species$`Common Name`, "Obs"=NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA),
+                  "summaryHabTable" = data.frame("Species" = listed_species$`Common Name`, "Obs"=NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA),
                   "site" = site,
                   "studyBox_geom" = studyBox_geom, 
                   "areaMap" = areaMap, 
