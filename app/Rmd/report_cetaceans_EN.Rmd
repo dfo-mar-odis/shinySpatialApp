@@ -102,8 +102,9 @@ The following description of cetacean sightings data collection methods used by 
 whiteheadClipped <- master_intersect(whitehead_sf, mapDataList)
 
 linkedSectionText <- "[Whitehead](#Whitehead-section)"
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, "Legend")
+
 if (!is.null(whiteheadClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
@@ -142,8 +143,8 @@ The NARWC Sightings Database contains records of thousands of sightings of Right
 narwcClipped <- master_intersect(narwc_sf, mapDataList)
 
 linkedSectionText <- "[NARWC](#NARWC-section)"
-if (!is.null(whiteheadClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
+if (!is.null(narwcClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped$studyData, "Legend")
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
@@ -208,15 +209,16 @@ if (!is.null(obisClipped$studyData)) {
 ```
 
 ```{r cetacean-summary-table, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-whaleSummaryTable <- subset(whaleSummaryTable, select = -c(specIndex))
-
-areaSums <- colSums(subset(whaleSummaryTable, select = -c(Species)))
-areaSums$Species <- "Area Total"
-whaleSummaryTable <- rbind(whaleSummaryTable, areaSums)
-
-knitr::kable(whaleSummaryTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of records present in cetacean databases used in this report. ", booktabs = T, escape = F, linesep = "") %>%
-  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
-
+if (FALSE) {
+  whaleSummaryTable <- subset(whaleSummaryTable, select = -c(specIndex))
+  
+  areaSums <- colSums(subset(whaleSummaryTable, select = -c(Species)))
+  areaSums$Species <- "Area Total"
+  whaleSummaryTable <- rbind(whaleSummaryTable, areaSums)
+  
+  knitr::kable(whaleSummaryTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of records present in cetacean databases used in this report. ", booktabs = T, escape = F, linesep = "") %>%
+    kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+}
 ```
 
 
@@ -284,7 +286,7 @@ Please see a list of all sources of information used in @Lesage2018 and the Open
 # intersect polyData with 3 polygons (region, map area, and study box)
 attribute <- "Activity"
 clipped <- master_intersect(BlueWhale_ImpHab_sf, mapDataList, getRegion=TRUE)
-if(is.null(clipped$studyData)){
+if(!is.null(clipped$studyData)){
   summaryBWTable <- data.frame("Species" = "Blue Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[BW Habitat](#bwhab-section)", summaryBWTable, "Species", "Species")
 }
@@ -340,7 +342,7 @@ The inter-canyon habitat area polygon was delineated using the 500 m depth conto
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
 clipped <- master_intersect(NBNW_ImpHab_sf, mapDataList, getRegion=TRUE)
-if(is.null(clipped$studyData)){
+if(!is.null(clipped$studyData)){
   summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[NBW Habitat](#nbw-hab-section)", summaryNBWTable, "Species", "Species")
 }

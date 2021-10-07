@@ -420,7 +420,7 @@ add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
 # sarSummary: updated sarSummary with added column
 #
 add_col_to_sar_summary <- function(sarSummary, dbName, dataTable, indexCol, attributeCol) {
-  absentCode <- "&#x274C;"
+  absentCode <- "&nbsp;-&nbsp;"
   presentCode <- "&#x2714;"
   
   if (!is.null(dataTable)){
