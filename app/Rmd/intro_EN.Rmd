@@ -58,7 +58,7 @@ mapDataList <- maps_setup(studyArea, site, region, land50k_sf, land10m_sf, bound
 list2env(mapDataList, envir = environment())
 ```
 
-```{r set up summary and gap tables, echo=FALSE, include=FALSE, cache=FALSE}
+```{r set-up-summary-and-gap-tables, echo=FALSE, include=FALSE, cache=FALSE}
 summarySarTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`)
 summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`, "Obs" = NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA)
 

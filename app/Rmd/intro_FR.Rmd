@@ -9,6 +9,8 @@ output:
     theme: paper
     toc: true
     toc_depth: 5
+    toc_float:
+      collapsed: false
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
@@ -51,6 +53,11 @@ mapDataList <- maps_setup(studyArea, site, region, land50k_sf, land10m_sf, bound
 list2env(mapDataList, envir = environment())
 ```
 
+```{r set-up-summary-and-gap-tables, echo=FALSE, include=FALSE, cache=FALSE}
+summarySarTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`)
+summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`, "Obs" = NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA)
+
+```
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
   <!--```{r child = '../Rmd/report_fish_FR.Rmd'} 
@@ -127,6 +134,47 @@ Définitions pertinentes pour les espèces inscrites en vertu de la _Loi sur les
 {{add_ebsa_section}}
 
 <!-- FIN GÉNÉRIQUE -->
+
+
+## **SAR DATABASE SUMMARY**
+
+TO BE CHECKED BEFORE MERGING! 
+This section summarizes the SAR coverage of the data sources used in the report. A summary of the data sources containing records of each species with a status under COSEWIC or SARA in the study area is provided.  The caveats and conditions for each individual data source are detailed above in their dedicated sections of the report. An absence of records is not necessarily an absence of the species in the area. A description of the different sources of information for Species at Risk is also available in the infographic: <https://github.com/dfo-mar-odis/shinySpatialApp/blob/master/app/data/misc/SAR-information-type-reproducible-reports.pdf>). 
+
+```{r sar-obs-summary-table}
+absentCode <- "&nbsp;-&nbsp;"
+presentCode <- "&#x2714;"
+summarySarTable[is.na(summarySarTable)] <- absentCode
+formatedSarTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+
+```
+
+```{r sar-hab-summary-table}
+  summaryHabTable[is.na(summaryHabTable)] <- "&nbsp;-&nbsp;"
+
+  # add column for observations from sar table
+  obsColumn <- apply(summarySarTable, 1, function(r) any(r %in% c(presentCode)))
+  summaryHabTable$Obs <- ifelse(obsColumn, presentCode, absentCode)
+  
+  summaryHabTable <- mutate_all(summaryHabTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", ""),
+                  background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+
+  names(summaryHabTable) <- c("Species", "COSEWIC", "SARA", "Observations", "SAR Range", "SDM", "Important Habitat", "Critical Habitat")
+
+  
+```
+
+```{r output-hab-table}
+knitr::kable(summaryHabTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of Observation, Range, Modeling and Habitat results in the study area for each SAR. A summary of the observation data sources is presented in the subsequent table.  ", booktabs = T, escape = F, linesep = "") %>%
+  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+```
+
+```{r output-sar-table}
+knitr::kable(formatedSarTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of data sources containing records for each SAR in the study area used in this report. ", booktabs = T, escape = F, linesep = "") %>%
+  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+
+```
+
 
 # **CONTRIBUTEURS**
 ```{r read-contributors, echo=FALSE, cache=FALSE, include = FALSE}
