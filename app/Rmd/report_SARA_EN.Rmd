@@ -47,18 +47,14 @@ legendNameCrithab <- "Common Name"
 outputListCrithab <- master_intersect(ClippedCritHab_sf, mapDataList,
                                       getRegion=TRUE)
 
-
 # plotted in single colour
 outputListLB <- master_intersect(leatherback_sf, mapDataList, getRegion=TRUE)
 
 critHabCheck <- !is.null(outputListCrithab$studyData) | !is.null(outputListLB$studyData)
 
-if (!is.null(outputListSardist$studyData)){
-  distTable <- table_dist(outputListSardist$studyData)
-  summaryHabTable <- add_col_to_sar_summary(summaryHabTable, "range", distTable, "Common Name", "Common Name")
-} else {
-  summaryHabTable <- add_col_to_sar_summary(summaryHabTable, "range", NULL, "Common Name", "Common Name")
-}
+distTable <- table_dist(outputListSardist$studyData)
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distribution](#sardist-section)",  distTable, "Common Name", "Common Name")
+
 ```
 *
 ```{r sardist-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}

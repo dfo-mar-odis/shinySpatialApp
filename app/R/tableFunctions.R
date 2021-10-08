@@ -58,6 +58,10 @@ rockweedStats<- function(rockweed_sf) {
 
 create_table_RV <- function(data_sf, sarTable, speciesTable) {
   
+  if (is.null(data_sf)) {
+    return(list("allSpecies" = NULL, "sarData" = NULL))
+  }
+  
   # calculate the number of unique sample locations
   Samples_study_no <- dim(unique(data_sf[, c("geometry")]))[1]
   # calculate a table of all species caught and
@@ -122,6 +126,10 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
 # 2. sarData: datatable of only listed species found within the studyArea
 create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   
+  if (is.null(data_sf)) {
+    return(list("allSpecies" = NULL, "sarData" = NULL))
+  }
+  
   # set record column and join with speciesTable
   allSpeciesData <- aggregate(
     x = list(Records = data_sf$SPECIES_CODE),
@@ -183,6 +191,10 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
 
 create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   
+  if (is.null(data_sf)) {
+    return(list("allSpecies" = NULL, "sarData" = NULL))
+  }
+  
   # calculate frequency of ISDB samples and join
   # to species lookup tables
   
@@ -237,6 +249,10 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
 
 create_table_OBIS <- function(data_sf) {
   
+  if (is.null(data_sf)) {
+    return(NULL)
+  }
+  
   # calculate frequency of OBIS samples
   outTable <- data_sf
   
@@ -283,6 +299,12 @@ sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
 # distTable: table used in the report
 #
 table_dist <- function(clippedSardist_sf) {
+  
+  if (is.null(clippedSardist_sf)) {
+    return(NULL)
+  }
+  
+  
   clippedSardist_sf$Common_Nam[clippedSardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
   distTable <- dplyr::select(clippedSardist_sf, Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
   sf::st_geometry(distTable) <- NULL
@@ -440,7 +462,7 @@ add_col_to_sar_summary <- function(sarSummary, dbName, dataTable, indexCol, attr
   return(sarSummary)
 }
 # ---------add_to_hab_summary-------
-# Adds a column with number of records to the cetacean summary table
+# Adds entries to a column with dbname in each cell.
 # Inputs:
 # summaryTable: One row table generated in intro setup chunk. 
 # dbName: Name of column header to add to summary table
@@ -460,7 +482,6 @@ add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCo
     dataTable <- filter(dataTable, lengths(summaryCol) > 0)
     tempCol <- merge(summaryTable, dataTable, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol   
     
-    
     # nested ifelse to set column value to either new value if not NA, or 
     # combination of old and new if both were present
     summaryTable[[colName]] <- ifelse(!(tempCol %in% c(NA)), 
@@ -470,8 +491,10 @@ add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCo
                                                    tempCol, sep = ", ")),
                                       summaryTable[[colName]])
   }  
-  
   return(summaryTable)
 }
 
-
+#helper function to trim whale legends down to common name
+get_cetacean_common_name <- function(dataCol) {
+ return(sub("\\:.*", "", dataCol))
+}

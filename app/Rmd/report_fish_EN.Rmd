@@ -35,14 +35,10 @@ outputList <- master_intersect(RVCatch_sf, mapDataList, Year = minYear)
 
 Samples_bbox <- outputList$mapPoints
 
-if (!is.null(outputList$studyData)) {
-  tableList <- create_table_RV(outputList$studyData, listed_species, speciesTable = RVGSSPECIES)
-  rvAllTable <- tableList$allSpecies
-  rvSarTable <- tableList$sarData
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[RV](#RV-section)", rvSarTable, "Common Name", "Individuals")
-} else {
-    summarySarTable <- add_col_to_sar_summary(summarySarTable, "[RV](#RV-section)", outputList$studyData, "Common Name", "Individuals")
-}
+tableList <- create_table_RV(outputList$studyData, listed_species, speciesTable = RVGSSPECIES)
+rvAllTable <- tableList$allSpecies
+rvSarTable <- tableList$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[RV](#RV-section)", rvSarTable, "Common Name", "Individuals")
 
 ```
 *
@@ -114,24 +110,16 @@ outputListM <- master_intersect(marfis_sf, mapDataList, Year = minYear)
 Samples_bboxI <- outputListI$mapPoints
 Samples_bboxM <- outputListM$mapPoints
 
-if (!is.null(outputListI$studyData)) {
-  tableList <- create_table_ISDB(outputListI$studyData, listed_species,
-                                 speciesTable = ISSPECIESCODES)
-  isdbAllTable <- tableList$allSpeciesData
-  isdbSarTable <- tableList$sarData
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ISDB](#ISDB-section)", isdbSarTable, "Common Name", "Records")
-} else {
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ISDB](#ISDB-section)", NULL, "Common Name", "Records")
-}
+tableList <- create_table_ISDB(outputListI$studyData, listed_species,
+                               speciesTable = ISSPECIESCODES)
+isdbAllTable <- tableList$allSpeciesData
+isdbSarTable <- tableList$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ISDB](#ISDB-section)", isdbSarTable, "Common Name", "Records")
 
-if (!is.null(outputListM$studyData)) {
-  tableList <- create_table_MARFIS(outputListM$studyData, listed_species, speciesTable = MARFISSPECIESCODES)
-  marfisAllTable <- tableList$allSpeciesData
-  marfisSarTable <- tableList$sarData
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[MARFIS](#MARFIS-section)", marfisSarTable, "Common Name", "Records")
-} else {
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[MARFIS](#MARFIS-section)", NULL, "Common Name", "Records")
-}
+tableList <- create_table_MARFIS(outputListM$studyData, listed_species, speciesTable = MARFISSPECIESCODES)
+marfisAllTable <- tableList$allSpeciesData
+marfisSarTable <- tableList$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[MARFIS](#MARFIS-section)", marfisSarTable, "Common Name", "Records")
 ```
 *
 ```{r isdb-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
@@ -200,12 +188,9 @@ OBIS is a global, open-access data and information clearing-house on marine biod
 ```{r obis-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(obis_fish_sf, mapDataList, Year = minYear)
 
-if (!is.null(outputList$studyData)) {
-  obisTable <- create_table_OBIS(outputList$studyData)
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", obisTable, "Common Name", "Common Name")
-} else {
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", NULL, "Common Name", "Common Name")
-}
+obisTable <- create_table_OBIS(outputList$studyData)
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", obisTable, "Common Name", "Common Name")
+
 ```
 *
 ```{r obis-check, echo=FALSE, results='asis',}
@@ -217,6 +202,7 @@ Report_obis <- if (is.null(outputList$studyData)) {
 Report_obis<-noquote(Report_obis)
 writeLines(Report_obis)
 ```
+
 ```{r obis-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline) was used to query information from Ocean Biodiversity Information System (OBIS) observation records, for species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.'}
 if (!is.null(outputList$studyData)) {
   plot_rr_sf(areaMap, outputList$mapData)
@@ -243,12 +229,13 @@ OCEARCH is a data-centric organization built to help scientists collect previous
 ```{r ocearch-results, include=FALSE, cache=FALSE}
 ocearchOutputList <- master_intersect(ocearch_sf, mapDataList)
 
- if (!is.null(ocearchOutputList$studyData)) {
+if (!is.null(ocearchOutputList$studyData)) {
    ocearchSummaryRow <- data.frame("CommonName" = c("White Shark"))
-   summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OCEARCH](#OCEARCH-section)", ocearchSummaryRow, "CommonName", "CommonName")
- } else {
-   summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OCEARCH](#OCEARCH-section)", NULL, "CommonName", "CommonName")
- }
+} else {
+  ocearchSummaryRow <- NULL
+}
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OCEARCH](#OCEARCH-section)",
+                                          ocearchSummaryRow, "CommonName", "CommonName")
 
 ```
 
