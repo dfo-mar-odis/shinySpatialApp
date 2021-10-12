@@ -58,6 +58,8 @@ listed_species <- listed_species %>% rename("SARA status"=Schedule.status,
                                             "COMMONNAME"=Common_Name_upper,
                                             "Scientific Name"=Scientific_Name,
                                             "Common Name"=Common_Name)
+listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
+row.names(listed_species) <- NULL
 
 ####### Species Lists  #######
 cetacean_list <- c("BELUGA WHALE", "NORTH ATLANTIC RIGHT WHALE", "FIN WHALE", 

@@ -27,6 +27,7 @@ whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
                "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
+whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
 
 ```
 
@@ -59,11 +60,18 @@ Veuillez prendre note des avertissements et mises en garde importants suivants a
 #### ***Résultats de la recherche de la BDOB par zone***
 
 ```{r wsdb, include=FALSE, cache=FALSE}
-outputList <- master_intersect(wsdb_sf, mapDataList)
+wsdbClipped <- master_intersect(wsdb_sf, mapDataList)
+linkedSectionText <- "[WSDB](#WSDB-section)"
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
+if (!is.null(wsdbClipped$studyData)) {
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
 ```
 *
 ```{r wsdb-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_wsdb <- if (is.null(outputList$studyData)) {
+Report_wsdb <- if (is.null(wsdbClipped$studyData)) {
    "There are no relevant records in the WSDB for this search area."
  } else {
    "There are relevant records in the WSDB for this search area."
@@ -72,8 +80,8 @@ Report_wsdb <- if (is.null(outputList$studyData)) {
 ```
 
 ```{r wsdb-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Faible. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés de la base de données sur les observations de baleines (BDOB) (y compris les observations de groupes d’animaux), pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la Loi sur les espèces en péril (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b> L’absence peut être liée à un effort d’enquête faible ou nul. L’information sur les observations sous-représente la présence de cétacés, en particulier les espèces qui vivent en eau profonde (p. ex., les baleines à bec) et qui passent peu de temps à la surface. Cette carte n’inclut pas non plus les détections acoustiques. Les observations sur terre indiquent que les données d’observation n’ont pas encore été complètement vérifiées ou que des animaux ont été observés depuis la côte.'}
-if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+if (!is.null(wsdbClipped$studyData)) {
+  plot_rr_sf(areaMap, wsdbClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
@@ -92,11 +100,21 @@ La description suivante des méthodes de collecte de données sur les observatio
 #### ***Résultats de la recherche du laboratoire Whitehead par zone***
 
 ```{r whitehead, include=FALSE, cache=FALSE}
-outputList <- master_intersect(whitehead_sf, mapDataList)
+whiteheadClipped <- master_intersect(whitehead_sf, mapDataList)
+
+linkedSectionText <- "[Whitehead](#Whitehead-section)"
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, "Legend")
+
+if (!is.null(whiteheadClipped$studyData)) {
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
+
 ```
 *
 ```{r whitehead-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_whitehead <-  if (is.null(outputList$studyData)) {
+Report_whitehead <-  if (is.null(whiteheadClipped$studyData)) {
    "Il n’existe aucun registre pertinent dans la base de données du laboratoire Whitehead pour cette zone de recherche."
  } else {
    "Il existe des registres pertinents dans la base de données du laboratoire Whitehead pour cette zone de recherche."
@@ -105,8 +123,8 @@ writeLines(Report_whitehead)
 ```
 
 ```{r whitehead-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés du laboratoire Whitehead pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la Loi sur les espèces en péril (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC)s. Les efforts sur le terrain ont surtout été menés dans la zone de protection marine de Gully et les canyons adjacents le long de la limite est du plateau néo-écossais, par beau temps (par exemple, consulter Whitehead 2013 pour voir une carte des efforts entre 1988 et 2011), bien que certaines données des relevés le long de la limite du plateau au large de la Nouvelle-Écosse et de Terre-Neuve-et-Labrador soient incluses. <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b> L’absence peut être liée à un effort d’enquête faible ou nul. Cette carte n’inclut pas non plus les détections acoustiques. L’information sur les observations sous-représente la présence de cétacés, en particulier les espèces qui vivent en eau profonde (p. ex., les baleines à bec) et qui passent peu de temps à la surface. Pour de plus amples renseignements, consultez le site :<https://whiteheadlab.weebly.com/contact.html>'}
-if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+if (!is.null(whiteheadClipped$studyData)) {
+  plot_rr_sf(areaMap, whiteheadClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
@@ -124,11 +142,20 @@ La base de données des observations du NARWC contient des registres de milliers
 
 #### ***Résultats de la recherche du NARWC par zone***
 ```{r narwc, include=FALSE, cache=FALSE}
-outputList <- master_intersect(narwc_sf, mapDataList)
+narwcClipped <- master_intersect(narwc_sf, mapDataList)
+
+linkedSectionText <- "[NARWC](#NARWC-section)"
+if (!is.null(narwcClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped$studyData, "Legend")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
+
 ```
 *
 ```{r narwc-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_narwc <-  if (is.null(outputList$studyData)) {
+Report_narwc <-  if (is.null(narwcClipped$studyData)) {
    "Il n’existe aucun registre pertinent dans la base de données du NARWC pour cette zone de recherche."
  } else {
    "Il existe des registres pertinents dans la base de données du NARWC pour cette zone de recherche."
@@ -136,8 +163,8 @@ Report_narwc <-  if (is.null(outputList$studyData)) {
 writeLines(Report_narwc)
 ```
 ```{r narwc-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Élevée Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés de la Base de données des observations du North Atlantic Right Whale Consortium (NARWC) pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone</b> , puisque l’effort de relevé est biaisé vers le nord-est des États-Unis, et les données sur la présence d’espèces provenant des détections acoustiques ne sont pas incluses. Pour de plus amples renseignements, consultez le site : <https://www.narwc.org/sightings-database.html>'}
-if (!is.null(outputList$studyData)) {
-   plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+if (!is.null(narwcClipped$studyData)) {
+   plot_rr_sf(areaMap, narwcClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
@@ -153,12 +180,19 @@ Une recherche du SIBO a été effectuée pour trouver d’autres documents perti
 
 #### ***Résultats de la recherche du SIBO pour les cétacés, par zone***
 ```{r obis-cetacean, include=FALSE, cache=FALSE}
-outputList <- master_intersect(obis_cet_sf, mapDataList)
+obisClipped <- master_intersect(obis_cet_sf, mapDataList)
+linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
+if (!is.null(obisClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped$studyData, "Legend")
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
 
 ```
 *
 ```{r obis-cetacean-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_obis_cet <-  if (is.null(outputList$studyData)) {
+Report_obis_cet <-  if (is.null(obisClipped$studyData)) {
   "Il n’existe aucun registre pertinent pour les cétacés dans le système d’information sur la biodiversité des océans (SIBO) pour cette zone de recherche."
 } else {
   "Il existe des registres pertinents pour les cétacés dans le système d’information sur la biodiversité des océans (SIBO) pour cette zone de recherche."
@@ -167,8 +201,8 @@ writeLines(Report_obis_cet)
 ```
 
 ```{r obis-cetacean-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés du SIBO pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b> . L’absence peut être liée à un effort d’enquête faible ou nul. L’information sur les observations sous-représente la présence de cétacés, en particulier les espèces qui vivent en eau profonde (p. ex., les baleines à bec) et qui passent peu de temps à la surface. Cette carte n’inclut pas non plus les détections acoustiques. Les observations sur terre indiquent que les données d’observation n’ont pas encore été complètement vérifiées ou que des animaux ont été observés depuis la côte.'}
-if (!is.null(outputList$studyData)) {
-  plot_rr_sf(areaMap, outputList$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+if (!is.null(obisClipped$studyData)) {
+  plot_rr_sf(areaMap, obisClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
@@ -193,15 +227,17 @@ clippedHp <- master_intersect(harbour_porpoise_sf, mapDataList, getRegion = TRUE
 clippedHump <- master_intersect(humpback_whale_sf , mapDataList, getRegion = TRUE)
 clippedSei <- master_intersect(sei_whale_sf, mapDataList, getRegion = TRUE)
 
-table_sdm <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
-                        "Habour Porpoise" = !is.null(clippedHp$studyData),
-                        "Humpback Whale" = !is.null(clippedHump$studyData),
-                        "Sei Whale" = !is.null(clippedSei$studyData), 
-                        check.names = FALSE)
-
+tableSDM <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
+                       "Habour Porpoise" = !is.null(clippedHp$studyData),
+                       "Humpback Whale" = !is.null(clippedHump$studyData),
+                       "Sei Whale" = !is.null(clippedSei$studyData), 
+                       check.names = FALSE)
+summarySDMTable <- data.frame("Species" = names(tableSDM), "present" = transpose(tableSDM)$V1)
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "[SDM](#sdm-section)", summarySDMTable, "Species", "present")
 ```
+
 ```{r sdm-table}
- knitr::kable(table_sdm, align="cccc", caption=". Niveau de qualité : Faible. Niveau de sécurité : Aucun. Résultats indiquant si la zone de recherche chevauche les zones prioritaires prévues pour améliorer la surveillance de plusieurs espèces de cétacés (rorqual commun, marsouin commun, rorqual à bosse et rorqual boréal). VRAI = le polygone chevauche la zone prioritaire; FAUX = le polygone ne chevauche PAS la zone prioritaire.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+ knitr::kable(tableSDM, align="cccc", caption=". Niveau de qualité : Faible. Niveau de sécurité : Aucun. Résultats indiquant si la zone de recherche chevauche les zones prioritaires prévues pour améliorer la surveillance de plusieurs espèces de cétacés (rorqual commun, marsouin commun, rorqual à bosse et rorqual boréal). VRAI = le polygone chevauche la zone prioritaire; FAUX = le polygone ne chevauche PAS la zone prioritaire.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
 ```{r sdm-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Faible. Niveau de sécurité : Aucun. La carte montre les résultats consolidés du modèle de répartition des espèces (taux d’occurrence prévu relatif de 60 à 100 %). Les polygones jaunes (habitats très appropriés) doivent être interprétés comme des zones où les efforts de surveillance des cétacés peuvent être priorisés et dont les résultats peuvent aider à diriger les activités de relevés dans le futur. En raison des nombreuses raisons énumérées dans la section de discussion de Gomez et al. (2020), ces données de modélisation sur les cétacés ne représentent pas une répartition complète et actuelle des cétacés dans la région. Elles représentent des zones prioritaires où diriger les efforts de surveillance des cétacés. Leur utilisation dans les processus de planification de l’espace marin devrait être accompagnée d’approches complémentaires telles que le processus résumé dans la section ci-dessous. Le produit de données résumé dans la section ci-dessous (habitat important pour le rorqual bleu dans l’ouest de l’Atlantique Nord) représente un excellent cadre dans lequel utiliser correctement les extrants de cette figure.'}
@@ -226,7 +262,10 @@ Veuillez consulter la liste de toutes les sources d’information utilisées dan
 # intersect polyData with 3 polygons (region, map area, and study box)
 attribute <- "Activity"
 clipped <- master_intersect(BlueWhale_ImpHab_sf, mapDataList, getRegion=TRUE)
-
+if(!is.null(clipped$studyData)){
+  summaryBWTable <- data.frame("Species" = "Blue Whale")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[BW Habitat](#bwhab-section)", summaryBWTable, "Species", "Species")
+}
 ```
 *
 ```{r bw-result, echo=FALSE, results='asis'}
@@ -274,6 +313,10 @@ Le polygone des zones d’habitat situées entre les canyons a été délimité 
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
 clipped <- master_intersect(NBNW_ImpHab_sf, mapDataList, getRegion=TRUE)
+if(!is.null(clipped$studyData)){
+  summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[NBW Habitat](#nbw-hab-section)", summaryNBWTable, "Species", "Species")
+}
 ```
 *
 ```{r nbw-result, echo=FALSE, results='asis'}
