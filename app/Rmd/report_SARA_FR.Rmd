@@ -41,18 +41,17 @@ outputListSardist <- master_intersect(sardist_sf, mapDataList)
 # plotted with colour
 attributeCrithab <- "Common_Nam"
 legendNameCrithab <- "Common Name"
-outputListCrithab <- master_intersect(ClippedCritHab_sf, mapDataList, 
+outputListCrithab <- master_intersect(ClippedCritHab_sf, mapDataList,
                                       getRegion=TRUE)
-
 
 # plotted in single colour
 outputListLB <- master_intersect(leatherback_sf, mapDataList, getRegion=TRUE)
 
 critHabCheck <- !is.null(outputListCrithab$studyData) | !is.null(outputListLB$studyData)
 
-if (!is.null(outputListSardist$studyData)){
-  dist_table <- table_dist(outputListSardist$studyData)
-}
+distTable <- table_dist(outputListSardist$studyData)
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distribution](#sardist-section)",  distTable, "Common Name", "Common Name")
+
 ```
 *
 ```{r sardist-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
@@ -81,7 +80,7 @@ if(critHabCheck) {
 <br>
 ```{r sardist-table, echo=FALSE, results='asis'}
 if(!is.null(outputListSardist$studyData)){
-  knitr::kable(dist_table, align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+  knitr::kable(distTable, align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 }
 ```
 

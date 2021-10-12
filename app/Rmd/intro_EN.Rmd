@@ -9,6 +9,8 @@ output:
     theme: paper
     toc: true
     toc_depth: 5
+    toc_float:
+      collapsed: false
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
@@ -33,6 +35,9 @@ copy_rdata_files() # make sure data files are up to date.
 load(here::here("app/data/OpenData.RData"))
 load(here::here("app/data/OpenData_sardist.RData"))
 load(here::here("app/data/SecureData.RData"))
+
+listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
+row.names(listed_species) <- NULL
 #load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
 
 ```
@@ -51,12 +56,17 @@ site <- sf::st_centroid(studyArea)
 ```{r parameters-for-area_map.r, echo=FALSE, include=FALSE, cache=FALSE}
 mapDataList <- maps_setup(studyArea, site, region, land50k_sf, land10m_sf, bounds_sf)
 list2env(mapDataList, envir = environment())
+```
+
+```{r set-up-summary-and-gap-tables, echo=FALSE, include=FALSE, cache=FALSE}
+summarySarTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`)
+summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`, "Obs" = NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA)
 
 ```
 
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
-<!--```{r child = '../Rmd/report_cetaceans_EN.Rmd'}
+<!--```{r child = '../Rmd/report_SARA_EN.Rmd'}
 ```-->
 
 <!-- END  -->
@@ -128,6 +138,42 @@ The following are definitions relevant for species listed by the _Species at Ris
 {{add_ebsa_section}}
 
 <!-- GENERIC END -->
+## **REGIONAL SYNTHESIS: Species listed by SARA, and/or assessed by COSEWIC**
+
+This section provides an overall synthesis of regional data and data products of species contained within the search area that are listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). This summary must be used in coordination with all data summaries and products presented throughout the report, including the descriptions, caveats, disclaimers, sources of uncertainty, references to the literature, and contacts who can provide further interpretation. The emphasis of this report is on available observations of species presence (primarily since 2010) and not on absences, quantities (e.g., species abundance or biomass), frequency, or catch information. The absence of a species in this report should be interpreted as an absence of observation or reporting of the species in the search area, not necessarily as a true absence of the species. Outputs are not suitable for real-time, dynamic spatial planning. Because coastal areas of the Scotian Shelf bioregion are generally not adequately sampled to characterize fine-scale ecological characteristics (i.e., species, habitat composition and variability within a sub-regional focal area), the distribution of (some) species, when the focal area is near to the coast, should be used as a first-order estimate limited by the spatial-temporal resolution of available data.
+
+```{r sar-obs-summary-table}
+absentCode <- "&nbsp;-&nbsp;"
+presentCode <- "&#x2714;"
+summarySarTable[is.na(summarySarTable)] <- absentCode
+formatedSarTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+
+```
+
+```{r sar-hab-summary-table}
+  summaryHabTable[is.na(summaryHabTable)] <- "&nbsp;-&nbsp;"
+
+  # add column for observations from sar table
+  obsColumn <- apply(summarySarTable, 1, function(r) any(r %in% c(presentCode)))
+  summaryHabTable$Obs <- ifelse(obsColumn, presentCode, absentCode)
+  
+  summaryHabTable <- mutate_all(summaryHabTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", ""),
+                  background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+
+  names(summaryHabTable) <- c("Species", "COSEWIC", "SARA", "Observations", "SAR Range", "SDM", "Important Habitat", "Critical Habitat")
+
+  
+```
+
+```{r output-hab-table}
+knitr::kable(summaryHabTable, align="l", caption = "Regional synthesis of data and data products of species contained within the search area that are listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Data points (observations) are summarized in more detail in the subsequent table. A description of the different sources of information for Species at Risk is available in the infographic: <https://github.com/dfo-mar-odis/shinySpatialApp/blob/master/app/data/misc/SAR-information-type-reproducible-reports.pdf>). The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Outputs are not suitable for real-time, dynamic spatial planning.", booktabs = T, escape = F, linesep = "") %>%
+  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+```
+
+```{r output-sar-table}
+knitr::kable(formatedSarTable, align="l", caption = "Summary of regional data points (observations) of species contained within the search area that are listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Presence of a species in at least one of these data sources is reported as a presence in the data points (observations) in the table above. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Outputs are not suitable for real-time, dynamic spatial planning.", booktabs = T, escape = F, linesep = "") %>%
+  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+```
 
 # **CONTRIBUTORS**
 ```{r read-contributors, echo=FALSE, cache=FALSE, include = FALSE}
