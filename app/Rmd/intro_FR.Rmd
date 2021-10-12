@@ -136,10 +136,10 @@ Définitions pertinentes pour les espèces inscrites en vertu de la _Loi sur les
 <!-- FIN GÉNÉRIQUE -->
 
 
-## **SAR DATABASE SUMMARY**
+## **REGIONAL SYNTHESIS: Species listed by SARA, and/or assessed by COSEWIC**
 
-TO BE CHECKED BEFORE MERGING! 
-This section summarizes the SAR coverage of the data sources used in the report. A summary of the data sources containing records of each species with a status under COSEWIC or SARA in the study area is provided.  The caveats and conditions for each individual data source are detailed above in their dedicated sections of the report. An absence of records is not necessarily an absence of the species in the area. A description of the different sources of information for Species at Risk is also available in the infographic: <https://github.com/dfo-mar-odis/shinySpatialApp/blob/master/app/data/misc/SAR-information-type-reproducible-reports.pdf>). 
+This section provides an overall synthesis of regional data and data products of species contained within the search area that are listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). This summary must be used in coordination with all data summaries and products presented throughout the report, including the descriptions, caveats, disclaimers, sources of uncertainty, references to the literature, and contacts who can provide further interpretation. The emphasis of this report is on available observations of species presence (primarily since 2010) and not on absences, quantities (e.g., species abundance or biomass), frequency, or catch information. The absence of a species in this report should be interpreted as an absence of observation or reporting of the species in the search area, not necessarily as a true absence of the species. Outputs are not suitable for real-time, dynamic spatial planning. Because coastal areas of the Scotian Shelf bioregion are generally not adequately sampled to characterize fine-scale ecological characteristics (i.e., species, habitat composition and variability within a sub-regional focal area), the distribution of (some) species, when the focal area is near to the coast, should be used as a first-order estimate limited by the spatial-temporal resolution of available data.
+
 
 ```{r sar-obs-summary-table}
 absentCode <- "&nbsp;-&nbsp;"
@@ -165,12 +165,12 @@ formatedSarTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. 
 ```
 
 ```{r output-hab-table}
-knitr::kable(summaryHabTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of Observation, Range, Modeling and Habitat results in the study area for each SAR. A summary of the observation data sources is presented in the subsequent table.  ", booktabs = T, escape = F, linesep = "") %>%
+knitr::kable(summaryHabTable, align="l", caption = "Regional synthesis of data and data products of species contained within the search area that are listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Data points (observations) are summarized in more detail in the subsequent table. A description of the different sources of information for Species at Risk is available in the infographic: <https://github.com/dfo-mar-odis/shinySpatialApp/blob/master/app/data/misc/SAR-information-type-reproducible-reports.pdf>). The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Outputs are not suitable for real-time, dynamic spatial planning.", booktabs = T, escape = F, linesep = "") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
 ```{r output-sar-table}
-knitr::kable(formatedSarTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of data sources containing records for each SAR in the study area used in this report. ", booktabs = T, escape = F, linesep = "") %>%
+knitr::kable(formatedSarTable, align="l", caption = "Summary of regional data points (observations) of species contained within the search area that are listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Presence of a species in at least one of these data sources is reported as a presence in the data points (observations) in the table above. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Outputs are not suitable for real-time, dynamic spatial planning.", booktabs = T, escape = F, linesep = "") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 
 ```
