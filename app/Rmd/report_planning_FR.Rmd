@@ -53,3 +53,62 @@ if(!is.null(EBSAoutput$studyData)){
   plot_rr_sf(areaMap, EBSAoutput$mapData, "NONE")
 }
 ```
+
+
+### **`r mpa_rr$title`** {#MPA-section}
+
+
+```{r MPA-section, results='asis'}
+write_meta(mpa_rr)
+writeLines(noquote(mpa_rr$text))
+
+```
+
+#### ***Area-specific Draft Conservation Network Design search results ***
+
+```{r MPA-load-data, results='asis'}
+mpaCols <- c("darkorchid", "lawngreen", "dodgerblue2", "cyan3")
+mpaAlphas <- c(0.5, 0.5, 0.5, 0.5)
+names(mpaCols) <- levels(as.factor(mpa_rr$data_sf[[mpa_rr$attribute]]))
+names(mpaAlphas) <- levels(as.factor(mpa_rr$data_sf[[mpa_rr$attribute]]))
+
+mpaClipped <- master_intersect(mpa_rr$data_sf,  mapDataList, getRegion=TRUE)
+
+if(!is.null(mpaClipped$studyData)) {
+  mpaTable <- mpa_table(mpaClipped$studyData)
+} else {
+  mpaTable <- NULL
+}
+
+#function for overlap
+mpaCheckOuput <- if(!is.null(mpaClipped$studyData)){
+    "* There are relevant records of areas that are part of the Draft Conservation Network Design in the search area."
+  } else {
+    "* There are no relevant records of areas that are part of the Draft Conservation Network Design in the search area."
+  }
+
+writeLines(mpaCheckOuput)
+```
+
+```{r mpa-region-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none.Map of the Draft Conservation Network Design for the Scotian Shelf-Bay of Fundy Bioregion. '}
+if (!is.null(mpaClipped$regionData)){
+  mpaLabels <- filter(st_centroid(mpaClipped$regionData), Id > 0) %>% dplyr::select(c("Id"))
+  plot_rr_sf(regionMap, mpaClipped$regionData, mpa_rr$attribute, colorMap = mpaCols,
+                            labelData = mpaLabels, labelAttribute = "Id", alphaMap = mpaAlphas)
+}
+```
+
+```{r mpa-area-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map of the Draft Conservation Network Design in the search area defined by the user (red outline).'}
+if(!is.null(mpaClipped$studyData)){
+  mpaStudyLabels <- filter(st_centroid(mpaClipped$mapData), Id > 0) %>% dplyr::select(c("Id"))
+
+  plot_rr_sf(areaMap, mpaClipped$mapData, mpa_rr$attribute, colorMap = mpaCols,
+             labelData = mpaStudyLabels, labelAttribute = "Id", alphaMap = mpaAlphas)
+}
+```
+
+```{r mpa-table, echo=FALSE, results='asis', caption="MPA table"}
+if (!is.null(mpaTable)) {
+  knitr::kable(mpaTable, align="l", caption="Quality Tier: High Security level: none. Area and names of Marine Protected Areas located within study area..</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```

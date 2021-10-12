@@ -425,7 +425,7 @@ mpa_table <- function(mpa_sf, lang="EN") {
   }
   mpaTable <- distinct(mpaTable)
   return(mpaTable)
-
+}
   
 # ---------add_col_to_whale_summary-------
 # Adds a column with number of records to the cetacean summary table

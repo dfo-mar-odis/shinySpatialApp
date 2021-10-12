@@ -103,18 +103,44 @@ gen_test_poly_sf <- function(real_sf, n_poly=10) {
 }
 
 
+##### - gen_test_rr ##################################
+# This function generates a version of the input sf with a random geometry column
+# The length and type of geometry in the final column are dependent on the initial sf
+#
+# Inputs:
+# 1. real_rr_str: string naming rr object to be reduced/turned into test data
+#
+# Outputs:
+# 1. test_rr: reduced sf filled with test data
+
+gen_test_rr <- function(real_rr_str, env = NULL) {
+  message(real_rr_str)
+  test_rr <- get(real_rr_str, envir = env)
+  test_rr$data_sf <- gen_test_sf(test_rr$data_sf, env = env)
+  return(test_rr)
+}
+
 ##### - gen_test_sf ##################################
 # This function generates a version of the input sf with a random geometry column
 # The length and type of geometry in the final column are dependent on the initial sf
 #
 # Inputs:
-# 1. real_sf: sf object to be reduced/turned into test data
+# 1. real_sf_str: string name of sf object to be reduced/turned into test data
 #
 # Outputs:
 # 1. test_sf: reduced sf filled with test data
 
-gen_test_sf <- function(real_sf) {
+gen_test_sf <- function(real_sf_str, env=NULL) {
   # Geometry type
+  if (is.character(real_sf_str)){
+    message(real_sf_str)
+    real_sf <- get(real_sf_str, envir = env)
+  } else {
+    real_sf <- real_sf_str
+  }
+  if (!inherits(real_sf, "sf")){
+    return(real_sf)
+  }
   point_factor <- sf::st_geometry_type(sf::st_point())
   # set number of samples based on length of sf
   num_samples <- 500
@@ -125,7 +151,7 @@ gen_test_sf <- function(real_sf) {
   if (nrow_real_sf < 100) {
     num_samples <- nrow_real_sf
   }
-
+  
   # get test_sf of either points or polys based on type of real_sf
   test_sf <- real_sf
   if (sf::st_geometry_type(real_sf, FALSE) == point_factor) {
@@ -146,17 +172,13 @@ gen_test_sf <- function(real_sf) {
 # Outputs:
 #  None.  Data is saved to a file in the data directory.
 gen_all_test_data <- function() {
-  load(here::here("app/data/OpenData.RData"))
-  load(here::here("app/data/OpenData_sardist.RData"))
-  load(here::here("app/data/SecureData.RData"))
-
-  sf_list <- list(NBNW_ImpHab_sf, bioregion_sf, BlueWhale_ImpHab_sf, bounds_sf, ClippedCritHab_sf, EBSA_sf,
-                  fin_whale_sf, harbour_porpoise_sf, humpback_whale_sf, land10m_sf, land50k_sf, 
-                  listed_cetacean_species, listed_fish_invert_species, listed_other_species, 
-                  listed_species, obis_cet_sf, obis_fish_sf, rockweed_sf, 
-                  RVCatch_sf, RVGSSPECIES, sei_whale_sf, sardist_sf, isdb_sf, ISSPECIESCODES, 
-                  leatherback_sf, Legend, marfis_sf, MARFISSPECIESCODES, narwc_sf, whitehead_sf,
-                  wsdb_sf, ocearch_sf)
+  
+  genTestDataEnv <- environment()
+  
+  load(here::here("app/data/OpenData.RData"), envir = genTestDataEnv)
+  load(here::here("app/data/OpenData_sardist.RData"), envir = genTestDataEnv)
+  load(here::here("app/data/SecureData.RData"), envir = genTestDataEnv)
+  
   sf_names <- c("NBNW_ImpHab_sf", "bioregion_sf", "BlueWhale_ImpHab_sf", "bounds_sf", "ClippedCritHab_sf", "EBSA_sf",
                 "fin_whale_sf", "harbour_porpoise_sf", "humpback_whale_sf", "land10m_sf", "land50k_sf", 
                 "listed_cetacean_species", "listed_fish_invert_species", "listed_other_species", 
@@ -165,14 +187,17 @@ gen_all_test_data <- function() {
                 "leatherback_sf", "Legend", "marfis_sf", "MARFISSPECIESCODES", "narwc_sf", "whitehead_sf",
                 "wsdb_sf", "ocearch_sf")
   
+  rr_names <- c("mpa_rr")
+  
   exclude_list <- c("bounds_sf", "land10m_sf", "land50k_sf")
   
-  for (i in 1:length(sf_list)) {
-    if (!(sf_names[i] %in% exclude_list) && ("sf" %in% class(sf_list[[i]]))) {
-      assign(sf_names[i], gen_test_sf(sf_list[[i]])) 
-    }
-  }
+  sfToGen <- sf_names[!(sf_names %in% exclude_list)]
+  testSf_list <- lapply(sfToGen, gen_test_sf, env = genTestDataEnv)
+  names(testSf_list) <- sfToGen
+  
+  testRr_list <- lapply(rr_names, gen_test_rr, env = genTestDataEnv)
+  names(testRr_list) <- rr_names
   
   out_file <- here::here("app/data/testData.Rdata") 
-  save(list=sf_names, file=out_file)
+  save(list=c(sf_names, rr_names, exclude_list) , file=out_file)
 }

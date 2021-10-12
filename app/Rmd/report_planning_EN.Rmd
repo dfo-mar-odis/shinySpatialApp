@@ -59,14 +59,16 @@ if(!is.null(EBSAoutput$studyData)){
 write_meta(mpa_rr)
 writeLines(noquote(mpa_rr$text))
 
-mpaCols <- c("darkorchid", "lawngreen", "dodgerblue2", "cyan3")
-names(mpaCols) <- levels(as.factor(mpa_rr$data_sf[[mpa_rr$attribute]]))
-
 ```
 
 #### ***Area-specific Draft Conservation Network Design search results ***
 
 ```{r MPA-load-data, results='asis'}
+mpaCols <- c("darkorchid", "lawngreen", "dodgerblue2", "cyan3")
+mpaAlphas <- c(0.5, 0.5, 0.5, 0.5)
+names(mpaCols) <- levels(as.factor(mpa_rr$data_sf[[mpa_rr$attribute]]))
+names(mpaAlphas) <- levels(as.factor(mpa_rr$data_sf[[mpa_rr$attribute]]))
+
 mpaClipped <- master_intersect(mpa_rr$data_sf,  mapDataList, getRegion=TRUE)
 
 if(!is.null(mpaClipped$studyData)) {
@@ -89,16 +91,16 @@ writeLines(mpaCheckOuput)
 if (!is.null(mpaClipped$regionData)){
   mpaLabels <- filter(st_centroid(mpaClipped$regionData), Id > 0) %>% dplyr::select(c("Id"))
   plot_rr_sf(regionMap, mpaClipped$regionData, mpa_rr$attribute, colorMap = mpaCols,
-                            labelData = mpaLabels, labelAttribute = "Id")
+                            labelData = mpaLabels, labelAttribute = "Id", alphaMap = mpaAlphas)
 }
 ```
 
 ```{r mpa-area-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map of the Draft Conservation Network Design in the search area defined by the user (red outline).'}
 if(!is.null(mpaClipped$studyData)){
-  mpaStudyLabels <- filter(st_centroid(mpaClipped$studyData), Id > 0) %>% dplyr::select(c("Id"))
+  mpaStudyLabels <- filter(st_centroid(mpaClipped$mapData), Id > 0) %>% dplyr::select(c("Id"))
 
-  plot_rr_sf(areaMap, mpaClipped$studyData, mpa_rr$attribute, colorMap = mpaCols,
-             labelData = mpaStudyLabels, labelAttribute = "Id")
+  plot_rr_sf(areaMap, mpaClipped$mapData, mpa_rr$attribute, colorMap = mpaCols,
+             labelData = mpaStudyLabels, labelAttribute = "Id", alphaMap = mpaAlphas)
 }
 ```
 
