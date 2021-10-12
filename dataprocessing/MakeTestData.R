@@ -190,6 +190,8 @@ gen_all_test_data <- function() {
   rr_names <- c("mpa_rr")
   
   exclude_list <- c("bounds_sf", "land10m_sf", "land50k_sf")
+  excludeSf_list <- list(bounds_sf, land10m_sf, land50k_sf)
+  names(excludeSf_list) <- exclude_list
   
   sfToGen <- sf_names[!(sf_names %in% exclude_list)]
   testSf_list <- lapply(sfToGen, gen_test_sf, env = genTestDataEnv)
@@ -199,5 +201,7 @@ gen_all_test_data <- function() {
   names(testRr_list) <- rr_names
   
   out_file <- here::here("app/data/testData.Rdata") 
-  save(list=c(sf_names, rr_names, exclude_list) , file=out_file)
+  outList <- c(testSf_list, testRr_list, excludeSf_list)
+  list2env(outList, envir = genTestDataEnv)
+  save(list=names(outList) , file=out_file, envir = genTestDataEnv)
 }
