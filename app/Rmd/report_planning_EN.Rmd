@@ -52,12 +52,15 @@ if(!is.null(EBSAoutput$studyData)){
 }
 ```
 
-### **`r mpa_rr$title`**
+### **`r mpa_rr$title`** {#MPA-section}
 
 
 ```{r MPA-section, results='asis'}
 write_meta(mpa_rr)
 writeLines(noquote(mpa_rr$text))
+
+mpaCols <- c("darkorchid", "lawngreen", "dodgerblue2", "cyan3")
+names(mpaCols) <- levels(as.factor(mpa_rr$data_sf[[mpa_rr$attribute]]))
 
 ```
 
@@ -85,9 +88,8 @@ writeLines(mpaCheckOuput)
 ```{r mpa-region-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none.Map of the Draft Conservation Network Design for the Scotian Shelf-Bay of Fundy Bioregion. '}
 if (!is.null(mpaClipped$regionData)){
   mpaLabels <- filter(st_centroid(mpaClipped$regionData), Id > 0) %>% dplyr::select(c("Id"))
-  mpaPlotList <- plot_rr_sf(regionMap, mpaClipped$regionData, mpa_rr$attribute, getColorMap=TRUE,
+  plot_rr_sf(regionMap, mpaClipped$regionData, mpa_rr$attribute, colorMap = mpaCols,
                             labelData = mpaLabels, labelAttribute = "Id")
-  mpaPlotList$polyMap
 }
 ```
 
@@ -95,7 +97,7 @@ if (!is.null(mpaClipped$regionData)){
 if(!is.null(mpaClipped$studyData)){
   mpaStudyLabels <- filter(st_centroid(mpaClipped$studyData), Id > 0) %>% dplyr::select(c("Id"))
 
-  plot_rr_sf(areaMap, mpaClipped$studyData, mpa_rr$attribute, colorMap = mpaPlotList$colorMap,
+  plot_rr_sf(areaMap, mpaClipped$studyData, mpa_rr$attribute, colorMap = mpaCols,
              labelData = mpaStudyLabels, labelAttribute = "Id")
 }
 ```
