@@ -51,13 +51,13 @@ rockweed_sf$status[which(rockweed_sf$RWP==0)] = "Not Present"
 # Table of SARA listed species
 listed_species <- read.csv("../Data/NaturalResources/Species/MAR_listed_species.csv",
                            stringsAsFactors = FALSE)
-listed_species <- listed_species %>% rename("SARA status"=Schedule.status,
-                                            "COSEWIC status"=COSEWIC.status,
-                                            "Wild Species listing"=Wild_Species,
-                                            "SCIENTIFICNAME"=Scientific_Name_upper,
-                                            "COMMONNAME"=Common_Name_upper,
-                                            "Scientific Name"=Scientific_Name,
-                                            "Common Name"=Common_Name)
+listed_species <- listed_species %>% rename("SARA status" = Schedule.status,
+                                            "COSEWIC status" = COSEWIC.status,
+                                            "Wild Species listing" = Wild_Species,
+                                            "SCIENTIFICNAME" = Scientific_Name_upper,
+                                            "COMMONNAME" = Common_Name_upper,
+                                            "Scientific Name" = Scientific_Name,
+                                            "Common Name" = Common_Name)
 listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
 row.names(listed_species) <- NULL
 
@@ -85,15 +85,15 @@ obis <- obis %>% dplyr::filter(YEAR >= 2010)
 
 # OBIS fish and inverts
 obis_fish <- merge(obis, listed_fish_invert_species, by='Scientific Name')
-obis_fish <- dplyr::select(obis_fish,"Scientific Name", YEAR, "Common Name", "COSEWIC status",
+obis_fish <- dplyr::select(obis_fish, "Scientific Name", YEAR, "Common Name", "COSEWIC status",
                            "SARA status", decimalLatitude, decimalLongitude)
-obis_fish_sf <- st_as_sf(obis_fish, coords = c("decimalLongitude","decimalLatitude"), crs = 4326)
+obis_fish_sf <- st_as_sf(obis_fish, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
 
 # OBIS cetaceans
 obis_cet <- merge(obis, Legend, by='Scientific Name')
-obis_cet <- dplyr::select(obis_cet,"Scientific Name", YEAR, Legend,
+obis_cet <- dplyr::select(obis_cet, "Scientific Name", YEAR, Legend,
                           decimalLatitude, decimalLongitude)
-obis_cet_sf <- st_as_sf(obis_cet, coords = c("decimalLongitude","decimalLatitude"), crs = 4326)
+obis_cet_sf <- st_as_sf(obis_cet, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
 
 # RV survey data
 RVList <-  CompileRV_fn(SurveyPrefix, File, minYear)
@@ -118,13 +118,13 @@ sei_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FG
 
 # The following provides an option to convert the rasters to sf_objects and use the poly_intersect() function to clip to studyArea instead of using rasters
 # This is also in the cetaceans Rmarkdown - need to double check
-fin_whale_sf <- stars::st_as_stars(fin_whale)%>%sf::st_as_sf()
+fin_whale_sf <- stars::st_as_stars(fin_whale) %>% sf::st_as_sf()
 fin_whale_sf <- st_make_valid(fin_whale_sf)
-harbour_porpoise_sf <- stars::st_as_stars(harbour_porpoise)%>%sf::st_as_sf()
+harbour_porpoise_sf <- stars::st_as_stars(harbour_porpoise) %>% sf::st_as_sf()
 harbour_porpoise_sf <- st_make_valid(harbour_porpoise_sf)
-humpback_whale_sf <- stars::st_as_stars(humpback_whale)%>%sf::st_as_sf()
+humpback_whale_sf <- stars::st_as_stars(humpback_whale) %>% sf::st_as_sf()
 humpback_whale_sf <- st_make_valid(humpback_whale_sf)
-sei_whale_sf <- stars::st_as_stars(sei_whale)%>%sf::st_as_sf()
+sei_whale_sf <- stars::st_as_stars(sei_whale) %>% sf::st_as_sf()
 sei_whale_sf <- st_make_valid(sei_whale_sf)
 
 #Read Blue Whale Important Habitat shapefile and Project to WGS84
@@ -180,7 +180,7 @@ mpa_sf <- st_make_valid(mpa_sf)
 mpa_rr <- list("title" = "Draft Conservation Network Design: existing and potential future marine protected areas (MPAs) and other spatial conservation areas",
                "contact" = "Marty King ([Marty.King@dfo-mpo.gc.ca](mailto:Marty.King@dfo-mpo.gc.ca){.email})", 
                "attribute" = "STATUS",
-               "accessedOn" =" October 2021" ,
+               "accessedOn" = " October 2021" ,
                "data_sf" = mpa_sf,
                "securityLevel" = "None",
                "qualityTier" = "High",
@@ -207,14 +207,14 @@ Legend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
 # Cetacean point data  #########################
 # Whale Sightings Database (wsdb)
 wsdb <- read.csv("../Data/NaturalResources/Species/Cetaceans/WSDB/MarWSDB_20210407.csv", stringsAsFactors = FALSE)
-wsdb <- dplyr::select(wsdb,COMMONNAME,SCIENTIFICNAME,YEAR,LATITUDE,LONGITUDE)
+wsdb <- dplyr::select(wsdb, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
 wsdb <- wsdb %>% dplyr::filter(YEAR >= 2010)
 wsdb <- dplyr::rename(wsdb,c("Scientific Name" = "SCIENTIFICNAME",
                              "CNAME"= COMMONNAME))
 wsdb <- merge(wsdb, Legend, by='Scientific Name')
-wsdb <- dplyr::select(wsdb,CNAME,'Scientific Name',YEAR,Legend, LATITUDE,LONGITUDE)
+wsdb <- dplyr::select(wsdb,CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
 # wsdb <- dplyr::rename(wsdb,c("COMMONNAME" = "CNAME"))
-wsdb_sf <- st_as_sf(wsdb, coords = c("LONGITUDE","LATITUDE"), crs = 4326)
+wsdb_sf <- st_as_sf(wsdb, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 
 # Whitehead lab
 whitehead <- read.csv("../Data/NaturalResources/Species/Cetaceans/Whitehead_Lab/whitehead_lab.csv", stringsAsFactors = FALSE)
@@ -224,8 +224,8 @@ whitehead <- whitehead %>% rename("Scientific Name"= species.name)
 whitehead <- merge(whitehead, Legend, by='Scientific Name')
 whitehead <- dplyr::select(whitehead,'Scientific Name', YEAR, Legend, Lat, Long)
 # correct the longitude values to be negative
-whitehead$Long <- -1*whitehead$Long
-whitehead_sf <- st_as_sf(whitehead, coords = c("Long","Lat"), crs = 4326)
+whitehead$Long <- -1 * whitehead$Long
+whitehead_sf <- st_as_sf(whitehead, coords = c("Long", "Lat"), crs = 4326)
 
 # North Atlantic Right Whale Consortium (narwc)
 narwc <- read.csv("../Data/NaturalResources/Species/Cetaceans/NARWC/NARWC_09-18-2020.csv", stringsAsFactors = FALSE)
@@ -234,8 +234,8 @@ narwcspecies <- narwcspecies %>% rename("Scientific Name"= ScientificName)
 narwc <- merge(narwc, narwcspecies, by='SPECNAME')
 narwc <- narwc %>% dplyr::filter(YEAR >= 2010)
 narwc <- merge(narwc, Legend, by = 'Scientific Name')
-narwc <- dplyr::select(narwc,'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
-narwc_sf <- st_as_sf(narwc, coords = c("LONGITUDE","LATITUDE"), crs = 4326)
+narwc <- dplyr::select(narwc, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
+narwc_sf <- st_as_sf(narwc, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 # END point data   #########################
 
 
@@ -254,16 +254,16 @@ load("../Data/mar.wrangling/MARFIS.SPECIES.RData")
 load("../Data/mar.wrangling/ISDB.ISSPECIESCODES.RData")
 
 SPECIES <- dplyr::select(SPECIES, 
-                         one_of(c("SPECIES_CODE","SPECIES_NAME")))
+                         one_of(c("SPECIES_CODE", "SPECIES_NAME")))
 ISSPECIESCODES <- dplyr::select(ISSPECIESCODES, 
-                                one_of(c("SPECCD_ID", "COMMON","SCIENTIFIC")))
+                                one_of(c("SPECCD_ID", "COMMON", "SCIENTIFIC")))
 
 ISSPECIESCODES <- ISSPECIESCODES %>% transmute(ISSPECIESCODES, SCIENTIFIC=str_to_sentence(SCIENTIFIC))
 ISSPECIESCODES <- ISSPECIESCODES %>% transmute(ISSPECIESCODES, COMMON=str_to_sentence(COMMON))
-ISSPECIESCODES <- ISSPECIESCODES %>% rename("Common Name"= COMMON,
+ISSPECIESCODES <- ISSPECIESCODES %>% rename("Common Name" = COMMON,
                                             "Scientific Name" = SCIENTIFIC)
 
-MARFISSPECIESCODES <- SPECIES %>% rename("COMMONNAME"= SPECIES_NAME)
+MARFISSPECIESCODES <- SPECIES %>% rename("COMMONNAME" = SPECIES_NAME)
 
 # LOAD OCEARCH DATA #############
 ocearchDatafile <- ("../Data/NaturalResources/Species/Sharks/OCEARCH/OCEARCH_08-27-2021.csv")
@@ -271,7 +271,7 @@ lines <- readLines(ocearchDatafile)
 lines <- gsub('(^"|"$)', "", lines)
 ocearch <- read.csv(textConnection(lines), quote = '""')
 ocearch <- dplyr::select(ocearch, c("Date", "long", "lat", "ID"))
-ocearch_sf <- st_as_sf(ocearch, coords = c("long","lat"), crs = 4326)
+ocearch_sf <- st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
 
 # Save all objects to a single .Rdata file
 save(isdb_sf,ISSPECIESCODES,leatherback_sf, Legend, marfis_sf,MARFISSPECIESCODES, narwc_sf, whitehead_sf, wsdb_sf, ocearch_sf,
