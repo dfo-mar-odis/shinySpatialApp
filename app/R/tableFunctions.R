@@ -411,7 +411,7 @@ mpa_table <- function(mpa_sf, lang="EN") {
   mpa_sf <- dplyr::arrange(mpa_sf, Id)
   # &nbsp; is a non breaking space which is needed to escape the hyphens in kable in shiny AND rmd
   mpa_sf$Id <- gsub(0, "&nbsp;-&nbsp;", mpa_sf$Id)
-  mpaTable <- dplyr::select(mpa_sf, c("Id", "NAME", "STATUS", "AreaKM2"))
+  mpaTable <- dplyr::select(mpa_sf, c("Id", "NAME", "Legend", "AreaKM2"))
   mpaTable$AreaKM2 <- as.integer(mpaTable$AreaKM2)
   mpaTable$geometry <- NULL
 
