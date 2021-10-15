@@ -10,6 +10,7 @@ get_opendata_rr <- function(pkgId, resId, gdbLayer=NULL) {
   opendataPKG <- package_show(pkgId)
   pkgTitle <- opendataPKG$title_translated
   contactInfo <- opendataPKG$metadata_contact
+  pkgText <- opendataPKG$notes_translated
   
   data_sf <- get_opendata_sf(resId, gdbLayer=gdbLayer)
   
@@ -21,6 +22,7 @@ get_opendata_rr <- function(pkgId, resId, gdbLayer=NULL) {
   accessedDate$en <- strftime(today(), "%B %d, %Y")
   
   out_rr <- list("title" = pkgTitle,
+                 "text" = pkgText,
                  "attribute" = "NONE",
                  "accessedOn" = accessedDate,
                  "contact" = contactInfo,

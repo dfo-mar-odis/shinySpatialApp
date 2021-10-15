@@ -356,25 +356,22 @@ table_crit <- function(CCH_sf, LB_sf) {
 # Directly writes table
 #
 EBSA_report <- function(EBSA_sf, lang="EN") {
-  
-  EBSAreport <-  if (lang=="EN" & !is.null(EBSA_sf)) {
-    c(paste("Report: ", EBSA_sf$Report),
-      paste("Report URL:", EBSA_sf$Report_URL),
-      paste("Location: ", EBSA_sf$Name),
-      paste("Bioregion: ", EBSA_sf$Bioregion) 
-    )
+  EBSATable <- NULL
+  if (lang=="EN" & !is.null(EBSA_sf)) {
+    EBSATable <- st_drop_geometry(dplyr::select(EBSA_sf, c(Report, Report_URL,
+                                                           Name, Bioregion)))
+    EBSATable <- unique(EBSATable)
+    row.names(EBSATable) <- NULL
+    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
   } else if (lang=="FR" & !is.null(EBSA_sf)) {
-    c(paste("Report: ", EBSA_sf$Rapport),
-      paste("Report URL:", EBSA_sf$RapportURL),
-      paste("Location: ", EBSA_sf$Nom),
-      paste("Bioregion: ", EBSA_sf$Bioregion) 
-    )
-  } else {
-    ""
+    EBSATable <- st_drop_geometry(dplyr::select(EBSA_sf, c(Rapport, RapportURL,
+                                                           Nom, Bioregion)))
+    EBSATable <- unique(EBSATable)
+    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
+    row.names(EBSATable) <- NULL
+    
   }
-
-    uniqueEBSAreport <- unique(noquote(EBSAreport))
-  writeLines(uniqueEBSAreport, sep="\n\n")
+  return(EBSATable)
 }
 
 

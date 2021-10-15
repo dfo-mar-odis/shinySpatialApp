@@ -19,3 +19,25 @@ copy_rdata_files <- function() {
   return("Data files up to date :)")  
 
 }
+
+
+load_rdata <- function(rdataNames, regionStr, env){
+  regionDir <- here::here("app/data", regionStr)
+  lapply(rdataNames, find_and_load, regionDir = regionDir, env = env)
+}
+
+
+find_and_load <- function(rdataStr, regionDir, env){
+  fileName <- paste(rdataStr, ".RData", sep="")
+  fileList <- list.files(regionDir, fileName, recursive=TRUE, full.names=TRUE, include.dirs=FALSE)
+  if (length(fileList) == 1) {
+    load(fileList, envir = env)
+  } else if(length(fileList) == 0) {
+    errMesage <- paste("R data file", fileName, "not found in", regionDir, ".")
+    stop(errMessage)
+  } else {
+    errMesage <- paste("Duplicates of R data file", fileName, "found in", regionDir, ".")
+    stop(errMessage)
+  }
+}
+

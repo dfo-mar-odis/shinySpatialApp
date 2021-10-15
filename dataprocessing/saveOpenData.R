@@ -1,5 +1,6 @@
 
 source(here::here("dataprocessing/openDataHelpers.R"))
+marRegion <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
 
 
 # ----------------EBSA----------------- #good
@@ -8,6 +9,8 @@ EBSAresId <- "ec990fd7-91b0-4dbb-a0f4-bb11070a84c1"
 
 EBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId)
 EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL, ".pdf", ".html")
+EBSA_rr$data_sf <- sf::st_crop(EBSA_rr$data_sf, marRegion)  
+save(EBSA_rr, file = here::here("app/data/MAR/Open/EBSA_rr.RData"))
 
 
 # -----------SAR DIST--------------
@@ -40,7 +43,8 @@ nbwPkgId <- "9fd7d004-970c-11eb-a2f3-1860247f53e3"
 nbwResId <- "f69a7d34-7c18-485b-98d7-8d45b7f8a3ce"
 nbwLayer <- "NorthernBottlenoseWhale_InterCanyonHabitat"
 nbw_rr <- get_opendata_rr(nbwPkgId, nbwResId, gdbLayer = nbwLayer)
-
+nbw_rr$data_sf <- sf::st_crop(nbw_rr$data_sf, marRegion)  
+save(nbw_rr, file = here::here("app/data/MAR/Open/nbw_rr.RData"))
 
 # -----------BW hab-------------- # good
 bwhabPkgId <- "8fafd919-fcbe-43a3-a911-3d9461273441"
