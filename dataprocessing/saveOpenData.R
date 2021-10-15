@@ -2,6 +2,7 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 marRegion <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
+setwd(here::here("app/data/MAR"))
 
 
 # ----------------EBSA----------------- #good
@@ -15,11 +16,12 @@ if ("EBSA_rr" %in% ls()) {
   checkDate <- NULL
 }
 
-EBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId, checkDate = checkDate)
-if(!is.null(EBSA_rr)) {
+OpenEBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId, checkDate = checkDate)
+if(!is.null(OpenEBSA_rr)) {
+  EBSA_rr <- OpenEBSA_rr
   EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL, ".pdf", ".html")
   EBSA_rr$data_sf <- sf::st_crop(EBSA_rr$data_sf, marRegion)  
-  save(EBSA_rr, file = here::here("app/data/MAR/Open/EBSA_rr.RData"))
+  save(EBSA_rr, file = "./Open/EBSA_rr.RData")
 }
 
 
