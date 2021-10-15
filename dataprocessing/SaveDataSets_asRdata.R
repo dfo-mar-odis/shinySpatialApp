@@ -41,11 +41,11 @@ rockweed_sf <- st_read("../Data/NaturalResources/Species/Rockweed/MAR_rockweed_p
 rockweed_sf <- st_transform(rockweed_sf, 4326) # Project to WGS84
 rockweed_sf <- st_make_valid(rockweed_sf)
 # set status column
-poly_sf$status = ""
-poly_sf$status[which(poly_sf$RWP==1)] = "Present"
-poly_sf$status[which(poly_sf$RWP==2)] = "Likely Present"
-poly_sf$status[which(poly_sf$RWP==5)] = "Unknown"
-poly_sf$status[which(poly_sf$RWP==0)] = "Not Present"
+rockweed_sf$status = ""
+rockweed_sf$status[which(rockweed_sf$RWP==1)] = "Present"
+rockweed_sf$status[which(rockweed_sf$RWP==2)] = "Likely Present"
+rockweed_sf$status[which(rockweed_sf$RWP==5)] = "Unknown"
+rockweed_sf$status[which(rockweed_sf$RWP==0)] = "Not Present"
 
 
 # Table of SARA listed species
@@ -58,6 +58,8 @@ listed_species <- listed_species %>% rename("SARA status"=Schedule.status,
                                             "COMMONNAME"=Common_Name_upper,
                                             "Scientific Name"=Scientific_Name,
                                             "Common Name"=Common_Name)
+listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
+row.names(listed_species) <- NULL
 
 ####### Species Lists  #######
 cetacean_list <- c("BELUGA WHALE", "NORTH ATLANTIC RIGHT WHALE", "FIN WHALE", 

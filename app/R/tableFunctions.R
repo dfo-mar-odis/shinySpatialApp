@@ -25,14 +25,14 @@ rockweedStats<- function(rockweed_sf) {
   noRecords = as.data.frame(table(rw$status))
   totalArea = aggregate(as.numeric(rw$area), list(rw$status), sum)
   stats = merge(noRecords, totalArea, by.x="Var1", by.y="Group.1")
-  
+
   statusCol <- totalArea$Group.1
   stats <- dplyr::select(stats, c("Freq", "x"))
   stats = rbind(stats, colSums(stats))
   statusCol[nrow(stats)] = "Total intertidal vegetation"
   stats$status <- statusCol
   stats <- dplyr::select(stats, c("status", "Freq", "x"))
-  
+
   names(stats) = c("Status", "noPolygons", "Area_m2")
 
   stats$Area_km2 = round(stats$Area_m2 / 1000) / 1000
@@ -57,7 +57,11 @@ rockweedStats<- function(rockweed_sf) {
 # 2. sarData: datatable of only listed species found within the studyArea
 
 create_table_RV <- function(data_sf, sarTable, speciesTable) {
-  
+
+  if (is.null(data_sf)) {
+    return(list("allSpecies" = NULL, "sarData" = NULL))
+  }
+
   # calculate the number of unique sample locations
   Samples_study_no <- dim(unique(data_sf[, c("geometry")]))[1]
   # calculate a table of all species caught and
@@ -68,8 +72,8 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
     x = list(Individuals = data_sf$TOTNO),
     by = list(CODE = data_sf$CODE),
     FUN = sum)
-  
-  recordCounts <- aggregate( 
+
+  recordCounts <- aggregate(
     x = list(Records = data_sf$CODE),
     by = list(CODE = data_sf$CODE),
     FUN = length)
@@ -81,22 +85,22 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
   # into a new field for Frequency
   allSpeciesData <- allSpeciesData %>% tidyr::unite("Frequency", c(Records, Samples),
                                                     sep = "/", remove = FALSE)
-  
+
   allSpeciesData <- dplyr::select(allSpeciesData, "Scientific Name", "Common Name",
                                   Individuals, Frequency)
-  
+
   # filter allSpeciesData for only SAR species, add status values
-  sarData <- filter(allSpeciesData, `Scientific Name` %in% 
+  sarData <- filter(allSpeciesData, `Scientific Name` %in%
                       sarTable$`Scientific Name`)
   # need this select to avoid duplicate "common name" col.
   sarData <- dplyr::select(sarData, "Scientific Name", Individuals, Frequency)
   sarData <- merge(sarData, sarTable, by = 'Scientific Name')
   sarData <- dplyr::select(sarData, "Scientific Name", "Common Name",
                            "SARA status", "COSEWIC status", Individuals, Frequency)
-  
+
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
   sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
-  
+
   # order the tables by number of individuals caught (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Individuals)), ]
   sarData <- sarData[with(sarData, order(-Individuals)), ]
@@ -121,31 +125,35 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. sarData: datatable of only listed species found within the studyArea
 create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
-  
+
+  if (is.null(data_sf)) {
+    return(list("allSpecies" = NULL, "sarData" = NULL))
+  }
+
   # set record column and join with speciesTable
   allSpeciesData <- aggregate(
     x = list(Records = data_sf$SPECIES_CODE),
     by = list(SPECIES_CODE = data_sf$SPECIES_CODE),
     FUN = length)
-  
+
   allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'SPECIES_CODE')
   allSpeciesData <- allSpeciesData %>% rename("Common Name"= COMMONNAME)
-  
+
   data1 <- merge(data_sf, speciesTable, by = 'SPECIES_CODE')
   data1$Common_Name_MARFIS <- data1$COMMONNAME
-  
+
   # Merge the data_sf with the listed_species table
   # and create a frequency table of all listed species
   # caught
   data1 <- merge(data1, sarTable, by = 'Common_Name_MARFIS')
   # data1 <- data1 %>% rename("SCIENTIFICNAME" = Scientific_Name)
-  
+
   sarData <- aggregate(
     x = list(Records = data1$'Scientific Name'),
     by = list('Scientific Name' = data1$'Scientific Name'),
     length)
   sarData <- merge(sarData, sarTable, by = 'Scientific Name')
-  
+
   allSpeciesData <- dplyr::select(allSpeciesData, 'Common Name', Records)
   allSpeciesData <- allSpeciesData %>% rename(CName = 'Common Name')
   allSpeciesData <- allSpeciesData %>% transmute(allSpeciesData,
@@ -153,16 +161,16 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   allSpeciesData <- allSpeciesData %>% rename('Common Name' = CName)
   sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
                            "SARA status","COSEWIC status", Records)
-  
+
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
   sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
-  
+
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
   sarData <- sarData[with(sarData, order(-Records)), ]
   row.names(allSpeciesData) <- NULL
   row.names(sarData) <- NULL
-  outList <- list(allSpeciesData, sarData)
+  outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
 ##### - END create_table_MARFIS function ##################################
@@ -182,10 +190,14 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
 # 2. datatable2: datatable of only listed species found within the studyArea
 
 create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
-  
+
+  if (is.null(data_sf)) {
+    return(list("allSpecies" = NULL, "sarData" = NULL))
+  }
+
   # calculate frequency of ISDB samples and join
   # to species lookup tables
-  
+
   allSpeciesData <- aggregate(
     x = list(Records = data_sf$SPECCD_ID),
     by = list(SPECCD_ID = data_sf$SPECCD_ID),
@@ -195,29 +207,29 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   # Merge the data_sf with the listed_species table
   # and create a frequency table of all listed species
   # caught
-  data1 <- merge(data1,sarTable, by = 'Scientific Name')
-  
+  data1 <- merge(data1, sarTable, by = 'Scientific Name')
+
   sarData <- aggregate(
     x = list(Records = data1$'Scientific Name'),
     by = list('Scientific Name' = data1$'Scientific Name'),
     length)
   sarData <- merge(sarData, sarTable, by = 'Scientific Name')
-  
-  
+
+
   allSpeciesData <- dplyr::select(allSpeciesData, 'Scientific Name', 'Common Name', Records)
   sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
                            "SARA status","COSEWIC status", Records)
-  
+
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
   sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
-  
+
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
   sarData <- sarData[with(sarData, order(-Records)), ]
   row.names(allSpeciesData) <- NULL
   row.names(sarData) <- NULL
-  
-  outList <- list(allSpeciesData, sarData)
+
+  outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
 ##### - END create_table_ISDB function ##################################
@@ -236,17 +248,21 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
 # 1. outTable: datatable of all species found within the studyArea
 
 create_table_OBIS <- function(data_sf) {
-  
+
+  if (is.null(data_sf)) {
+    return(NULL)
+  }
+
   # calculate frequency of OBIS samples
   outTable <- data_sf
-  
+
   outTable <- dplyr::select(outTable, "Scientific Name", "Common Name",
                             "SARA status","COSEWIC status")
   outTable$geometry <- NULL
   outTable <- unique(outTable)
-  
+
   outTable$`Scientific Name` <- italicize_col(outTable$`Scientific Name`)
-  
+
   row.names(outTable) <- NULL
   return(outTable)
 }
@@ -278,11 +294,17 @@ sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
 # Generates table for SAR distribution data
 # Inputs:
 # clippedSardist_sf: Sardist data clipped to area of interest
-# 
+#
 # Outputs:
 # distTable: table used in the report
 #
 table_dist <- function(clippedSardist_sf) {
+
+  if (is.null(clippedSardist_sf)) {
+    return(NULL)
+  }
+
+
   clippedSardist_sf$Common_Nam[clippedSardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
   distTable <- dplyr::select(clippedSardist_sf, Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
   sf::st_geometry(distTable) <- NULL
@@ -290,7 +312,7 @@ table_dist <- function(clippedSardist_sf) {
   distTable <- unique(distTable)
   distTable$Scientific <- italicize_col(distTable$Scientific)
   names(distTable) <- c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
-  
+
   return(distTable)
 }
 
@@ -298,7 +320,7 @@ table_dist <- function(clippedSardist_sf) {
 # helper function that italicizes a column of a table in RMD.
 italicize_col <- function(tableCol) {
   if (length(tableCol > 0)) {
-    return(paste("_", tableCol, "_", sep = ""))  
+    return(paste("_", tableCol, "_", sep = ""))
   } else {
     return(NULL)
   }
@@ -311,35 +333,35 @@ italicize_col <- function(tableCol) {
 # Inputs:
 # CCH_sf: Critical habitat data clipped to area of interest
 # LB_sf: Leatherback data clipped to area of interest
-# 
+#
 # Outputs:
 # critTable: table used in the report
 #
 table_crit <- function(CCH_sf, LB_sf) {
-  
+
   if (!is.null(CCH_sf)){
     critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
     critTable$geometry <- NULL
     names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
   } else {
     # only set names after init to preserve spaces etc.
-    critTable <- data.frame("a"=NA, "b"=NA, "c"=NA, "d"=NA) 
+    critTable <- data.frame("a"=NA, "b"=NA, "c"=NA, "d"=NA)
     names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
   }
-  
+
   if (!is.null(LB_sf)){
     leatherbackRow <- data.frame("Leatherback Sea Turtle", NA, paste(LB_sf$AreaName, collapse=', ' ), "Endangered" )
     names(leatherbackRow) <- names(critTable)
     critTable <- bind_rows(critTable, leatherbackRow)
   }
- 
+
   # remove rows with NA area, dump duplicates:
   critTable <- distinct(critTable[!is.na(critTable$Area), ])
-  
+
   if (!nrow(critTable) >= 1){
     return(NULL)
   } else {
-    return(critTable)  
+    return(critTable)
   }
 }
 
@@ -351,7 +373,7 @@ table_crit <- function(CCH_sf, LB_sf) {
 # Inputs:
 # EBSA_sf: EBSA data clipped to area of interest
 # lang: "EN" or "FR", toggles language of data returned
-# 
+#
 # Outputs:
 # Directly writes table
 #
@@ -369,9 +391,108 @@ EBSA_report <- function(EBSA_sf, lang="EN") {
     EBSATable <- unique(EBSATable)
     names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
     row.names(EBSATable) <- NULL
-    
+
   }
   return(EBSATable)
 }
 
+# ---------add_col_to_whale_summary-------
+# Adds a column with number of records to the cetacean summary table
+# Inputs:
+# whaleSummary: Table generated in cetacean setup chunk. Contains a "Species" column.
+# dbName: Name of column header to add to summary table
+# data_sf: cetacean sf object clipped to study area
+# attribute: column header of column in data_sf with species names matching whaleSummary column
+#
+# Outputs:
+# whaleSummary: updated whaleSummary with added column
+#
+add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
+  if (!is.null(data_sf)){
+    data_sf$summaryCol <- data_sf[[attribute]]
+    data_sf <- st_drop_geometry(data_sf)
+    data_sf <-data_sf %>% dplyr::select(summaryCol) %>%
+      group_by(summaryCol) %>%
+      summarise(noRecords = length(summaryCol))
+  } else {
+    data_sf <- whaleSummary
+    data_sf$summaryCol <- data_sf$Species
+    data_sf[["noRecords"]] <- rep(0, nrow(whaleSummary))
+  }
 
+  whaleSummary[[dbName]] <- merge(whaleSummary, data_sf, by.x="Species", by.y ="summaryCol", all=TRUE)$noRecords
+  whaleSummary[is.na(whaleSummary)] <- 0
+  return(whaleSummary)
+}
+
+
+# ---------add_col_to_sar_summary-------
+# Adds a column with presence/absence to the SAR summary table
+# Inputs:
+# sarSummary: Table generated in intro setup chunk. Contains a "Species" column.
+# dbName: Name of column header to add to summary table
+# data_sf: sf object clipped to study area
+# indexCol: column header of column in data_sf with species names matching sarSummary column
+# attributeCol: column header of column in data_sf with species presence/absence
+#               matching sarSummary column. Can also be set to indexCol if not present.
+#
+# Outputs:
+# sarSummary: updated sarSummary with added column
+#
+add_col_to_sar_summary <- function(sarSummary, dbName, dataTable, indexCol, attributeCol) {
+  absentCode <- "&nbsp;-&nbsp;"
+  presentCode <- "&#x2714;"
+
+  if (!is.null(dataTable)){
+    if (indexCol == attributeCol) {
+      dataTable <- distinct(dataTable, !!sym(indexCol))
+    }
+    dataTable$summaryCol <-ifelse(dataTable[[attributeCol]] > 0, presentCode, absentCode)
+    dataTable$speciesCol <- dataTable[[indexCol]]
+    dataTable <- filter(dataTable, speciesCol %in% sarSummary$Species)
+  } else {
+    dataTable <- sarSummary
+    dataTable$speciesCol <- dataTable$Species
+    dataTable$summaryCol <- rep(absentCode, nrow(sarSummary))
+  }
+
+  sarSummary[[dbName]] <- merge(sarSummary, dataTable, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol
+  return(sarSummary)
+}
+# ---------add_to_hab_summary-------
+# Adds entries to a column with dbname in each cell.
+# Inputs:
+# summaryTable: One row table generated in intro setup chunk.
+# dbName: Name of column header to add to summary table
+# present: boolean indicating whether or not data was found in database for this table
+# Outputs:
+# summaryTable: updated summaryTable with added column
+#
+add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCol, attributeCol) {
+
+  if (!is.null(dataTable)){
+    if (indexCol == attributeCol) {
+      dataTable <- distinct(dataTable, !!sym(indexCol))
+    }
+    dataTable$summaryCol <-ifelse(dataTable[[attributeCol]] > 0, dbName, NA)
+    dataTable$speciesCol <- dataTable[[indexCol]]
+    dataTable <- filter(dataTable, speciesCol %in% summaryTable$Species)
+    dataTable <- filter(dataTable, lengths(summaryCol) > 0)
+    tempCol <- merge(summaryTable, dataTable, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol
+
+    # nested ifelse to set column value to either new value if not NA, or
+    # combination of old and new if both were present
+    summaryTable[[colName]] <- ifelse(!(tempCol %in% c(NA)),
+                                      ifelse(summaryTable[[colName]] %in% c(NA),
+                                             tempCol,
+                                             paste(summaryTable[[colName]],
+                                                   tempCol, sep = ", ")),
+                                      summaryTable[[colName]])
+  }
+  return(summaryTable)
+}
+
+#helper function to trim whale legends down to common name
+get_cetacean_common_name <- function(dataCol) {
+ return(sub("\\:.*", "", dataCol))
+}
