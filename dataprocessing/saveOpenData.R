@@ -1,5 +1,6 @@
 
 source(here::here("dataprocessing/openDataHelpers.R"))
+source(here::here("app/R/dataFunctions.R"))
 marRegion <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
 
 
@@ -7,10 +8,19 @@ marRegion <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojso
 EBSApkgId <- "d2d6057f-d7c4-45d9-9fd9-0a58370577e0"
 EBSAresId <- "ec990fd7-91b0-4dbb-a0f4-bb11070a84c1"
 
-EBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId)
-EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL, ".pdf", ".html")
-EBSA_rr$data_sf <- sf::st_crop(EBSA_rr$data_sf, marRegion)  
-save(EBSA_rr, file = here::here("app/data/MAR/Open/EBSA_rr.RData"))
+loadResult <- load_rdata("EBSA_rr", "MAR")
+if ("EBSA_rr" %in% ls()) {
+ checkDate <- EBSA_rr$accessedDate       
+} else {
+  checkDate <- NULL
+}
+
+EBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId, checkDate = checkDate)
+if(!is.null(EBSA_rr)) {
+  EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL, ".pdf", ".html")
+  EBSA_rr$data_sf <- sf::st_crop(EBSA_rr$data_sf, marRegion)  
+  save(EBSA_rr, file = here::here("app/data/MAR/Open/EBSA_rr.RData"))
+}
 
 
 # -----------SAR DIST--------------

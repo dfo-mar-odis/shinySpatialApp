@@ -1,6 +1,5 @@
 ``` {r load-planning-data, echo=FALSE}
-
-filesLoaded <- load_rdata(c("EBSA_rr"), "MAR", globalenv())
+filesLoaded <- load_rdata(c("EBSA_rr"), "MAR")
 
 ```
 

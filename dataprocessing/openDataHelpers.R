@@ -6,8 +6,17 @@ source(here::here("app/R/helpers.R"))
 ckanr_setup(url="https://open.canada.ca/data")
 
 
-get_opendata_rr <- function(pkgId, resId, gdbLayer=NULL) {
+get_opendata_rr <- function(pkgId, resId, gdbLayer=NULL, checkDate=NULL) {
   opendataPKG <- package_show(pkgId)
+  
+  # check if package has been updated since checkdate
+  if (!is.null(checkDate)){
+    pkgTime <- strptime(opendataPKG$date_modified, "%Y-%m-%d %H:%M:%S")
+    if (pkgTime < checkDate) {
+      return(NULL)
+    }
+  }
+  
   pkgTitle <- opendataPKG$title_translated
   contactInfo <- opendataPKG$metadata_contact
   pkgText <- opendataPKG$notes_translated
@@ -24,7 +33,8 @@ get_opendata_rr <- function(pkgId, resId, gdbLayer=NULL) {
   out_rr <- list("title" = pkgTitle,
                  "text" = pkgText,
                  "attribute" = "NONE",
-                 "accessedOn" = accessedDate,
+                 "accessedOnStr" = accessedDate,
+                 "accessedDate" = today(),
                  "contact" = contactInfo,
                  "data_sf" = data_sf)
   return(out_rr)
