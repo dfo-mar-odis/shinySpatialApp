@@ -52,14 +52,14 @@ if(!is.null(EBSAoutput$studyData)){
 }
 ```
 
-### **Draft Conservation Network Design: existing and potential future marine protected areas (MPAs) and other spatial conservation areas** {#MPA-section}
+### **Draft Conservation Network Design** {#MPA-section}
 
 ```{r MPA-section, results='asis'}
 write_meta(mpa_rr)
 # writeLines(noquote(mpa_rr$text))
 
 ```
-A key milestone and focal point for the planning process is the Draft Conservation Network Design, which is a map of both existing and potential future marine protected areas (MPAs) and other spatial conservation areas that would contribute to the long-term conservation of marine biodiversity in the bioregion. The Draft Design was originally drafted in 2017 following an extensive spatial conservation analysis led by Fisheries and Oceans Canada (DFO). While some discussion on the Draft Design has been ongoing with our provincial and First Nations partners since that time, events such as the COVID-19 pandemic have limited the scope and pace of the overall engagement process.
+A key milestone and focal point for the planning process is the Draft Conservation Network Design, which is a map of both existing and potential future marine protected areas (MPAs) and other spatial conservation areas that would contribute to the long-term conservation of marine biodiversity in the bioregion. The Draft Design was originally drafted in 2017 following an extensive spatial conservation analysis led by Fisheries and Oceans Canada (DFO). While some discussion on the Draft Design has been ongoing with provincial and First Nations partners since that time, events such as the COVID-19 pandemic have limited the scope and pace of the overall engagement process.
 
 Marine Planning and Conservation at DFO has initiated a two-phased engagement process on the Draft Design to inform the completion of a Conservation Network Plan for the Scotian Shelf-Bay of Fundy bioregion. During Phase 1, DFO will be undertaking targeted discussions with federal and provincial departments, First Nations and Indigenous groups, and key stakeholders, such as the fishing industry. The primary purpose of Phase 1 is to provide those with previous involvement in the process with an opportunity to review and provide written feedback on the Draft Design by December 31, 2021. In 2022, the Draft Design will be revised based on the feedback received. Phase 2 is planned for early 2023 and will include a broader public engagement process. The Marine Conservation Network Plan will be completed by 2024 and will be updated periodically as new information becomes available.
 
@@ -91,14 +91,14 @@ mpaCheckOuput <- if(!is.null(mpaClipped$studyData)){
 writeLines(mpaCheckOuput)
 ```
 
-```{r mpa-region-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none.Map of the Draft Conservation Network Design for the Scotian Shelf-Bay of Fundy Bioregion. Boundaries of the proposed new sites are preliminary and subject to change following engagementa and consultation. '}
+```{r mpa-region-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none.Map of the Draft Conservation Network Design for the Scotian Shelf-Bay of Fundy Bioregion. Boundaries of the proposed new sites are preliminary and subject to change following engagement and consultation. '}
 if (!is.null(mpaClipped$regionData)){
   plot_rr_sf(regionMap, mpaClipped$regionData, mpa_rr$attribute, outlines=FALSE, colorMap = mpaCols,
                             alphaMap = mpaAlphas)
 }
 ```
 
-```{r mpa-area-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map of the Draft Conservation Network Design in the search area defined by the user (red outline). Boundaries of the proposed new sites are preliminary and subject to change following engagementa and consultation.'}
+```{r mpa-area-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map of the Draft Conservation Network Design in the search area defined by the user (red outline). Please see table below for names of each specific area. Boundaries of the proposed new sites are preliminary and subject to change following engagement and consultation.'}
 if(!is.null(mpaClipped$studyData)){
   mpaStudyLabels <- filter(st_centroid(mpaClipped$mapData), Id > 0) %>% dplyr::select(c("Id"))
 
@@ -109,6 +109,6 @@ if(!is.null(mpaClipped$studyData)){
 
 ```{r mpa-table, echo=FALSE, results='asis', caption="MPA table"}
 if (!is.null(mpaTable)) {
-  knitr::kable(mpaTable, align="l", caption="Quality Tier: High Security level: none. Area and names of Marine Protected Areas located within study area..</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(mpaTable, align="l", caption="Quality Tier: High Security level: none. Area and names of spatial conservation areas that overlap the search area..</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
