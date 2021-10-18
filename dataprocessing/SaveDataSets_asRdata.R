@@ -109,6 +109,16 @@ ClippedCritHab_sf <- st_make_valid(ClippedCritHab_sf)
 NBNW_ImpHab_sf <- st_read(dsn = "../Data/NaturalResources/Species/Cetaceans/NorthernBottlenoseWhale_FGP/NorthernBottlenose.gdb", layer = "NorthernBottlenoseWhale_InterCanyonHabitat", stringsAsFactors = FALSE)
 NBNW_ImpHab_sf <- st_make_valid(NBNW_ImpHab_sf)
 
+
+# Electrofishing
+st_layers(here::here("../../../temp/EFishing_DFOScience.gdb"))
+EfSurvey_sf <- st_read(here::here("../../../temp/EFishing_DFOScience.gdb"), layer = "EFish_IBoF_2014_nonLGB_Rivers_2018" )
+EfSurvey_sf <- dplyr::select(EfSurvey_sf, c("AtlanticSalmon", "AmericanEel", "BrookTrout", "BrownTrout", "RainbowTrout",  "BlacknoseDace", 
+                       "CommonShiner", "ChubSpp", "CreekChub", "LakeChub", "GoldenShiner", 
+                       "SlimySculpin", "SticklebackSpp", "WhiteSucker", "Document", "Year_"))
+
+
+
 # Priority areas to enhance monitoring of cetaceans- Species Distribution Model (SDM) outputs
 # New files updated 7/26/2021
 fin_whale <- raster("../Data/NaturalResources/Species/Cetaceans/PriorityAreas_FGP/Cetaceans_Tiff/Fin_Whale.tif")
