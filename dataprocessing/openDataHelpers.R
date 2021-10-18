@@ -11,9 +11,16 @@ get_opendata_rr <- function(pkgId, resId, gdbLayer=NULL, checkDate=NULL) {
   
   # check if package has been updated since checkdate
   if (!is.null(checkDate)){
-    pkgTime <- strptime(opendataPKG$date_modified, "%Y-%m-%d %H:%M:%S")
-    if (pkgTime < checkDate) {
-      return(NULL)
+    if ("date_modified" %in% names(opendataPKG)) {
+      pkgTime <- strptime(opendataPKG$date_modified, "%Y-%m-%d %H:%M:%S")  
+      if (pkgTime < checkDate) {
+        return(NULL)
+      }
+    } else if ("metadata_modified" %in% names(opendataPKG)) {
+      pkgTime <- strptime(opendataPKG$metadata_modified, "%Y-%m-%dT%H:%M:%S")  
+      if (pkgTime < checkDate) {
+        return(NULL)
+      }
     }
   }
   
@@ -72,10 +79,18 @@ download_extract_validate_sf <- function(zipUrl, gdbLayer=NULL) {
     out_sf <- st_cast(out_sf, "MULTIPOLYGON")
   }
   out_sf <- st_make_valid(out_sf)
-  # as.data.frame(table(st_geometry_type(test_sf)))
   # cleanup
   tempFiles <- list.files(tempDir, include.dirs = T, full.names = T, recursive = T)
   unlink(tempFiles, recursive = TRUE) 
   
   return(out_sf)
+}
+
+get_check_date <- function(varName) {
+  checkDate <- NULL
+  if (varName %in% ls(globalenv())) {
+    var_rr <- get(varName)
+    checkDate <- var_rr$accessedDate
+  }
+  return(checkDate)
 }

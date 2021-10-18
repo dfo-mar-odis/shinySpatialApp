@@ -34,11 +34,11 @@ find_and_load <- function(rdataStr, regionDir, env=globalenv()){
     load(fileList, envir = env)
     return(TRUE)
   } else if(length(fileList) == 0) {
-    errMesage <- paste("R data file", fileName, "not found in", regionDir, ".")
+    errMessage <- paste("R data file", fileName, "not found in", regionDir, ".")
     warning(errMessage)
     return(NULL)
   } else {
-    errMesage <- paste("Duplicates of R data file", fileName, "found in", regionDir, ".")
+    errMessage <- paste("Duplicates of R data file", fileName, "found in", regionDir, ".")
     warning(errMessage)
     return(NULL)
   }
