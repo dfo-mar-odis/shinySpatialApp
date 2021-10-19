@@ -254,6 +254,7 @@ ocearch <- read.csv(textConnection(lines), quote = '""')
 ocearch <- dplyr::select(ocearch, c("Date", "long", "lat", "ID"))
 ocearch_sf <- st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
 
+
 # Marine Protected Areas (mpa)
 conservationSites_raw <- st_read("../Data/Management/MPAN-Draft/MPAN_DraftDesign_Maritimes/MPAN_DraftDesign_Maritimes.shp", stringsAsFactors = FALSE)
 conservationSites_sf <- st_transform(conservationSites_raw, crs = 4326)

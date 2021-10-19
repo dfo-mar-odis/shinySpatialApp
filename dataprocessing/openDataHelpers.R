@@ -6,7 +6,7 @@ source(here::here("app/R/helpers.R"))
 ckanr_setup(url="https://open.canada.ca/data")
 
 
-get_opendata_rr <- function(pkgId, resId, gdbLayer=NULL, checkDate=NULL) {
+get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, checkDate=NULL) {
   opendataPKG <- package_show(pkgId)
   
   # check if package has been updated since checkdate
@@ -28,21 +28,28 @@ get_opendata_rr <- function(pkgId, resId, gdbLayer=NULL, checkDate=NULL) {
   contactInfo <- opendataPKG$metadata_contact
   pkgText <- opendataPKG$notes_translated
   
-  data_sf <- get_opendata_sf(resId, gdbLayer=gdbLayer)
+  data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer)
   
+  url <- list("en" = paste("<https://open.canada.ca/data/en/dataset/", pkgId, ">", sep =""), 
+              "fr" = paste("<https://open.canada.ca/data/fr/dataset/", pkgId, ">", sep =""))  
+  securityLevel <- list("en" = "None", "fr"= "Aucun")
+  constraints <- list("en" = "None", "fr"= "Aucun")
+  accessedDate <- list("en" = NA, "fr" = NA)
   # date nonesense:
-  accessedDate <- list("en"=NA, "fr"=NA)
   Sys.setlocale(locale = "French")
-  accessedDate$fr <- strftime(today(), "%B %d, %Y")
+  accessedDate$fr <-paste(strftime(today(), "%B %d, %Y"), "sur le Portail de données ouvertes", url$fr)
   Sys.setlocale(locale = "English")
-  accessedDate$en <- strftime(today(), "%B %d, %Y")
+  accessedDate$en <- paste(strftime(today(), "%B %d, %Y"), "from Open Data", url$en)
   
   out_rr <- list("title" = pkgTitle,
                  "text" = pkgText,
+                 "url" = url,
                  "attribute" = "NONE",
                  "accessedOnStr" = accessedDate,
                  "accessedDate" = today(),
                  "contact" = contactInfo,
+                 "constraints" = constraints,
+                 "securityLevel" = securityLevel,
                  "data_sf" = data_sf)
   return(out_rr)
 }
@@ -54,7 +61,7 @@ get_opendata_sf <- function(resId, ...) {
   return(out_sf)
 }
 
-download_extract_validate_sf <- function(zipUrl, gdbLayer=NULL) {
+download_extract_validate_sf <- function(zipUrl, region_sf=NULL, gdbLayer=NULL) {
   tempDir <- here::here("dataprocessing/temp")
   temp <- here::here("dataprocessing/temp/temp.zip")
   
@@ -72,13 +79,20 @@ download_extract_validate_sf <- function(zipUrl, gdbLayer=NULL) {
     out_sf <- out_gdb
     out_sf$geometry <- st_geometry(out_gdb)
   }
-
-  out_sf <- st_transform(out_sf, crs = 4326)
   
   if  (inherits(sf::st_geometry(out_sf), "sfc_GEOMETRY")) {
     out_sf <- st_cast(out_sf, "MULTIPOLYGON")
   }
   out_sf <- st_make_valid(out_sf)
+  
+  if (!is.null(region_sf)) {
+    newRegion_sf <- st_transform(region_sf, crs = sf::st_crs(out_sf))
+    out_sf <- sf::st_crop(out_sf, newRegion_sf)
+  }
+  
+  out_sf <- st_transform(out_sf, crs = 4326)
+  
+  
   # cleanup
   tempFiles <- list.files(tempDir, include.dirs = T, full.names = T, recursive = T)
   unlink(tempFiles, recursive = TRUE) 

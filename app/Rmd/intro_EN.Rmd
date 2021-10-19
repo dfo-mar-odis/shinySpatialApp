@@ -66,7 +66,7 @@ summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC
 
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
-<!--```{r child = '../Rmd/report_SARA_EN.Rmd'}
+<!--```{r child = '../Rmd/report_planning_EN.Rmd'}
 ```-->
 
 <!-- END  -->

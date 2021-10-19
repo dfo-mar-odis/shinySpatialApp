@@ -9,6 +9,8 @@ setwd(here::here("app/data/MAR"))
 loadResult <- load_rdata(c("EBSA_rr", "crithab_rr", "sardist_rr", "sdm_rr", 
                            "nbw_rr", "bwhab_rr"),  "MAR")
 
+highQuality <- list("en" = "High", "fr" = "Élevée")
+noneList <- list("en" = "None", "fr"= "Aucun")
 
 # ----------------EBSA----------------- 
 EBSApkgId <- "d2d6057f-d7c4-45d9-9fd9-0a58370577e0"
@@ -16,12 +18,14 @@ EBSAresId <- "ec990fd7-91b0-4dbb-a0f4-bb11070a84c1"
 
 EBSAcheckDate <- get_check_date("EBSA_rr")
 
-OpenEBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId, checkDate = EBSAcheckDate)
+OpenEBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId, region_sf = region_sf,
+                               checkDate = EBSAcheckDate)
 if(!is.null(OpenEBSA_rr)) {
   EBSA_rr <- OpenEBSA_rr
   EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL,
                                             ".pdf", ".html")
-  EBSA_rr$data_sf <- sf::st_crop(EBSA_rr$data_sf, region_sf)  
+  EBSA_rr$qualityTier <- highQuality
+  EBSA_rr$contact <- "[carissa.philippe\\@dfo-mpo.gc.ca](mailto:carissa.philippe@dfo-mpo.gc.ca){.email}"
   save(EBSA_rr, file = "./Open/EBSA_rr.RData")
 }
 
