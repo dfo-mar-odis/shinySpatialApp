@@ -396,6 +396,35 @@ EBSA_report <- function(EBSA_sf, lang="EN") {
   return(EBSATable)
 }
 
+# ---------MPA_REPPRT-------
+# Generates table for Marine protected area (MPA) data
+# Inputs:
+# mpa_sf: MPA data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+#  mpaTable
+#
+mpa_table <- function(mpa_sf, lang="EN") {
+  mpa_sf <- dplyr::arrange(mpa_sf, Id)
+  # &nbsp; is a non breaking space which is needed to escape the hyphens in kable in shiny AND rmd
+  mpa_sf$Id <- gsub(0, "&nbsp;-&nbsp;", mpa_sf$Id)
+  mpaTable <- dplyr::select(mpa_sf, c("Id", "NAME", "Legend", "AreaKM2"))
+  mpaTable$AreaKM2 <- as.integer(mpaTable$AreaKM2)
+  mpaTable$geometry <- NULL
+
+
+  if (lang=="EN" & !is.null(mpa_sf)) {
+    names(mpaTable) <- c("Site #", "Site Name", "Satus", "Size (km2)")
+  } else if (lang=="FR" & !is.null(mpa_sf)) {
+    names(mpaTable) <- c("Site #", "Site Name", "Satus", "Size (km2)")
+  } else {
+    names(mpaTable) <- c("Site #", "Site Name", "Satus", "Size (km2)")
+  }
+  mpaTable <- distinct(mpaTable)
+  return(mpaTable)
+}
+
 # ---------add_col_to_whale_summary-------
 # Adds a column with number of records to the cetacean summary table
 # Inputs:
