@@ -57,8 +57,8 @@ if(!is.null(EBSAoutput$studyData)){
 ### **Draft Conservation Network Design: existing and potential future marine protected areas (MPAs) and other spatial conservation areas** {#MPA-section}
 
 ```{r MPA-section, results='asis'}
-write_meta(mpa_rr)
-# writeLines(noquote(mpa_rr$text))
+write_meta(conservationSites_rr)
+# writeLines(noquote(conservationSites_rr$text))
 
 ```
 A key milestone and focal point for the planning process is the Draft Conservation Network Design, which is a map of both existing and potential future marine protected areas (MPAs) and other spatial conservation areas that would contribute to the long-term conservation of marine biodiversity in the bioregion. The Draft Design was originally drafted in 2017 following an extensive spatial conservation analysis led by Fisheries and Oceans Canada (DFO). While some discussion on the Draft Design has been ongoing with our provincial and First Nations partners since that time, events such as the COVID-19 pandemic have limited the scope and pace of the overall engagement process.
@@ -72,10 +72,10 @@ It is important to note that Marine Conservation Network Plan will be aligned wi
 ```{r MPA-load-data, results='asis'}
 mpaCols <- c("dodgerblue3", "red", "darkorchid", "lawngreen",  "cyan3")
 mpaAlphas <- c(0.5, 0.5, 0.5, 0.5, 0.5)
-names(mpaCols) <- levels(as.factor(mpa_rr$data_sf[[mpa_rr$attribute]]))
-names(mpaAlphas) <- levels(as.factor(mpa_rr$data_sf[[mpa_rr$attribute]]))
+names(mpaCols) <- levels(as.factor(conservationSites_rr$data_sf[[conservationSites_rr$attribute]]))
+names(mpaAlphas) <- levels(as.factor(conservationSites_rr$data_sf[[conservationSites_rr$attribute]]))
 
-mpaClipped <- master_intersect(mpa_rr$data_sf,  mapDataList, getRegion=TRUE)
+mpaClipped <- master_intersect(conservationSites_rr$data_sf,  mapDataList, getRegion=TRUE)
 
 if(!is.null(mpaClipped$studyData)) {
   mpaTable <- mpa_table(mpaClipped$studyData)
@@ -95,7 +95,7 @@ writeLines(mpaCheckOuput)
 
 ```{r mpa-region-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none.Map of the Draft Conservation Network Design for the Scotian Shelf-Bay of Fundy Bioregion. Boundaries of the proposed new sites are preliminary and subject to change following engagementa and consultation. '}
 if (!is.null(mpaClipped$regionData)){
-  plot_rr_sf(regionMap, mpaClipped$regionData, mpa_rr$attribute, outlines=FALSE, colorMap = mpaCols,
+  plot_rr_sf(regionMap, mpaClipped$regionData, conservationSites_rr$attribute, outlines=FALSE, colorMap = mpaCols,
                             alphaMap = mpaAlphas)
 }
 ```
@@ -104,7 +104,7 @@ if (!is.null(mpaClipped$regionData)){
 if(!is.null(mpaClipped$studyData)){
   mpaStudyLabels <- filter(st_centroid(mpaClipped$mapData), Id > 0) %>% dplyr::select(c("Id"))
 
-  plot_rr_sf(areaMap, mpaClipped$mapData, mpa_rr$attribute, colorMap = mpaCols,
+  plot_rr_sf(areaMap, mpaClipped$mapData, conservationSites_rr$attribute, colorMap = mpaCols,
              labelData = mpaStudyLabels, labelAttribute = "Id", alphaMap = mpaAlphas)
 }
 ```

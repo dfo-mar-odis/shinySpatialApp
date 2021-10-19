@@ -254,26 +254,31 @@ ocearch <- read.csv(textConnection(lines), quote = '""')
 ocearch <- dplyr::select(ocearch, c("Date", "long", "lat", "ID"))
 ocearch_sf <- st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
 
-# Marine Protected Areas
-mpa_raw <- st_read("../Data/Management/MPAN-Draft/MPAN_DraftDesign_Maritimes/MPAN_DraftDesign_Maritimes.shp", stringsAsFactors = FALSE)
-mpa_sf <- st_transform(mpa_raw, crs = 4326)
-mpa_sf <- st_make_valid(mpa_sf)
-mpa_rr <- list("title" = "Draft Conservation Network Design: existing and potential future marine protected areas (MPAs) and other spatial conservation areas",
+# Marine Protected Areas (mpa)
+conservationSites_raw <- st_read("../Data/Management/MPAN-Draft/MPAN_DraftDesign_Maritimes/MPAN_DraftDesign_Maritimes.shp", stringsAsFactors = FALSE)
+conservationSites_sf <- st_transform(conservationSites_raw, crs = 4326)
+conservationSites_sf <- st_make_valid(conservationSites_sf)
+conservationSites_sf$Legend <- as.factor(conservationSites_sf$STATUS)
+levels(conservationSites_sf$Legend) <- list("Existing Network Site"="Existing", "Other Network Sites"="Proposed", "Area of Interest for Oceans Act MPA"="Proposed AOI", "Proposed Conservation Area Under the Fisheries Act"="Proposed SBA")
+conservationSites_sf$Legend <- as.character(conservationSites_sf$Legend)
+conservationSites_sf[conservationSites_sf$Id == 18, "Legend" ] <- "Bras d'Or Lake -sites to be determined"
+
+conservationSites_rr <- list("title" = "Draft Conservation Network Design",
                "contact" = "Marty King ([Marty.King@dfo-mpo.gc.ca](mailto:Marty.King@dfo-mpo.gc.ca){.email})", 
                "accessedOn" = " October 2021" ,
-               "data_sf" = mpa_sf,
+               "data_sf" = conservationSites_sf,
+               "attribute" = "Legend",
                "securityLevel" = "None",
                "qualityTier" = "High",
                "constraints" = "DFO INTERNAL USE ONLY"
 )
 
-mpa_rr$data_sf$Legend <- as.factor(mpa_rr$data_sf$STATUS)
-levels(mpa_rr$data_sf$Legend) <- list("Existing Network Site"="Existing", "Other Network Sites"="Proposed", "Area of Interest for Oceans Act MPA"="Proposed AOI", "Proposed Conservation Area Under the Fisheries Act"="Proposed SBA")
-mpa_rr$data_sf$Legend <- as.character(mpa_rr$data_sf$Legend)
-mpa_rr$data_sf[mpa_rr$data_sf$Id == 18, "Legend" ] <- "Bras d'Or Lake -sites to be determined"
-mpa_rr$attribute <- "Legend"
-
 # Save all objects to a single .Rdata file
-save(isdb_sf,ISSPECIESCODES,leatherback_sf, Legend, marfis_sf, MARFISSPECIESCODES, narwc_sf, whitehead_sf, wsdb_sf, ocearch_sf, mpa_rr, 
+save(isdb_sf,ISSPECIESCODES,leatherback_sf, Legend, marfis_sf, MARFISSPECIESCODES,
+     narwc_sf, whitehead_sf, wsdb_sf, ocearch_sf, conservationSites_rr, 
      file = "../Data/Rdata/SecureData.Rdata")
+# Save all objects to a single .Rdata file
+save(isdb_sf,ISSPECIESCODES,leatherback_sf, Legend, marfis_sf, MARFISSPECIESCODES,
+     narwc_sf, whitehead_sf, wsdb_sf, ocearch_sf, conservationSites_rr, 
+     file = here::here("app/data/SecureData.Rdata"))
 ########################################################-

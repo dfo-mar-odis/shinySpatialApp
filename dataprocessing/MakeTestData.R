@@ -187,7 +187,7 @@ gen_all_test_data <- function() {
                 "leatherback_sf", "Legend", "marfis_sf", "MARFISSPECIESCODES", "narwc_sf", "whitehead_sf",
                 "wsdb_sf", "ocearch_sf")
   
-  rr_names <- c("mpa_rr")
+  rr_names <- c("conservationSites_rr")
   
   exclude_list <- c("bounds_sf", "land10m_sf", "land50k_sf")
   excludeSf_list <- list(bounds_sf, land10m_sf, land50k_sf)
