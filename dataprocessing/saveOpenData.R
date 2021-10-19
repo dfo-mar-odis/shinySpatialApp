@@ -1,7 +1,5 @@
-
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
-
 
 region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
 setwd(here::here("app/data/MAR"))
@@ -38,12 +36,12 @@ sardistLayer <- "DFO_SARA_Dist_2021_FGP_EN"
 
 sardistCheckDate <-  get_check_date("sardist_rr")
 
-openSardist_rr <- get_opendata_rr(sardistPkgId, sardistResId,
+openSardist_rr <- get_opendata_rr(sardistPkgId, sardistResId, 
+                                  region_sf = region_sf,
                                   gdbLayer = sardistLayer,
                                   checkDate = sardistCheckDate)
 if(!is.null(openSardist_rr)) {
   sardist_rr <- openSardist_rr
-  sardist_rr$data_sf <- sf::st_crop(sardist_rr$data_sf, region_sf)  
   save(sardist_rr, file = "./Open/sardist_rr.RData")
 }
 
@@ -56,11 +54,11 @@ critHabLayer <- "DFO_SARA_CritHab_2021_FGP_EN"
 critHabCheckDate <-  get_check_date("crithab_rr")
 
 openCrithab_rr <- get_opendata_rr(crithabPkgId, crithabResId, 
+                                  region_sf = region_sf,
                                   gdbLayer = critHabLayer, 
                                   checkDate = critHabCheckDate)
 if(!is.null(openCrithab_rr)) {
   crithab_rr <- openCrithab_rr
-  crithab_rr$data_sf <- sf::st_crop(crithab_rr$data_sf, region_sf)  
   crithab_rr$data_sf$Common_Nam <- crithab_rr$data_sf$Common_Name_EN
   save(crithab_rr, file = "./Open/crithab_rr.RData")
 }
@@ -72,11 +70,10 @@ sdmResId <- "1ac4df6a-ba45-4f13-a488-bd12e90a8bc7"
 sdmLayer <- "StudyArea"
 sdmCheckDate <-  get_check_date("sdm_rr")
 
-openSdm_rr <- get_opendata_rr(sdmPkgId, sdmResId, gdbLayer = sdmLayer, 
-                              checkDate = sdmCheckDate)
+openSdm_rr <- get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
+                              gdbLayer = sdmLayer, checkDate = sdmCheckDate)
 if(!is.null(openSdm_rr)) {
   sdm_rr <- openSdm_rr
-  sdm_rr$data_sf <- sf::st_crop(sdm_rr$data_sf, region_sf)  
   save(sdm_rr, file = "./Open/sdm_rr.RData")
 }
 
@@ -87,11 +84,10 @@ nbwLayer <- "NorthernBottlenoseWhale_InterCanyonHabitat"
 
 nbwCheckDate <- get_check_date("nbw_rr")
 
-openNbw_rr <- get_opendata_rr(nbwPkgId, nbwResId, gdbLayer = nbwLayer, 
-                              checkDate = nbwCheckDate)
+openNbw_rr <- get_opendata_rr(nbwPkgId, nbwResId, region_sf = region_sf,
+                              gdbLayer = nbwLayer, checkDate = nbwCheckDate)
 if(!is.null(openNbw_rr)) {
   nbw_rr <- openNbw_rr
-  nbw_rr$data_sf <- sf::st_crop(nbw_rr$data_sf, region_sf)  
   save(nbw_rr, file = "./Open/nbw_rr.RData")
 }
 
@@ -101,7 +97,8 @@ bwhabPkgId <- "8fafd919-fcbe-43a3-a911-3d9461273441"
 bwResId <- "3af8ad03-c0da-4cfa-940d-d757c0c24cb7"
 
 bwCheckDate <- get_check_date("bwhab_rr")
-openBwhab_rr <- get_opendata_rr(bwhabPkgId, bwResId, checkDate = bwCheckDate)
+openBwhab_rr <- get_opendata_rr(bwhabPkgId, bwResId, region_sf = region_sf,
+                                checkDate = bwCheckDate)
 if(!is.null(openBwhab_rr)) {
   bwhab_rr <- openBwhab_rr
   bwTemp_sf <- bwhab_rr$data_sf
@@ -114,7 +111,6 @@ if(!is.null(openBwhab_rr)) {
   bwTemp_sf$months[bwTemp_sf$months == "March to May/June to August"] <- "Mar-May/Jun-Aug"
   bwTemp_sf$Activity <- paste(bwTemp_sf$activity,"-", bwTemp_sf$months)
   bwhab_rr$data_sf <- bwTemp_sf
-  bwhab_rr$data_sf <- sf::st_crop(bwhab_rr$data_sf, region_sf)  
   save(bwhab_rr, file = "./Open/bwhab_rr.RData")
 }
 

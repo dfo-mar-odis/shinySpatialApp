@@ -11,30 +11,11 @@ loadResult <- load_rdata(c("conservationSites_rr"),  "MAR")
 
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
+lowQuality <- list("en" = "Low", "fr" = "Faible")
 noneList <- list("en" = "None", "fr"= "Aucun")
 internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONLY")
 
-# ----------------EBSA----------------- 
-EBSApkgId <- "d2d6057f-d7c4-45d9-9fd9-0a58370577e0"
-EBSAresId <- "ec990fd7-91b0-4dbb-a0f4-bb11070a84c1"
-
-EBSAcheckDate <- get_check_date("EBSA_rr")
-
-OpenEBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId, region_sf = region_sf,
-                               checkDate = EBSAcheckDate)
-if(!is.null(OpenEBSA_rr)) {
-  EBSA_rr <- OpenEBSA_rr
-  EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL,
-                                            ".pdf", ".html")
-  EBSA_rr$qualityTier <- list("en" = "High", "fr" = "Élevée")
-  EBSA_rr$contact <- list("en" = "[carissa.philippe\\@dfo-mpo.gc.ca](mailto:carissa.philippe@dfo-mpo.gc.ca){.email}",
-                          "fr" = "[carissa.philippe\\@dfo-mpo.gc.ca](mailto:carissa.philippe@dfo-mpo.gc.ca){.email}")
-  save(EBSA_rr, file = "./Open/EBSA_rr.RData")
-}
-
-
-
-# Marine Protected Areas (mpa)
+# -------------Marine Protected Areas (mpa)---------------------
 conservationSites_raw <- st_read("../Data/Management/MPAN-Draft/MPAN_DraftDesign_Maritimes/MPAN_DraftDesign_Maritimes.shp", stringsAsFactors = FALSE)
 conservationSites_sf <- st_transform(conservationSites_raw, crs = 4326)
 conservationSites_sf <- st_make_valid(conservationSites_sf)
@@ -54,4 +35,70 @@ conservationSites_rr <- list("title" = "Draft Conservation Network Design",
                              "constraints" = internalUse
 )
 save(conservationSites_rr, file = "./Secure/conservationSites_rr.RData")
+
+
+#------------------CETACEANS-------------------
+
+# Cetacean legend file
+Legend <- read.csv("../Data/NaturalResources/Species/Cetaceans/CetaceanLegend.csv", stringsAsFactors = FALSE)
+Legend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
+
+#------------------WSDB--------------------
+
+# Cetacean point data  #########################
+# Whale Sightings Database (wsdb)
+wsdb <- read.csv("../Data/NaturalResources/Species/Cetaceans/WSDB/MarWSDB_20210407.csv", stringsAsFactors = FALSE)
+wsdb <- dplyr::select(wsdb, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
+wsdb <- wsdb %>% dplyr::filter(YEAR >= 2010)
+wsdb <- dplyr::rename(wsdb,c("Scientific Name" = "SCIENTIFICNAME",
+                             "CNAME"= COMMONNAME))
+wsdb <- merge(wsdb, Legend, by='Scientific Name')
+wsdb <- dplyr::select(wsdb, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
+wsdb_sf <- st_as_sf(wsdb, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+wsdb_sf <- sf::st_crop(wsdb_sf, region_sf)
+
+wsdb_rr <- list("title" = "Draft Conservation Network Design",
+                "contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
+                "url" = "<http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>",
+                "accessedOnStr" = list("en" ="October 27, 2020 by Shelley Lang", "fr" = "27 octobre 2020 par Shelley Lang  ") ,
+                "accessDate" = as.Date("2020-10-27"),
+                "data_sf" = wsdb_sf,
+                "attribute" = "Legend",
+                "securityLevel" = noneList,
+                "qualityTier" = lowQuality,
+                "constraints" = internalUse
+)
+save(wsdb_rr, file = "./Secure/wsdb_rr.RData")
+
+
+# ----------------WHITEHEAD--------------
+# Whitehead lab
+whitehead <- read.csv("../Data/NaturalResources/Species/Cetaceans/Whitehead_Lab/whitehead_lab.csv", stringsAsFactors = FALSE)
+whitehead$YEAR <- lubridate::year(whitehead$Date)
+whitehead <- whitehead %>% dplyr::filter(YEAR >= 2010)
+whitehead <- whitehead %>% rename("Scientific Name"= species.name)
+whitehead <- merge(whitehead, Legend, by='Scientific Name')
+whitehead <- dplyr::select(whitehead, 'Scientific Name', YEAR, Legend, Lat, Long)
+# correct the longitude values to be negative
+whitehead$Long <- -1 * whitehead$Long
+whitehead_sf <- st_as_sf(whitehead, coords = c("Long", "Lat"), crs = 4326)
+
+
+whitehead_rr <- list("title" = "Draft Conservation Network Design",
+                "contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
+                "url" = "<https://whiteheadlab.weebly.com/contact.html>",
+                "accessedOnStr" = list("en" ="January 12 2021  by Laura Feyrer", "fr" = "12 janvier 2021 par Laura Feyrer  ") ,
+                "accessDate" = as.Date("2021-01-12"),
+                "data_sf" = whitehead_sf,
+                "attribute" = "Legend",
+                "securityLevel" = noneList,
+                "qualityTier" = highQuality,
+                "constraints" = internalUse
+)
+save(whitehead_rr, file = "./Secure/whitehead_rr.RData")
+
+
+
+
+
 

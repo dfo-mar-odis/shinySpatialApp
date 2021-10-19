@@ -28,17 +28,18 @@ whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
 whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
+filesLoaded <- load_rdata(c("wsdb_rr", "whitehead_rr"), "MAR", env = environment())
+
+
 ```
 
 ### **Whale Sightings Database (WSDB)** {#WSDB-section}
 
-Contact: <XMARWhaleSightings@dfo-mpo.gc.ca>
-URL: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>    
-Last retrieved on: October 27 2020  by Shelley Lang  
-Quality Tier: Low  
+URL: `r wsdb_rr$url`
+```{r wsdb-meta, results='asis'}
+write_meta(wsdb_rr, "EN")
+```
 Search year: 2010-2020  
-Security level: none  
-Data use constraints: DFO INTERNAL USE ONLY
 
 The Marine Mammal and Pelagic Animals, or Whale Sighting Database (WSDB), was implemented in 2002 by DFO to provide a central repository for reported sightings of marine animals, especially cetaceans, and to improve accessibility to sightings data from a variety of sources, including some data from marine mammal surveys and research activities [@WSDB]. Most efforts to collate available sightings data focused on the collecting data from various sources operating in Nova Scotia waters (including the Bay of Fundy and Scotian Shelf), and more recently in the Gulf of St. Lawrence, while less efforts were made to obtain available data from other regions. Most sightings were collected on an opportunistic basis and observations came from individuals with a wide range of expertise and experience in marine mammal identification. For more information see: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database> or @WSDB <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf>.
 
@@ -60,7 +61,7 @@ Please note the following important disclaimers and caveats associated with sigh
 #### ***Area-specific WSDB search results***
 
 ```{r wsdb, include=FALSE, cache=FALSE}
-wsdbClipped <- master_intersect(wsdb_sf, mapDataList)
+wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)
 linkedSectionText <- "[WSDB](#WSDB-section)"
 whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
 if (!is.null(wsdbClipped$studyData)) {
@@ -80,17 +81,17 @@ writeLines(Report_wsdb)
 ```
 ```{r wsdb-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whale Sightings Database (WSDB) (including sightings of groups of animals), for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
 if (!is.null(wsdbClipped$studyData)) {
-  plot_rr_sf(areaMap, wsdbClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+  plot_rr_sf(areaMap, wsdbClipped$mapData, attribute=wsdb_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
 ### **The Whitehead Lab, Dalhousie University** {#Whitehead-section}
-URL: <https://whiteheadlab.weebly.com/contact.html>  
-Last retrieved on: January 12 2021  by Laura Feyrer    
-Quality Tier: High    
+URL: `r whitehead_rr$url`
+```{r wsdb-meta, results='asis'}
+write_meta(whitehead_rr, "EN")
+```
 Search year: 2010-2019    
-Security level: none   
-Data use constraints: DFO INTERNAL USE ONLY 
+
 
 The following information is summarized in this website (<https://whiteheadlab.weebly.com/>). The Whitehead Lab is based out of the Dalhousie University Department of Biology (Halifax, Nova Scotia). Since its inception in 1987, the Whitehead Lab has been home to over 75 postdoctoral, Ph.D., M.Sc., and undergraduate students. These students primarily conduct conservation-based research on the behavior, ecology, and population biology of cetacean species (primarily, Sperm Whales, Northern Bottlenose Whales, and Long-Finned Pilot Whales), with many studies focused on species in eastern Canadian waters.
 
@@ -99,7 +100,7 @@ The following description of cetacean sightings data collection methods used by 
 #### ***Area-specific Whitehead Lab search results***
 
 ```{r whitehead, include=FALSE, cache=FALSE}
-whiteheadClipped <- master_intersect(whitehead_sf, mapDataList)
+whiteheadClipped <- master_intersect(whitehead_rr$data_sf, mapDataList)
 
 linkedSectionText <- "[Whitehead](#Whitehead-section)"
 whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, "Legend")
@@ -123,7 +124,7 @@ writeLines(Report_whitehead)
 ```
 ```{r whitehead-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Whitehead Lab, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Field efforts were primarily conducted in the Gully Marine Protected Area, and adjacent canyons along the edge of the eastern Scotian Shelf, during good weather conditions (for example, see Whitehead 2013 for a map of effort between 1988-2011), though some data from surveys along the shelf edge off Nova Scotia, Newfoundland and Labrador are included. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. This map also does not include acoustic detections. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. For more information, please visit: <https://whiteheadlab.weebly.com/contact.html>'}
 if (!is.null(whiteheadClipped$studyData)) {
-  plot_rr_sf(areaMap, whiteheadClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+  plot_rr_sf(areaMap, whiteheadClipped$mapData, attribute = whitehead_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
