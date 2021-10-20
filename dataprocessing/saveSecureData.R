@@ -7,7 +7,7 @@ region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojso
 setwd(here::here("app/data/MAR"))
 setwd("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data")
 
-loadResult <- load_rdata(c("conservationSites_rr"),  "MAR")
+loadResult <- load_rdata(c("conservationSites_rr", "wsdb_rr", "" ),  "MAR")
 
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
