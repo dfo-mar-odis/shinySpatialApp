@@ -28,14 +28,13 @@ whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
 whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
-filesLoaded <- load_rdata(c("wsdb_rr", "whitehead_rr"), "MAR", env = environment())
+filesLoaded <- load_rdata(c("wsdb_rr", "whitehead_rr", "narwc_rr", "obisCet_rr"), "MAR", env = environment())
 
 
 ```
 
 ### **Whale Sightings Database (WSDB)** {#WSDB-section}
 
-URL: `r wsdb_rr$url`
 ```{r wsdb-meta, results='asis'}
 write_meta(wsdb_rr, "EN")
 ```
@@ -86,8 +85,7 @@ if (!is.null(wsdbClipped$studyData)) {
 ```
 
 ### **The Whitehead Lab, Dalhousie University** {#Whitehead-section}
-URL: `r whitehead_rr$url`
-```{r wsdb-meta, results='asis'}
+```{r whitehead-meta, results='asis'}
 write_meta(whitehead_rr, "EN")
 ```
 Search year: 2010-2019    
@@ -129,19 +127,16 @@ if (!is.null(whiteheadClipped$studyData)) {
 ```
 
 ### **North Atlantic Right Whale Consortium (NARWC) Sightings Database**{#NARWC-section}
-Contact: <hpettis@neaq.org>  
-URL: <https://www.narwc.org/sightings-database.html>  
-Last retrieved on: September 18 2020  
-Quality Tier: High  
-Search year: 2010-2019  
-Security level: none 
-Data use constraints: DFO INTERNAL USE ONLY
+```{r narwc-meta, results='asis'}
+write_meta(narwc_rr, "EN")
+```
+Search year: 2010-2019    
 
 The NARWC Sightings Database contains records of thousands of sightings of Right Whales in the North Atlantic Ocean, as well as sightings of other species of whales, dolphins, sea turtles, seals, and large fishes. It also contains survey data associated with many of these sightings, which could be used to determine the associated survey effort. However, the database does not include the sighting distance data required to determine species density or abundance from these surveys. The sightings contained in the database come from a wide variety of contributors including NARWC members and others. Each record in the Sightings Database represents a group of whales (i.e., a group of 3 whales has a single record just as a group of 1 does), and there may or may not be photographic proof of a given Right Whale sighting. The Sightings and Photo-Identification databases are periodically cross-referenced, so that individual identification data from the latter can be linked to sighting data from the former. For that reason, all sightings in the Identification Database are eventually included in the Sightings Database (with an approximate 1-2 year lag). Although the individual identifications of animals are not included in the Sightings Database, the two databases can be linked on common fields. This review article of the Sightings Database  provides potential users with important information:  https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf
 
 #### ***Area-specific NARWC search results***
 ```{r narwc, include=FALSE, cache=FALSE}
-narwcClipped <- master_intersect(narwc_sf, mapDataList)
+narwcClipped <- master_intersect(narwc_rr$data_sf, mapDataList)
 
 linkedSectionText <- "[NARWC](#NARWC-section)"
 if (!is.null(narwcClipped$studyData)) {
@@ -164,25 +159,22 @@ writeLines(Report_narwc)
 ```
 ```{r narwc-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the North Atlantic Right Whale Consortium (NARWC) Sightings Database, for cetacean species in the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>Absence of a species in the map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area</b> since survey effort is biased towards the Northeast US, and data on species presence from acoustic detections is not included. For more information, please visit: <https://www.narwc.org/sightings-database.html>'}
 if (!is.null(narwcClipped$studyData)) {
-  plot_rr_sf(areaMap, narwcClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+  plot_rr_sf(areaMap, narwcClipped$mapData, attribute = narwc_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
 ### **Ocean Biodiversity Information System (OBIS) [for cetaceans]** {#obis-cetacean-section}
-Contact: <helpdesk@obis.org>  
-URL: <https://obis.org/>    
-Last retrieved on: January 27 2021 by Gregory Puncher from OBIS      
-Quality Tier: Medium    
-Search year: 2010-2020    
-Security level: none   
-Data use constraints: none
+```{r obis-cetacean-meta, results='asis'}
+write_meta(obisCet_rr, "EN")
+```
+Search year: 2010-2020  
 
 An OBIS search [@OBIS] was conducted to find additional relevant records for cetaceans listed by SARA, or assessed by COSEWIC. A first level QC process was performed by removing duplicate reports that are also present in WSDB. Subsequent versions of this report will aim at expanding our QC efforts for this source of information.
 
 #### ***Area-specific OBIS cetacean search results***
 
 ```{r obis-cetecean, cache=FALSE, include=FALSE}
-obisClipped <- master_intersect(obis_cet_sf, mapDataList)
+obisClipped <- master_intersect(obisCet_rr$data_sf, mapDataList)
 
 linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
 if (!is.null(obisClipped$studyData)) {
@@ -205,7 +197,7 @@ writeLines(Report_obis_cet)
 ```
 ```{r obis-cetecean-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline). Map displays information from the Ocean Biodiversity Information System (OBIS), for cetacean species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.'}
 if (!is.null(obisClipped$studyData)) {
-  plot_rr_sf(areaMap, obisClipped$mapData, attribute="Legend", colorMap = whaleCol, shapeMap = whaleShape)
+  plot_rr_sf(areaMap, obisClipped$mapData, attribute = obisCet_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
 
