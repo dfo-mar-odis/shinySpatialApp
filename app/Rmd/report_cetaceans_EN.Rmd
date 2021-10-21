@@ -65,7 +65,7 @@ Please note the following important disclaimers and caveats associated with sigh
 ```{r wsdb, include=FALSE, cache=FALSE}
 wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)
 linkedSectionText <- "[WSDB](#WSDB-section)"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, wsdb_rr$attribute)
 if (!is.null(wsdbClipped$studyData)) {
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
@@ -104,7 +104,7 @@ The following description of cetacean sightings data collection methods used by 
 whiteheadClipped <- master_intersect(whitehead_rr$data_sf, mapDataList)
 
 linkedSectionText <- "[Whitehead](#Whitehead-section)"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, "Legend")
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, whitehead_rr$attribute)
 
 if (!is.null(whiteheadClipped$studyData)) {
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
@@ -143,7 +143,7 @@ narwcClipped <- master_intersect(narwc_rr$data_sf, mapDataList)
 
 linkedSectionText <- "[NARWC](#NARWC-section)"
 if (!is.null(narwcClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped$studyData, "Legend")
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped$studyData, narwc_rr$attribute)
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
@@ -181,7 +181,7 @@ obisClipped <- master_intersect(obisCet_rr$data_sf, mapDataList)
 
 linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
 if (!is.null(obisClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped$studyData, "Legend")
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped$studyData, obisCet_rr$attribute)
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)

@@ -63,7 +63,7 @@ Veuillez prendre note des avertissements et mises en garde importants suivants a
 ```{r wsdb, include=FALSE, cache=FALSE}
 wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)
 linkedSectionText <- "[WSDB](#WSDB-section)"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, "Legend")
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, wsdb_rr$attribute)
 if (!is.null(wsdbClipped$studyData)) {
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
@@ -103,7 +103,7 @@ La description suivante des méthodes de collecte de données sur les observatio
 whiteheadClipped <- master_intersect(whitehead_rr$data_sf, mapDataList)
 
 linkedSectionText <- "[Whitehead](#Whitehead-section)"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, "Legend")
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, whitehead_rr$attribute)
 
 if (!is.null(whiteheadClipped$studyData)) {
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
@@ -144,7 +144,7 @@ narwcClipped <- master_intersect(narwc_rr$data_sf, mapDataList)
 
 linkedSectionText <- "[NARWC](#NARWC-section)"
 if (!is.null(narwcClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped$studyData, "Legend")
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped$studyData, narwc_rr$attribute)
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
@@ -179,7 +179,7 @@ Une recherche du SIBO a été effectuée pour trouver d’autres documents perti
 obisClipped <- master_intersect(obisCet_rr$data_sf, mapDataList)
 linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
 if (!is.null(obisClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped$studyData, "Legend")
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped$studyData, obisCet_rr$attribute)
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 } else {
  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)

@@ -7,6 +7,7 @@ region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojso
 setwd(here::here("app/data/MAR"))
 setwd("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data")
 
+load(here::here("app/data/CommonData.RData"))
 loadResult <- load_rdata(c("conservationSites_rr", "wsdb_rr", "narwc_rr" ),  "MAR")
 
 
@@ -39,12 +40,7 @@ save(conservationSites_rr, file = "./Secure/conservationSites_rr.RData")
 
 #------------------CETACEANS-------------------
 
-# Cetacean legend file
-Legend <- read.csv("../Data/NaturalResources/Species/Cetaceans/CetaceanLegend.csv", stringsAsFactors = FALSE)
-Legend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
-
 #------------------WSDB--------------------
-
 # Cetacean point data  #########################
 # Whale Sightings Database (wsdb)
 wsdb <- read.csv("../Data/NaturalResources/Species/Cetaceans/WSDB/MarWSDB_20210407.csv", stringsAsFactors = FALSE)
@@ -52,7 +48,7 @@ wsdb <- dplyr::select(wsdb, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUD
 wsdb <- wsdb %>% dplyr::filter(YEAR >= 2010)
 wsdb <- dplyr::rename(wsdb,c("Scientific Name" = "SCIENTIFICNAME",
                              "CNAME"= COMMONNAME))
-wsdb <- merge(wsdb, Legend, by='Scientific Name')
+wsdb <- merge(wsdb, cetLegend, by='Scientific Name')
 wsdb <- dplyr::select(wsdb, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
 wsdb_sf <- st_as_sf(wsdb, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 wsdb_sf <- sf::st_crop(wsdb_sf, region_sf)
@@ -77,7 +73,7 @@ whitehead <- read.csv("../Data/NaturalResources/Species/Cetaceans/Whitehead_Lab/
 whitehead$YEAR <- lubridate::year(whitehead$Date)
 whitehead <- whitehead %>% dplyr::filter(YEAR >= 2010)
 whitehead <- whitehead %>% rename("Scientific Name"= species.name)
-whitehead <- merge(whitehead, Legend, by='Scientific Name')
+whitehead <- merge(whitehead, cetLegend, by='Scientific Name')
 whitehead <- dplyr::select(whitehead, 'Scientific Name', YEAR, Legend, Lat, Long)
 # correct the longitude values to be negative
 whitehead$Long <- -1 * whitehead$Long
@@ -97,8 +93,6 @@ whitehead_rr <- list("title" = "Whitehead lab (Dalhousie University)",
 )
 save(whitehead_rr, file = "./Secure/whitehead_rr.RData")
 
-
-
 # ----------------------NARWC-------------------------
 # North Atlantic Right Whale Consortium (narwc)
 narwc <- read.csv("../Data/NaturalResources/Species/Cetaceans/NARWC/NARWC_09-18-2020.csv", stringsAsFactors = FALSE)
@@ -106,11 +100,10 @@ narwcspecies <-  read.csv("../Data/NaturalResources/Species/Cetaceans/NARWC/NARW
 narwcspecies <- narwcspecies %>% rename("Scientific Name"= ScientificName)
 narwc <- merge(narwc, narwcspecies, by='SPECNAME')
 narwc <- narwc %>% dplyr::filter(YEAR >= 2010)
-narwc <- merge(narwc, Legend, by = 'Scientific Name')
+narwc <- merge(narwc, cetLegend, by = 'Scientific Name')
 narwc <- dplyr::select(narwc, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
 narwc_sf <- st_as_sf(narwc, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 narwc_sf <- sf::st_crop(narwc_sf, region_sf)
-
 
 narwc_rr <- list("title" = "North Atlantic Right Whale consortium",
                  "contact" = "<hpettis@neaq.org>", 
@@ -125,4 +118,25 @@ narwc_rr <- list("title" = "North Atlantic Right Whale consortium",
 )
 save(narwc_rr, file = "./Secure/narwc_rr.RData")
 
+
+# ------------LEATHERBACKS--------------------
+
+# Leatherback turtle habitat
+leatherback_sf <- st_read("../Data/NaturalResources/Species/SpeciesAtRisk/LeatherBackTurtleCriticalHabitat/LBT_CH_2013.shp", stringsAsFactors = FALSE)
+leatherback_sf <- st_make_valid(leatherback_sf)
+leatherback_sf <- sf::st_crop(leatherback_sf, region_sf)
+
+
+leatherback_rr <- list("title" = " Leatherback Sea Turtle draft critical habitat",
+                 "contact" = email_format("info@dfo-mpo.gc.ca"), 
+                 "url" = lang_list("<https://www.narwc.org/sightings-database.html>"),
+                 "accessedOnStr" = list("en" ="February 25 2021", "fr" = "25 février 2021") ,
+                 "accessDate" = as.Date("2021-02-25"),
+                 "data_sf" = leatherback_sf,
+                 "attribute" = "NONE",
+                 "securityLevel" = noneList,
+                 "qualityTier" = highQuality,
+                 "constraints" = internalUse
+)
+save(leatherback_rr, file = "./Secure/leatherback_rr.RData")
 

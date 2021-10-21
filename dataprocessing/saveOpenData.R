@@ -2,11 +2,12 @@ source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
 setwd(here::here("app/data/MAR"))
+setwd("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data")
 
 region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
 save(region_sf, file = "./Open/region_sf.RData")
 
-
+load(here::here("app/data/CommonData.RData"))
 loadResult <- load_rdata(c("EBSA_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
                            "bwhab_rr", "obisCet_rr", "finWhale_rr", 
                            "seiWhale_rr", "humpbackWhale_rr",
@@ -15,6 +16,41 @@ loadResult <- load_rdata(c("EBSA_rr", "crithab_rr", "sardist_rr", "nbw_rr",
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
 noneList <- list("en" = "None", "fr"= "Aucun")
+internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONLY")
+
+
+# ----------------COMMON DATA-------------
+land10m_sf <- st_read("../Data/Boundaries/Landmass/ne_10m_land_Clip.shp", stringsAsFactors = FALSE)
+#remove State and Province column from land10m
+land10m_sf <- land10m_sf[-c(2)]
+
+land50k_sf <- st_read("../Data/Boundaries/Coast50k/Coastline50k_SHP/Land_AtlCanada_ESeaboardUS.shp",
+                      stringsAsFactors = FALSE)
+
+# National boundaries (terrestrial and marine)
+bounds_sf <- st_read("../Data/Boundaries/AdminBoundaries/AdminBounds_SHP/Boundaries_Line.shp", stringsAsFactors = FALSE)
+bounds_sf <- dplyr::select(bounds_sf,SRC_DESC, geometry)
+bounds_sf <- st_transform(bounds_sf, 4326) # Project to WGS84
+
+# Table of SARA listed species
+listed_species <- read.csv("../Data/NaturalResources/Species/MAR_listed_species.csv",
+                           stringsAsFactors = FALSE)
+listed_species <- listed_species %>% rename("SARA status" = Schedule.status,
+                                            "COSEWIC status" = COSEWIC.status,
+                                            "Wild Species listing" = Wild_Species,
+                                            "SCIENTIFICNAME" = Scientific_Name_upper,
+                                            "COMMONNAME" = Common_Name_upper,
+                                            "Scientific Name" = Scientific_Name,
+                                            "Common Name" = Common_Name)
+listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
+row.names(listed_species) <- NULL
+
+# Cetacean legend file
+cetLegend <- read.csv("../Data/NaturalResources/Species/Cetaceans/CetaceanLegend.csv", stringsAsFactors = FALSE)
+cetLegend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
+
+save(land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, file = "../CommonData.RData")
+
 
 # ----------------EBSA----------------- 
 EBSApkgId <- "d2d6057f-d7c4-45d9-9fd9-0a58370577e0"
@@ -46,7 +82,7 @@ save_open_data(sardistPkgId, sardistResId, "sardist_rr", highQuality,
 
 # -----------CritHab-------------- # check table cols.
 crithabPkgId <- "db177a8c-5d7d-49eb-8290-31e6a45d786c"
-crithabResId <- "394df1b9-0c01-476b-b9e3-8abbf4559623"
+crithabResId <- "d6ce91ff-694f-4549-87ec-43f1a1bf5dca"
 critHabLayer <- "DFO_SARA_CritHab_2021_FGP_EN"
 
 critHabCheckDate <-  get_check_date("crithab_rr")
@@ -58,6 +94,8 @@ openCrithab_rr <- get_opendata_rr(crithabPkgId, crithabResId,
 if(!is.null(openCrithab_rr)) {
   crithab_rr <- openCrithab_rr
   crithab_rr$qualityTier <- highQuality
+  crithab_rr$contact <- email_format("info@dfo-mpo.gc.ca")
+  crithab_rr$attribute <- "Common_Nam"
   crithab_rr$data_sf$Common_Nam <- crithab_rr$data_sf$Common_Name_EN
   save(crithab_rr, file = "./Open/crithab_rr.RData")
 }
@@ -155,7 +193,7 @@ obisCet <- dplyr::select(obisCet, "Scientific Name", YEAR, Legend,
 obisCet_sf <- st_as_sf(obisCet, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
 
 obisCet_rr <- list("title" = "OBIS observations (cetaceans)",
-                   "contact" = " <helpdesk@obis.org>  ", 
+                   "contact" = email_format("helpdesk@obis.org"), 
                    "url" = lang_list("<https://obis.org/>"),
                    "accessedOnStr" = list("en" ="January 27 2021 by Gregory Puncher from OBIS", 
                                           "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
@@ -168,6 +206,32 @@ obisCet_rr <- list("title" = "OBIS observations (cetaceans)",
 )
 save(obisCet_rr, file = "./Open/obisCet_rr.RData")
 
+
+# ---------------------ROCKWEED------------------------------
+# Rockweed
+rockweed_sf <- st_read("../Data/NaturalResources/Species/Rockweed/MAR_rockweed_presence_validated.shp", stringsAsFactors = FALSE)
+rockweed_sf <- st_transform(rockweed_sf, 4326) # Project to WGS84
+rockweed_sf <- st_make_valid(rockweed_sf)
+# set status column
+rockweed_sf$status = ""
+rockweed_sf$status[which(rockweed_sf$RWP==1)] = "Present"
+rockweed_sf$status[which(rockweed_sf$RWP==2)] = "Likely Present"
+rockweed_sf$status[which(rockweed_sf$RWP==5)] = "Unknown"
+rockweed_sf$status[which(rockweed_sf$RWP==0)] = "Not Present"
+rockweed_sf <- sf::st_crop(rockweed_sf, region_sf)
+
+
+rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and Rockweed presence polygons",
+                    "contact" = email_format("Gordana.Lazin@dfo-mpo.gc.ca"), 
+                    "accessedOnStr" = list("en" ="February 17 2021", "fr" = "17 février 2021") ,
+                    "accessDate" = as.Date("2021-02-17"),
+                    "data_sf" = rockweed_sf,
+                    "attribute" = "status",
+                    "securityLevel" = noneList,
+                    "qualityTier" = mediumQuality,
+                    "constraints" = internalUse
+)
+save(rockweed_rr, file = "./Open/rockweed_rr.RData")
 
 
 

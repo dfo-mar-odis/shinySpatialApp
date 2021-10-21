@@ -298,20 +298,30 @@ sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
 # Outputs:
 # distTable: table used in the report
 #
-table_dist <- function(clippedSardist_sf) {
+table_dist <- function(clippedSardist_sf, lang) {
 
   if (is.null(clippedSardist_sf)) {
     return(NULL)
   }
 
+  if (lang == "EN") {
+    clippedSardist_sf$Common_Name_EN[clippedSardist_sf$Common_Name_EN == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
+    distTable <- dplyr::select(clippedSardist_sf, Scientific_Name, Common_Name_EN,
+                               Population_EN, SARA_Status, Species_Link)
+    tableNames <-  c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
+  } else if(lang =="FR") {
+    distTable <- dplyr::select(clippedSardist_sf, Scientific_Name, Common_Name_FR,
+                               Population_FR, SARA_Status, Species_Link)
+    tableNames <-  c("Nom Scientific", "Nom Commun", "Population", "Statut LEP", "Lien d'espèce")
+  } else {
+    stop("Specify language choice (EN/FR)")
+  }
 
-  clippedSardist_sf$Common_Nam[clippedSardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
-  distTable <- dplyr::select(clippedSardist_sf, Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
   sf::st_geometry(distTable) <- NULL
   row.names(distTable) <- NULL
   distTable <- unique(distTable)
-  distTable$Scientific <- italicize_col(distTable$Scientific)
-  names(distTable) <- c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
+  distTable$Scientific_Name <- italicize_col(distTable$Scientific)
+  names(distTable) <- tableNames
 
   return(distTable)
 }
@@ -337,21 +347,32 @@ italicize_col <- function(tableCol) {
 # Outputs:
 # critTable: table used in the report
 #
-table_crit <- function(CCH_sf, LB_sf) {
+table_crit <- function(CCH_sf, LB_sf, lang) {
 
+  if (lang == "EN"){
+    critTableCols <- c("Common_Name_EN", "Population_EN", "Waterbody", "SARA_Status")
+    critTableNames <- c("Common Name", "Population", "Area", "SARA status")
+    leatherbackRow <- data.frame("Leatherback Sea Turtle", NA, paste(LB_sf$AreaName, collapse=', ' ), "Endangered" )
+  } else if (lang =="FR") {
+    critTableCols <- c("Common_Name_FR", "Population_FR", "Waterbody", "SARA_Status")
+    critTableNames <- c("Nom Commun", "Population", "Region", "Statut LEP")
+    leatherbackRow <- data.frame("Tortue Luth", NA, paste(LB_sf$AreaName, collapse=', ' ), "En voie de disparition" )
+  } else {
+    stop("Specify Critical Habitat Table language choice (EN/FR)")
+  }
+  
   if (!is.null(CCH_sf)){
-    critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
-    critTable$geometry <- NULL
-    names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
+    critTable <- dplyr::select(CCH_sf, critTableCols)
+    critTable <- sf::st_drop_geometry(critTable)
+    names(critTable) <- critTableNames
   } else {
     # only set names after init to preserve spaces etc.
     critTable <- data.frame("a"=NA, "b"=NA, "c"=NA, "d"=NA)
-    names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
+    names(critTable) <- critTableNames
   }
 
   if (!is.null(LB_sf)){
-    leatherbackRow <- data.frame("Leatherback Sea Turtle", NA, paste(LB_sf$AreaName, collapse=', ' ), "Endangered" )
-    names(leatherbackRow) <- names(critTable)
+    names(leatherbackRow) <- critTableNames
     critTable <- bind_rows(critTable, leatherbackRow)
   }
 
