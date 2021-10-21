@@ -59,7 +59,7 @@ wsdb_sf <- sf::st_crop(wsdb_sf, region_sf)
 
 wsdb_rr <- list("title" = "Whale Sightings Database",
                 "contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
-                "url" = "<http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>",
+                "url" = lang_list("<http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>"),
                 "accessedOnStr" = list("en" ="October 27, 2020 by Shelley Lang", "fr" = "27 octobre 2020 par Shelley Lang  ") ,
                 "accessDate" = as.Date("2020-10-27"),
                 "data_sf" = wsdb_sf,
@@ -86,7 +86,7 @@ whitehead_sf <- sf::st_crop(whitehead_sf, region_sf)
 
 whitehead_rr <- list("title" = "Whitehead lab (Dalhousie University)",
                 "contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
-                "url" = "<https://whiteheadlab.weebly.com/contact.html>",
+                "url" = lang_list("<https://whiteheadlab.weebly.com/contact.html>"),
                 "accessedOnStr" = list("en" ="January 12 2021  by Laura Feyrer", "fr" = "12 janvier 2021 par Laura Feyrer  ") ,
                 "accessDate" = as.Date("2021-01-12"),
                 "data_sf" = whitehead_sf,
@@ -114,7 +114,7 @@ narwc_sf <- sf::st_crop(narwc_sf, region_sf)
 
 narwc_rr <- list("title" = "North Atlantic Right Whale consortium",
                  "contact" = "<hpettis@neaq.org>", 
-                 "url" = "<https://www.narwc.org/sightings-database.html>",
+                 "url" = lang_list("<https://www.narwc.org/sightings-database.html>"),
                  "accessedOnStr" = list("en" ="September 18 2020", "fr" = "18 septembre 2020") ,
                  "accessDate" = as.Date("2020-09-18"),
                  "data_sf" = narwc_sf,

@@ -6,7 +6,7 @@ source(here::here("app/R/helpers.R"))
 ckanr_setup(url="https://open.canada.ca/data")
 
 
-get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, checkDate=NULL) {
+get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, checkDate=NULL) {
   opendataPKG <- package_show(pkgId)
   
   # check if package has been updated since checkdate
@@ -28,7 +28,7 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, checkDa
   contactInfo <- opendataPKG$metadata_contact
   pkgText <- opendataPKG$notes_translated
   
-  data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer)
+  data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer, tifFile=tifFile)
   
   url <- list("en" = paste("<https://open.canada.ca/data/en/dataset/", pkgId, ">", sep =""), 
               "fr" = paste("<https://open.canada.ca/data/fr/dataset/", pkgId, ">", sep =""))  
@@ -37,9 +37,9 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, checkDa
   accessedDate <- list("en" = NA, "fr" = NA)
   # date nonesense:
   Sys.setlocale(locale = "French")
-  accessedDate$fr <-paste(strftime(today(), "%B %d, %Y"), "sur le Portail de données ouvertes", url$fr)
+  accessedDate$fr <-paste(strftime(today(), "%B %d, %Y"), "sur le Portail de données ouvertes")
   Sys.setlocale(locale = "English")
-  accessedDate$en <- paste(strftime(today(), "%B %d, %Y"), "from Open Data", url$en)
+  accessedDate$en <- paste(strftime(today(), "%B %d, %Y"), "from Open Data")
   
   out_rr <- list("title" = pkgTitle,
                  "text" = pkgText,
@@ -61,7 +61,7 @@ get_opendata_sf <- function(resId, ...) {
   return(out_sf)
 }
 
-download_extract_validate_sf <- function(zipUrl, region_sf=NULL, gdbLayer=NULL) {
+download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NULL, tifFile = NULL) {
   tempDir <- here::here("dataprocessing/temp")
   temp <- here::here("dataprocessing/temp/temp.zip")
   
@@ -71,14 +71,19 @@ download_extract_validate_sf <- function(zipUrl, region_sf=NULL, gdbLayer=NULL) 
   shpFile <- list.files(tempDir, recursive=TRUE, pattern="\\.shp$", full.names = TRUE)
   gdbDir <- list.files(tempDir, recursive=TRUE, pattern="\\.gdb$", 
                        include.dirs	= TRUE, full.names = TRUE)
-    
+  tifRasterFile <- list.files(tempDir, recursive=TRUE, pattern = paste("\\",tifFile, "$", sep = ""), 
+                        include.dirs	= TRUE, full.names = TRUE) 
   if (length(shpFile) > 0) {
     out_sf <- st_read(shpFile, stringsAsFactors = FALSE)
   } else if (length(gdbDir) > 0) {
     out_gdb <- st_read(gdbDir, stringsAsFactors = FALSE, layer = gdbLayer)
     out_sf <- out_gdb
     out_sf$geometry <- st_geometry(out_gdb)
+  } else if (length(tifRasterFile) > 0) {
+    tifRaster <- raster(tifRasterFile)
+    out_sf <- stars::st_as_stars(tifRaster) %>% sf::st_as_sf()
   }
+  
   
   if  (inherits(sf::st_geometry(out_sf), "sfc_GEOMETRY")) {
     out_sf <- st_cast(out_sf, "MULTIPOLYGON")
@@ -107,4 +112,34 @@ get_check_date <- function(varName) {
     checkDate <- var_rr$accessedDate
   }
   return(checkDate)
+}
+
+
+lang_list <- function(inValue) {
+  return(list("en" = inValue, "fr" = inValue))
+}
+
+email_format <- function(emailStr) {
+  return(paste("[", emailStr, "](mailto:", emailStr, "){.email}", sep=""))
+}
+
+
+save_open_data <- function(pkgId, resId, variableName, qualityTier,
+                           disableCheckDate = TRUE, contactEmail = NULL,  ...) {
+  dataSaved <- FALSE
+  fnCheckDate <- NULL
+  if (!disableCheckDate){
+    fnCheckDate <-  get_check_date(variableName)  
+  }
+  temp_rr <- get_opendata_rr(pkgId, resId, checkDate = fnCheckDate, ...)
+  if(!is.null(temp_rr)) {
+    if (!is.null(contactEmail)){
+      temp_rr$contact = contactEmail
+    }
+    temp_rr$qualityTier <- qualityTier
+    assign(variableName, temp_rr)
+    save(list = variableName, file = paste("./Open/", variableName, ".RData", sep=""))
+    dataSaved <- TRUE
+  }
+  return(dataSaved)
 }

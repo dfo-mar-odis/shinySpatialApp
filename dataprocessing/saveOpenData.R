@@ -1,13 +1,16 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
+setwd(here::here("app/data/MAR"))
+
 region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
 save(region_sf, file = "./Open/region_sf.RData")
 
-setwd(here::here("app/data/MAR"))
 
-loadResult <- load_rdata(c("EBSA_rr", "crithab_rr", "sardist_rr", "sdm_rr", 
-                           "nbw_rr", "bwhab_rr", "obisCet_rr"),  "MAR")
+loadResult <- load_rdata(c("EBSA_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
+                           "bwhab_rr", "obisCet_rr", "finWhale_rr", 
+                           "seiWhale_rr", "humpbackWhale_rr",
+                           "harbourPorpoise_rr", "nbw_rr"),  "MAR")
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
@@ -26,7 +29,7 @@ if(!is.null(OpenEBSA_rr)) {
   EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL,
                                             ".pdf", ".html")
   EBSA_rr$qualityTier <- highQuality
-  EBSA_rr$contact <- "[carissa.philippe\\@dfo-mpo.gc.ca](mailto:carissa.philippe@dfo-mpo.gc.ca){.email}"
+  EBSA_rr$contact <- email_format("carissa.philippe\\@dfo-mpo.gc.ca")
   save(EBSA_rr, file = "./Open/EBSA_rr.RData")
 }
 
@@ -34,19 +37,11 @@ if(!is.null(OpenEBSA_rr)) {
 # -----------SAR DIST--------------
 
 sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
-sardistResId <- "84f84608-d045-4305-b5a3-47f22281a5f1"
-sardistLayer <- "DFO_SARA_Dist_2021_FGP_EN"
+sardistResId <- "d16d8405-dddf-491b-8faf-8cc7a9f3a537"
 
-sardistCheckDate <-  get_check_date("sardist_rr")
-
-openSardist_rr <- get_opendata_rr(sardistPkgId, sardistResId, 
-                                  region_sf = region_sf,
-                                  gdbLayer = sardistLayer,
-                                  checkDate = sardistCheckDate)
-if(!is.null(openSardist_rr)) {
-  sardist_rr <- openSardist_rr
-  save(sardist_rr, file = "./Open/sardist_rr.RData")
-}
+save_open_data(sardistPkgId, sardistResId, "sardist_rr", highQuality,
+               contactEmail = email_format("info\\@dfo-mpo.gc.ca"),  
+               region_sf = region_sf, gdbLayer = "DFO_SARA_Dist_2021_FGP_EN")
 
 
 # -----------CritHab-------------- # check table cols.
@@ -62,6 +57,7 @@ openCrithab_rr <- get_opendata_rr(crithabPkgId, crithabResId,
                                   checkDate = critHabCheckDate)
 if(!is.null(openCrithab_rr)) {
   crithab_rr <- openCrithab_rr
+  crithab_rr$qualityTier <- highQuality
   crithab_rr$data_sf$Common_Nam <- crithab_rr$data_sf$Common_Name_EN
   save(crithab_rr, file = "./Open/crithab_rr.RData")
 }
@@ -69,31 +65,32 @@ if(!is.null(openCrithab_rr)) {
 
 # -----------SDM--------------
 sdmPkgId <- "c094782e-0d6f-4cc0-b5a3-58908493a433"
-sdmResId <- "1ac4df6a-ba45-4f13-a488-bd12e90a8bc7"
-sdmLayer <- "StudyArea"
-sdmCheckDate <-  get_check_date("sdm_rr")
+sdmResId <- "16df15fb-367c-46e3-8ab7-be25315b9fbd"
 
-openSdm_rr <- get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
-                              gdbLayer = sdmLayer, checkDate = sdmCheckDate)
-if(!is.null(openSdm_rr)) {
-  sdm_rr <- openSdm_rr
-  save(sdm_rr, file = "./Open/sdm_rr.RData")
-}
+save_open_data(sdmPkgId, sdmResId, "finWhale_rr", mediumQuality,
+               contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
+               region_sf = region_sf, tifFile = "Fin_Whale.tif")
+
+save_open_data(sdmPkgId, sdmResId, "seiWhale_rr", mediumQuality,
+               contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
+               region_sf = region_sf, tifFile = "Sei_Whale.tif")
+
+save_open_data(sdmPkgId, sdmResId, "humpbackWhale_rr", mediumQuality,
+               contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
+               region_sf = region_sf, tifFile = "Humpback_Whale.tif")
+
+save_open_data(sdmPkgId, sdmResId, "harbourPorpoise_rr", mediumQuality,
+               contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
+               region_sf = region_sf, tifFile = "Harbour_Porpoise.tif")
+
 
 # -----------NBW-------------- 
 nbwPkgId <- "9fd7d004-970c-11eb-a2f3-1860247f53e3"
 nbwResId <- "f69a7d34-7c18-485b-98d7-8d45b7f8a3ce"
-nbwLayer <- "NorthernBottlenoseWhale_InterCanyonHabitat"
 
-nbwCheckDate <- get_check_date("nbw_rr")
-
-openNbw_rr <- get_opendata_rr(nbwPkgId, nbwResId, region_sf = region_sf,
-                              gdbLayer = nbwLayer, checkDate = nbwCheckDate)
-if(!is.null(openNbw_rr)) {
-  nbw_rr <- openNbw_rr
-  save(nbw_rr, file = "./Open/nbw_rr.RData")
-}
-
+save_open_data(nbwPkgId, nbwResId, "nbw_rr", highQuality,
+               contactEmail = email_format("MaritimesRAP.XMAR\\@dfo-mpo.gc.ca"),  
+               region_sf = region_sf, gdbLayer = "NorthernBottlenoseWhale_InterCanyonHabitat")
 
 # -----------BW hab-------------- 
 bwhabPkgId <- "8fafd919-fcbe-43a3-a911-3d9461273441"
@@ -114,6 +111,11 @@ if(!is.null(openBwhab_rr)) {
   bwTemp_sf$months[bwTemp_sf$months == "March to May/June to August"] <- "Mar-May/Jun-Aug"
   bwTemp_sf$Activity <- paste(bwTemp_sf$activity,"-", bwTemp_sf$months)
   bwhab_rr$data_sf <- bwTemp_sf
+  
+  bwhab_rr$contact <- email_format("gddaiss-dmsaisb\\@dfo-mpo.gc.ca")
+  bwhab_rr$qualityTier <- highQuality
+  bwhab_rr$attribute <- "Activity"
+  
   save(bwhab_rr, file = "./Open/bwhab_rr.RData")
 }
 
@@ -154,7 +156,7 @@ obisCet_sf <- st_as_sf(obisCet, coords = c("decimalLongitude", "decimalLatitude"
 
 obisCet_rr <- list("title" = "OBIS observations (cetaceans)",
                    "contact" = " <helpdesk@obis.org>  ", 
-                   "url" = "<https://obis.org/>",
+                   "url" = lang_list("<https://obis.org/>"),
                    "accessedOnStr" = list("en" ="January 27 2021 by Gregory Puncher from OBIS", 
                                           "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
                    "accessDate" = as.Date("2021-01-27"),

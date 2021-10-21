@@ -17,18 +17,21 @@ This section does not endeavor to describe every source of information available
 
 ```{r cetacean-setup, echo=FALSE, include=FALSE, cache=FALSE}
 whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
-               "Blue Whale: Endangered (SARA & COSEWIC)" = "black", 
-               "Fin Whale: Special Concern (SARA & COSEWIC)" = "chartreuse4",
-               "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)" = "#F5A4E7",
-               "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)" = "#00AFBB", 
-               "North Atlantic Right Whale: Endangered (SARA & COSEWIC)" = "darkorchid4", 
-               "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)" = "#0827EF", 
-               "Sei Whale: No Status (SARA) & Endangered (COSEWIC)" = "#EF6408", 
-               "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
+              "Blue Whale: Endangered (SARA & COSEWIC)" = "black", 
+              "Fin Whale: Special Concern (SARA & COSEWIC)" = "chartreuse4",
+              "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)" = "#F5A4E7",
+              "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)" = "#00AFBB", 
+              "North Atlantic Right Whale: Endangered (SARA & COSEWIC)" = "darkorchid4", 
+              "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)" = "#0827EF", 
+              "Sei Whale: No Status (SARA) & Endangered (COSEWIC)" = "#EF6408", 
+              "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
 whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
-filesLoaded <- load_rdata(c("wsdb_rr", "whitehead_rr", "narwc_rr", "obisCet_rr"), "MAR", env = environment())
+filesLoaded <- load_rdata(c("wsdb_rr", "whitehead_rr", "narwc_rr", "obisCet_rr", 
+                            "finWhale_rr", "seiWhale_rr", "humpbackWhale_rr",
+                           "harbourPorpoise_rr", "nbw_rr", "bwhab_rr", 
+                           "nbw_rr"), "MAR", env = environment())
 
 
 ```
@@ -216,27 +219,28 @@ if (FALSE) {
 
 
 
-### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans** {#sdm-section}  
-
-Contact: [Hilary.Moors-Murphy\@dfo-mpo.gc.ca](mailto:Hilary.Moors-Murphy@dfo-mpo.gc.ca){.email}\
+### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans** {#sdm-section} 
+```{r sdm-meta, results='asis'}
+write_meta(finWhale_rr, "EN")
+```
 URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>\
-Last retrieved on: April 1 2020 from Open Data <https://open.canada.ca/data/en/dataset/c094782e-0d6f-4cc0-b5a3-58908493a433>\
-Quality Tier: Medium\
 Search year: 1975-2015\
-Security level: none\
-Data use constraints: none
 
-Dataset description from the Open Data record [@OpenData_cetacean_imp]: Species Distribution Models (SDM) were used to predict and identify priority areas for enhanced monitoring of cetaceans in eastern Canadian waters off Nova Scotia, Newfoundland and Labrador. This data set represents information presented in @Gomez2020SDM and includes sighting records and SDM outputs for ten cetacean species with sufficient records (n \> 450), as well as sightings only for an additional six species. Gomez et al. (2020) used a compilation of aerial- and vessel-based cetacean sightings data from 1975-2015, assembled in @Gomez2017SDM from a variety of sources. Note that sightings data from many of these sources were not effort-corrected, and apparent distribution patterns based on these opportunistic sightings data are biased by when and where survey activities were conducted. Unfavorable weather and reduced visual effort in winter, spring, and autumn likely account for the fewer sighting records in these seasons compared to summer. The dataset did not include dead animal, stranding, entanglement, or entrapment data. While some of the databases included records obtained during the whaling period (catches or sightings recorded prior to 1975), for all analyses/modelling conducted in that study, only sightings of free-swimming whales obtained during the post-whaling period (1975-2015) were used. Quality control checks included discarding all records outside of our study area and removing redundant records (identical species, day, month, latitude and longitude). The data used did not reflect any updates or corrections to the databases that have occurred since the data were compiled in 2016. Sightings are not available for download here; please contact the original data sources listed below to obtain raw sightings data. Gomez et al. (2020) represented an important initiative in eastern Canada to highlight key areas for cetacean monitoring in waters off Nova Scotia, Newfoundland and Labrador. Habitats with high suitability were interpreted as areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Model outputs used cetacean sightings from several decades and dynamic environmental predictors that used seasonal averages across multiple years. As proxies for prey availability, five predictor environmental variables were selected for the SDM: ocean depth, compound topographic index, sea surface temperature, areas of persistently high chlorophyll-a concentration, and regional chlorophyll-a magnitude. See Gomez et al. (2020) for further details on modelling methods. Persistent patterns over time (between 1975-2015) are the main patterns expected to be captured by these models. Further, SDM results presented were not the same as species density maps; rather, they portrayed predicted suitable habitat based on environmental characteristics and sightings data that were not always derived from effort-based surveys. Consequently, the use of these models in marine spatial planning processes should be accompanied by complementary approaches, such as acoustic and visual validation of the SDM results, as well as additional monitoring and modeling efforts. Please refer to Gomez et al. (2020) for examples on how to best use these data outputs. Future efforts will focus on using more recent data and improving these models to facilitate the inclusion of cetaceans in marine spatial planning processes that are currently underway.
+Dataset description from the Open Data record [@OpenData_cetacean_imp]: 
+```{r sdm-text, results='asis'}
+writeLines(noquote(finWhale_rr$text$en))
+
+```
 
 Important usage considerations: model predictions in this section should not be used on their own for this report, marine spatial planning purposes, and/or to delineate important habitat for cetacean species. Rather, outputs should be used together with other sources of information such as prey distribution, tagging data, detections from acoustic monitoring, other data on cetacean occurrence, and other modeling efforts already available for the area. The data product summarized in the section below (Blue Whale important habitat in the Western North Atlantic) represents an excellent framework in which to properly use the outputs of this section.
 
 #### ***Area-specific SDM cetacean search results***
 ```{r sdm, include=FALSE, cache=FALSE}
 
-clippedFin <- master_intersect(fin_whale_sf, mapDataList, getRegion = TRUE)
-clippedHp <- master_intersect(harbour_porpoise_sf, mapDataList, getRegion = TRUE)
-clippedHump <- master_intersect(humpback_whale_sf , mapDataList, getRegion = TRUE)
-clippedSei <- master_intersect(sei_whale_sf, mapDataList, getRegion = TRUE)
+clippedFin <- master_intersect(finWhale_rr$data_sf, mapDataList)
+clippedHp <- master_intersect(harbourPorpoise_rr$data_sf, mapDataList)
+clippedHump <- master_intersect(humpbackWhale_rr$data_sf , mapDataList)
+clippedSei <- master_intersect(seiWhale_rr$data_sf, mapDataList)
 
 tableSDM <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
                         "Harbour Porpoise" = !is.null(clippedHp$studyData),
@@ -246,7 +250,6 @@ tableSDM <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
 summarySDMTable <- data.frame("Species" = names(tableSDM), "present" = transpose(tableSDM)$V1)
 summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "[SDM](#sdm-section)", summarySDMTable, "Species", "present")
 
-
 ```
 
 ```{r sdm-table}
@@ -254,20 +257,15 @@ summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "[SDM](#sdm-sectio
 ```
 
 ```{r sdm-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Low. Security level: none. Map shows consolidated Species Distribution Modelling outputs (60-100% relative predicted occurrence rate). Yellow polygons (habitats with high suitability) are to be interpreted as areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Due to the many reasons listed in the discussion section in Gomez et al. (2020), these cetacean modelling outputs do not represent a complete and current distribution of cetaceans in the region. They represent priority areas to direct cetacean monitoring efforts. Their use in marine spatial planning processes should be accompanied by complementary approaches such as the process summarized in the section below. The data product summarized in the section below (Blue Whale Important Habitat in the Western North Atlantic) represents an excellent framework in which to properly use the outputs of this figure.'}
-plot_cetaceans_4grid(clippedFin$regionData, clippedHp$regionData, clippedHump$regionData, clippedSei$regionData, studyArea, land10m_sf, 50, bounds_sf)
-
+plot_cetaceans_4grid(finWhale_rr$data_sf, harbourPorpoise_rr$data_sf, humpbackWhale_rr$data_sf, seiWhale_rr$data_sf, studyArea, land10m_sf, 50, bounds_sf)
 
 ```
 
 ### **Blue Whale Important Habitat** {#bwhab-section}
-
-Blue Whale Important Habitat in the Western North Atlantic\
-Contact: [gddaiss-dmsaisb\@dfo-mpo.gc.ca](mailto:gddaiss-dmsaisb@dfo-mpo.gc.ca){.email}\
-URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>\
-Last retrieved on: October 30 2020 from Open Data <https://open.canada.ca/data/en/dataset/8fafd919-fcbe-43a3-a911-3d9461273441>\
-Quality Tier: High\
-Security level: none\
-Data use constraints: none
+```{r bwhab-meta, results='asis'}
+write_meta(bwhab_rr, "EN")
+```
+URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>
 
 Dataset description from the Open Data record [@OpenData_blue_imphabitat]: The distribution of Blue Whales (*Balaenoptera musculus*) is mainly dictated by key environmental drivers such as food requirements and availability, sea ice, and sometimes predation risks. It is common to find Blue Whales in upwelling regions, depending on topography (banks, slopes and shallow water) and thermal fronts, which are actually related to krill aggregations. Blue Whales feed almost exclusively on euphausiids (krill) and have the highest absolute metabolic demands. A shapefile on the distribution of significant perennial areas of krill aggregation is available (DFO-ECCC). Important habitats for Blue Whales have therefore been identified by combining information on their distribution with krill aggregation areas (observed or predicted). In the waters of the St. Lawrence estuary, the presence of Blue Whales for foraging, feeding and migration has been observed throughout the year, with increased activity during the summer. It has been observed that feeding rates of Blue Whales are higher in shallow waters and during nocturnal periods (krill at surface), confirming that foraging near the surface is beneficial when possible. Their presence, their great fidelity to this important habitat for their activities and their behavior in the waters of the St. Lawrence in all seasons, show that Blue Whales are vulnerable to oil spills. They are vulnerable, not only indirectly through the reduction of prey and loss of suitable habitat, but also by their behavior requiring active activity on the surface and near the coast. The data used to create the polygons using the bounding box method comes from multiple sources of information: hunting records, photo-identification, coastal, airborne and boat surveys, passive acoustic monitoring, radio and satellite telemetry, ice trapping, anecdotal observations and modeling.
 
@@ -277,8 +275,7 @@ Please see a list of all sources of information used in @Lesage2018 and the Open
 
 ```{r overlap-bw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
-attribute <- "Activity"
-clipped <- master_intersect(BlueWhale_ImpHab_sf, mapDataList, getRegion=TRUE)
+clipped <- master_intersect(bwhab_rr$data_sf, mapDataList)
 if(!is.null(clipped$studyData)){
   summaryBWTable <- data.frame("Species" = "Blue Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[BW Habitat](#bwhab-section)", summaryBWTable, "Species", "Species")
@@ -298,8 +295,8 @@ writeLines(polyText)
 ```
 
 ```{r bw-region-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Blue Whale Important Habitat in the Western North Atlantic. Polygons delimit areas in Canadian waters that are important to Blue Whales for foraging and migration. These areas identified in the report by Lesage et al. (2018) are considered important for the survival and recovery of Blue Whales from the western North Atlantic population. Blue Whales most likely need to use several of these important habitats to fulfill their biological needs. As a result, access corridors and habitat they connect need to be considered equally important for the population.'}
-if (!is.null(clipped$regionData)){
-  bwPlotList <- plot_rr_sf(regionMap, clipped$regionData, attribute, getColorMap=TRUE)
+if (!is.null(bwhab_rr$data_sf)){
+  bwPlotList <- plot_rr_sf(regionMap, bwhab_rr$data_sf, bwhab_rr$attribute, getColorMap = TRUE)
   bwPlotList$polyMap
 }  
 ```
@@ -307,20 +304,17 @@ if (!is.null(clipped$regionData)){
 
 ```{r bw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with Blue Whale Important Habitat.'}
 if (!is.null(clipped$mapData)){
-  plot_rr_sf(areaMap, clipped$mapData, attribute, colorMap=bwPlotList$colorMap)
+  plot_rr_sf(areaMap, clipped$mapData, bwhab_rr$attribute, colorMap = bwPlotList$colorMap)
 }
 ```
 
 
 ### **Northern bottlenose whale important habitat in inter-canyon areas on the eastern Scotian Shelf**  {#nbw-hab-section}
 
-Northern bottlenose whales important habitat in inter-canyon areas on the eastern Scotian Shelf\
-Contact: [MaritimesRAP.XMAR\@dfo-mpo.gc.ca](mailto:MaritimesRAP.XMAR@dfo-mpo.gc.ca){.email}\
+```{r nbw-meta, results='asis'}
+write_meta(nbw_rr, "EN")
+```
 URL: <http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf>\
-Last retrieved on: June 15 2021 from Open Data <https://open.canada.ca/data/en/dataset/9fd7d004-970c-11eb-a2f3-1860247f53e3>\
-Quality Tier: High\
-Security level: none\
-Data use constraints: none
 
 The Scotian Shelf population of Northern Bottlenose Whales (*Hyperoodon ampullatus*) is listed as Endangered under Canada's Species at Risk Act. Partial critical habitat was identified for this population in the Recovery Strategy first published in 2010 [@DFO2016_recoverynbw], and three critical habitat areas were designated along the eastern Scotian Shelf, encompassing the Gully, Shortland Canyon, and Haldimand Canyon (shapefile available online: <https://open.canada.ca/data/en/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c>). However, the Recovery Strategy recognized that additional areas may constitute critical habitat for the population and recommended further studies based on acoustic and visual monitoring to assess the importance of inter-canyon areas as foraging habitat and transit corridors for Northern Bottlenose Whales.
 
@@ -334,7 +328,7 @@ The inter-canyon habitat area polygon was delineated using the 500 m depth conto
 
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(NBNW_ImpHab_sf, mapDataList, getRegion=TRUE)
+clipped <- master_intersect(nbw_rr$data_sf, mapDataList)
 if(!is.null(clipped$studyData)){
   summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[NBW Habitat](#nbw-hab-section)", summaryNBWTable, "Species", "Species")
@@ -350,13 +344,13 @@ polyText <- if(is.null(clipped$studyData)){"Search area does not overlap with No
 ```
 
 ```{r nbw-region-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
-if (!is.null(clipped$regionData)){
-  plot_rr_sf(regionMap, clipped$regionData, "NONE")
+if (!is.null(nbw_rr$data_sf)){
+  plot_rr_sf(regionMap, nbw_rr$data_sf, nbw_rr$attribute)
 }
 ```
 
 ```{r nbw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf.'}
 if (!is.null(clipped$mapData)){
-  plot_rr_sf(areaMap, clipped$mapData, "NONE")
+  plot_rr_sf(areaMap, clipped$mapData, nbw_rr$attribute)
 }
 ```
