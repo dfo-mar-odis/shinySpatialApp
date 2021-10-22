@@ -27,8 +27,12 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile
   pkgTitle <- opendataPKG$title_translated
   contactInfo <- opendataPKG$metadata_contact
   pkgText <- opendataPKG$notes_translated
+  if (!is.null(resId)) {
+    data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer, tifFile=tifFile)  
+  } else {
+    data_sf <- NULL
+  }
   
-  data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer, tifFile=tifFile)
   
   url <- list("en" = paste("<https://open.canada.ca/data/en/dataset/", pkgId, ">", sep =""), 
               "fr" = paste("<https://open.canada.ca/data/fr/dataset/", pkgId, ">", sep =""))  
@@ -84,7 +88,6 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
     out_sf <- stars::st_as_stars(tifRaster) %>% sf::st_as_sf()
   }
   
-  
   if  (inherits(sf::st_geometry(out_sf), "sfc_GEOMETRY")) {
     out_sf <- st_cast(out_sf, "MULTIPOLYGON")
   }
@@ -97,13 +100,37 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
   
   out_sf <- st_transform(out_sf, crs = 4326)
   
-  
   # cleanup
   tempFiles <- list.files(tempDir, include.dirs = T, full.names = T, recursive = T)
   unlink(tempFiles, recursive = TRUE) 
   
   return(out_sf)
 }
+
+download_extract_res_files <- function(resId, csvFileList = NULL) {
+  res <- resource_show(resId)
+  zipUrl <- res$url
+  
+  tempDir <- here::here("dataprocessing/temp")
+  temp <- here::here("dataprocessing/temp/temp.zip")
+  
+  download.file(zipUrl, temp)
+  utils::unzip(temp, exdir = tempDir)
+
+  outFiles <-lapply(csvFileList, function(x, dir) {
+    list.files(dir, recursive=TRUE, pattern = x, 
+               include.dirs = TRUE, full.names = TRUE)
+    }, dir=tempDir)
+  
+  dfList <- lapply(outFiles, read.csv)
+  
+  # cleanup
+  tempFiles <- list.files(tempDir, include.dirs = T, full.names = T, recursive = T)
+  unlink(tempFiles, recursive = TRUE) 
+  
+  return(dfList)
+}
+
 
 get_check_date <- function(varName) {
   checkDate <- NULL
@@ -124,7 +151,7 @@ email_format <- function(emailStr) {
 }
 
 
-save_open_data <- function(pkgId, resId, variableName, qualityTier,
+save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
                            disableCheckDate = TRUE, contactEmail = NULL,  ...) {
   dataSaved <- FALSE
   fnCheckDate <- NULL
@@ -138,8 +165,38 @@ save_open_data <- function(pkgId, resId, variableName, qualityTier,
     }
     temp_rr$qualityTier <- qualityTier
     assign(variableName, temp_rr)
-    save(list = variableName, file = paste("./Open/", variableName, ".RData", sep=""))
+    save(list = variableName, file = file.path(savePath, paste("Open/", variableName, ".RData", sep="")))
     dataSaved <- TRUE
   }
   return(dataSaved)
 }
+
+
+
+RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
+  gscat <- gscat %>% tidyr::unite("MISSION_SET", MISSION:SETNO, remove = TRUE)
+  gscat <- gscat %>% rename(CODE = SPEC)
+  
+  gsinf <- gsinf %>% tidyr::unite("MISSION_SET", MISSION:SETNO, remove = FALSE)
+  gsinf$YEAR <- lubridate::year(gsinf$SDATE)
+  gsinf <- gsinf %>% dplyr::filter(YEAR >= minYear)
+  
+  gsspec <- dplyr::distinct(gsspec)
+  gsspec <- gsspec %>% transmute(gsspec, SPEC = stringr::str_to_sentence(SPEC))
+  gsspec <- gsspec %>% transmute(gsspec, COMM = stringr::str_to_sentence(COMM))
+  gsspec <- gsspec %>% rename("Common Name"= COMM, "Scientific Name" = SPEC)
+  
+  if (nrow(gsinf) > 0){
+    out_sf <- sf::st_as_sf(gsinf, coords = c("SLONG", "SLAT"), crs = 4326)
+  } else {
+    out_sf <- gsinf
+  }
+  
+  out_sf <- left_join(out_sf, gscat, by = "MISSION_SET")
+  out_sf <- left_join(out_sf, gsspec, by = "CODE")
+  
+  out_sf <- out_sf %>% dplyr::select("YEAR", "CODE", "Scientific Name", "Common Name", "TOTNO", "ELAT", "ELONG")
+}
+
+
+

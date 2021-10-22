@@ -20,6 +20,10 @@
 #
 ########## - Compile RV data - #########################-
 
+SurveyPrefix <- c("4VSW", "FALL", "SPRING", "SUMMER")
+File <- c("_2020_GSCAT.csv", "_2020_GSINF.csv", "_2020_GSSPECIES.csv")
+minYear <- 2010
+
 CompileRV_fn <- function(SurveyPrefix, File, minYear) {
   
   RVdataPath = "../Data/mar.wrangling/RVSurvey_FGP"
@@ -93,3 +97,27 @@ CompileRV_fn <- function(SurveyPrefix, File, minYear) {
   outList <- list(GSINF_sf, GSSPECIES)
   return(outList)
 }
+
+
+
+RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
+  gscat <- gscat %>% tidyr::unite("MISSION_SET", MISSION:SETNO, remove = TRUE)
+  gscat <- gscat %>% rename(CODE = SPEC)
+  
+  gsinf <- gsinf %>% tidyr::unite("MISSION_SET", MISSION:SETNO, remove = FALSE)
+  gsinf$YEAR <- lubridate::year(gsinf$SDATE)
+  gsinf <- gsinf %>% dplyr::filter(YEAR >= minYear)
+  
+  gsspec <- dplyr::distinct(gsspec)
+  gsspec <- gsspec %>% transmute(gsspec, SPEC = stringr::str_to_sentence(SPEC))
+  gsspec <- gsspec %>% transmute(gsspec, COMM = stringr::str_to_sentence(COMM))
+  gsspec <- gsspec %>% rename("Common Name"= COMM, "Scientific Name" = SPEC)
+  
+  out_sf <- sf::st_as_sf(gsinf, coords = c("SLONG", "SLAT"), crs = 4326)
+  out_sf <- left_join(out_sf, gscat, by = "MISSION_SET")
+  out_sf <- left_join(out_sf, gsspec, by = "CODE")
+  
+  out_sf <- out_sf %>% select("YEAR", "CODE", "Scientific Name", "Common Name", "TOTNO", "ELAT", "ELONG")
+}
+
+

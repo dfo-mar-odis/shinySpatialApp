@@ -4,20 +4,22 @@ source(here::here("app/R/dataFunctions.R"))
 
 
 region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-setwd(here::here("app/data/MAR"))
-setwd("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data")
+fileSavePath <- here::here("app/data/MAR")
+fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
 load(here::here("app/data/CommonData.RData"))
-loadResult <- load_rdata(c("conservationSites_rr", "wsdb_rr", "narwc_rr" ),  "MAR")
+loadResult <- load_rdata(c("conservationSites_rr", "wsdb_rr", "whitehead_rr", "narwc_rr", "leatherback_rr" ),  "MAR")
 
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
+mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
 lowQuality <- list("en" = "Low", "fr" = "Faible")
 noneList <- list("en" = "None", "fr"= "Aucun")
+protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONLY")
 
 # -------------Marine Protected Areas (mpa)---------------------
-conservationSites_raw <- st_read("../Data/Management/MPAN-Draft/MPAN_DraftDesign_Maritimes/MPAN_DraftDesign_Maritimes.shp", stringsAsFactors = FALSE)
+conservationSites_raw <- st_read(file.path(fileLoadPath, "Management/MPAN-Draft/MPAN_DraftDesign_Maritimes/MPAN_DraftDesign_Maritimes.shp"), stringsAsFactors = FALSE)
 conservationSites_sf <- st_transform(conservationSites_raw, crs = 4326)
 conservationSites_sf <- st_make_valid(conservationSites_sf)
 conservationSites_sf$Legend <- as.factor(conservationSites_sf$STATUS)
@@ -35,15 +37,14 @@ conservationSites_rr <- list("title" = "Draft Conservation Network Design",
                              "qualityTier" = highQuality,
                              "constraints" = internalUse
 )
-save(conservationSites_rr, file = "./Secure/conservationSites_rr.RData")
+save(conservationSites_rr, file = file.path(fileSavePath, "Secure/conservationSites_rr.RData"))
 
 
 #------------------CETACEANS-------------------
 
 #------------------WSDB--------------------
-# Cetacean point data  #########################
 # Whale Sightings Database (wsdb)
-wsdb <- read.csv("../Data/NaturalResources/Species/Cetaceans/WSDB/MarWSDB_20210407.csv", stringsAsFactors = FALSE)
+wsdb <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/WSDB/MarWSDB_20210407.csv"), stringsAsFactors = FALSE)
 wsdb <- dplyr::select(wsdb, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
 wsdb <- wsdb %>% dplyr::filter(YEAR >= 2010)
 wsdb <- dplyr::rename(wsdb,c("Scientific Name" = "SCIENTIFICNAME",
@@ -64,12 +65,12 @@ wsdb_rr <- list("title" = "Whale Sightings Database",
                 "qualityTier" = lowQuality,
                 "constraints" = internalUse
 )
-save(wsdb_rr, file = "./Secure/wsdb_rr.RData")
+save(wsdb_rr, file = file.path(fileSavePath, "Secure/wsdb_rr.RData"))
 
 
 # ----------------WHITEHEAD--------------
 # Whitehead lab
-whitehead <- read.csv("../Data/NaturalResources/Species/Cetaceans/Whitehead_Lab/whitehead_lab.csv", stringsAsFactors = FALSE)
+whitehead <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/Whitehead_Lab/whitehead_lab.csv"), stringsAsFactors = FALSE)
 whitehead$YEAR <- lubridate::year(whitehead$Date)
 whitehead <- whitehead %>% dplyr::filter(YEAR >= 2010)
 whitehead <- whitehead %>% rename("Scientific Name"= species.name)
@@ -91,11 +92,11 @@ whitehead_rr <- list("title" = "Whitehead lab (Dalhousie University)",
                 "qualityTier" = highQuality,
                 "constraints" = internalUse
 )
-save(whitehead_rr, file = "./Secure/whitehead_rr.RData")
+save(whitehead_rr, file = file.path(fileSavePath, "Secure/whitehead_rr.RData"))
 
 # ----------------------NARWC-------------------------
 # North Atlantic Right Whale Consortium (narwc)
-narwc <- read.csv("../Data/NaturalResources/Species/Cetaceans/NARWC/NARWC_09-18-2020.csv", stringsAsFactors = FALSE)
+narwc <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/NARWC/NARWC_09-18-2020.csv"), stringsAsFactors = FALSE)
 narwcspecies <-  read.csv("../Data/NaturalResources/Species/Cetaceans/NARWC/NARWCSpeciesNames.csv", stringsAsFactors = FALSE)
 narwcspecies <- narwcspecies %>% rename("Scientific Name"= ScientificName)
 narwc <- merge(narwc, narwcspecies, by='SPECNAME')
@@ -116,13 +117,13 @@ narwc_rr <- list("title" = "North Atlantic Right Whale consortium",
                  "qualityTier" = highQuality,
                  "constraints" = internalUse
 )
-save(narwc_rr, file = "./Secure/narwc_rr.RData")
+save(narwc_rr, file = file.path(fileSavePath, "Secure/narwc_rr.RData"))
 
 
 # ------------LEATHERBACKS--------------------
 
 # Leatherback turtle habitat
-leatherback_sf <- st_read("../Data/NaturalResources/Species/SpeciesAtRisk/LeatherBackTurtleCriticalHabitat/LBT_CH_2013.shp", stringsAsFactors = FALSE)
+leatherback_sf <- st_read(file.path(fileLoadPath, "NaturalResources/Species/SpeciesAtRisk/LeatherBackTurtleCriticalHabitat/LBT_CH_2013.shp"), stringsAsFactors = FALSE)
 leatherback_sf <- st_make_valid(leatherback_sf)
 leatherback_sf <- sf::st_crop(leatherback_sf, region_sf)
 
@@ -138,5 +139,28 @@ leatherback_rr <- list("title" = " Leatherback Sea Turtle draft critical habitat
                  "qualityTier" = highQuality,
                  "constraints" = internalUse
 )
-save(leatherback_rr, file = "./Secure/leatherback_rr.RData")
+save(leatherback_rr, file = file.path(fileSavePath, "Secure/leatherback_rr.RData"))
 
+
+# --------------------OCEARCH---------------------
+# LOAD OCEARCH DATA #############
+ocearchDatafile <- file.path(fileLoadPath, "NaturalResources/Species/Sharks/OCEARCH/OCEARCH_08-27-2021.csv")
+lines <- readLines(ocearchDatafile)
+lines <- gsub('(^"|"$)', "", lines)
+ocearch <- read.csv(textConnection(lines), quote = '""')
+ocearch <- dplyr::select(ocearch, c("Date", "long", "lat", "ID"))
+ocearch_sf <- st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
+ocearch_sf <- sf::st_crop(ocearch_sf, region_sf)
+
+ocearch_rr <- list("title" = "OCEARCH Shark Tracker",
+                       "contact" = paste("Bryan Franks (", email_format("bfranks@ju.edu"),  ") via Sean Butler (", email_format("sean.butler@dfo-mpo.gc.ca"), ")", sep=""), 
+                       "url" = lang_list("<https://www.ocearch.org/tracker/>"),
+                       "accessedOnStr" = list("en" ="July 22 2021 by Sean Butler", "fr" = "22 juillet 2021 par Sean Butler") ,
+                       "accessDate" = as.Date("2021-07-22"),
+                       "data_sf" = ocearch_sf,
+                       "attribute" = "NONE",
+                       "securityLevel" = noneList,
+                       "qualityTier" = highQuality,
+                       "constraints" = internalUse
+)
+save(ocearch_rr, file = file.path(fileSavePath, "Secure/ocearch_rr.RData"))

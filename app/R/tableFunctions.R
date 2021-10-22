@@ -56,7 +56,7 @@ rockweedStats<- function(rockweed_sf) {
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. sarData: datatable of only listed species found within the studyArea
 
-create_table_RV <- function(data_sf, sarTable, speciesTable) {
+create_table_RV <- function(data_sf, sarTable) {
 
   if (is.null(data_sf)) {
     return(list("allSpecies" = NULL, "sarData" = NULL))
@@ -66,19 +66,18 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
   Samples_study_no <- dim(unique(data_sf[, c("geometry")]))[1]
   # calculate a table of all species caught and
   # the total number of individuals caught.
-  # Join to the species lookup table to get
-  # species names
   individualCounts <- aggregate(
     x = list(Individuals = data_sf$TOTNO),
-    by = list(CODE = data_sf$CODE),
+    by = list(CODE = data_sf$CODE, "Scientific Name" = data_sf$`Scientific Name`, 
+              "Common Name" = data_sf$`Common Name`),
     FUN = sum)
 
   recordCounts <- aggregate(
     x = list(Records = data_sf$CODE),
     by = list(CODE = data_sf$CODE),
     FUN = length)
+  
   allSpeciesData <- merge(individualCounts, recordCounts, by = 'CODE')
-  allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'CODE')
   # add a field for the number of samples
   allSpeciesData$Samples <- Samples_study_no
   # combine the number of species records with number of samples
