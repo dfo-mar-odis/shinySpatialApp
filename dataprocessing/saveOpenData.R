@@ -107,19 +107,19 @@ sdmResId <- "16df15fb-367c-46e3-8ab7-be25315b9fbd"
 
 save_open_data(sdmPkgId, sdmResId, "finWhale_rr", mediumQuality, fileSavePath,
                contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Fin_Whale.tif")
+               region_sf = region_sf, tifFile = "Fin_Whale.tif", searchYears="1975-2015")
 
 save_open_data(sdmPkgId, sdmResId, "seiWhale_rr", mediumQuality, fileSavePath,
                contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Sei_Whale.tif")
+               region_sf = region_sf, tifFile = "Sei_Whale.tif", searchYears="1975-2015")
 
 save_open_data(sdmPkgId, sdmResId, "humpbackWhale_rr", mediumQuality, fileSavePath,
                contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Humpback_Whale.tif")
+               region_sf = region_sf, tifFile = "Humpback_Whale.tif", searchYears="1975-2015")
 
 save_open_data(sdmPkgId, sdmResId, "harbourPorpoise_rr", mediumQuality, fileSavePath,
                contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Harbour_Porpoise.tif")
+               region_sf = region_sf, tifFile = "Harbour_Porpoise.tif", searchYears="1975-2015")
 
 
 # -----------NBW-------------- 
@@ -194,6 +194,7 @@ obisFish_rr <- list("title" = "OBIS observations",
                                           "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
                    "accessDate" = as.Date("2021-01-27"),
                    "data_sf" = obisFish_sf,
+                   "searchYears" = "2010-2020",
                    "attribute" = "Legend",
                    "securityLevel" = noneList,
                    "qualityTier" = mediumQuality,
@@ -216,6 +217,7 @@ obisCet_rr <- list("title" = "OBIS observations (cetaceans)",
                                           "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
                    "accessDate" = as.Date("2021-01-27"),
                    "data_sf" = obisCet_sf,
+                   "searchYears" = "2010-2020",
                    "attribute" = "Legend",
                    "securityLevel" = noneList,
                    "qualityTier" = mediumQuality,
@@ -280,5 +282,6 @@ fall_sf <- RV_to_sf(fallDfs[[1]], fallDfs[[2]], fallDfs[[3]], minYear)
 rv_sf <- rbind(fourVSW_sf, spring_sf, summer_sf, fall_sf)
 rv_sf <- sf::st_crop(rv_sf, region_sf)
 RV_rr$data_sf <- rv_sf
+RV_rr$searchYears <- "2010-2020"
 save(RV_rr, file = file.path(fileSavePath, "Open/RV_rr.RData"))
 

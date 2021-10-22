@@ -39,7 +39,6 @@ filesLoaded <- load_rdata(c("wsdb_rr", "whitehead_rr", "narwc_rr", "obisCet_rr",
 ```{r wsdb-meta, results='asis'}
 write_meta(wsdb_rr, "FR")
 ```
-Année de recherche : de 2010 à 2020  
 
 La base de données sur les mammifères marins et les animaux pélagiques, ou Base de données des observations de baleines, a été mise en œuvre en 2002 par le MPO afin de fournir un dépôt central pour les observations d’animaux marins, en particulier de cétacés, et d’améliorer l’accessibilité aux données d’observation provenant de diverses sources, y compris certaines données provenant des relevés des mammifères marins et des activités de recherche (MacDonald et al., 2017). La plupart des efforts visant à rassembler les données d’observations disponibles ont porté sur la collecte de données provenant de diverses sources en exploitation dans les eaux de la Nouvelle-Écosse (y compris la baie de Fundy et le plateau néo-écossais), et plus récemment dans le golfe du Saint-Laurent, bien que moins d’efforts aient été déployés pour obtenir les données disponibles d’autres régions. La plupart des observations ont été recueillies de façon fortuite et provenaient de personnes possédant une vaste expertise et une vaste expérience en matière d’identification des mammifères marins. Pour de plus amples renseignements, consulter le site suivant : http://www.inter.dfo-mpo.gc.ca/Maritimes/SBSA/ecpop/lep/Bas-Donnees ou le document de MacDonald et al. (2017) <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf>.     
 
@@ -91,7 +90,6 @@ if (!is.null(wsdbClipped$studyData)) {
 ```{r whitehead-meta, results='asis'}
 write_meta(whitehead_rr, "FR")
 ```
-Année de recherche : de 2010 à 2019  
 
 Les renseignements suivants sont résumés dans ce site Web (https://whiteheadlab.weebly.com/). Le Whitehead Lab est basé au département de biologie de l’Université Dalhousie (Halifax, Nouvelle-Écosse). Depuis sa création en 1987, le laboratoire Whitehead a accueilli plus de 75 étudiants au niveau postdoctoral, au doctorat, à la maîtrise et au premier cycle. Ces étudiants mènent principalement des recherches axées sur la conservation sur le comportement, l’écologie et la biologie des populations des espèces de cétacés (principalement, les cachalots, les baleines à bec commune et les globicéphales noirs), et de nombreuses études sont axées sur les espèces dans les eaux de l’est du Canada. 
 
@@ -132,7 +130,6 @@ if (!is.null(whiteheadClipped$studyData)) {
 ```{r narwc-meta, results='asis'}
 write_meta(narwc_rr, "FR")
 ```
-Année de recherche: 2010-2019    
 
 Les renseignements suivants sont résumés sur le site de la base de données des observations du NARWC : https://www.narwc.org/sightings-database.html
 
@@ -170,7 +167,6 @@ if (!is.null(narwcClipped$studyData)) {
 ```{r obis-cetacean-meta, results='asis'}
 write_meta(obisCet_rr, "FR")
 ```
-Année de recherche: 2010-2020  
 
 Une recherche du SIBO a été effectuée pour trouver d’autres documents pertinents pour les cétacés inscrits en vertu de la LEP, ou évalués par le COSEPAC. Un processus de CQ de premier niveau a été effectué en supprimant les rapports en double qui sont également présents dans la BDOB. Les versions subséquentes de ce rapport viseront à étendre nos efforts de CQ pour cette source d’information.
 
@@ -208,7 +204,6 @@ if (!is.null(obisClipped$studyData)) {
 write_meta(finWhale_rr, "FR")
 ```
 LIEN : <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>       
-Année de recherche : de 1975 à 2015
 
 Description de l’ensemble de données (tirée du dossier des données ouvertes) :
 ```{r sdm-text, results='asis'}

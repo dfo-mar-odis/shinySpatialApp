@@ -18,7 +18,6 @@ La présente section décrit les résultats tirés des sources de données suiva
 ```{r rv-meta, results='asis'}
 write_meta(RV_rr, "FR")
 ```
-Année de recherche : de 2010 à 2020
 
 Description de l’ensemble de données (tirée du dossier des données ouvertes):
 ```{r rv-text, results='asis'}
@@ -86,7 +85,6 @@ if (!is.null(outputList$studyData)) {
 ```{r isdb-meta, results='asis'}
 write_meta(isdb_rr, "FR")
 ```
-Année de recherche : de 2002 à 2019  
 
 La base de données des relevés de l’industrie (BDRI) est une base de données ministérielle qui contient des observations des prises en mer de bateaux de pêche commerciale exploités dans l’Atlantique Nord-Ouest. Les registres peuvent être associés aux activités de pêche commerciale régulières, ou ils peuvent représenter les relevés scientifiques dirigés par l’industrie. Les relevés de l’industrie ne sont pas spatialement ou temporellement synoptiques et, par conséquent, il est fortement recommandé d’intégrer des renseignements supplémentaires sur la présence et/ou l’utilisation de l’habitat (c.-à-d. frai, migration, aires d’alimentation) provenant d’études à plus grande échelle. Les renseignements sur les prises et l’effort de pêche pour un titulaire de permis individuel constituent des renseignements personnels protégés en vertu de l’article 19 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-12) et, pour un titulaire de permis d’entreprise, est considéré comme un renseignement de nature délicate, exclusif et protégé en vertu de l’article 20 de la Loi sur l’accès à l’information (https://laws-lois.justice.gc.ca/fra/lois/a-1/page-5.html#h-13).
 
@@ -97,7 +95,6 @@ Sans consentement écrit, Pêches et Océans Canada n’est pas autorisé à com
 ```{r marfis-meta, results='asis'}
 write_meta(marfis_rr, "FR")
 ```
-Année de recherche : de 2002 à 2019    
 
 Le Système d’information sur les pêches des Maritimes (SIPMAR) est une base de données du MPO, gérée par la Direction des politiques et des études économiques. Le SIPMAR contient des renseignements sur les prises et les efforts, les quotas et les permis pour la région des Maritimes. Les renseignements consignés pour toutes les pêches commerciales qui se déroulent dans cette région sont associés à ces données. Si un navire commercial de la région des Maritimes fait des débarquements dans une autre région du MPO ou à l’extérieur des eaux canadiennes, l’information n’est pas incluse dans la base de données du SIPMAR, peu importe si le navire provient de la région des Maritimes. La majorité des renseignements sur les prises sont liés au déchargement commercial (p. ex. les programmes de contrôle à quai). Les renseignements déclarés dans le SIPMAR ne sont pas considérés comme spatialement ou temporellement synoptiques et, par conséquent, il est fortement recommandé d’intégrer des renseignements supplémentaires sur la présence et/ou l’utilisation de l’habitat (c.-à-d. frai, migration, alimentation) provenant d’études à plus grande échelle. Les données sur les rejets et les registres de données sur les espèces en péril sont également plus limitées, car les dossiers sur les prises ne comportent pas tous les coordonnées géographiques (latitude et longitude) associées ou des renseignements sur l’effort de pêche. Cependant, en général, tous les dossiers sont associés à une division de l’OPANO et à une zone unitaire de l’OPANO, même si aucune coordonnée n’a été fournie. Les données de production (moins de quatre ans) sont considérées comme préliminaires et peuvent être modifiées sans préavis. Des changements aux données archivées (plus de quatre ans) peuvent également se produire, mais ils sont généralement limités. Le travail de contrôle et d’assurance de la qualité est en cours dans la base de données du SIPMAR, mais les erreurs ne sont pas toutes corrigées. Si vous avez des erreurs à signaler, des questions ou des demandes de correction de données, vous pouvez les envoyer à notre boîte de réception de la qualité des données : CDDDataQuality@dfo-mpo.gc.ca. Cette information sur le SIPMAR a été fournie par Colin.O’Neil@dfo-mpo.gc.ca (juillet 2020, Direction des politiques et des études économiques). Si vous souhaitez inclure des données d’observateurs dans une publication, n’oubliez pas de les agréger (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r).
 
@@ -175,7 +172,6 @@ if (!is.null(outputListM$studyData)) {
 ```{r obis-meta, results='asis'}
 write_meta(obisFish_rr, "FR")
 ```
-Année de recherche : de 2010 à 2020  
 
 Le SIBO est un centre mondial de données et d’information en libre accès sur la biodiversité marine pour la science, la conservation et le développement durable. Il a pour vision de bâtir et de maintenir une alliance mondiale qui collabore avec les communautés scientifiques pour faciliter l’accès libre et ouvert à la biodiversité et aux données et informations biogéographiques sur la vie marine, ainsi que leur application. Des recherches du SIBO ont été effectuées pour trouver d’autres documents pertinents pour les espèces inscrites en vertu de la LEP ou évaluées par le COSEPAC. Les versions futures de cet outil de production de rapports viseront à élargir nos vérifications de la qualité de la base de données du SIBO.
 
@@ -213,7 +209,6 @@ if (!is.null(outputList$studyData)) {
 ```{r ocearch-meta, results='asis'}
 write_meta(ocearch_rr, "FR")
 ```
-Search year: 2013-2020\
 
 OCEARCH is a data-centric organization built to help scientists collect previously unattainable data in the ocean while open sourcing our research and explorations. Open sourcing and inclusion at every level, and in real-time, allows the world to participate in their projects while being aware of the developing science. OCEARCH shares the data, including samples collected and tracking data, with collaborating institutions and students who request them for their studies. The tracking data is also open-sourced to the public via the OCEARCH Tracker. The OCEARCH Tracker is a free app that lets you observe the navigational pattern of animals that have been tagged with satellite tracking technology. White Shark locations from satellite trackers are summarized in this section from 1 Jan 2013 to 31 Oct 2020. Locations were clipped to only include locations within the Canadian EEZ. A speed filter was run with 3 m/s as the maximum speed and 2.5 km as the potential error of locations. This filter removed approximately 100 locations out of of 2,000. Resulting points ere then visualized in ArcGIS to identify potential errors and remove locations that seemed implausible. Each shark location was individually plotted to do a second visual examination and to remove or flag errors/outliers. There is additional QA/QC that could still be performed to this dataset to capture additional issues (e.g. there may be single shark locations in Canadian waters during a period of time that the speed filter would not remove or that were not captured in the visual inspection). The absence of White Sharks in this section map should be interpreted as an absence of tracking data, not necessarily as an absence of the species in the area.
 
