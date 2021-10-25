@@ -1,21 +1,32 @@
 
 copy_rdata_files <- function() {
   
-  rDataDir <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\Rdata\\data"
+  rDataDir <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\Rdata\\data\\"
   
-  localDataDir <- here::here("app/data/")
-  remoteInfo <- file.info(list.files(rDataDir, full.names = TRUE))
-  remoteInfo["filenames"] = list.files(rDataDir)
-  localInfo <- file.info(list.files(localDataDir, full.names = TRUE))
-  localInfo["filenames"] = list.files(localDataDir)
+  localDataDir <- here::here("app/data")
+  
+  remoteInfo <- file.info(list.files(rDataDir, recursive = TRUE, full.names = TRUE))
+  remoteInfo["filenames"] <- list.files(rDataDir, recursive = TRUE, include.dirs = TRUE)
+  localInfo <- file.info(list.files(localDataDir, recursive = TRUE, full.names = TRUE))
+  localInfo["filenames"] <- list.files(localDataDir, recursive = TRUE, include.dirs = TRUE)
+  
+  missingList <- !(remoteInfo$filenames %in% localInfo$filenames) 
+  if (any(missingList)) {
+    missingFileList <- filter(remoteInfo, missingList)$filenames
+    missingFilePath <- rownames(filter(remoteInfo, remoteInfo$filename %in% missingFileList))
+    destList <- file.path(localDataDir, missingFileList)
+    copyResults <- file.copy(missingFilePath, destList, overwrite = TRUE)
+  }
   
   allInfo <- merge(remoteInfo, localInfo, by="filenames")
   updateList <- allInfo$mtime.x > allInfo$mtime.y
   if (any(updateList)) {
     updateFileList <- filter(allInfo, updateList)$filenames
     updateFilePath <- rownames(filter(remoteInfo, remoteInfo$filename %in% updateFileList))
-    copyResults <- file.copy(updateFilePath, localDataDir, overwrite = TRUE)
+    destList <- file.path(localDataDir, updateFileList)
+    copyResults <- file.copy(updateFilePath, destList, overwrite = TRUE)
   }
+  
   return("Data files up to date :)")  
 
 }

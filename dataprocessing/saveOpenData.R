@@ -4,9 +4,6 @@ source(here::here("app/R/dataFunctions.R"))
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-save(region_sf, file = file.path(fileSavePath,"Open/region_sf.RData"))
-
 load(here::here("app/data/CommonData.RData"))
 loadResult <- load_rdata(c("EBSA_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
                            "bwhab_rr", "obisCet_rr", "finWhale_rr", 
@@ -20,6 +17,8 @@ internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONL
 
 
 # ----------------COMMON DATA-------------
+region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
+
 land10m_sf <- st_read(file.path(fileLoadPath, "Boundaries/Landmass/ne_10m_land_Clip.shp"), stringsAsFactors = FALSE)
 #remove State and Province column from land10m
 land10m_sf <- land10m_sf[-c(2)]
@@ -47,9 +46,9 @@ row.names(listed_species) <- NULL
 
 # Cetacean legend file
 cetLegend <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/CetaceanLegend.csv"), stringsAsFactors = FALSE)
-cetLegend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
+cetLegend <- dplyr::rename(cetLegend,c("Scientific Name" = "Scientific_Name"))
 
-save(land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, file = file.path(fileSavePath, "CommonData.RData"))
+save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, file = file.path(fileSavePath, "CommonData.RData"))
 
 
 # ----------------EBSA----------------- 
