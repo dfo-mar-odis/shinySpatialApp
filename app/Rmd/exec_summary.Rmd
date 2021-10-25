@@ -31,10 +31,12 @@ minYear <- 2010
 
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
 copy_rdata_files() # make sure data files are up to date. 
-load(here::here("app/data/testData.RData"))
-#load(here::here("app/data/OpenData.RData"))
-#load(here::here("app/data/OpenData_sardist.RData"))
-#load(here::here("app/data/SecureData.RData"))
+filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherback_rr", 
+                            "RV_rr", "isdb_rr", "marfis_rr", "obisFish_rr", "ocearch_rr", 
+                            "wsdb_rr", "whitehead_rr", "obisCet_rr", "bwhab_rr", 
+                            "nbw_rr", "narwc_rr", "rockweed_rr", "EBSA_rr",
+                            "conservationSites_rr", "finWhale_rr", "harbourPorpoise_rr",
+                            "humpbackWhale_rr", "seiWhale_rr"), "MAR", env = environment())
 
 listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
 row.names(listed_species) <- NULL
@@ -42,13 +44,12 @@ row.names(listed_species) <- NULL
 ```
 
 ```{r  Load-Search-Area, echo=FALSE, include=FALSE, cache=FALSE}
-region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-studyArea <- region
+studyArea <- region_sf
 site <- sf::st_centroid(studyArea)
 ```
 
 ```{r parameters-for-area_map.r, echo=FALSE, include=FALSE, cache=FALSE}
-mapDataList <- maps_setup(studyArea, site, region, land50k_sf, land10m_sf, bounds_sf)
+mapDataList <- maps_setup(studyArea, site, region_sf, land50k_sf, land10m_sf, bounds_sf)
 list2env(mapDataList, envir = environment())
 ```
 
@@ -87,51 +88,42 @@ whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape))
 
 ```{r fill-summary-sar-table, include=FALSE, cache=FALSE}
 # wsdb
-wsdbClipped <- master_intersect(wsdb_sf, mapDataList)$studyData
 linkedSectionText <- "WSDB"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped, "Legend")
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdb_rr$data_sf, "Legend")
 summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 
 # whitehead
-whiteheadClipped <- master_intersect(whitehead_sf, mapDataList)$studyData
 linkedSectionText <- "Whitehead"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped, "Legend")
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whitehead_rr$data_sf, "Legend")
 summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 
 # narwc
-narwcClipped <- master_intersect(narwc_sf, mapDataList)$studyData
 linkedSectionText <- "NARWC"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped, "Legend")
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwc_rr$data_sf, "Legend")
 summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 
 # obis cetaceans
-obisClipped <- master_intersect(obis_cet_sf, mapDataList)$studyData
 linkedSectionText <- "OBIS-Cetaceans"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped, "Legend")
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisCet_rr$data_sf, "Legend")
 summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 
 # RV
-rvClipped <- master_intersect(RVCatch_sf, mapDataList, Year = minYear)$studyData
-rvSarTable <- create_table_RV(rvClipped, listed_species, speciesTable = RVGSSPECIES)$sarData
+rvSarTable <- create_table_RV(RV_rr$data_sf, listed_species)$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "RV", rvSarTable, "Common Name", "Individuals")
 
 # Marfis/ISDB
-outputListI <- master_intersect(isdb_sf, mapDataList, Year = minYear)$studyData
-outputListM <- master_intersect(marfis_sf, mapDataList, Year = minYear)$studyData
-isdbSarTable <- create_table_ISDB(outputListI, listed_species, speciesTable = ISSPECIESCODES)$sarData
+isdbSarTable <- create_table_ISDB(isdb_rr$data_sf, listed_species, speciesTable = ISSPECIESCODES)$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "ISDB", isdbSarTable, "Common Name", "Records")
 
-marfisSarTable <- create_table_MARFIS(outputListM, listed_species, speciesTable = MARFISSPECIESCODES)$sarData
+marfisSarTable <- create_table_MARFIS(marfis_rr$data_sf, listed_species, speciesTable = MARFISSPECIESCODES)$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "MARFIS", marfisSarTable, "Common Name", "Records")
 
 # OBIS
-obisClipped <- master_intersect(obis_fish_sf, mapDataList, Year = minYear)$studyData
-obisTable <- create_table_OBIS(obisClipped)
+obisTable <- create_table_OBIS(obisFish_rr$data_sf)
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "OBIS", obisTable, "Common Name", "Common Name")
 
 # OCEARCH
-ocearchOutputList <- master_intersect(ocearch_sf, mapDataList)$studyData
-if (!is.null(ocearchOutputList)) {
+if (!is.null(ocearch_rr$data_sf)) {
    ocearchSummaryRow <- data.frame("CommonName" = c("White Shark"))
 } else {
   ocearchSummaryRow <- NULL
@@ -144,42 +136,33 @@ summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH",
 
 ```{r fill-summary-hab-table, include=FALSE, cache=FALSE}
 # crithab, sardist
-outputListSardist <- master_intersect(sardist_sf, mapDataList)$studyData
-outputListCrithab <- master_intersect(ClippedCritHab_sf, mapDataList)$studyData
-outputListLB <- master_intersect(leatherback_sf, mapDataList)$studyData
-critHabCheck <- !is.null(outputListCrithab$studyData) | !is.null(outputListLB$studyData)
-distTable <- table_dist(outputListSardist$studyData)
+critHabCheck <- !is.null(crithab_rr$data_sf) | !is.null(leatherback_rr$data_sf)
+distTable <- table_dist(sardist_rr$data_sf, "EN")
 summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "SAR Distribution",  distTable, "Common Name", "Common Name")
 
 if (critHabCheck) {
-  critTable <- table_crit(outputListCrithab$studyData, outputListLB$studyData)  
+  critTable <- table_crit(crithab_rr$data_sf, leatherback_rr$data_sf, "EN")  
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "CH", "SAR Critical Habitat", critTable, "Common Name", "Common Name")
 }
 
 # sdm
-clippedFin <- master_intersect(fin_whale_sf, mapDataList, getRegion = TRUE)
-clippedHp <- master_intersect(harbour_porpoise_sf, mapDataList, getRegion = TRUE)
-clippedHump <- master_intersect(humpback_whale_sf , mapDataList, getRegion = TRUE)
-clippedSei <- master_intersect(sei_whale_sf, mapDataList, getRegion = TRUE)
-tableSDM <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
-                        "Harbour Porpoise" = !is.null(clippedHp$studyData),
-                        "Humpback Whale" = !is.null(clippedHump$studyData),
-                        "Sei Whale" = !is.null(clippedSei$studyData),
+tableSDM <- data.frame("Fin Whale" = !is.null(finWhale_rr$data_sf),
+                        "Harbour Porpoise" = !is.null(harbourPorpoise_rr$data_sf),
+                        "Humpback Whale" = !is.null(humpbackWhale_rr$data_sf),
+                        "Sei Whale" = !is.null(seiWhale_rr$data_sf),
                         check.names = FALSE)
 summarySDMTable <- data.frame("Species" = names(tableSDM), "present" = transpose(tableSDM)$V1)
 summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "SDM", summarySDMTable, "Species", "present")
 
 # bw
 attribute <- "Activity"
-clipped <- master_intersect(BlueWhale_ImpHab_sf, mapDataList, getRegion=TRUE)
-if(!is.null(clipped$studyData)){
+if(!is.null(bwhab_rr$data_sf)){
   summaryBWTable <- data.frame("Species" = "Blue Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "BW Habitat", summaryBWTable, "Species", "Species")
 }
 
 #nbw
-clipped <- master_intersect(NBNW_ImpHab_sf, mapDataList, getRegion=TRUE)
-if(!is.null(clipped$studyData)){
+if(!is.null(nbw_rr$data_sf)){
   summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "NBW Habitat", summaryNBWTable, "Species", "Species")
 }
