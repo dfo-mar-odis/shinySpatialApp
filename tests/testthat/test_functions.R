@@ -28,18 +28,20 @@ test_that("area plot list", {
 test_that("master intersect", {
   list2env(load_test_data(), envir = environment())
   # test with points
-  testBbox <- sf::st_bbox(whitehead_sf)
+  filesLoaded <- load_rdata(c("whitehead_rr", "crithab_rr"), "MAR", env = globalenv())
+  
+  testBbox <- sf::st_bbox(whitehead_rr$data_sf)
   mapDataList$studyArea <- testBbox
   mapDataList$bboxMap <- testBbox
-  outputList <- master_intersect(whitehead_sf, mapDataList, getRegion = TRUE)
-  expect_equal(nrow(outputList$regionData), nrow(whitehead_sf))
+  outputList <- master_intersect(whitehead_rr$data_sf, mapDataList, getRegion = TRUE)
+  expect_equal(nrow(outputList$regionData), nrow(whitehead_rr$data_sf))
   
   # test with polygons
-  testBbox <- sf::st_bbox(ClippedCritHab_sf)
+  testBbox <- sf::st_bbox(crithab_rr$data_sf)
   mapDataList$studyArea <- testBbox
   mapDataList$bboxMap <- testBbox
-  outputList <- master_intersect(ClippedCritHab_sf, mapDataList, getRegion = TRUE)
-  expect_equal(nrow(outputList$regionData), nrow(ClippedCritHab_sf))
+  outputList <- master_intersect(crithab_rr$data_sf, mapDataList, getRegion = TRUE)
+  expect_equal(nrow(outputList$regionData), nrow(crithab_rr$data_sf))
   
   # test null intersect (no data in the Gulf of Guinea):
   testBbox["xmin"] <- 0
@@ -49,7 +51,7 @@ test_that("master intersect", {
   mapDataList$region <- testBbox
   mapDataList$bboxMap <- testBbox
   mapDataList$studyArea <- testBbox
-  outputList <- master_intersect(whitehead_sf, mapDataList, getRegion = TRUE)
+  outputList <- master_intersect(whitehead_rr$data_sf, mapDataList, getRegion = TRUE)
   expect_null(c(outputList$regionData, outputList$studyData, outputList$mapData, outputList$mapPoints))
 })
 

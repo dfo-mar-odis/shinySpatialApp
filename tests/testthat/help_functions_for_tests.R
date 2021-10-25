@@ -46,8 +46,8 @@ render_check_delete <- function(sectionPath, deleteFile=TRUE) {
 load_test_data <- function() {
   catch_all_output({
     # check if globalenv data is loaded, if not load it:
-    if (!exists("bioregion_sf")) {
-      load(here::here("app/data/testData.RData"), envir = globalenv())
+    if (!exists("region_sf")) {
+      filesLoaded <- load_rdata(c("CommonData"), "MAR", env = globalenv())
     }
     if (!exists("add_buffer")) {
       lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", 
@@ -61,9 +61,8 @@ load_test_data <- function() {
     
     studyArea <- st_read(sample(studyAreaOpts, 1))
     site <- sf::st_centroid(studyArea)
-    region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-    
-    mapDataList <- maps_setup(studyArea, site, region, land50k_sf, land10m_sf, bounds_sf)
+
+    mapDataList <- maps_setup(studyArea, site, region_sf, land50k_sf, land10m_sf, bounds_sf)
     list2env(mapDataList, envir = environment())
   })
   

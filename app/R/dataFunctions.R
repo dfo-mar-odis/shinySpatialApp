@@ -1,14 +1,18 @@
 
 copy_rdata_files <- function() {
   
-  rDataDir <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\Rdata\\data\\"
+  rDataDir <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\Rdata\\data"
+  rStrDir <- gsub("\\\\", "\\\\\\\\", rDataDir) # backslash escaping nonsense
   
   localDataDir <- here::here("app/data")
+  localStrDir <- gsub("\\\\", "\\\\\\\\", localDataDir) # backslash escaping nonsense
+  
   
   remoteInfo <- file.info(list.files(rDataDir, recursive = TRUE, full.names = TRUE))
-  remoteInfo["filenames"] <- list.files(rDataDir, recursive = TRUE, include.dirs = TRUE)
+  remoteInfo["filenames"] <- sub(rStrDir, "", rownames(remoteInfo))
+  
   localInfo <- file.info(list.files(localDataDir, recursive = TRUE, full.names = TRUE))
-  localInfo["filenames"] <- list.files(localDataDir, recursive = TRUE, include.dirs = TRUE)
+  localInfo["filenames"] <- sub(localStrDir, "", rownames(localInfo))
   
   missingList <- !(remoteInfo$filenames %in% localInfo$filenames) 
   if (any(missingList)) {
