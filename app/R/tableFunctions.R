@@ -302,13 +302,16 @@ table_dist <- function(clippedSardist_sf, lang) {
   if (is.null(clippedSardist_sf)) {
     return(NULL)
   }
-
+  
   if (lang == "EN") {
-    clippedSardist_sf$Common_Name_EN[clippedSardist_sf$Common_Name_EN == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
+    clippedSardist_sf <- dplyr::mutate(clippedSardist_sf, Common_Name_EN = str_replace(Common_Name_EN, "`", "'"))
     distTable <- dplyr::select(clippedSardist_sf, Scientific_Name, Common_Name_EN,
                                Population_EN, SARA_Status, Species_Link)
     tableNames <-  c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
   } else if(lang =="FR") {
+    clippedSardist_sf <- dplyr::mutate(clippedSardist_sf, Common_Name_FR = str_replace(Common_Name_FR, "`", "'"))
+    clippedSardist_sf <- dplyr::mutate(clippedSardist_sf, Population_FR = str_replace(Population_FR, "`", "'"))
+    
     distTable <- dplyr::select(clippedSardist_sf, Scientific_Name, Common_Name_FR,
                                Population_FR, SARA_Status, Species_Link)
     tableNames <-  c("Nom Scientific", "Nom Commun", "Population", "Statut LEP", "Lien d'espèce")
@@ -361,7 +364,7 @@ table_crit <- function(CCH_sf, LB_sf, lang) {
   }
   
   if (!is.null(CCH_sf)){
-    critTable <- dplyr::select(CCH_sf, critTableCols)
+    critTable <- dplyr::select(CCH_sf, all_of(critTableCols))
     critTable <- sf::st_drop_geometry(critTable)
     names(critTable) <- critTableNames
   } else {

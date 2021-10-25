@@ -22,7 +22,6 @@ write_meta(RV_rr, "EN")
 ```
 
 Dataset description from the Open Data record [@OpenData_MAR_RV]:
-
 ```{r rv-text, results='asis'}
 writeLines(noquote(RV_rr$text$en))
 ```

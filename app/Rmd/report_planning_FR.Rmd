@@ -42,9 +42,11 @@ writeLines(Query_output_EBSA)
 
 ```
 
-```{r EBSA-report, echo=FALSE, results='asis'}
-#function for report
-EBSA_report(EBSAoutput$studyData, lang="FR")
+```{r EBSA-table,  echo=FALSE, results='asis'}
+EBSATable <- EBSA_report(EBSAoutput$studyData, lang="FR")
+if (!is.null(EBSATable)){
+   knitr::kable(EBSATable, align="l", caption="Details for EBSA's overlapping the study area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
 ```
 
 

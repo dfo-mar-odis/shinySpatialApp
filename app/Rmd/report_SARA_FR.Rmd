@@ -51,11 +51,11 @@ Les habitats essentiels présentés dans cette section sont disponibles sur le p
 outputListSardist <- master_intersect(sardist_rr$data_sf, mapDataList)
 
 # plotted with colour
-legendNameCrithab <- "Common Name"
+legendNameCrithab <- "Nom Commun"
 outputListCrithab <- master_intersect(crithab_rr$data_sf, mapDataList)
 
 # plotted in single colour
-outputListLB <- master_intersect(leatherback_sf, mapDataList)
+outputListLB <- master_intersect(leatherback_rr$data_sf, mapDataList)
 
 critHabCheck <- !is.null(outputListCrithab$studyData) | !is.null(outputListLB$studyData)
 

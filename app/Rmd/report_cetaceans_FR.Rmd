@@ -207,8 +207,9 @@ LIEN : <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>
 
 Description de l’ensemble de données (tirée du dossier des données ouvertes) :
 ```{r sdm-text, results='asis'}
-writeLines(noquote(finWhale_rr$text$fr))
-
+# trim extra sections off.  
+sdmText <- sub("Sources des données: .*", "", finWhale_rr$text$fr)
+writeLines(noquote(sdmText))
 ```
 
 Considérations importantes relatives à l’utilisation : les prévisions modélisées dans cette section ne doivent pas être utilisées seules pour le présent rapport, à des fins de planification de l’espace marin et/ou pour délimiter un habitat important pour les espèces de cétacés. Les extrants devraient plutôt être utilisés conjointement avec d’autres sources d’information comme la répartition des proies, les données de marquage, les détections provenant de la surveillance acoustique, d’autres données sur la présence de cétacés et d’autres efforts de modélisation déjà disponibles pour la région. En fait, le produit de données résumé dans la section ci-dessous (habitat important pour le rorqual bleu dans l’ouest de l’Atlantique Nord) représente un excellent cadre dans lequel utiliser correctement les extrants de cette section.  
@@ -250,7 +251,7 @@ Description de l’ensemble de données (tirée du dossier des données ouvertes
 Veuillez consulter la liste de toutes les sources d’information utilisées dans Lesage et al. 2018 et le dossier des données ouvertes ici https://ouvert.canada.ca/data/fr/dataset/8fafd919-fcbe-43a3-a911-3d9461273441.
 
 #### ***Résultats de la recherche sur l’habitat important des rorquals bleus par zone***
-*
+
 ```{r overlap-bw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
 clipped <- master_intersect(bwhab_rr$data_sf, mapDataList)

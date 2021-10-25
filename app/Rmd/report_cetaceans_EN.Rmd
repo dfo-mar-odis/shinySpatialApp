@@ -223,7 +223,9 @@ URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>\
 
 Dataset description from the Open Data record [@OpenData_cetacean_imp]: 
 ```{r sdm-text, results='asis'}
-writeLines(noquote(finWhale_rr$text$en))
+# trim extra sections off.  
+sdmText <- sub("Data sources: .*", "", finWhale_rr$text$en)
+writeLines(noquote(sdmText))
 
 ```
 

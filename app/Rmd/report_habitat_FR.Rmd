@@ -3,6 +3,12 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+
+```{r habitat-setup}
+filesLoaded <- load_rdata(c("rockweed_rr"), "MAR", env = environment())
+
+```
+
 ## **INFORMATION SUR L’HABITAT**
 
 ### **Végétation intertidale et fucus**
@@ -30,7 +36,7 @@ Remarques sur les données :
 clippedRW <- master_intersect(rockweed_rr$data_sf, mapDataList)
 ```
 *
-```{r overlap rockweed output, echo=FALSE, results='asis'}
+```{r overlap-rockweed-output, echo=FALSE, results='asis'}
 
 polyText<-if(is.null(clippedRW$studyData)){
   "Il n’existe aucun registre pertinent sur la végétation intertidale prévue pour cette zone de recherche."
