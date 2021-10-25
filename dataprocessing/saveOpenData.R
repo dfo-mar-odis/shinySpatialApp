@@ -4,7 +4,7 @@ source(here::here("app/R/dataFunctions.R"))
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-load(here::here("app/data/CommonData.RData"))
+filesLoaded <- load_rdata(c("CommonData"), "MAR", env = environment())
 loadResult <- load_rdata(c("EBSA_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
                            "bwhab_rr", "obisCet_rr", "finWhale_rr", 
                            "seiWhale_rr", "humpbackWhale_rr",
@@ -106,36 +106,43 @@ sdmResId <- "16df15fb-367c-46e3-8ab7-be25315b9fbd"
 
 save_open_data(sdmPkgId, sdmResId, "finWhale_rr", mediumQuality, fileSavePath,
                contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Fin_Whale.tif", searchYears="1975-2015")
+               region_sf = region_sf, tifFile = "Fin_Whale.tif", searchYears="1975-2015",
+               reference = lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>"))
 
 save_open_data(sdmPkgId, sdmResId, "seiWhale_rr", mediumQuality, fileSavePath,
                contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Sei_Whale.tif", searchYears="1975-2015")
+               region_sf = region_sf, tifFile = "Sei_Whale.tif", searchYears="1975-2015",
+               reference = lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>"))
 
 save_open_data(sdmPkgId, sdmResId, "humpbackWhale_rr", mediumQuality, fileSavePath,
                contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Humpback_Whale.tif", searchYears="1975-2015")
+               region_sf = region_sf, tifFile = "Humpback_Whale.tif", searchYears="1975-2015",
+               reference = lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>"))
 
 save_open_data(sdmPkgId, sdmResId, "harbourPorpoise_rr", mediumQuality, fileSavePath,
                contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Harbour_Porpoise.tif", searchYears="1975-2015")
+               region_sf = region_sf, tifFile = "Harbour_Porpoise.tif", searchYears="1975-2015",
+               reference = lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>"))
 
 
 # -----------NBW-------------- 
 nbwPkgId <- "9fd7d004-970c-11eb-a2f3-1860247f53e3"
 nbwResId <- "f69a7d34-7c18-485b-98d7-8d45b7f8a3ce"
 
+bwRefList <- list("en" = "<http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf>",
+                  "fr" = "<http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-fra.pdf>")
+
 save_open_data(nbwPkgId, nbwResId, "nbw_rr", highQuality, fileSavePath,
                contactEmail = email_format("MaritimesRAP.XMAR\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, gdbLayer = "NorthernBottlenoseWhale_InterCanyonHabitat")
+               region_sf = region_sf, gdbLayer = "NorthernBottlenoseWhale_InterCanyonHabitat",
+               reference = bwRefList)
 
 # -----------BW hab-------------- 
 bwhabPkgId <- "8fafd919-fcbe-43a3-a911-3d9461273441"
 bwResId <- "3af8ad03-c0da-4cfa-940d-d757c0c24cb7"
 
 bwCheckDate <- get_check_date("bwhab_rr")
-openBwhab_rr <- get_opendata_rr(bwhabPkgId, bwResId, region_sf = region_sf,
-                                checkDate = bwCheckDate)
+openBwhab_rr <- get_opendata_rr(bwhabPkgId, bwResId, checkDate = bwCheckDate)
 if(!is.null(openBwhab_rr)) {
   bwhab_rr <- openBwhab_rr
   bwTemp_sf <- bwhab_rr$data_sf
@@ -147,11 +154,13 @@ if(!is.null(openBwhab_rr)) {
   bwTemp_sf$months[bwTemp_sf$months == "December to February/June to August"] <- "Dec-Feb/Jun-Aug"
   bwTemp_sf$months[bwTemp_sf$months == "March to May/June to August"] <- "Mar-May/Jun-Aug"
   bwTemp_sf$Activity <- paste(bwTemp_sf$activity,"-", bwTemp_sf$months)
+  bwTemp_sf <- sf::st_crop(bwTemp_sf, region_sf)
   bwhab_rr$data_sf <- bwTemp_sf
   
   bwhab_rr$contact <- email_format("gddaiss-dmsaisb\\@dfo-mpo.gc.ca")
   bwhab_rr$qualityTier <- highQuality
   bwhab_rr$attribute <- "Activity"
+  bwhab_rr$reference <- lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>")
   
   save(bwhab_rr, file = file.path(fileSavePath, "Open/bwhab_rr.RData"))
 }

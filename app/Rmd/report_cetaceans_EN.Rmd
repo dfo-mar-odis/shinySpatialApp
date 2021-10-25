@@ -219,7 +219,6 @@ if (FALSE) {
 ```{r sdm-meta, results='asis'}
 write_meta(finWhale_rr, "EN")
 ```
-URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>\
 
 Dataset description from the Open Data record [@OpenData_cetacean_imp]: 
 ```{r sdm-text, results='asis'}
@@ -262,7 +261,6 @@ plot_cetaceans_4grid(finWhale_rr$data_sf, harbourPorpoise_rr$data_sf, humpbackWh
 ```{r bwhab-meta, results='asis'}
 write_meta(bwhab_rr, "EN")
 ```
-URL: <https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>
 
 Dataset description from the Open Data record [@OpenData_blue_imphabitat]: The distribution of Blue Whales (*Balaenoptera musculus*) is mainly dictated by key environmental drivers such as food requirements and availability, sea ice, and sometimes predation risks. It is common to find Blue Whales in upwelling regions, depending on topography (banks, slopes and shallow water) and thermal fronts, which are actually related to krill aggregations. Blue Whales feed almost exclusively on euphausiids (krill) and have the highest absolute metabolic demands. A shapefile on the distribution of significant perennial areas of krill aggregation is available (DFO-ECCC). Important habitats for Blue Whales have therefore been identified by combining information on their distribution with krill aggregation areas (observed or predicted). In the waters of the St. Lawrence estuary, the presence of Blue Whales for foraging, feeding and migration has been observed throughout the year, with increased activity during the summer. It has been observed that feeding rates of Blue Whales are higher in shallow waters and during nocturnal periods (krill at surface), confirming that foraging near the surface is beneficial when possible. Their presence, their great fidelity to this important habitat for their activities and their behavior in the waters of the St. Lawrence in all seasons, show that Blue Whales are vulnerable to oil spills. They are vulnerable, not only indirectly through the reduction of prey and loss of suitable habitat, but also by their behavior requiring active activity on the surface and near the coast. The data used to create the polygons using the bounding box method comes from multiple sources of information: hunting records, photo-identification, coastal, airborne and boat surveys, passive acoustic monitoring, radio and satellite telemetry, ice trapping, anecdotal observations and modeling.
 
@@ -311,7 +309,6 @@ if (!is.null(clipped$mapData)){
 ```{r nbw-meta, results='asis'}
 write_meta(nbw_rr, "EN")
 ```
-URL: <http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf>\
 
 The Scotian Shelf population of Northern Bottlenose Whales (*Hyperoodon ampullatus*) is listed as Endangered under Canada's Species at Risk Act. Partial critical habitat was identified for this population in the Recovery Strategy first published in 2010 [@DFO2016_recoverynbw], and three critical habitat areas were designated along the eastern Scotian Shelf, encompassing the Gully, Shortland Canyon, and Haldimand Canyon (shapefile available online: <https://open.canada.ca/data/en/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c>). However, the Recovery Strategy recognized that additional areas may constitute critical habitat for the population and recommended further studies based on acoustic and visual monitoring to assess the importance of inter-canyon areas as foraging habitat and transit corridors for Northern Bottlenose Whales.
 

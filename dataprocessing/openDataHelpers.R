@@ -152,7 +152,8 @@ email_format <- function(emailStr) {
 
 
 save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
-                           disableCheckDate = TRUE, contactEmail = NULL, searchYears=NULL, ...) {
+                           disableCheckDate = TRUE, contactEmail = NULL, searchYears=NULL,
+                           reference = NULL, ...) {
   dataSaved <- FALSE
   fnCheckDate <- NULL
   if (!disableCheckDate){
@@ -162,6 +163,9 @@ save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
   if(!is.null(temp_rr)) {
     if (!is.null(contactEmail)){
       temp_rr$contact = contactEmail
+    }
+    if (!is.null(reference)){
+      temp_rr$reference = reference
     }
     if (!is.null(searchYears)){
       temp_rr$searchYears = searchYears

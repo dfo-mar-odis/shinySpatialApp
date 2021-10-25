@@ -8,7 +8,9 @@ write_meta <- function(rr, lang) {
       ifelse("searchYears" %in% names(rr), paste("Search Years:", rr$searchYears), NA),
       paste("Quality Tier:", rr$qualityTier$en),
       paste("Security level:", rr$securityLevel$en), 
-      paste("Data use constraints:", rr$constraints$en))
+      paste("Data use constraints:", rr$constraints$en),
+      ifelse("reference" %in% names(rr), paste("Reference:", rr$reference$en), NA)
+    )
   } else if (lang == "FR") {
     outText <- c(
       paste("Personne-ressource:", rr$contact),
@@ -17,7 +19,9 @@ write_meta <- function(rr, lang) {
       ifelse("searchYears" %in% names(rr), paste("Année de recherche:", rr$searchYears), NA),
       paste("Niveau de qualité:", rr$qualityTier$fr),
       paste("Niveau de sécurité:", rr$securityLevel$fr), 
-      paste("Contraintes d'usage:", rr$constraints$fr))
+      paste("Contraintes d'usage:", rr$constraints$fr),
+      ifelse("reference" %in% names(rr), paste("Reference:", rr$reference$fr), NA)
+    )
   }
   outText <- outText[!is.na(outText)]
   writeLines(noquote(outText), sep="  \n")

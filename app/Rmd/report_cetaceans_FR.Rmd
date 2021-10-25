@@ -203,7 +203,6 @@ if (!is.null(obisClipped$studyData)) {
 ```{r sdm-meta, results='asis'}
 write_meta(finWhale_rr, "FR")
 ```
-LIEN : <https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>       
 
 Description de l’ensemble de données (tirée du dossier des données ouvertes) :
 ```{r sdm-text, results='asis'}
@@ -244,7 +243,6 @@ plot_cetaceans_4grid(finWhale_rr$data_sf, harbourPorpoise_rr$data_sf, humpbackWh
 ```{r bwhab-meta, results='asis'}
 write_meta(bwhab_rr, "FR")
 ```
-LIEN : <https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>    
 
 Description de l’ensemble de données (tirée du dossier des données ouvertes) : La distribution des baleines bleues (_Balaenoptera musculus_) est principalement dictée par des facteurs environnementaux clés tels que les besoins en nourriture et la disponibilité de celle-ci, la glace de mer et parfois, les risques de prédation. Il est courant de retrouver des baleines bleues dans les régions de remontées d'eau profondes (upwelling), selon la topographie (talus, pentes et eaux peu profondes) et de fronts thermaux, qui sont en fait reliés aux agrégations de krill. Les baleines bleues se nourrissent presqu'exclusivement d'euphausidés (krill) et ont les demandes métaboliques absolues les plus élevées. Une couche de données sur la distribution des aires significatives pérennes d'agrégation de krill est disponible (MPO-ECCC). Les habitats importants pour la baleine bleue ont donc été identifiées en combinant l'information sur leur distribution avec les aires d'agrégation de krill (observées ou prédites). Dans les eaux de l'estuaire du Saint-Laurent, la présence des baleines bleues pour la recherche de nourriture, l'alimentation et la migration a été observée à l'année longue, avec une activité plus accrue durant l'été. Il a été observé que les taux d'alimentation des baleines bleues sont plus élevés dans les eaux peu profondes et durant les périodes nocturnes (krill en surface), ce qui confirme que la recherche de nourriture près de la surface est bénéfique lorsque possible. Leur présence, leur grande fidélité à cet habitat important pour leurs activités et leur comportement dans les eaux du Saint-Laurent en toute saison démontrent que les baleines bleues sont vulnérables aux déversements d'hydrocarbures. Elles sont vulnérables, non seulement par voie indirecte de la diminution des proies et des habitats propices, mais aussi par leur comportement nécessitant d'être actives en surface et près des côtes. Les données ayant permis de créer les polygones par la méthode de boîtes englobantes proviennent de multiples sources d'informations: archives de prises de la chasse, photo-identification, relevés côtiers, aériens et par bateaux, monitorage par acoustique passive, télémétrie radio et satellite, emprisonnement par les glaces, observations anecdotiques et modélisation.
 
@@ -290,7 +288,6 @@ if (!is.null(clipped$mapData)){
 ```{r nbw-meta, results='asis'}
 write_meta(nbw_rr, "FR")
 ```
-LIEN : <http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-fra.pdf>    
 
 La population de baleine à bec commune (_Hyperoodon ampullatus_) du plateau néo-écossais est inscrite sur la liste des espèces en voie de disparition de la Loi sur les espèces en péril du Canada (LEP). Une partie de l’habitat essentiel de cette population a été relevée dans le programme de rétablissement publié pour la première fois en 2010 (Pêches et Océans Canada 2016), et trois zones d’habitat essentiel ont été désignées le long du plateau néo-écossais, notamment dans le Gully et les canyons Shortland et Haldimand (fichier accessible en ligne). Toutefois, dans le programme de rétablissement, on reconnaissait que d’autres zones pourraient constituer un habitat essentiel pour la population, et on recommandait de réaliser d’autres études fondées sur la surveillance acoustique et visuelle afin d’évaluer l’importance des zones situées entre les canyons en tant qu’habitats d’alimentation et de corridors de déplacement pour la baleine à bec commune.
 
