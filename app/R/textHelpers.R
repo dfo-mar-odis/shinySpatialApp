@@ -1,26 +1,27 @@
 write_meta <- function(rr, lang) {
+  metadata <- rr$metadata
   outText <- ""
   if (lang == "EN"){
     outText <- c(
-      paste("Contact:", rr$contact),
-      ifelse("url" %in% names(rr), paste("URL:", rr$url$en), NA),
-      paste("Last retrieved on:", rr$accessedOnStr$en),
-      ifelse("searchYears" %in% names(rr), paste("Search Years:", rr$searchYears), NA),
-      paste("Quality Tier:", rr$qualityTier$en),
-      paste("Security level:", rr$securityLevel$en), 
-      paste("Data use constraints:", rr$constraints$en),
-      ifelse("reference" %in% names(rr), paste("Reference:", rr$reference$en), NA)
+      paste("Contact:", metadata$contact),
+      ifelse("url" %in% names(metadata), paste("URL:", metadata$url$en), NA),
+      paste("Last retrieved on:", metadata$accessedOnStr$en),
+      ifelse("searchYears" %in% names(metadata), paste("Search Years:", metadata$searchYears), NA),
+      paste("Quality Tier:", metadata$qualityTier$en),
+      paste("Security level:", metadata$securityLevel$en), 
+      paste("Data use constraints:", metadata$constraints$en),
+      ifelse("reference" %in% names(metadata), paste("Reference:", metadata$reference$en), NA)
     )
   } else if (lang == "FR") {
     outText <- c(
-      paste("Personne-ressource:", rr$contact),
-      ifelse("url" %in% names(rr), paste("LIEN:", rr$url$fr), NA),
-      paste("Consulté le:", rr$accessedOnStr$fr),
-      ifelse("searchYears" %in% names(rr), paste("Année de recherche:", rr$searchYears), NA),
-      paste("Niveau de qualité:", rr$qualityTier$fr),
-      paste("Niveau de sécurité:", rr$securityLevel$fr), 
-      paste("Contraintes d'usage:", rr$constraints$fr),
-      ifelse("reference" %in% names(rr), paste("Reference:", rr$reference$fr), NA)
+      paste("Personne-ressource:", metadata$contact),
+      ifelse("url" %in% names(metadata), paste("LIEN:", metadata$url$fr), NA),
+      paste("Consulté le:", metadata$accessedOnStr$fr),
+      ifelse("searchYears" %in% names(metadata), paste("Année de recherche:", metadata$searchYears), NA),
+      paste("Niveau de qualité:", metadata$qualityTier$fr),
+      paste("Niveau de sécurité:", metadata$securityLevel$fr), 
+      paste("Contraintes d'usage:", metadata$constraints$fr),
+      ifelse("reference" %in% names(metadata), paste("Reference:", metadata$reference$fr), NA)
     )
   }
   outText <- outText[!is.na(outText)]

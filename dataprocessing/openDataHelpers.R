@@ -6,6 +6,18 @@ source(here::here("app/R/helpers.R"))
 ckanr_setup(url="https://open.canada.ca/data")
 
 
+
+# --------------get opendata rr-----------------
+# Function to retrieve opendata record and return an rr object.
+#
+# Inputs:
+# 1. pkgId: Id string of the open data package to retrieve, used to rab metadata and text
+# 2. resId: Id string of the specific open data resource containing the spatial data
+# 3. Additional parameters passed to get_opendata_sf
+# 4. checkDate: optional parameter to check if opendata resource has been updated
+#
+# Outputs:
+# 1 .out_rr: output rr object containing spatial data and metadata
 get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, checkDate=NULL) {
   opendataPKG <- package_show(pkgId)
   
@@ -33,7 +45,6 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile
     data_sf <- NULL
   }
   
-  
   url <- list("en" = paste("<https://open.canada.ca/data/en/dataset/", pkgId, ">", sep =""), 
               "fr" = paste("<https://open.canada.ca/data/fr/dataset/", pkgId, ">", sep =""))  
   securityLevel <- list("en" = "None", "fr"= "Aucun")
@@ -47,24 +58,47 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile
   
   out_rr <- list("title" = pkgTitle,
                  "text" = pkgText,
-                 "url" = url,
                  "attribute" = "NONE",
-                 "accessedOnStr" = accessedDate,
-                 "accessedDate" = today(),
-                 "contact" = contactInfo,
-                 "constraints" = constraints,
-                 "securityLevel" = securityLevel,
-                 "data_sf" = data_sf)
+                 "data_sf" = data_sf,
+                 "metadata" = list("contact" = contactInfo,
+                                   "url" = url,
+                                   "accessedOnStr" = accessedDate,
+                                   "accessedDate" = today(),
+                                   "constraints" = constraints,
+                                   "securityLevel" = securityLevel
+                   
+                 ) # end metadata
+             ) # end rr
   return(out_rr)
 }
 
 
+# --------------get opendata sf-----------------
+# Function to retrieve opendata spatial data and return an sf object.
+#
+# Inputs:
+# 1. resId: Id string of the specific open data resource containing the spatial data
+# 2. Additional parameters passed to get_opendata_sf, typically from get_opendata_rr
+#
+# Outputs:
+# 1 .out_sf: output sf object containing spatial data
 get_opendata_sf <- function(resId, ...) {
   res <- resource_show(resId)
   out_sf <- download_extract_validate_sf(res$url, ...)
   return(out_sf)
 }
 
+
+# --------------download_extract_validate_sf-----------------
+# Function that downloads a zip file, extracts it, loads an sf and cleans the sf
+#
+# Inputs:
+# 1. zipUrl: Id string of the specific open data resource containing the spatial data
+# 2. region_sf: Sf object to crop the output sf too
+# 2. Additional parameters: used to specify spatial data file type
+#
+# Outputs:
+# 1 .out_sf: output sf object containing spatial data
 download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NULL, tifFile = NULL) {
   tempDir <- here::here("dataprocessing/temp")
   temp <- here::here("dataprocessing/temp/temp.zip")
@@ -80,9 +114,8 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
   if (length(shpFile) > 0) {
     out_sf <- st_read(shpFile, stringsAsFactors = FALSE)
   } else if (length(gdbDir) > 0) {
-    out_gdb <- st_read(gdbDir, stringsAsFactors = FALSE, layer = gdbLayer)
-    out_sf <- out_gdb
-    out_sf$geometry <- st_geometry(out_gdb)
+    out_sf <- st_read(gdbDir, stringsAsFactors = FALSE, layer = gdbLayer)
+    out_sf$geometry <- st_geometry(out_sf)
   } else if (length(tifRasterFile) > 0) {
     tifRaster <- raster(tifRasterFile)
     out_sf <- stars::st_as_stars(tifRaster) %>% sf::st_as_sf()
@@ -107,6 +140,16 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
   return(out_sf)
 }
 
+
+# --------------download_extract_res_file-----------------
+# Function that downloads a zip file of csvs, extracts it and reads the csv.
+#
+# Inputs:
+# 1. resId: Id string of the specific open data resource containing the data
+# 2. csvFileList: names of the csv file to extract from the zip file
+#
+# Outputs:
+# 1  dfList: list of dfs, one for each csv file in csvFileList
 download_extract_res_files <- function(resId, csvFileList = NULL) {
   res <- resource_show(resId)
   zipUrl <- res$url
@@ -132,6 +175,15 @@ download_extract_res_files <- function(resId, csvFileList = NULL) {
 }
 
 
+
+# --------------get_check_date-----------------
+# Helper function that extracts the date of an rr object in the environment.
+#
+# Input:
+# 1. varName: string name of an rr object loaded in the global environment
+#
+# Outputs:
+# 1 checkDate: date the rr object was accessed, or NULL if the object was not found
 get_check_date <- function(varName) {
   checkDate <- NULL
   if (varName %in% ls(globalenv())) {
@@ -142,15 +194,22 @@ get_check_date <- function(varName) {
 }
 
 
+# --------------lang_list-----------------
+# Helper function that converts a string into a bilinugual list
 lang_list <- function(inValue) {
   return(list("en" = inValue, "fr" = inValue))
 }
 
+
+# --------------email_format-----------------
+# Helper function that converts a string email address into a linked one for use in rmd
 email_format <- function(emailStr) {
   return(paste("[", emailStr, "](mailto:", emailStr, "){.email}", sep=""))
 }
 
 
+# --------------save_open_data-----------------
+# Wrapper function to peform all the steps required to save an open data object.
 save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
                            disableCheckDate = TRUE, contactEmail = NULL, searchYears=NULL,
                            reference = NULL, ...) {
@@ -162,15 +221,15 @@ save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
   temp_rr <- get_opendata_rr(pkgId, resId, checkDate = fnCheckDate, ...)
   if(!is.null(temp_rr)) {
     if (!is.null(contactEmail)){
-      temp_rr$contact = contactEmail
+      temp_rr$metadata$contact = contactEmail
     }
     if (!is.null(reference)){
-      temp_rr$reference = reference
+      temp_rr$metadata$reference = reference
     }
     if (!is.null(searchYears)){
-      temp_rr$searchYears = searchYears
+      temp_rr$metadata$searchYears = searchYears
     }
-    temp_rr$qualityTier <- qualityTier
+    temp_rr$metadata$qualityTier <- qualityTier
     assign(variableName, temp_rr)
     save(list = variableName, file = file.path(savePath, paste("Open/", variableName, ".RData", sep="")))
     dataSaved <- TRUE
@@ -179,7 +238,8 @@ save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
 }
 
 
-
+# --------------RV_to_sf-----------------
+# Converts the three types of RV data files into a single coherent sf object.
 RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
   gscat <- gscat %>% tidyr::unite("MISSION_SET", MISSION:SETNO, remove = TRUE)
   gscat <- gscat %>% rename(CODE = SPEC)
@@ -193,11 +253,7 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
   gsspec <- gsspec %>% transmute(gsspec, COMM = stringr::str_to_sentence(COMM))
   gsspec <- gsspec %>% rename("Common Name"= COMM, "Scientific Name" = SPEC)
   
-  if (nrow(gsinf) > 0){
-    out_sf <- sf::st_as_sf(gsinf, coords = c("SLONG", "SLAT"), crs = 4326)
-  } else {
-    out_sf <- gsinf
-  }
+  out_sf <- sf::st_as_sf(gsinf, coords = c("SLONG", "SLAT"), crs = 4326)
   
   out_sf <- left_join(out_sf, gscat, by = "MISSION_SET")
   out_sf <- left_join(out_sf, gsspec, by = "CODE")

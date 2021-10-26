@@ -1,4 +1,3 @@
-
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
@@ -28,17 +27,18 @@ conservationSites_sf$Legend <- as.character(conservationSites_sf$Legend)
 conservationSites_sf[conservationSites_sf$Id == 18, "Legend" ] <- "Bras d'Or Lake -sites to be determined"
 
 conservationSites_rr <- list("title" = "Draft Conservation Network Design",
-                             "contact" = "Marty King ([Marty.King@dfo-mpo.gc.ca](mailto:Marty.King@dfo-mpo.gc.ca){.email})", 
-                             "accessedOnStr" = list("en" ="October 2021", "fr" = "octobre, 2021") ,
-                             "accessDate" = as.Date("2021-10-01"),
                              "data_sf" = conservationSites_sf,
                              "attribute" = "Legend",
-                             "securityLevel" = noneList,
-                             "qualityTier" = highQuality,
-                             "constraints" = internalUse
+                             "metadata" = list("contact" = "Marty King ([Marty.King@dfo-mpo.gc.ca](mailto:Marty.King@dfo-mpo.gc.ca){.email})", 
+                                               "accessedOnStr" = list("en" ="October 2021", "fr" = "octobre, 2021") ,
+                                               "accessDate" = as.Date("2021-10-01"),
+                                               "securityLevel" = noneList,
+                                               "qualityTier" = highQuality,
+                                               "constraints" = internalUse
+                             )
 )
-save(conservationSites_rr, file = file.path(fileSavePath, "Secure/conservationSites_rr.RData"))
 
+save(conservationSites_rr, file = file.path(fileSavePath, "Secure/conservationSites_rr.RData"))
 
 #------------------CETACEANS-------------------
 
@@ -55,16 +55,17 @@ wsdb_sf <- st_as_sf(wsdb, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 wsdb_sf <- sf::st_crop(wsdb_sf, region_sf)
 
 wsdb_rr <- list("title" = "Whale Sightings Database",
-                "contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
-                "url" = lang_list("<http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>"),
-                "accessedOnStr" = list("en" ="October 27, 2020 by Shelley Lang", "fr" = "27 octobre 2020 par Shelley Lang  ") ,
-                "accessDate" = as.Date("2020-10-27"),
                 "data_sf" = wsdb_sf,
-                "searchYears" = "2010-2020",
                 "attribute" = "Legend",
-                "securityLevel" = noneList,
-                "qualityTier" = lowQuality,
-                "constraints" = internalUse
+                "metadata" = list("contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
+                                  "url" = lang_list("<http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>"),
+                                  "accessedOnStr" = list("en" ="October 27, 2020 by Shelley Lang", "fr" = "27 octobre 2020 par Shelley Lang  ") ,
+                                  "accessDate" = as.Date("2020-10-27"),
+                                  "searchYears" = "2010-2020",
+                                  "securityLevel" = noneList,
+                                  "qualityTier" = lowQuality,
+                                  "constraints" = internalUse
+                )
 )
 save(wsdb_rr, file = file.path(fileSavePath, "Secure/wsdb_rr.RData"))
 
@@ -83,23 +84,24 @@ whitehead_sf <- st_as_sf(whitehead, coords = c("Long", "Lat"), crs = 4326)
 whitehead_sf <- sf::st_crop(whitehead_sf, region_sf)
 
 whitehead_rr <- list("title" = "Whitehead lab (Dalhousie University)",
-                "contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
-                "url" = lang_list("<https://whiteheadlab.weebly.com/contact.html>"),
-                "accessedOnStr" = list("en" ="January 12 2021  by Laura Feyrer", "fr" = "12 janvier 2021 par Laura Feyrer  ") ,
-                "accessDate" = as.Date("2021-01-12"),
-                "data_sf" = whitehead_sf,
-                "searchYears" = "2010-2019",
-                "attribute" = "Legend",
-                "securityLevel" = noneList,
-                "qualityTier" = highQuality,
-                "constraints" = internalUse
+                     "data_sf" = whitehead_sf,
+                     "attribute" = "Legend",
+                     "metadata" = list("contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
+                                       "url" = lang_list("<https://whiteheadlab.weebly.com/contact.html>"),
+                                       "accessedOnStr" = list("en" ="January 12 2021  by Laura Feyrer", "fr" = "12 janvier 2021 par Laura Feyrer  ") ,
+                                       "accessDate" = as.Date("2021-01-12"),
+                                       "searchYears" = "2010-2019",
+                                       "securityLevel" = noneList,
+                                       "qualityTier" = highQuality,
+                                       "constraints" = internalUse
+                     )
 )
 save(whitehead_rr, file = file.path(fileSavePath, "Secure/whitehead_rr.RData"))
 
 # ----------------------NARWC-------------------------
 # North Atlantic Right Whale Consortium (narwc)
 narwc <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/NARWC/NARWC_09-18-2020.csv"), stringsAsFactors = FALSE)
-narwcspecies <-  read.csv("../Data/NaturalResources/Species/Cetaceans/NARWC/NARWCSpeciesNames.csv", stringsAsFactors = FALSE)
+narwcspecies <-  read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/NARWC/NARWCSpeciesNames.csv"), stringsAsFactors = FALSE)
 narwcspecies <- narwcspecies %>% rename("Scientific Name"= ScientificName)
 narwc <- merge(narwc, narwcspecies, by='SPECNAME')
 narwc <- narwc %>% dplyr::filter(YEAR >= 2010)
@@ -109,16 +111,17 @@ narwc_sf <- st_as_sf(narwc, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 narwc_sf <- sf::st_crop(narwc_sf, region_sf)
 
 narwc_rr <- list("title" = "North Atlantic Right Whale consortium",
-                 "contact" = "<hpettis@neaq.org>", 
-                 "url" = lang_list("<https://www.narwc.org/sightings-database.html>"),
-                 "accessedOnStr" = list("en" ="September 18 2020", "fr" = "18 septembre 2020") ,
-                 "accessDate" = as.Date("2020-09-18"),
                  "data_sf" = narwc_sf,
-                 "searchYears" = "2010-2019",
                  "attribute" = "Legend",
-                 "securityLevel" = noneList,
-                 "qualityTier" = highQuality,
-                 "constraints" = internalUse
+                 "metadata" = list("contact" = "<hpettis@neaq.org>", 
+                                   "url" = lang_list("<https://www.narwc.org/sightings-database.html>"),
+                                   "accessedOnStr" = list("en" ="September 18 2020", "fr" = "18 septembre 2020") ,
+                                   "accessDate" = as.Date("2020-09-18"),
+                                   "searchYears" = "2010-2019",
+                                   "securityLevel" = noneList,
+                                   "qualityTier" = highQuality,
+                                   "constraints" = internalUse
+                                   )
 )
 save(narwc_rr, file = file.path(fileSavePath, "Secure/narwc_rr.RData"))
 
@@ -132,15 +135,16 @@ leatherback_sf <- sf::st_crop(leatherback_sf, region_sf)
 
 
 leatherback_rr <- list("title" = " Leatherback Sea Turtle draft critical habitat",
-                 "contact" = email_format("info@dfo-mpo.gc.ca"), 
-                 "url" = lang_list("<https://www.narwc.org/sightings-database.html>"),
-                 "accessedOnStr" = list("en" ="February 25 2021", "fr" = "25 février 2021") ,
-                 "accessDate" = as.Date("2021-02-25"),
-                 "data_sf" = leatherback_sf,
-                 "attribute" = "NONE",
-                 "securityLevel" = noneList,
-                 "qualityTier" = highQuality,
-                 "constraints" = internalUse
+                       "data_sf" = leatherback_sf,
+                       "attribute" = "NONE",
+                       "metadata" = list("contact" = email_format("info@dfo-mpo.gc.ca"),
+                                         "url" = lang_list("<https://www.narwc.org/sightings-database.html>"),
+                                         "accessedOnStr" = list("en" ="February 25 2021", "fr" = "25 février 2021") ,
+                                         "accessDate" = as.Date("2021-02-25"),
+                                         "securityLevel" = noneList,
+                                         "qualityTier" = highQuality,
+                                         "constraints" = internalUse
+                       )
 )
 save(leatherback_rr, file = file.path(fileSavePath, "Secure/leatherback_rr.RData"))
 
@@ -156,15 +160,16 @@ ocearch_sf <- st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
 ocearch_sf <- sf::st_crop(ocearch_sf, region_sf)
 
 ocearch_rr <- list("title" = "OCEARCH Shark Tracker",
-                   "contact" = paste("Bryan Franks (", email_format("bfranks@ju.edu"),  ") via Sean Butler (", email_format("sean.butler@dfo-mpo.gc.ca"), ")", sep=""), 
-                   "url" = lang_list("<https://www.ocearch.org/tracker/>"),
-                   "accessedOnStr" = list("en" ="July 22 2021 by Sean Butler", "fr" = "22 juillet 2021 par Sean Butler") ,
-                   "accessDate" = as.Date("2021-07-22"),
                    "data_sf" = ocearch_sf,
-                   "searchYears" = "2013-2020",
                    "attribute" = "NONE",
-                   "securityLevel" = noneList,
-                   "qualityTier" = highQuality,
-                   "constraints" = internalUse
+                   "metadata" = list("contact" = paste("Bryan Franks (", email_format("bfranks@ju.edu"),  ") via Sean Butler (", email_format("sean.butler@dfo-mpo.gc.ca"), ")", sep=""), 
+                                     "url" = lang_list("<https://www.ocearch.org/tracker/>"),
+                                     "accessedOnStr" = list("en" ="July 22 2021 by Sean Butler", "fr" = "22 juillet 2021 par Sean Butler") ,
+                                     "accessDate" = as.Date("2021-07-22"),
+                                     "searchYears" = "2013-2020",
+                                     "securityLevel" = noneList,
+                                     "qualityTier" = highQuality,
+                                     "constraints" = internalUse
+                   )
 )
 save(ocearch_rr, file = file.path(fileSavePath, "Secure/ocearch_rr.RData"))

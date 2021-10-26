@@ -63,14 +63,16 @@ if(!is.null(OpenEBSA_rr)) {
   EBSA_rr <- OpenEBSA_rr
   EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL,
                                             ".pdf", ".html")
-  EBSA_rr$qualityTier <- highQuality
-  EBSA_rr$contact <- email_format("carissa.philippe\\@dfo-mpo.gc.ca")
+  EBSA_rr$metadata$qualityTier <- highQuality
+  EBSA_rr$metadata$contact <- email_format("carissa.philippe\\@dfo-mpo.gc.ca")
   save(EBSA_rr, file = file.path(fileSavePath, "Open/EBSA_rr.RData"))
 }
 
 
 # -----------SAR DIST--------------
-
+# Creating the sardist rr object takes a LOT (>10gb) of ram which may cause errors
+# it is useful to run in a clean rstudio session and if needed, to manually 
+# step through the functions.
 sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
 sardistResId <- "d16d8405-dddf-491b-8faf-8cc7a9f3a537"
 
@@ -92,8 +94,8 @@ openCrithab_rr <- get_opendata_rr(crithabPkgId, crithabResId,
                                   checkDate = critHabCheckDate)
 if(!is.null(openCrithab_rr)) {
   crithab_rr <- openCrithab_rr
-  crithab_rr$qualityTier <- highQuality
-  crithab_rr$contact <- email_format("info@dfo-mpo.gc.ca")
+  crithab_rr$metadata$qualityTier <- highQuality
+  crithab_rr$metadata$contact <- email_format("info@dfo-mpo.gc.ca")
   crithab_rr$attribute <- "Common_Nam"
   crithab_rr$data_sf$Common_Nam <- crithab_rr$data_sf$Common_Name_EN
   save(crithab_rr, file = file.path(fileSavePath, "Open/crithab_rr.RData"))
@@ -157,10 +159,10 @@ if(!is.null(openBwhab_rr)) {
   bwTemp_sf <- sf::st_crop(bwTemp_sf, region_sf)
   bwhab_rr$data_sf <- bwTemp_sf
   
-  bwhab_rr$contact <- email_format("gddaiss-dmsaisb\\@dfo-mpo.gc.ca")
-  bwhab_rr$qualityTier <- highQuality
+  bwhab_rr$metadata$contact <- email_format("gddaiss-dmsaisb\\@dfo-mpo.gc.ca")
+  bwhab_rr$metadata$qualityTier <- highQuality
   bwhab_rr$attribute <- "Activity"
-  bwhab_rr$reference <- lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>")
+  bwhab_rr$metadata$reference <- lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>")
   
   save(bwhab_rr, file = file.path(fileSavePath, "Open/bwhab_rr.RData"))
 }
@@ -196,17 +198,18 @@ obisFish_sf <- st_as_sf(obisFish, coords = c("decimalLongitude", "decimalLatitud
 obisFish_sf <- sf::st_crop(obisFish_sf, region_sf)
 
 obisFish_rr <- list("title" = "OBIS observations",
-                   "contact" = email_format("helpdesk@obis.org"), 
-                   "url" = lang_list("<https://obis.org/>"),
-                   "accessedOnStr" = list("en" ="January 27 2021 by Gregory Puncher from OBIS", 
-                                          "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
-                   "accessDate" = as.Date("2021-01-27"),
-                   "data_sf" = obisFish_sf,
-                   "searchYears" = "2010-2020",
-                   "attribute" = "Legend",
-                   "securityLevel" = noneList,
-                   "qualityTier" = mediumQuality,
-                   "constraints" = noneList
+                    "data_sf" = obisFish_sf,
+                    "attribute" = "Legend",
+                    "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
+                                      "url" = lang_list("<https://obis.org/>"),
+                                      "accessedOnStr" = list("en" ="January 27 2021 by Gregory Puncher from OBIS", 
+                                                             "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
+                                      "accessDate" = as.Date("2021-01-27"),
+                                      "searchYears" = "2010-2020",
+                                      "securityLevel" = noneList,
+                                      "qualityTier" = mediumQuality,
+                                      "constraints" = noneList
+                    )
 )
 save(obisFish_rr, file = file.path(fileSavePath, "Open/obisFish_rr.RData"))
 
@@ -219,24 +222,25 @@ obisCet_sf <- sf::st_crop(obisCet_sf, region_sf)
 
 
 obisCet_rr <- list("title" = "OBIS observations (cetaceans)",
-                   "contact" = email_format("helpdesk@obis.org"), 
-                   "url" = lang_list("<https://obis.org/>"),
-                   "accessedOnStr" = list("en" ="January 27 2021 by Gregory Puncher from OBIS", 
-                                          "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
-                   "accessDate" = as.Date("2021-01-27"),
                    "data_sf" = obisCet_sf,
-                   "searchYears" = "2010-2020",
                    "attribute" = "Legend",
-                   "securityLevel" = noneList,
-                   "qualityTier" = mediumQuality,
-                   "constraints" = noneList
+                   "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
+                                     "url" = lang_list("<https://obis.org/>"),
+                                     "accessedOnStr" = list("en" ="January 27 2021 by Gregory Puncher from OBIS", 
+                                                            "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
+                                     "accessDate" = as.Date("2021-01-27"),
+                                     "searchYears" = "2010-2020",
+                                     "securityLevel" = noneList,
+                                     "qualityTier" = mediumQuality,
+                                     "constraints" = noneList
+                   )
 )
 save(obisCet_rr, file = file.path(fileSavePath, "Open/obisCet_rr.RData"))
 
 
 # ---------------------ROCKWEED------------------------------
 # Rockweed
-rockweed_sf <- st_read("../Data/NaturalResources/Species/Rockweed/MAR_rockweed_presence_validated.shp", stringsAsFactors = FALSE)
+rockweed_sf <- st_read(file.path(fileLoadPath, "NaturalResources/Species/Rockweed/MAR_rockweed_presence_validated.shp"), stringsAsFactors = FALSE)
 rockweed_sf <- st_transform(rockweed_sf, 4326) # Project to WGS84
 rockweed_sf <- st_make_valid(rockweed_sf)
 # set status column
@@ -249,14 +253,16 @@ rockweed_sf <- sf::st_crop(rockweed_sf, region_sf)
 
 
 rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and Rockweed presence polygons",
-                    "contact" = email_format("Gordana.Lazin@dfo-mpo.gc.ca"), 
-                    "accessedOnStr" = list("en" ="February 17 2021", "fr" = "17 février 2021") ,
-                    "accessDate" = as.Date("2021-02-17"),
                     "data_sf" = rockweed_sf,
                     "attribute" = "status",
-                    "securityLevel" = noneList,
-                    "qualityTier" = mediumQuality,
-                    "constraints" = internalUse
+                    "metadata" = list("contact" = email_format("Gordana.Lazin@dfo-mpo.gc.ca"), 
+                                      "accessedOnStr" = list("en" ="February 17 2021", 
+                                                             "fr" = "17 février 2021") ,
+                                      "accessDate" = as.Date("2021-02-17"),
+                                      "securityLevel" = noneList,
+                                      "qualityTier" = mediumQuality,
+                                      "constraints" = internalUse
+                    )
 )
 save(rockweed_rr, file = file.path(fileSavePath, "Open/rockweed_rr.RData"))
 
@@ -265,8 +271,8 @@ save(rockweed_rr, file = file.path(fileSavePath, "Open/rockweed_rr.RData"))
 RVPkgId <- "8ddcaeea-b806-4958-a79f-ba9ab645f53b"
 
 RV_rr <- get_opendata_rr(RVPkgId, NULL, region_sf = region_sf)
-RV_rr$contact <- email_format("DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca")
-RV_rr$qualityTier <- highQuality
+RV_rr$metadata$contact <- email_format("DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca")
+RV_rr$metadata$qualityTier <- highQuality
 
 rvCsvList <- c("GSCAT.csv", "GSINF.csv", "GSSPECIES.csv")
 minYear <- 2010
@@ -290,6 +296,6 @@ fall_sf <- RV_to_sf(fallDfs[[1]], fallDfs[[2]], fallDfs[[3]], minYear)
 rv_sf <- rbind(fourVSW_sf, spring_sf, summer_sf, fall_sf)
 rv_sf <- sf::st_crop(rv_sf, region_sf)
 RV_rr$data_sf <- rv_sf
-RV_rr$searchYears <- "2010-2020"
+RV_rr$metadata$searchYears <- "2010-2020"
 save(RV_rr, file = file.path(fileSavePath, "Open/RV_rr.RData"))
 
