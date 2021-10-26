@@ -7,7 +7,7 @@ fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
 load(here::here("app/data/CommonData.RData"))
-loadResult <- load_rdata(c("isdb_rr"),  "MAR")
+loadResult <- load_rdata(c("isdb_rr", "marfis_rr"),  "MAR")
 
 region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
 

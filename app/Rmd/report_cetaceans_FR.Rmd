@@ -244,7 +244,13 @@ plot_cetaceans_4grid(finWhale_rr$data_sf, harbourPorpoise_rr$data_sf, humpbackWh
 write_meta(blueWhaleHab_rr, "FR")
 ```
 
-Description de l’ensemble de données (tirée du dossier des données ouvertes) : La distribution des baleines bleues (_Balaenoptera musculus_) est principalement dictée par des facteurs environnementaux clés tels que les besoins en nourriture et la disponibilité de celle-ci, la glace de mer et parfois, les risques de prédation. Il est courant de retrouver des baleines bleues dans les régions de remontées d'eau profondes (upwelling), selon la topographie (talus, pentes et eaux peu profondes) et de fronts thermaux, qui sont en fait reliés aux agrégations de krill. Les baleines bleues se nourrissent presqu'exclusivement d'euphausidés (krill) et ont les demandes métaboliques absolues les plus élevées. Une couche de données sur la distribution des aires significatives pérennes d'agrégation de krill est disponible (MPO-ECCC). Les habitats importants pour la baleine bleue ont donc été identifiées en combinant l'information sur leur distribution avec les aires d'agrégation de krill (observées ou prédites). Dans les eaux de l'estuaire du Saint-Laurent, la présence des baleines bleues pour la recherche de nourriture, l'alimentation et la migration a été observée à l'année longue, avec une activité plus accrue durant l'été. Il a été observé que les taux d'alimentation des baleines bleues sont plus élevés dans les eaux peu profondes et durant les périodes nocturnes (krill en surface), ce qui confirme que la recherche de nourriture près de la surface est bénéfique lorsque possible. Leur présence, leur grande fidélité à cet habitat important pour leurs activités et leur comportement dans les eaux du Saint-Laurent en toute saison démontrent que les baleines bleues sont vulnérables aux déversements d'hydrocarbures. Elles sont vulnérables, non seulement par voie indirecte de la diminution des proies et des habitats propices, mais aussi par leur comportement nécessitant d'être actives en surface et près des côtes. Les données ayant permis de créer les polygones par la méthode de boîtes englobantes proviennent de multiples sources d'informations: archives de prises de la chasse, photo-identification, relevés côtiers, aériens et par bateaux, monitorage par acoustique passive, télémétrie radio et satellite, emprisonnement par les glaces, observations anecdotiques et modélisation.
+Description de l’ensemble de données (tirée du dossier des données ouvertes) :
+```{r bwhab-text, results='asis'}
+# trim extra sections off.  
+blueWhaleText <- sub("La table d'attributs a été complétée grâce aux informations contenues dans le rapport suivant : .*", "", blueWhaleHab_rr$text$fr)
+writeLines(noquote(blueWhaleText))
+
+```
 
 Veuillez consulter la liste de toutes les sources d’information utilisées dans Lesage et al. 2018 et le dossier des données ouvertes ici https://ouvert.canada.ca/data/fr/dataset/8fafd919-fcbe-43a3-a911-3d9461273441.
 
@@ -289,13 +295,17 @@ if (!is.null(clipped$mapData)){
 write_meta(nbw_rr, "FR")
 ```
 
-La population de baleine à bec commune (_Hyperoodon ampullatus_) du plateau néo-écossais est inscrite sur la liste des espèces en voie de disparition de la Loi sur les espèces en péril du Canada (LEP). Une partie de l’habitat essentiel de cette population a été relevée dans le programme de rétablissement publié pour la première fois en 2010 (Pêches et Océans Canada 2016), et trois zones d’habitat essentiel ont été désignées le long du plateau néo-écossais, notamment dans le Gully et les canyons Shortland et Haldimand (fichier accessible en ligne). Toutefois, dans le programme de rétablissement, on reconnaissait que d’autres zones pourraient constituer un habitat essentiel pour la population, et on recommandait de réaliser d’autres études fondées sur la surveillance acoustique et visuelle afin d’évaluer l’importance des zones situées entre les canyons en tant qu’habitats d’alimentation et de corridors de déplacement pour la baleine à bec commune.
 
-Dans une étude subséquente portant sur la répartition, les mouvements et l’utilisation de l’habitat de la baleine à bec commune dans l’est du plateau néo-écossais (Stanistreet et al., sous presse), plusieurs sources de données ont été évaluées et d’autres zones d’habitat important ont été relevées entre le Gully et les canyons Shortland et Haldimand (MPO 2020). Un sommaire des données d’entrée, des analyses et des limites de l’étude est présenté ci-dessous.
+Description de l’ensemble de données (tirée du dossier des données ouvertes) :
+```{r nbw-text, results='asis'}
+# trim extra sections off.  
+nbwText <- sub("References: .*", "", nbw_rr$text$fr)
+writeLines(noquote(nbwText))
 
-De 2012 à 2014, une surveillance acoustique passive a été effectuée tout au long de l’année à deux endroits entre les canyons, au moyen d’enregistreurs installés sur le fond. Cette surveillance a révélé que des baleines à bec communes fréquentent ces zones et s’y alimentent presque toute l’année, les détections acoustiques atteignant un sommet au printemps. Les détections provenant des enregistrements acoustiques obtenus lors de relevés réalisés à partir de navires ont fourni des preuves supplémentaires de la présence de l’espèce dans les zones entre les canyons pendant les mois d’été. Des données de photo-identification recueillies dans le Gully et les canyons Shortland et Haldimand entre 2001 et 2017 ont été utilisées pour modéliser les profils de résidence et de déplacement des baleines à bec communes dans les canyons et entre ceux-ci, et ont montré que des individus se déplaçaient régulièrement entre les trois canyons ainsi que vers et depuis des zones extérieures. Collectivement, ces résultats indiquent une forte connectivité entre le Gully et les canyons Shortland et Haldimand, et démontrent que les zones entre les canyons constituent un important habitat d’alimentation et servent de couloirs de déplacement pour les baleines à bec communes du plateau néo-écossais.
+```
 
-Le polygone des zones d’habitat situées entre les canyons a été délimité par la courbe isobathe de 500 m et par des lignes droites reliant les angles sud-est des zones d’habitat essentiel existantes, mais ces limites sont fondées sur des données spatiales peu abondantes concernant la présence des baleines à bec communes dans les eaux plus profondes. Il faudra davantage de données pour pouvoir déterminer si cette zone englobe entièrement l’habitat important situé entre les canyons, surtout en ce qui concerne la limite sud-est plus profonde. De même, l’étendue complète de l’habitat important pour la population de baleine à bec commune du plateau néo-écossais demeure inconnue, et les zones potentielles d’habitat essentiel en dehors des canyons et des zones situées entre ceux-ci dans l’est du plateau néo-écossais n’ont pas été entièrement évaluées. Pour de plus amples renseignements, consulter le rapport du MPO (MPO 2020).
+Veuillez consulter la liste de toutes les sources d’information utilisées et le dossier des données ouvertes ici `r nbw_rr$metadata$url$en`.
+
 
 #### ***Résultats de la recherche sur l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais, par zone*** 
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}

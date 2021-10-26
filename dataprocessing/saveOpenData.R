@@ -6,9 +6,10 @@ fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Da
 
 filesLoaded <- load_rdata(c("CommonData"), "MAR", env = environment())
 loadResult <- load_rdata(c("ebsa_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
-                           "blueWhaleHab_rr", "obisCet_rr", "finWhale_rr", 
-                           "seiWhale_rr", "humpbackWhale_rr",
-                           "harbourPorpoise_rr", "nbw_rr", "rv_rr"),  "MAR")
+                           "blueWhaleHab_rr", "obisCet_rr", "obisFish_rr",
+                           "finWhale_rr", "seiWhale_rr", "humpbackWhale_rr",
+                           "rockweed_rr", "harbourPorpoise_rr", "nbw_rr",
+                           "rv_rr"),  "MAR")
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")

@@ -7,7 +7,8 @@ fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
 load(here::here("app/data/CommonData.RData"))
-loadResult <- load_rdata(c("conservationSites_rr", "wsdb_rr", "whitehead_rr", "narwc_rr", "leatherback_rr" ),  "MAR")
+loadResult <- load_rdata(c("conservationSites_rr", "wsdb_rr", "whitehead_rr",
+                           "narwc_rr", "leatherback_rr", "ocearch_rr"),  "MAR")
 
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
