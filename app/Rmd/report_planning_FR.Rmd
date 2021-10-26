@@ -6,9 +6,7 @@ filesLoaded <- load_rdata(c("ebsa_rr", "conservationSites_rr"), "MAR", env = env
 ## **ZONES DÉSIGNÉES POUR LA PLANIFICATION SPATIALE**  
 
 
-<!-- **Zones d’importance écologique et biologique (ZIEB)**  -->
-
-### **`r ebsa_rr$title$fr` **
+### **Zones d’importance écologique et biologique (ZIEB)**  
 
 ```{r EBSA-meta, results='asis'}
 write_meta(ebsa_rr, "FR")
@@ -23,18 +21,17 @@ writeLines(noquote(ebsa_rr$text$fr))
 
 #### ***Résultats de la recherche des ZIEB par zone***  
 
-*
 ```{r EBSA-results, echo=FALSE, results='asis'}
 #function for overlap
 EBSAoutput <- master_intersect(ebsa_rr$data_sf, mapDataList, getRegion=TRUE)
 ```
-
+ 
 ```{r EBSA-check, echo=FALSE, results='asis'}
 #function for overlap
 Query_output_EBSA<-if(is.null(EBSAoutput$studyData)){
-  "La zone de recherche ne chevauche pas les zones d’importance écologique et biologique (ZIEB)."
+    "* La zone de recherche ne chevauche pas les zones d’importance écologique et biologique (ZIEB)."
   } else {
-    "La zone de recherche chevauche les zones d’importance écologique et biologique (ZIEB)."
+    "* La zone de recherche chevauche les zones d’importance écologique et biologique (ZIEB)."
   }
 Query_output_EBSA2<-noquote(Query_output_EBSA)
 

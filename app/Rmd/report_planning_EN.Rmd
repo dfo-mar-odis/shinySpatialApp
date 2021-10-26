@@ -8,9 +8,7 @@ filesLoaded <- load_rdata(c("ebsa_rr", "conservationSites_rr"), "MAR", env = env
 
 This section describes information relevant to spatial planning from a variety of sources. Area-specific outputs are provided in sub-sections labeled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
 
-<!-- ### **Ecologically and Biologically Significant Areas (EBSA)** -->
-
-### **`r ebsa_rr$title$en` **
+### **Ecologically and Biologically Significant Areas (EBSA)**
 
 ```{r EBSA-meta, results='asis'}
 write_meta(ebsa_rr, "EN")
