@@ -5,7 +5,7 @@ editor_options:
 ---
 
 ```{r fish-setup}
-filesLoaded <- load_rdata(c("RV_rr", "isdb_rr", "marfis_rr", "ocearch_rr", "obisFish_rr"), "MAR", env = environment())
+filesLoaded <- load_rdata(c("rv_rr", "isdb_rr", "marfis_rr", "ocearch_rr", "obisFish_rr"), "MAR", env = environment())
 
 ```
 
@@ -16,12 +16,12 @@ La présente section décrit les résultats tirés des sources de données suiva
 ### **Enquête sur les navires de recherche dans les Maritimes**   
 
 ```{r rv-meta, results='asis'}
-write_meta(RV_rr, "FR")
+write_meta(rv_rr, "FR")
 ```
 
 Description de l’ensemble de données (tirée du dossier des données ouvertes):
 ```{r rv-text, results='asis'}
-writeLines(noquote(RV_rr$text$fr))
+writeLines(noquote(rv_rr$text$fr))
 ```
 
 
@@ -38,7 +38,7 @@ knitr::kable(table_RV, align="l",
 #### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes, par zone***
 
 ```{r RV-results, include=FALSE, cache=FALSE}
-outputList <- master_intersect(RV_rr$data_sf, mapDataList, Year = minYear)
+outputList <- master_intersect(rv_rr$data_sf, mapDataList, Year = minYear)
 
 Samples_bbox <- outputList$mapPoints
 

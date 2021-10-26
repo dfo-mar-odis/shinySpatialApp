@@ -5,10 +5,10 @@ fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
 filesLoaded <- load_rdata(c("CommonData"), "MAR", env = environment())
-loadResult <- load_rdata(c("EBSA_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
-                           "bwhab_rr", "obisCet_rr", "finWhale_rr", 
+loadResult <- load_rdata(c("ebsa_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
+                           "blueWhaleHab_rr", "obisCet_rr", "finWhale_rr", 
                            "seiWhale_rr", "humpbackWhale_rr",
-                           "harbourPorpoise_rr", "nbw_rr"),  "MAR")
+                           "harbourPorpoise_rr", "nbw_rr", "rv_rr"),  "MAR")
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
@@ -52,20 +52,20 @@ save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, fi
 
 
 # ----------------EBSA----------------- 
-EBSApkgId <- "d2d6057f-d7c4-45d9-9fd9-0a58370577e0"
-EBSAresId <- "ec990fd7-91b0-4dbb-a0f4-bb11070a84c1"
+ebsaPkgId <- "d2d6057f-d7c4-45d9-9fd9-0a58370577e0"
+ebsaResId <- "ec990fd7-91b0-4dbb-a0f4-bb11070a84c1"
 
-EBSAcheckDate <- get_check_date("EBSA_rr")
+ebsaCheckDate <- get_check_date("ebsa_rr")
 
-OpenEBSA_rr <- get_opendata_rr(EBSApkgId, EBSAresId, region_sf = region_sf,
-                               checkDate = EBSAcheckDate)
-if(!is.null(OpenEBSA_rr)) {
-  EBSA_rr <- OpenEBSA_rr
-  EBSA_rr$data_sf$Report_URL <- str_replace(EBSA_rr$data_sf$Report_URL,
+openEbsa_rr <- get_opendata_rr(ebsaPkgId, ebsaResId, region_sf = region_sf,
+                               checkDate = ebsaCheckDate)
+if(!is.null(openEbsa_rr)) {
+  ebsa_rr <- openEbsa_rr
+  ebsa_rr$data_sf$Report_URL <- str_replace(ebsa_rr$data_sf$Report_URL,
                                             ".pdf", ".html")
-  EBSA_rr$metadata$qualityTier <- highQuality
-  EBSA_rr$metadata$contact <- email_format("carissa.philippe\\@dfo-mpo.gc.ca")
-  save(EBSA_rr, file = file.path(fileSavePath, "Open/EBSA_rr.RData"))
+  ebsa_rr$metadata$qualityTier <- highQuality
+  ebsa_rr$metadata$contact <- email_format("carissa.philippe\\@dfo-mpo.gc.ca")
+  save(ebsa_rr, file = file.path(fileSavePath, "Open/ebsa_rr.RData"))
 }
 
 
@@ -139,32 +139,32 @@ save_open_data(nbwPkgId, nbwResId, "nbw_rr", highQuality, fileSavePath,
                region_sf = region_sf, gdbLayer = "NorthernBottlenoseWhale_InterCanyonHabitat",
                reference = bwRefList)
 
-# -----------BW hab-------------- 
-bwhabPkgId <- "8fafd919-fcbe-43a3-a911-3d9461273441"
-bwResId <- "3af8ad03-c0da-4cfa-940d-d757c0c24cb7"
+# -----------Blue Whale habitat-------------- 
+blueWhaleHabPkgId <- "8fafd919-fcbe-43a3-a911-3d9461273441"
+blueWhaleResId <- "3af8ad03-c0da-4cfa-940d-d757c0c24cb7"
 
-bwCheckDate <- get_check_date("bwhab_rr")
-openBwhab_rr <- get_opendata_rr(bwhabPkgId, bwResId, checkDate = bwCheckDate)
+blueWhaleCheckDate <- get_check_date("blueWhaleHab_rr")
+openBwhab_rr <- get_opendata_rr(blueWhaleHabPkgId, blueWhaleResId, checkDate = blueWhaleCheckDate)
 if(!is.null(openBwhab_rr)) {
-  bwhab_rr <- openBwhab_rr
-  bwTemp_sf <- bwhab_rr$data_sf
-  bwTemp_sf <- setNames(bwTemp_sf, replace(names(bwTemp_sf), names(bwTemp_sf) == 'activité', 'activite'))
-  bwTemp_sf$activity[bwTemp_sf$activity == "foraging/Feeding"] <- "Foraging/Feeding"
-  bwTemp_sf$activity[bwTemp_sf$activity == "Migrant"] <- "Migration"
-  bwTemp_sf$months[bwTemp_sf$months == "all year"] <- "All year"
-  bwTemp_sf$months[bwTemp_sf$months == "December to February/March to May"] <- "Dec-Feb/Mar-May"
-  bwTemp_sf$months[bwTemp_sf$months == "December to February/June to August"] <- "Dec-Feb/Jun-Aug"
-  bwTemp_sf$months[bwTemp_sf$months == "March to May/June to August"] <- "Mar-May/Jun-Aug"
-  bwTemp_sf$Activity <- paste(bwTemp_sf$activity,"-", bwTemp_sf$months)
-  bwTemp_sf <- sf::st_crop(bwTemp_sf, region_sf)
-  bwhab_rr$data_sf <- bwTemp_sf
+  blueWhaleHab_rr <- openBwhab_rr
+  blueWhaleTemp_sf <- blueWhaleHab_rr$data_sf
+  blueWhaleTemp_sf <- setNames(blueWhaleTemp_sf, replace(names(blueWhaleTemp_sf), names(blueWhaleTemp_sf) == 'activité', 'activite'))
+  blueWhaleTemp_sf$activity[blueWhaleTemp_sf$activity == "foraging/Feeding"] <- "Foraging/Feeding"
+  blueWhaleTemp_sf$activity[blueWhaleTemp_sf$activity == "Migrant"] <- "Migration"
+  blueWhaleTemp_sf$months[blueWhaleTemp_sf$months == "all year"] <- "All year"
+  blueWhaleTemp_sf$months[blueWhaleTemp_sf$months == "December to February/March to May"] <- "Dec-Feb/Mar-May"
+  blueWhaleTemp_sf$months[blueWhaleTemp_sf$months == "December to February/June to August"] <- "Dec-Feb/Jun-Aug"
+  blueWhaleTemp_sf$months[blueWhaleTemp_sf$months == "March to May/June to August"] <- "Mar-May/Jun-Aug"
+  blueWhaleTemp_sf$Activity <- paste(blueWhaleTemp_sf$activity,"-", blueWhaleTemp_sf$months)
+  blueWhaleTemp_sf <- sf::st_crop(blueWhaleTemp_sf, region_sf)
+  blueWhaleHab_rr$data_sf <- blueWhaleTemp_sf
   
-  bwhab_rr$metadata$contact <- email_format("gddaiss-dmsaisb\\@dfo-mpo.gc.ca")
-  bwhab_rr$metadata$qualityTier <- highQuality
-  bwhab_rr$attribute <- "Activity"
-  bwhab_rr$metadata$reference <- lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>")
+  blueWhaleHab_rr$metadata$contact <- email_format("gddaiss-dmsaisb\\@dfo-mpo.gc.ca")
+  blueWhaleHab_rr$metadata$qualityTier <- highQuality
+  blueWhaleHab_rr$attribute <- "Activity"
+  blueWhaleHab_rr$metadata$reference <- lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>")
   
-  save(bwhab_rr, file = file.path(fileSavePath, "Open/bwhab_rr.RData"))
+  save(blueWhaleHab_rr, file = file.path(fileSavePath, "Open/blueWhaleHab_rr.RData"))
 }
 
 
@@ -267,12 +267,14 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
 save(rockweed_rr, file = file.path(fileSavePath, "Open/rockweed_rr.RData"))
 
 
-# -----------------------RV SURVEY---------------------
-RVPkgId <- "8ddcaeea-b806-4958-a79f-ba9ab645f53b"
+#
 
-RV_rr <- get_opendata_rr(RVPkgId, NULL, region_sf = region_sf)
-RV_rr$metadata$contact <- email_format("DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca")
-RV_rr$metadata$qualityTier <- highQuality
+-----------------------RV SURVEY---------------------
+rvPkgId <- "8ddcaeea-b806-4958-a79f-ba9ab645f53b"
+
+rv_rr <- get_opendata_rr(rvPkgId, NULL, region_sf = region_sf)
+rv_rr$metadata$contact <- email_format("DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca")
+rv_rr$metadata$qualityTier <- highQuality
 
 rvCsvList <- c("GSCAT.csv", "GSINF.csv", "GSSPECIES.csv")
 minYear <- 2010
@@ -295,7 +297,7 @@ fall_sf <- RV_to_sf(fallDfs[[1]], fallDfs[[2]], fallDfs[[3]], minYear)
 
 rv_sf <- rbind(fourVSW_sf, spring_sf, summer_sf, fall_sf)
 rv_sf <- sf::st_crop(rv_sf, region_sf)
-RV_rr$data_sf <- rv_sf
-RV_rr$metadata$searchYears <- "2010-2020"
-save(RV_rr, file = file.path(fileSavePath, "Open/RV_rr.RData"))
+rv_rr$data_sf <- rv_sf
+rv_rr$metadata$searchYears <- "2010-2020"
+save(rv_rr, file = file.path(fileSavePath, "Open/rv_rr.RData"))
 

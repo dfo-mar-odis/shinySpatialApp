@@ -5,7 +5,7 @@ editor_options:
 ---
 
 ```{r fish-setup}
-filesLoaded <- load_rdata(c("RV_rr", "isdb_rr", "marfis_rr", "ocearch_rr", "obisFish_rr"), "MAR", env = environment())
+filesLoaded <- load_rdata(c("rv_rr", "isdb_rr", "marfis_rr", "ocearch_rr", "obisFish_rr"), "MAR", env = environment())
 
 ```
 
@@ -18,12 +18,12 @@ This section describes outputs derived from a variety of data sources, internal 
 
 
 ```{r rv-meta, results='asis'}
-write_meta(RV_rr, "EN")
+write_meta(rv_rr, "EN")
 ```
 
 Dataset description from the Open Data record [@OpenData_MAR_RV]:
 ```{r rv-text, results='asis'}
-writeLines(noquote(RV_rr$text$en))
+writeLines(noquote(rv_rr$text$en))
 ```
 
 ```{r table-RV-read, echo=FALSE, cache=FALSE, include = FALSE}
@@ -39,7 +39,7 @@ knitr::kable(table_RV, align="l",
 #### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
 
 ```{r RV-results, include=FALSE, cache=FALSE}
-outputList <- master_intersect(RV_rr$data_sf, mapDataList, Year = minYear)
+outputList <- master_intersect(rv_rr$data_sf, mapDataList, Year = minYear)
 
 Samples_bbox <- outputList$mapPoints
 

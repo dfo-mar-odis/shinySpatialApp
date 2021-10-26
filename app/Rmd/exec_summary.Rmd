@@ -32,9 +32,9 @@ minYear <- 2010
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
 copy_rdata_files() # make sure data files are up to date. 
 filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherback_rr", 
-                            "RV_rr", "isdb_rr", "marfis_rr", "obisFish_rr", "ocearch_rr", 
-                            "wsdb_rr", "whitehead_rr", "obisCet_rr", "bwhab_rr", 
-                            "nbw_rr", "narwc_rr", "rockweed_rr", "EBSA_rr",
+                            "rv_rr", "isdb_rr", "marfis_rr", "obisFish_rr", "ocearch_rr", 
+                            "wsdb_rr", "whitehead_rr", "obisCet_rr", "blueWhaleHab_rr", 
+                            "nbw_rr", "narwc_rr", "rockweed_rr", "ebsa_rr",
                             "conservationSites_rr", "finWhale_rr", "harbourPorpoise_rr",
                             "humpbackWhale_rr", "seiWhale_rr"), "MAR", env = environment())
 
@@ -108,7 +108,7 @@ whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionTe
 summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
 
 # RV
-rvSarTable <- create_table_RV(RV_rr$data_sf, listed_species)$sarData
+rvSarTable <- create_table_RV(rv_rr$data_sf, listed_species)$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "RV", rvSarTable, "Common Name", "Individuals")
 
 # Marfis/ISDB
@@ -156,7 +156,7 @@ summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "SDM", summarySDMT
 
 # bw
 attribute <- "Activity"
-if(!is.null(bwhab_rr$data_sf)){
+if(!is.null(blueWhaleHab_rr$data_sf)){
   summaryBWTable <- data.frame("Species" = "Blue Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "BW Habitat", summaryBWTable, "Species", "Species")
 }
