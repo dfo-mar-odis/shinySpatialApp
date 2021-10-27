@@ -31,14 +31,7 @@ minYear <- 2010
 
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
 copy_rdata_files() # make sure data files are up to date. 
-#load(here::here("app/data/testData.RData"))
-load(here::here("app/data/OpenData.RData"))
-load(here::here("app/data/OpenData_sardist.RData"))
-load(here::here("app/data/SecureData.RData"))
-
-listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
-row.names(listed_species) <- NULL
-#load("\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\SRC\\Reproducible_Reporting\\data\\SecureData.Rdata")
+filesLoaded <- load_rdata(c("CommonData"), "MAR", env = environment())
 
 ```
 
@@ -49,12 +42,11 @@ studyArea <- sf::st_read("{{path_to_geoms}}")
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_test.geojson")) #Offshore
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_coastal_test.geojson")) #coastal
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_no_land.geojson")) #no land
-region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
 site <- sf::st_centroid(studyArea)
 ```
 
 ```{r parameters-for-area_map.r, echo=FALSE, include=FALSE, cache=FALSE}
-mapDataList <- maps_setup(studyArea, site, region, land50k_sf, land10m_sf, bounds_sf)
+mapDataList <- maps_setup(studyArea, site, region_sf, land50k_sf, land10m_sf, bounds_sf)
 list2env(mapDataList, envir = environment())
 ```
 
@@ -66,7 +58,7 @@ summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC
 
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
-<!--```{r child = '../Rmd/report_SARA_EN.Rmd'}
+<!--```{r child = '../Rmd/report_planning_EN.Rmd'}
 ```-->
 
 <!-- END  -->

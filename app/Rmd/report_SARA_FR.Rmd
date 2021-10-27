@@ -1,3 +1,9 @@
+
+```{r sara-loaddata, results='asis'}
+filesLoaded <- load_rdata(c("sardist_rr", "crithab_rr", "leatherback_rr"), "MAR", env = environment())
+```
+
+
 ## **RENSEIGNEMENTS PROVENANT DU PROGRAMME NATIONAL SUR LES ESPÈCES AQUATIQUES EN PÉRIL**    
 **Personne-ressource :** Carolyn Bakelaar  
 **Lien pour SIG Interne :** <http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US#>  
@@ -14,21 +20,27 @@ Ce rapport *ne fait pas* autorité en ce qui concerne les données sur les espè
 
 #### ***Répartition des espèces en péril du MPO (aire de répartition)*** {-}    
 
-Personne-ressource : <info@dfo-mpo.gc.ca>  
-Consulté le : 1er octobre 2020 sur le Portail de données ouvertes <https://ouvert.canada.ca/data/fr/dataset/e0fabad5-9379-4077-87b9-5705f28c490b>
-Niveau de qualité : Élevée
-Niveau de sécurité : Aucun
+```{r sardist-meta, results='asis'}
+write_meta(sardist_rr, "FR")
+```
 
-Description de l’ensemble de données (tirée du dossier des données ouvertes) : Le Programme des espèces en péril est responsable du mandat du MPO issu de la _Loi sur les espèces en péril_ (LEP) afin d’assurer la protection, le rétablissement et la conservation de toutes les espèces aquatiques en péril inscrites au Canada. Cette base de données spatiales a été élaborée dans le cadre de ce mandat afin d’indiquer les zones où des espèces aquatiques inscrites en vertu de la LEP peuvent se trouver. Les polygones des différentes zones de répartition ont été établis par les biologistes régionaux à l’aide de la meilleure information disponible, notamment les rapports de situation du COSEPAC, les évaluations du potentiel de rétablissement, les ouvrages universitaires et les avis d’experts. Ces données spatiales contribuent à la protection, au rétablissement et à la conservation des espèces inscrites comme étant en voie de disparition, menacées ou préoccupantes aux termes de la LEP. Les zones de répartition des espèces sont également décrites et illustrées dans les stratégies de rétablissement, les plans d’action ou les plans de gestion. Il peut y avoir des écarts entre les données de répartition indiquées dans les documents de la LEP relatifs au rétablissement et les données spatiales actuelles disponibles par l’entremise du SIG; veuillez communiquer avec le MPO pour obtenir de plus amples renseignements sur les écarts de données.
+Description de l’ensemble de données (tirée du dossier des données ouvertes) : 
+```{r sardist-text, results='asis'}
+writeLines(noquote(sardist_rr$text$fr))
+```
 
 #### ***Habitat essentiel des espèces en péril***    
 
-Personne-ressource : <info@dfo-mpo.gc.ca>
-Consulté le : 1er octobre 2020 sur le Portail de données ouvertes <https://ouvert.canada.ca/data/fr/dataset/db177a8c-5d7d-49eb-8290-31e6a45d786c>
-Niveau de qualité : Élevée
-Niveau de sécurité : Aucun   
+```{r crtihab-meta, results='asis'}
+write_meta(crithab_rr, "FR")
+```
+Contraintes d'usage pour l’ébauche de l’habitat essentiel de la tortue luth: DFO INTERNAL USE ONLY
 
-Description de l’ensemble de données (tirée du dossier des données ouvertes) : Le Programme des espèces en péril consiste à réaliser le mandat du MPO en vertu de la _Loi sur les espèces en péril_ (LEP) afin d’assurer la protection, le rétablissement et la conservation de toutes les espèces aquatiques en péril inscrites au Canada. On a déterminé l'habitat essentiel pour les espèces inscrites comme étant en voie de disparition ou menacées en vertu de la LEP. Selon la définition de l'article 2 de la LEP, l'habitat essentiel est en fait « l'habitat nécessaire à la survie ou au rétablissement d'une espèce sauvage inscrite, qui est désigné comme tel dans un programme de rétablissement ou un plan d'action élaboré à l'égard de l'espèce ». L'alinéa 49(1)(a) de la LEP stipule que le plan d’action ou la stratégie de rétablissement comporte la désignation de l’habitat essentiel de l’espèce dans la mesure du possible, en se fondant sur la meilleure information accessible, notamment l’information fournie par le Comité sur la situation des espèces en péril au Canada (COSEPAC). La LEP stipule également qu'il est illégal de détruire toute partie de l'habitat essentiel d'une espèce en péril et peut imposer des restrictions sur l'aménagement et de la construction. Les habitats essentiel ont été assemblés par des biologistes régionaux et des équipes de rétablissement affectés à la mise en œuvre de la LEP. Ils ont pour but de soutenir la protection et le rétablissement des espèces inscrites comme étant en voie de disparition ou menacées conformément à la LEP. Ils sont également décrits et affichés dans les documents et les plans d’action sur le rétablissement de ces espèces.
+
+Description de l’ensemble de données (tirée du dossier des données ouvertes) : 
+```{r crithab-text, results='asis'}
+writeLines(noquote(crithab_rr$text$fr))
+```
 
 Les habitats essentiels présentés dans cette section sont disponibles sur le portail de données ouvertes du gouvernement du Canada, à l’exception de l’habitat essentiel de la tortue luth, pour laquelle la délimitation de l’habitat essentiel est actuellement à l’étude. L’ébauche de l’habitat essentiel de la tortue luth est disponible dans le SIG interne des espèces en péril et sera disponible sur le Portail de données ouvertes plus tard.
 
@@ -36,21 +48,19 @@ Les habitats essentiels présentés dans cette section sont disponibles sur le p
 
 ```{r all-sar-load, echo=FALSE, results='asis'}
 # not plotted
-outputListSardist <- master_intersect(sardist_sf, mapDataList)
+outputListSardist <- master_intersect(sardist_rr$data_sf, mapDataList)
 
 # plotted with colour
-attributeCrithab <- "Common_Nam"
-legendNameCrithab <- "Common Name"
-outputListCrithab <- master_intersect(ClippedCritHab_sf, mapDataList,
-                                      getRegion=TRUE)
+legendNameCrithab <- "Nom Commun"
+outputListCrithab <- master_intersect(crithab_rr$data_sf, mapDataList)
 
 # plotted in single colour
-outputListLB <- master_intersect(leatherback_sf, mapDataList, getRegion=TRUE)
+outputListLB <- master_intersect(leatherback_rr$data_sf, mapDataList)
 
 critHabCheck <- !is.null(outputListCrithab$studyData) | !is.null(outputListLB$studyData)
 
-distTable <- table_dist(outputListSardist$studyData)
-summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distribution](#sardist-section)",  distTable, "Common Name", "Common Name")
+distTable <- table_dist(outputListSardist$studyData, "FR")
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distribution](#sardist-section)",  distTable, "Nom Commun", "Nom Commun")
 
 ```
 *
@@ -65,7 +75,7 @@ writeLines(Query_output_dist)
 
 ```{r crithab-table-gen, echo=FALSE, results='asis'}
 if(critHabCheck) {
-  critTable <- table_crit(outputListCrithab$studyData, outputListLB$studyData)  
+  critTable <- table_crit(outputListCrithab$studyData, outputListLB$studyData, "FR")  
 }
 ```
 *
@@ -93,28 +103,29 @@ if(critHabCheck){
 <br>
 
 ```{r crithab-region-plot, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Cette carte résume l’habitat essentiel des espèces en péril inscrites comme en voie de disparition ou menacées en vertu de la LEP de la biorégion du plateau néo-écossais. Veuillez consulter le tableau ci-dessous pour l’information complémentaire. Selon la définition de l’article 2 de la LEP, l’habitat essentiel est en fait « l’habitat nécessaire à la survie ou au rétablissement d’une espèce sauvage inscrite, qui est désigné comme tel dans un programme de rétablissement ou un plan d’action élaboré à l’égard de l’espèce ». L’habitat essentiel est désigné dans un programme de rétablissement final ou un plan d’action publié dans le Registre public des espèces en péril (http://www.sararegistry.gc.ca). Il ne s’agit <b>pas</b> d’une source ni d’un conseil faisant autorité en ce qui concerne les données sur les espèces en péril. Veuillez accéder au SIG des espèces en péril (http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) pour créer un rapport faisant autorité.', fig.height=6, fig.width=11}
-if (!is.null(outputListCrithab$regionData)){
-  critPlotList <- plot_rr_sf(regionMap, outputListCrithab$regionData, 
-                             attributeCrithab, legendName = legendNameCrithab, outlines=FALSE, getColorMap=TRUE)
+if (!is.null(crithab_rr$data_sf)){
+  critPlotList <- plot_rr_sf(regionMap, crithab_rr$data_sf, crithab_rr$attribute, 
+                             legendName = legendNameCrithab, outlines=FALSE, 
+                             getColorMap=TRUE)
   critPlotList$polyMap
 }    
 ```
 <br>
 ```{r crithab-area-plot, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Cette carte résume les zones où le polygone de recherche chevauche l’habitat essentiel des espèces en péril inscrites comme en voie de disparition ou menacées en vertu de la LEP', fig.height=6, fig.width=11}
 if (!is.null(outputListCrithab$mapData)){
-  plot_rr_sf(areaMap, outputListCrithab$mapData, attributeCrithab,
+  plot_rr_sf(areaMap, outputListCrithab$mapData, crithab_rr$attribute, 
              legendName = legendNameCrithab, outlines=FALSE, colorMap = critPlotList$colorMap)
 }  
 ```
 <br>
 ```{r letherback-region-plot, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Cette carte résume l’ébauche de l’habitat essentiel de la tortue luth de la biorégion du plateau néo-écossais, par rapport à la zone de recherche. ', fig.height=6, fig.width=11}
-if (!is.null(outputListLB$regionData)){
-  plot_rr_sf(regionMap, outputListLB$regionData, "NONE")
+if (!is.null(leatherback_rr$data_sf)){
+  plot_rr_sf(regionMap, leatherback_rr$data_sf, leatherback_rr$attribute)
 }   
 ```
 <br>
 ```{r leatherback-area-plot, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Cette carte résume les zones où le polygone de recherche chevauche  l’ébauche de l’habitat essentiel de la tortue luth.', fig.height=6, fig.width=11}
 if (!is.null(outputListLB$mapData)){
-  plot_rr_sf(areaMap, outputListLB$mapData, "NONE")
+  plot_rr_sf(areaMap, outputListLB$mapData, leatherback_rr$attribute)
 } 
 ```

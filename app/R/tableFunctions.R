@@ -56,7 +56,7 @@ rockweedStats<- function(rockweed_sf) {
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. sarData: datatable of only listed species found within the studyArea
 
-create_table_RV <- function(data_sf, sarTable, speciesTable) {
+create_table_RV <- function(data_sf, sarTable) {
 
   if (is.null(data_sf)) {
     return(list("allSpecies" = NULL, "sarData" = NULL))
@@ -66,19 +66,18 @@ create_table_RV <- function(data_sf, sarTable, speciesTable) {
   Samples_study_no <- dim(unique(data_sf[, c("geometry")]))[1]
   # calculate a table of all species caught and
   # the total number of individuals caught.
-  # Join to the species lookup table to get
-  # species names
   individualCounts <- aggregate(
     x = list(Individuals = data_sf$TOTNO),
-    by = list(CODE = data_sf$CODE),
+    by = list(CODE = data_sf$CODE, "Scientific Name" = data_sf$`Scientific Name`, 
+              "Common Name" = data_sf$`Common Name`),
     FUN = sum)
 
   recordCounts <- aggregate(
     x = list(Records = data_sf$CODE),
     by = list(CODE = data_sf$CODE),
     FUN = length)
+  
   allSpeciesData <- merge(individualCounts, recordCounts, by = 'CODE')
-  allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'CODE')
   # add a field for the number of samples
   allSpeciesData$Samples <- Samples_study_no
   # combine the number of species records with number of samples
@@ -298,20 +297,33 @@ sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
 # Outputs:
 # distTable: table used in the report
 #
-table_dist <- function(clippedSardist_sf) {
+table_dist <- function(clippedSardist_sf, lang) {
 
   if (is.null(clippedSardist_sf)) {
     return(NULL)
   }
+  
+  if (lang == "EN") {
+    clippedSardist_sf <- dplyr::mutate(clippedSardist_sf, Common_Name_EN = str_replace(Common_Name_EN, "`", "'"))
+    distTable <- dplyr::select(clippedSardist_sf, Scientific_Name, Common_Name_EN,
+                               Population_EN, SARA_Status, Species_Link)
+    tableNames <-  c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
+  } else if(lang =="FR") {
+    clippedSardist_sf <- dplyr::mutate(clippedSardist_sf, Common_Name_FR = str_replace(Common_Name_FR, "`", "'"))
+    clippedSardist_sf <- dplyr::mutate(clippedSardist_sf, Population_FR = str_replace(Population_FR, "`", "'"))
+    
+    distTable <- dplyr::select(clippedSardist_sf, Scientific_Name, Common_Name_FR,
+                               Population_FR, SARA_Status, Species_Link)
+    tableNames <-  c("Nom Scientific", "Nom Commun", "Population", "Statut LEP", "Lien d'espèce")
+  } else {
+    stop("Specify language choice (EN/FR)")
+  }
 
-
-  clippedSardist_sf$Common_Nam[clippedSardist_sf$Common_Nam == "Sowerby`s Beaked Whale"] <- "Sowerby's Beaked Whale"
-  distTable <- dplyr::select(clippedSardist_sf, Scientific, Common_Nam, Population, SARA_Statu, Species_Li)
   sf::st_geometry(distTable) <- NULL
   row.names(distTable) <- NULL
   distTable <- unique(distTable)
-  distTable$Scientific <- italicize_col(distTable$Scientific)
-  names(distTable) <- c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
+  distTable$Scientific_Name <- italicize_col(distTable$Scientific)
+  names(distTable) <- tableNames
 
   return(distTable)
 }
@@ -337,21 +349,32 @@ italicize_col <- function(tableCol) {
 # Outputs:
 # critTable: table used in the report
 #
-table_crit <- function(CCH_sf, LB_sf) {
+table_crit <- function(CCH_sf, LB_sf, lang) {
 
+  if (lang == "EN"){
+    critTableCols <- c("Common_Name_EN", "Population_EN", "Waterbody", "SARA_Status")
+    critTableNames <- c("Common Name", "Population", "Area", "SARA status")
+    leatherbackRow <- data.frame("Leatherback Sea Turtle", NA, paste(LB_sf$AreaName, collapse=', ' ), "Endangered" )
+  } else if (lang =="FR") {
+    critTableCols <- c("Common_Name_FR", "Population_FR", "Waterbody", "SARA_Status")
+    critTableNames <- c("Nom Commun", "Population", "Region", "Statut LEP")
+    leatherbackRow <- data.frame("Tortue Luth", NA, paste(LB_sf$AreaName, collapse=', ' ), "En voie de disparition" )
+  } else {
+    stop("Specify Critical Habitat Table language choice (EN/FR)")
+  }
+  
   if (!is.null(CCH_sf)){
-    critTable <- dplyr::select(CCH_sf, c("Common_Nam", "Population", "Waterbody", "SARA_Statu"))
-    critTable$geometry <- NULL
-    names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
+    critTable <- dplyr::select(CCH_sf, all_of(critTableCols))
+    critTable <- sf::st_drop_geometry(critTable)
+    names(critTable) <- critTableNames
   } else {
     # only set names after init to preserve spaces etc.
     critTable <- data.frame("a"=NA, "b"=NA, "c"=NA, "d"=NA)
-    names(critTable) <- c("Common Name", "Population", "Area", "SARA status")
+    names(critTable) <- critTableNames
   }
 
   if (!is.null(LB_sf)){
-    leatherbackRow <- data.frame("Leatherback Sea Turtle", NA, paste(LB_sf$AreaName, collapse=', ' ), "Endangered" )
-    names(leatherbackRow) <- names(critTable)
+    names(leatherbackRow) <- critTableNames
     critTable <- bind_rows(critTable, leatherbackRow)
   }
 
@@ -378,24 +401,22 @@ table_crit <- function(CCH_sf, LB_sf) {
 # Directly writes table
 #
 EBSA_report <- function(EBSA_sf, lang="EN") {
-
-  EBSAreport <-  if (lang=="EN" & !is.null(EBSA_sf)) {
-    c(paste("Report: ", EBSA_sf$Report),
-      paste("Report URL:", EBSA_sf$Report_URL),
-      paste("Location: ", EBSA_sf$Name),
-      paste("Bioregion: ", EBSA_sf$Bioregion)
-    )
+  EBSATable <- NULL
+  if (lang=="EN" & !is.null(EBSA_sf)) {
+    EBSATable <- st_drop_geometry(dplyr::select(EBSA_sf, c(Report, Report_URL,
+                                                           Name, Bioregion)))
+    EBSATable <- unique(EBSATable)
+    row.names(EBSATable) <- NULL
+    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
   } else if (lang=="FR" & !is.null(EBSA_sf)) {
-    c(paste("Report: ", EBSA_sf$Rapport),
-      paste("Report URL:", EBSA_sf$RapportURL),
-      paste("Location: ", EBSA_sf$Nom),
-      paste("Bioregion: ", EBSA_sf$Bioregion)
-    )
-  } else {
-    ""
+    EBSATable <- st_drop_geometry(dplyr::select(EBSA_sf, c(Rapport, RapportURL,
+                                                           Nom, Bioregion)))
+    EBSATable <- unique(EBSATable)
+    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
+    row.names(EBSATable) <- NULL
+
   }
-  uniqueEBSAreport <- unique(noquote(EBSAreport))
-  writeLines(uniqueEBSAreport, sep="\n\n")
+  return(EBSATable)
 }
 
 # ---------MPA_REPPRT-------
@@ -426,7 +447,7 @@ mpa_table <- function(mpa_sf, lang="EN") {
   mpaTable <- distinct(mpaTable)
   return(mpaTable)
 }
-  
+
 # ---------add_col_to_whale_summary-------
 # Adds a column with number of records to the cetacean summary table
 # Inputs:

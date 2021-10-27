@@ -281,6 +281,11 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   
   land <- sf::st_crop(landLayer, bboxBuf)
   bound <- sf::st_crop(bounds_sf, bboxBuf)
+  fin_whale_sf <- sf::st_crop(fin_whale_sf, bboxBuf)
+  harbour_porpoise_sf <- sf::st_crop(harbour_porpoise_sf, bboxBuf)
+  humpback_whale_sf <- sf::st_crop(humpback_whale_sf, bboxBuf)
+  sei_whale_sf <- sf::st_crop(sei_whale_sf, bboxBuf)
+  
   
   #Fin Whale
   finWhalePlot <- whale_ggplot(fin_whale_sf, bound, land, studyArea,
