@@ -32,7 +32,7 @@ minYear <- 2010
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
 copy_rdata_files() # make sure data files are up to date. 
 filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherback_rr", 
-                            "rv_rr", "isdb_rr", "marfis_rr", "obisFish_rr", "ocearch_rr", 
+                            "rv_rr", "ilts_rr", "isdb_rr", "marfis_rr", "obisFish_rr", "ocearch_rr", 
                             "wsdb_rr", "whitehead_rr", "obisCet_rr", "blueWhaleHab_rr", 
                             "nbw_rr", "narwc_rr", "rockweed_rr", "ebsa_rr",
                             "conservationSites_rr", "finWhale_rr", "harbourPorpoise_rr",
@@ -110,6 +110,10 @@ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, wh
 # RV
 rvSarTable <- create_table_RV(rv_rr$data_sf, listed_species)$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "RV", rvSarTable, "Common Name", "Individuals")
+
+# ILTS
+iltsSarTable <- create_table_ilts(ilts_rr$data_sf, listed_species)$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "ILTS", iltsSarTable, "Common Name", "Common Name")
 
 # Marfis/ISDB
 isdbSarTable <- create_table_ISDB(isdb_rr$data_sf, listed_species, speciesTable = ISSPECIESCODES)$sarData

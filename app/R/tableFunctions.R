@@ -50,7 +50,6 @@ rockweedStats<- function(rockweed_sf) {
 # Inputs:
 # 1. data_sf: an input point file of RV survey data found within the studyArea (eg. output from master_intersect)
 # 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
-# 3. speciesTable: the RVGSSPECIES species table to link species codes with names
 #
 # Outputs: list containing 2 items
 # 1. allSpeciesData: datatable of all species found within the studyArea
@@ -108,7 +107,56 @@ create_table_RV <- function(data_sf, sarTable) {
   outList <- list("allSpecies" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
-##### - END create_table_RV function ##################################
+
+##### - create_table_ilts function ##################################
+# This function creates summary tables of the ILTS data
+# found within the studyArea
+#
+# Inputs:
+# 1. data_sf: an input point file of ILTS survey data found within the studyArea (eg. output from master_intersect)
+# 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
+#
+# Outputs: list containing 2 items
+# 1. allSpeciesData: datatable of all species found within the studyArea
+# 2. sarData: datatable of only listed species found within the studyArea
+create_table_ilts <- function(data_sf, sarTable) {
+  
+  if (is.null(data_sf)) {
+    return(list("allSpecies" = NULL, "sarData" = NULL))
+  }
+  
+  # calculate the number of unique sample locations
+  numTrawls <- dim(unique(data_sf[, c("geometry")]))[1]
+  recordCounts <- aggregate(
+    x = list(Records = data_sf$`Scientific Name`),
+    by = list("Scientific Name" = data_sf$`Scientific Name`),
+    FUN = length)
+  
+  allSpeciesData <- dplyr::select(data_sf, c("Scientific Name", "Common Name"))
+  allSpeciesData$geometry <- NULL
+  allSpeciesData <- unique(allSpeciesData)
+  allSpeciesData <- merge(allSpeciesData, recordCounts, by = 'Scientific Name')
+  
+  # add a field for the number of samples
+  allSpeciesData$numTrawls <- numTrawls
+  # combine the number of species records with number of samples
+  # into a new field for Frequency
+  allSpeciesData <- tidyr::unite(allSpeciesData, "Frequency",
+                                 c(Records, numTrawls), sep = "/", 
+                                 remove = FALSE)
+  
+  
+  allSpeciesData <- allSpeciesData[order(allSpeciesData$Records, decreasing = TRUE),]
+  allSpeciesData <- dplyr::select(allSpeciesData, c("Scientific Name", "Common Name", "Frequency"))
+  
+  sarData <- dplyr::inner_join(allSpeciesData, sarTable, by="Scientific Name", suffix = c(".x", ""))
+  sarData <- dplyr::select(sarData, c("Scientific Name", "Common Name", "SARA status", "COSEWIC status", "Frequency"))
+  
+  row.names(allSpeciesData) <- NULL
+  row.names(sarData) <- NULL
+  outList <- list("allSpecies" = allSpeciesData, "sarData" = sarData)
+  return(outList)
+}
 
 
 ##### - create_table_MARFIS function ##################################

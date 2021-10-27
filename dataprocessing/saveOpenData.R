@@ -268,9 +268,7 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
 save(rockweed_rr, file = file.path(fileSavePath, "Open/rockweed_rr.RData"))
 
 
-#
-
------------------------RV SURVEY---------------------
+#-----------------------RV SURVEY---------------------
 rvPkgId <- "8ddcaeea-b806-4958-a79f-ba9ab645f53b"
 
 rv_rr <- get_opendata_rr(rvPkgId, NULL, region_sf = region_sf)
