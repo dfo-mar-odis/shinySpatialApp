@@ -6,7 +6,7 @@ fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Da
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-loadResult <- load_rdata(c("CommonData", "isdb_rr", "marfis_rr"),  "MAR")
+loadResult <- load_rdata(c("CommonData", "isdb_rr", "marfis_rr", "ilts_rr"),  "MAR")
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
