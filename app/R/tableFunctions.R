@@ -149,6 +149,10 @@ create_table_ilts <- function(data_sf, sarTable) {
   allSpeciesData <- allSpeciesData[order(allSpeciesData$Records, decreasing = TRUE),]
   allSpeciesData <- dplyr::select(allSpeciesData, c("Scientific Name", "Common Name", "Frequency"))
   
+  skateRow <- filter(sarTable, COMMONNAME == "WINTER SKATE")
+  skateRow$`Scientific Name` <- "Leucoraja ocellata	(Uncertain)"
+  skateRow$`Common Name` <- "Winter Skate (possible Little Skate)"
+  sarTable <- rbind(sarTable, skateRow)
   sarData <- dplyr::inner_join(allSpeciesData, sarTable, by="Scientific Name", suffix = c(".x", ""))
   sarData <- dplyr::select(sarData, c("Scientific Name", "Common Name", "SARA status", "COSEWIC status", "Frequency"))
   

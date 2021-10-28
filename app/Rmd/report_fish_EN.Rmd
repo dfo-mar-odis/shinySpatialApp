@@ -124,12 +124,7 @@ writeLines(noquote(iltsCheck))
 ```{r ilts-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Black lines and arrows indicate the location and direction of each NEST trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area.'}
 
 if (!is.null(iltsClipped$studyData)) {
-areaMap +
-    geom_segment(aes(x = iltsClipped$mapPoints$long, 
-                     y = iltsClipped$mapPoints$lat, 
-                     xend = iltsClipped$mapPoints$ELONG, 
-                     yend = iltsClipped$mapPoints$ELAT), 
-                 arrow=arrow(length = unit(0.15,"cm")), size = 0.5)
+    plot_rr_sf(areaMap, iltsClipped$mapData, lwd = 1, colour = "blue")
 }
 ```
 <br>

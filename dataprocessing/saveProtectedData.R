@@ -6,10 +6,7 @@ fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Da
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-load(here::here("app/data/CommonData.RData"))
-loadResult <- load_rdata(c("isdb_rr", "marfis_rr"),  "MAR")
-
-region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
+loadResult <- load_rdata(c("CommonData", "isdb_rr", "marfis_rr"),  "MAR")
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
@@ -78,12 +75,16 @@ ilts <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/InshoreLobste
 # set = start, haul = end
 iltsSpeciesCode <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/InshoreLobsterTrawlSurvey/SPECIESCODES.csv"), stringsAsFactors = FALSE)
 ilts <- dplyr::left_join(ilts, iltsSpeciesCode, by = "SPECIES_CODE")
-ilts_sf <- sf::st_as_sf(ilts, coords = c("SET_LONG", "SET_LAT"), crs = 4326)
+ilts <- dplyr::mutate(ilts, wkt = paste("LINESTRING (", SET_LONG, " ", SET_LAT, ", ", HAUL_LONG, " ", HAUL_LAT, ")", sep = ""))
+ilts$geometry <- st_as_sfc(ilts$wkt, crs = 4326)
+ilts <- dplyr::select(ilts, c("HAUL_DATE", "COMMON.x", "SCIENTIFIC", "geometry"))
+ilts_sf <- st_as_sf(ilts)
 
-ilts_sf <- dplyr::select(ilts_sf, c("HAUL_DATE", "COMMON.x", "SCIENTIFIC", "HAUL_LONG", "HAUL_LAT"))
 ilts_sf$COMMON.x <- str_to_title(ilts_sf$COMMON.x)
 ilts_sf$SCIENTIFIC <- str_to_sentence(ilts_sf$SCIENTIFIC)
-names(ilts_sf) <- c("Date", "Common Name", "Scientific Name", "ELONG", "ELAT", "geometry")
+ilts_sf$SCIENTIFIC[ilts_sf$COMMON.x == "Skate - Little Or Winter - Unspec."] <- "Leucoraja ocellata	(Uncertain)"
+ilts_sf$COMMON.x[ilts_sf$COMMON.x == "Skate - Little Or Winter - Unspec."] <- "Winter Skate (possible Little Skate)"
+names(ilts_sf) <- c("Date", "Common Name", "Scientific Name", "geometry")
 
 ilts_sf <- sf::st_crop(ilts_sf, region_sf)
 
