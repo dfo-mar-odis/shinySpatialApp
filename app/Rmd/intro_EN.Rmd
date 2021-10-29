@@ -171,8 +171,8 @@ knitr::kable(formatedSarTable, align="l", caption = "Summary of regional data po
 ```
 
 # **CONTRIBUTORS**
-```{r read-contributors, echo=FALSE, cache=FALSE, include = FALSE}
-people <- read.csv(here::here("app/data/misc/contributors.csv"))
+```{r read-contributors, echo=FALSE, cache=FALSE, include = FALSE, results='asis'}
+people <- read.csv(here::here("app/data/misc/contributors.csv"),  encoding="UTF-8")
 people <- people$list
 sort(people)
 ```
