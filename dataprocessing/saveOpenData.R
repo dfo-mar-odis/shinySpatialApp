@@ -267,7 +267,7 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
 save(rockweed_rr, file = file.path(fileSavePath, "Open/rockweed_rr.RData"))
 
 
-#-----------------------RV SURVEY---------------------
+#----------------------RV SURVEY---------------------
 rvPkgId <- "8ddcaeea-b806-4958-a79f-ba9ab645f53b"
 
 rv_rr <- get_opendata_rr(rvPkgId, NULL, region_sf = region_sf)
@@ -298,4 +298,24 @@ rv_sf <- sf::st_crop(rv_sf, region_sf)
 rv_rr$data_sf <- rv_sf
 rv_rr$metadata$searchYears <- "2010-2020"
 save(rv_rr, file = file.path(fileSavePath, "Open/rv_rr.RData"))
+
+
+#----------------------Passamaquoddy Bay Biodiversity Trawls---------------------
+pasBayPkgId <- "2dfa19db-a8cf-4460-97b9-710c2b856276"
+
+pasBay_rr <- get_opendata_rr(pasBayPkgId, NULL, region_sf = region_sf)
+pasBay_rr$metadata$contact <- email_format("Andrew.Cooper@dfo-mpo.gc.ca")
+pasBay_rr$metadata$qualityTier <- highQuality
+
+catchDataResId <- "5f55acd2-fe48-4624-a357-fe7babe2604b"
+catchData <- download_extract_res_files(catchDataResId)
+
+sampDataResId <- "b0ac9aa1-b3e2-4d9c-a637-da97dbf2db13"
+sampData <- download_extract_res_files(sampDataResId)
+
+setDataResId <- "4184b6d7-b711-430c-81ed-504c05657c16"
+setData <- download_extract_res_files(setDataResId)
+
+dictDataResId <- "0227602a-cb40-4585-94d7-524756dd39f0"
+dictData <- download_extract_res_files(dictDataResId)
 
