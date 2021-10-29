@@ -3,9 +3,9 @@ library(shinyjs)
 library(leaflet)
 library(leafem)
 library(mapedit)
-library(sf)
 library(glue)
 library(callr)
+library(scales) # needed for polygon transparency in mapping
 library(knitr) # reproducible reports from R Markdown 
 library(rgdal) # read geospatial data files into report
 library(maps) # uncouple lat/lon coordinates in sf objects
@@ -21,8 +21,6 @@ library(stars) # transform features and assign or modify coordinate reference sy
 library(ggspatial) #required for mapping
 #next lines are necessary for the generation of the water mark on plots
 #install.packages("remotes")
-#remotes::install_github("terminological/standard-print-output")
-library(standardPrintOutput) # required for watermarks on maps
 
 ## R messages 
 msgInfo <- function(..., appendLF = TRUE) {

@@ -3,7 +3,10 @@ app/data/*
 *.tiff
 *.html
 *.csv
+*.csv
 *.zip
+*.pdf
+*.png
 data.7z
 app/shinySpatialApp - Shortcut.lnk
 !app/data/.gitkeep
@@ -20,6 +23,12 @@ app/output/*.docx
 app/output/*.rds
 app/output/*.Rmd
 tmp/
+renv/
+tests/temp/*
+tests/*.RData
+!tests/temp/.gitkeep
+dataprocessing/temp/*
+!dataprocessing/temp/.gitkeep
 # History files
 .Rhistory
 .Rapp.history
@@ -49,5 +58,4 @@ vignettes/*.pdf
 *.knit.md
 # R Environment Variables
 .Renviron
-renv
-tests
+hex_data
