@@ -94,10 +94,8 @@ knitr::kable(rvAllTable, align="l", caption="\\label{tab:rv_freq_table}Quality T
 write_meta(ilts_rr, "EN")
 ```
 
-From Denton (2020): “An annual trawl survey is conducted in Southwestern Nova Scotia and the Bay of Fundy to assess the lobster stocks in Lobster Fishing Areas (LFA) 34. The survey is conducted with the Northeast Fisheries Science Center Ecosystem Survey Trawl (NEST), a small mesh trawl with a cod end liner, which ensures the capture of various sizes of lobster. The dimensions and location of the trawl are monitored and recorded throughout the tow using an electronic trawl mensuration system. In addition, water temperature and depth are also recorded. The target tow length is 1 kilometer which is tracked using an Olex marine charting system. Vessel crew, DFO science staff and a contracted at sea observer work together to perform required tasks and collect all relevant data. Catch from each tow is separated by species, weighed and counted. Length frequency data is collected on select groundfish and crab species, detailed morphometric data is collected on each lobster.” 
+From [@ILTS]: “An annual trawl survey is conducted in Southwestern Nova Scotia and the Bay of Fundy to assess the lobster stocks in Lobster Fishing Areas (LFA) 34. The survey is conducted with the Northeast Fisheries Science Center Ecosystem Survey Trawl (NEST), a small mesh trawl with a cod end liner, which ensures the capture of various sizes of lobster. The dimensions and location of the trawl are monitored and recorded throughout the tow using an electronic trawl mensuration system. In addition, water temperature and depth are also recorded. The target tow length is 1 kilometer which is tracked using an Olex marine charting system. Vessel crew, DFO science staff and a contracted at sea observer work together to perform required tasks and collect all relevant data. Catch from each tow is separated by species, weighed and counted. Length frequency data is collected on select groundfish and crab species, detailed morphometric data is collected on each lobster.” 
 
-Citation: 
-Denton, Cheryl M. 2020. Maritimes Region Inshore Lobster Trawl Survey Technical Description. Can. Tech. Rep. Fish. Aquat. Sci. 3376: v + 52 p. 
 
 #### ***Area-specific search results for the Lobster Trawl Survey***
 

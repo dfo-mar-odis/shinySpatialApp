@@ -132,7 +132,7 @@ if (!is.null(whiteheadClipped$studyData)) {
 write_meta(narwc_rr, "EN")
 ```
 
-The NARWC Sightings Database contains records of thousands of sightings of Right Whales in the North Atlantic Ocean, as well as sightings of other species of whales, dolphins, sea turtles, seals, and large fishes. It also contains survey data associated with many of these sightings, which could be used to determine the associated survey effort. However, the database does not include the sighting distance data required to determine species density or abundance from these surveys. The sightings contained in the database come from a wide variety of contributors including NARWC members and others. Each record in the Sightings Database represents a group of whales (i.e., a group of 3 whales has a single record just as a group of 1 does), and there may or may not be photographic proof of a given Right Whale sighting. The Sightings and Photo-Identification databases are periodically cross-referenced, so that individual identification data from the latter can be linked to sighting data from the former. For that reason, all sightings in the Identification Database are eventually included in the Sightings Database (with an approximate 1-2 year lag). Although the individual identifications of animals are not included in the Sightings Database, the two databases can be linked on common fields. This review article of the Sightings Database  provides potential users with important information:  https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf
+The NARWC Sightings Database contains records of thousands of sightings of Right Whales in the North Atlantic Ocean, as well as sightings of other species of whales, dolphins, sea turtles, seals, and large fishes. It also contains survey data associated with many of these sightings, which could be used to determine the associated survey effort. However, the database does not include the sighting distance data required to determine species density or abundance from these surveys. The sightings contained in the database come from a wide variety of contributors including NARWC members and others. Each record in the Sightings Database represents a group of whales (i.e., a group of 3 whales has a single record just as a group of 1 does), and there may or may not be photographic proof of a given Right Whale sighting. The Sightings and Photo-Identification databases are periodically cross-referenced, so that individual identification data from the latter can be linked to sighting data from the former. For that reason, all sightings in the Identification Database are eventually included in the Sightings Database (with an approximate 1-2 year lag). Although the individual identifications of animals are not included in the Sightings Database, the two databases can be linked on common fields. This review article of the Sightings Database  provides potential users with important information:  https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf [@NARWCdatabase].
 
 #### ***Area-specific NARWC search results***
 ```{r narwc, include=FALSE, cache=FALSE}
@@ -314,7 +314,7 @@ if (!is.null(clipped$mapData)){
 write_meta(nbw_rr, "EN")
 ```
 
-Dataset description from the Open Data record:
+Dataset description from the Open Data record [@DFO2020NBW_imphabitat]:
 ```{r nbw-text, results='asis'}
 # trim extra sections off.  
 nbwText <- sub("References: .*", "", nbw_rr$text$en)
