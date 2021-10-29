@@ -12,13 +12,17 @@
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
 plot_rr_sf <- function(baseMap, data_sf, ...) {
-  if (inherits(sf::st_geometry(data_sf), "sfc_POINT")) {
+  if (inherits(sf::st_geometry(data_sf), c("sfc_POINT"))) {
     
     outPlot <- plot_points(baseMap, data_sf, ...)
     
   } else if (inherits(sf::st_geometry(data_sf), c("sfc_POLYGON", "sfc_MULTIPOLYGON", "sfc_GEOMETRY"))) {
     
     outPlot <- plot_polygons(baseMap, data_sf, ...)
+    
+  } else if (inherits(sf::st_geometry(data_sf), "sfc_LINESTRING")) {
+    
+    outPlot <- plot_lines(baseMap, data_sf, ...)
     
   }
   
@@ -225,6 +229,51 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     return(polyMap)  
   }
 }
+
+
+
+# Function for plotting linestring data for the reproducible report.
+#
+# Inputs:
+# 1. baseMap = map object, either areaMap or regionMap
+# 2. data_sf: sf data to be plotted 
+#    (ideally, pre-clipped to map area with the master_intersect function, using bboxMap, or regionBox)
+# 
+# Created by Quentin Stoyel, October 28, 2021 for reproducible reporting project
+
+plot_lines <- function(baseMap, data_sf, ...) {
+  
+  # extract scaleBar layer to ensure it plots over polygons/study area box
+  scaleBarLayer = get_scale_bar_layer(baseMap)
+  studyBoxLayer = get_study_box_layer(baseMap)
+  watermarkLayer = get_watermark_layer(baseMap)
+  
+  # axis limits based on baseMap
+  axLim = ggplot2::coord_sf(xlim=baseMap$coordinates$limits$x, 
+                            ylim=baseMap$coordinates$limits$y, expand=FALSE) 
+  
+  # just plot raw data (no colors, shapes, etc)
+  dataLayer <- geom_sf(data = data_sf, ...) 
+
+  
+  pointMap <- baseMap +
+    dataLayer +
+    axLim +
+    watermarkLayer +
+    studyBoxLayer +
+    scaleBarLayer
+  
+  return(pointMap) 
+}
+
+
+
+
+
+
+
+
+
 
 # helper function to generate colormap when not specified.  
 # RR color scheme is used for first 8 colors, after which the viridis 

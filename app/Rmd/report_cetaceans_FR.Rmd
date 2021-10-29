@@ -133,7 +133,7 @@ write_meta(narwc_rr, "FR")
 
 Les renseignements suivants sont résumés sur le site de la base de données des observations du NARWC : https://www.narwc.org/sightings-database.html
 
-La base de données des observations du NARWC contient des registres de milliers d’observations de baleines noires dans l’océan Atlantique Nord, ainsi que d’observations d’autres espèces de baleines, de dauphins, de tortues de mer, de phoques et de gros poissons. Elle contient également des données de relevé associées à bon nombre de ces observations, qui pourraient être utilisées pour déterminer l’effort de relevé connexe. Toutefois, la base de données ne comprend pas les données sur la distance d’observation requises pour déterminer la densité ou l’abondance des espèces à partir de ces relevés. Les observations contenues dans la base de données proviennent d’une grande variété de contributeurs, y compris des membres du NARWC et d’autres. Chaque renseignement dans la base de données des observations représente un groupe de baleines (c.-à-d. un groupe de trois baleines a un seul renseignement, tout comme un groupe d’une seule baleine) et il peut y avoir ou non une preuve photographique d’une observation donnée de baleines noires. Les bases de données des observations et de photo-identification sont périodiquement recoupées, de sorte que les données d’identification individuelles de ces dernières peuvent être couplées aux données d’observation de la première. Pour cette raison, toutes les observations dans la base de données d’identification finissent par être incluses dans la base de données des observations (avec un décalage d’environ un an). Bien que les identifications individuelles des animaux ne soient pas incluses dans la base de données des observations, les deux bases de données peuvent être liées en fonction des champs communs. Cet article de synthèse de la base de données des observations fournit aux utilisateurs potentiels des renseignements importants : https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf
+La base de données des observations du NARWC contient des registres de milliers d’observations de baleines noires dans l’océan Atlantique Nord, ainsi que d’observations d’autres espèces de baleines, de dauphins, de tortues de mer, de phoques et de gros poissons. Elle contient également des données de relevé associées à bon nombre de ces observations, qui pourraient être utilisées pour déterminer l’effort de relevé connexe. Toutefois, la base de données ne comprend pas les données sur la distance d’observation requises pour déterminer la densité ou l’abondance des espèces à partir de ces relevés. Les observations contenues dans la base de données proviennent d’une grande variété de contributeurs, y compris des membres du NARWC et d’autres. Chaque renseignement dans la base de données des observations représente un groupe de baleines (c.-à-d. un groupe de trois baleines a un seul renseignement, tout comme un groupe d’une seule baleine) et il peut y avoir ou non une preuve photographique d’une observation donnée de baleines noires. Les bases de données des observations et de photo-identification sont périodiquement recoupées, de sorte que les données d’identification individuelles de ces dernières peuvent être couplées aux données d’observation de la première. Pour cette raison, toutes les observations dans la base de données d’identification finissent par être incluses dans la base de données des observations (avec un décalage d’environ un an). Bien que les identifications individuelles des animaux ne soient pas incluses dans la base de données des observations, les deux bases de données peuvent être liées en fonction des champs communs. Cet article de synthèse de la base de données des observations fournit aux utilisateurs potentiels des renseignements importants : https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf [@NARWCdatabase].
 
 #### ***Résultats de la recherche du NARWC par zone***
 ```{r narwc, include=FALSE, cache=FALSE}
@@ -296,7 +296,7 @@ write_meta(nbw_rr, "FR")
 ```
 
 
-Description de l’ensemble de données (tirée du dossier des données ouvertes) :
+Description de l’ensemble de données (tirée du dossier des données ouvertes) [@DFO2020NBW_imphabitat] :
 ```{r nbw-text, results='asis'}
 # trim extra sections off.  
 nbwText <- sub("References: .*", "", nbw_rr$text$fr)
@@ -304,7 +304,7 @@ writeLines(noquote(nbwText))
 
 ```
 
-Veuillez consulter la liste de toutes les sources d’information utilisées et le dossier des données ouvertes ici `r nbw_rr$metadata$url$en`.
+Veuillez consulter la liste de toutes les sources d’information utilisées et le dossier des données ouvertes ici [@DFO2020NBW_imphabitat]: `r nbw_rr$metadata$url$en`.
 
 
 #### ***Résultats de la recherche sur l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais, par zone*** 

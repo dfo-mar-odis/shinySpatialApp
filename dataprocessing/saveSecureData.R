@@ -6,8 +6,7 @@ region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojso
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-load(here::here("app/data/CommonData.RData"))
-loadResult <- load_rdata(c("conservationSites_rr", "wsdb_rr", "whitehead_rr",
+loadResult <- load_rdata(c("CommonData", "conservationSites_rr", "wsdb_rr", "whitehead_rr",
                            "narwc_rr", "leatherback_rr", "ocearch_rr"),  "MAR")
 
 

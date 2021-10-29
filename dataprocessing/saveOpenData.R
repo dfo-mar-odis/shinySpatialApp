@@ -4,8 +4,7 @@ source(here::here("app/R/dataFunctions.R"))
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-filesLoaded <- load_rdata(c("CommonData"), "MAR", env = environment())
-loadResult <- load_rdata(c("ebsa_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
+loadResult <- load_rdata(c("CommonData", "ebsa_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
                            "blueWhaleHab_rr", "obisCet_rr", "obisFish_rr",
                            "finWhale_rr", "seiWhale_rr", "humpbackWhale_rr",
                            "rockweed_rr", "harbourPorpoise_rr", "nbw_rr",
@@ -268,9 +267,7 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
 save(rockweed_rr, file = file.path(fileSavePath, "Open/rockweed_rr.RData"))
 
 
-#
-
------------------------RV SURVEY---------------------
+#-----------------------RV SURVEY---------------------
 rvPkgId <- "8ddcaeea-b806-4958-a79f-ba9ab645f53b"
 
 rv_rr <- get_opendata_rr(rvPkgId, NULL, region_sf = region_sf)
