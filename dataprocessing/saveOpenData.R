@@ -308,7 +308,7 @@ pasBay_rr$metadata$qualityTier <- highQuality
 
 catchDataResId <- "5f55acd2-fe48-4624-a357-fe7babe2604b"
 catchData <- download_extract_res_files(catchDataResId)
-catchData <- read.csv(here::here("../../../temp/new_catch_data.csv"))
+catchData <- read.csv(file.path(fileLoadPath, "/NaturalResources/Species/PassamaquoddyBayBiodiversityTrawl/new_catch_data.csv"))
 catchData <- dplyr::select(catchData, c("setno", "scientific_name", "common_name"))
 
 setDataResId <- "4184b6d7-b711-430c-81ed-504c05657c16"
