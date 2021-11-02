@@ -61,7 +61,7 @@ Veuillez prendre note des avertissements et mises en garde importants suivants a
 
 ```{r wsdb, include=FALSE, cache=FALSE}
 wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)
-linkedSectionText <- "[WSDB](#WSDB-section)"
+linkedSectionText <- "[BDOB](#WSDB-section)"
 whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, wsdb_rr$attribute)
 if (!is.null(wsdbClipped$studyData)) {
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
@@ -69,12 +69,12 @@ if (!is.null(wsdbClipped$studyData)) {
  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
 }
 ```
-*
+
 ```{r wsdb-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_wsdb <- if (is.null(wsdbClipped$studyData)) {
-   "There are no relevant records in the WSDB for this search area."
+   "* Il existe des registres pertinents dans BDOB pour cette zone de recherche."
  } else {
-   "There are relevant records in the WSDB for this search area."
+   "* Il n’existe aucun registre pertinent dans BDOB pour cette zone de recherche."
  }
  writeLines(Report_wsdb)
 ```

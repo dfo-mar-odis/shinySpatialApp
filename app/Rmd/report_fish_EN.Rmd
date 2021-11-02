@@ -156,6 +156,7 @@ iltsAllTable <- tableList$allSpecies
 iltsSarTable <- tableList$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ILTS](#ilts-section)", iltsSarTable, "Common Name", "Common Name")
 
+
 ```
 
 ```{r ilts-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
@@ -168,7 +169,7 @@ writeLines(noquote(iltsCheck))
 ```
 
 
-```{r ilts-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Blue lines indicate the location of each trawl sample.'}
+```{r ilts-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Blue lines indicate the location of each NEST trawl sample.'}
 
 if (!is.null(iltsClipped$studyData)) {
     plot_rr_sf(areaMap, iltsClipped$mapData, lwd = 1, colour = "blue")

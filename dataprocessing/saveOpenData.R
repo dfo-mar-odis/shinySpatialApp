@@ -1,6 +1,7 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
+fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
@@ -15,10 +16,8 @@ mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
 noneList <- list("en" = "None", "fr"= "Aucun")
 internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONLY")
 
-
 # ----------------COMMON DATA-------------
 region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-
 land10m_sf <- st_read(file.path(fileLoadPath, "Boundaries/Landmass/ne_10m_land_Clip.shp"), stringsAsFactors = FALSE)
 #remove State and Province column from land10m
 land10m_sf <- land10m_sf[-c(2)]
@@ -327,7 +326,9 @@ pasBay$geometry <- st_as_sfc(pasBay$wkt, crs = 4326)
 pasBay <- dplyr::select(pasBay, c("scientific_name", "common_name", "time_start", "geometry"))
 pasBay$common_name <- str_to_title(pasBay$common_name)
 names(pasBay) <-  c("Scientific Name", "Common Name", "Start Time", "geometry")
+
 pasBay_sf <- st_as_sf(pasBay)
 pasBay_sf <- sf::st_crop(pasBay_sf, region_sf)
 pasBay_rr$data_sf <- pasBay_sf
 save(pasBay_rr, file = file.path(fileSavePath, "Open/pasBay_rr.RData"))
+

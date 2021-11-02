@@ -5,7 +5,7 @@ editor_options:
 ---
 
 ```{r fish-setup}
-filesLoaded <- load_rdata(c("rv_rr", "ilts_rr", "isdb_rr", "marfis_rr", "ocearch_rr", "obisFish_rr"), "MAR", env = environment())
+filesLoaded <- load_rdata(c("rv_rr", "pasBay_rr", "ilts_rr", "isdb_rr", "marfis_rr", "ocearch_rr", "obisFish_rr"), "MAR", env = environment())
 
 ```
 
@@ -36,18 +36,19 @@ knitr::kable(table_RV, align="l",
 ```
 
 
-### **Passamaquoddy Bay Biodiversity Trawls (PBBT)**  {#pasBay-section}
+### **Chalut de biodiversité de la baie de Passamaquoddy (CBBP)**  {#pasBay-section}
 
 ```{r pasBay-meta, results='asis'}
-write_meta(pasBay_rr, "EN")
+write_meta(pasBay_rr, "FR")
 ```
 
-Dataset description from the Open Data record [@OpenData_pasBay]:
+Description de l’ensemble de données (tirée du dossier des données ouvertes) [@OpenData_pasBay]:
 ```{r pasBay-text, results='asis'}
-writeLines(noquote(pasBay_rr$text$en))
+writeLines(noquote(pasBay_rr$text$fr))
 ```
 
-#### ***Area-specific search results for the Passamaquoddy Bay Biodiversity Trawls***
+#### ***Résultats de la Chalut de biodiversité de la baie de Passamaquoddy, par zone***
+
 
 ```{r pasBay-results, include=FALSE, cache=FALSE}
 pasBayClipped <- master_intersect(pasBay_rr$data_sf, mapDataList)
@@ -55,15 +56,15 @@ pasBayClipped <- master_intersect(pasBay_rr$data_sf, mapDataList)
 tableList <- create_table_ilts(pasBayClipped$studyData, listed_species)
 pasBayAllTable <- tableList$allSpecies
 pasBaySarTable <- tableList$sarData
-summarySarTable <- add_col_to_sar_summary(summarySarTable, "[PBBT](#pasBay-section)", pasBaySarTable, "Common Name", "Common Name")
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[CBBP](#pasBay-section)", pasBaySarTable, "Common Name", "Common Name")
 
 ```
 
 ```{r pasBay-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 pasBayCheck <- if (!is.null(pasBayClipped$studyData)) {
-    "* There are relevant records in the Passamaquoddy Bay Biodiversity Trawls for this search area."
+    "*  Il existe des registres pertinents dans le chalut de biodiversité de la baie de Passamaquoddy pour cette zone de recherche."
   } else {
-    "* There are no relevant records in the Passamaquoddy Bay Biodiversity Trawls for this search area. "
+    "*  Il n'existe aucune registre pertinent dans le chalut de biodiversité de la baie de Passamaquoddy pour cette zone de recherche. "
   }
 writeLines(noquote(pasBayCheck))
 ```
@@ -120,7 +121,7 @@ writeLines(noquote(iltsCheck))
 ```
 
 
-```{r ilts-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Blue lines indicate the location of each trawl sample.'}
+```{r ilts-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Blue lines indicate the location of each NEST trawl sample.'}
 
 if (!is.null(iltsClipped$studyData)) {
     plot_rr_sf(areaMap, iltsClipped$mapData, lwd = 1, colour = "blue")
@@ -140,10 +141,6 @@ if (!is.null(iltsClipped$studyData)) {
 knitr::kable(iltsAllTable, align="l", caption="\\label{tab:ilts_all_table}Quality Tier: High. Security level: Protected B. Inshore Lobster Trawl Survey (ITLS) observation records of all species contained within the search area, summarized by species or species group. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
-
-
-
-
 
 
 #### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes, par zone***
