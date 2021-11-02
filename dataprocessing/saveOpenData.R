@@ -314,11 +314,20 @@ catchData <- dplyr::select(catchData, c("setno", "scientific_name", "common_name
 
 setDataResId <- "4184b6d7-b711-430c-81ed-504c05657c16"
 setData <- download_extract_res_files(setDataResId)
+# manual fix of typo on open data....
+setData[(setData$setno == 2016.008),]$latitude_finish <- 45.09421
 
 pasBay <- left_join(catchData, setData, by = "setno")
 pasBay <- pasBay[!(is.na(pasBay$latitude_start)), ]
-pasBay <- dplyr::mutate(pasBay, wkt = paste("LINESTRING (", latitude_start, " ", latitude_finish, ", ", longitude_start, " ", longitude_finish, ")", sep = ""))
+pasBay <- dplyr::mutate(pasBay, 
+                        wkt = paste("LINESTRING (", longitude_start, " ", 
+                                    latitude_start, ", ", longitude_finish, " ",
+                                    latitude_finish, ")", sep = ""))
 pasBay$geometry <- st_as_sfc(pasBay$wkt, crs = 4326)
 pasBay <- dplyr::select(pasBay, c("scientific_name", "common_name", "time_start", "geometry"))
-pasBay_rr$data_sf <- st_as_sf(pasBay)
+pasBay$common_name <- str_to_title(pasBay$common_name)
+names(pasBay) <-  c("Scientific Name", "Common Name", "Start Time", "geometry")
+pasBay_sf <- st_as_sf(pasBay)
+pasBay_sf <- sf::st_crop(pasBay_sf, region_sf)
+pasBay_rr$data_sf <- pasBay_sf
 save(pasBay_rr, file = file.path(fileSavePath, "Open/pasBay_rr.RData"))
