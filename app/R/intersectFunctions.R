@@ -24,8 +24,17 @@
 master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
 
   # check that data_sf is an accepted format:
+  if (is.null(data_sf)) {
+    outList <- list(regionData = NULL,
+                    studyData = NULL, 
+                    mapData = NULL, 
+                    mapPoints = NULL)
+    return(outList)
+  }
+  
   if (!inherits(sf::st_geometry(data_sf), c("sfc_POINT", 
                                             "sfc_POLYGON", 
+                                            "sfc_LINESTRING",
                                             "sfc_MULTIPOLYGON",
                                             "sfc_GEOMETRY")))
   {

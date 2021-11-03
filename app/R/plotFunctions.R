@@ -12,13 +12,17 @@
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
 plot_rr_sf <- function(baseMap, data_sf, ...) {
-  if (inherits(sf::st_geometry(data_sf), "sfc_POINT")) {
+  if (inherits(sf::st_geometry(data_sf), c("sfc_POINT"))) {
     
     outPlot <- plot_points(baseMap, data_sf, ...)
     
   } else if (inherits(sf::st_geometry(data_sf), c("sfc_POLYGON", "sfc_MULTIPOLYGON", "sfc_GEOMETRY"))) {
     
     outPlot <- plot_polygons(baseMap, data_sf, ...)
+    
+  } else if (inherits(sf::st_geometry(data_sf), "sfc_LINESTRING")) {
+    
+    outPlot <- plot_lines(baseMap, data_sf, ...)
     
   }
   
@@ -84,10 +88,11 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
   shapeLayer <- NULL
   
   if (is.null(attribute)) {
-    # just plot raw data (no colors)
+    # just plot raw data (no colors, shapes, etc)
     dataLayer <- geom_sf(data = data_sf, size = 2, shape = 20) 
     legendLayer <- NULL
   } else {
+    data_sf[[attribute]] = as.factor(data_sf[[attribute]])
     dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = 2.5, shape = 20)  
     
     if (is.null(colorMap)){
@@ -146,7 +151,8 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
 
 
 plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
-                          outlines=TRUE, colorMap=NULL, getColorMap=FALSE) {
+                          outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
+                          labelData=NULL, alphaMap=NULL, labelAttribute=NULL) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -162,39 +168,54 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   # there are two types of plots: 
   # Case 1: all polygons are one color, no legend,
   # case 2: polygons are colored based on the "attribute" column, legend is included
+  polyLabels <- NULL
+  polyAlpha <- NULL
+  polyOutline <- NULL
+  polyFill <- NULL
+  
   
   if (toupper(attribute) == "NONE") { # Case 1: plotting all polygons in one color
     
     polyPlot <- geom_sf(data=polyData, fill="#56B4E9", col=clr)
-    polyFill <- NULL
-    polyOutline <- NULL
-    
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
+    polyData[[attribute]] = as.factor(polyData[[attribute]])
+    
+    polyAes <- aes(fill = !!sym(attribute))
+    
+    if (!is.null(alphaMap)) {
+      alphaMap <- alphaMap[names(alphaMap) %in% polyData[[attribute]]]
+      polyAes <- modifyList(polyAes, aes(alpha = !!sym(attribute)))
+      polyAlpha <- scale_alpha_manual(values=alphaMap)
+    }
     
     if (is.null(colorMap)){
       colorMap <- get_rr_color_map(polyData[[attribute]])
     } else {
       colorMap <- colorMap[names(colorMap) %in% polyData[[attribute]]]
     }
-
     polyFill <- scale_fill_manual(values=colorMap, name=legendName)
     
     if (outlines) {
-      polyOutline <- NULL
-      polyPlot <- geom_sf(data=polyData, aes(fill=!!sym(attribute)), colour=clr)
-      
+      polyPlot <- geom_sf(data=polyData, polyAes, colour=clr)
     }
     else {
-      polyPlot <- geom_sf(data=polyData, aes(fill=!!sym(attribute), col=!!sym(attribute)))
+      polyAes <- modifyList(polyAes, aes(col=!!sym(attribute)))
+      polyPlot <- geom_sf(data=polyData, polyAes)
       polyOutline <- scale_color_manual(values=colorMap, guide="none")  
     }
+  }
+  
+  if(!is.null(labelData)) {
+    polyLabels <- geom_sf_label(data = labelData, aes(label = !!sym(labelAttribute)))
   }
     
   polyMap <- baseMap +
       polyPlot +
+      polyAlpha +
       polyFill +
       polyOutline +
+      polyLabels +
       axLim +
       watermarkLayer +
       studyBoxLayer +
@@ -208,6 +229,51 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     return(polyMap)  
   }
 }
+
+
+
+# Function for plotting linestring data for the reproducible report.
+#
+# Inputs:
+# 1. baseMap = map object, either areaMap or regionMap
+# 2. data_sf: sf data to be plotted 
+#    (ideally, pre-clipped to map area with the master_intersect function, using bboxMap, or regionBox)
+# 
+# Created by Quentin Stoyel, October 28, 2021 for reproducible reporting project
+
+plot_lines <- function(baseMap, data_sf, ...) {
+  
+  # extract scaleBar layer to ensure it plots over polygons/study area box
+  scaleBarLayer = get_scale_bar_layer(baseMap)
+  studyBoxLayer = get_study_box_layer(baseMap)
+  watermarkLayer = get_watermark_layer(baseMap)
+  
+  # axis limits based on baseMap
+  axLim = ggplot2::coord_sf(xlim=baseMap$coordinates$limits$x, 
+                            ylim=baseMap$coordinates$limits$y, expand=FALSE) 
+  
+  # just plot raw data (no colors, shapes, etc)
+  dataLayer <- geom_sf(data = data_sf, ...) 
+
+  
+  pointMap <- baseMap +
+    dataLayer +
+    axLim +
+    watermarkLayer +
+    studyBoxLayer +
+    scaleBarLayer
+  
+  return(pointMap) 
+}
+
+
+
+
+
+
+
+
+
 
 # helper function to generate colormap when not specified.  
 # RR color scheme is used for first 8 colors, after which the viridis 
@@ -264,6 +330,11 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   
   land <- sf::st_crop(landLayer, bboxBuf)
   bound <- sf::st_crop(bounds_sf, bboxBuf)
+  fin_whale_sf <- sf::st_crop(fin_whale_sf, bboxBuf)
+  harbour_porpoise_sf <- sf::st_crop(harbour_porpoise_sf, bboxBuf)
+  humpback_whale_sf <- sf::st_crop(humpback_whale_sf, bboxBuf)
+  sei_whale_sf <- sf::st_crop(sei_whale_sf, bboxBuf)
+  
   
   #Fin Whale
   finWhalePlot <- whale_ggplot(fin_whale_sf, bound, land, studyArea,
