@@ -4,17 +4,15 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r fish-setup}
-filesLoaded <- load_rdata(c("rv_rr", "pasBay_rr", "ilts_rr", "isdb_rr", "marfis_rr", "ocearch_rr", "obisFish_rr"), "MAR", env = environment())
-
-```
-
-
 ## **FISH AND INVERTEBRATES**
 
 This section describes outputs derived from a variety of data sources, internal and external to DFO. Area-specific outputs are provided in sub-sections labelled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
 
 ### **Maritimes Research Vessel (RV) Survey**{#RV-section}
+
+```{r rv-load, include=FALSE}
+load_rdata(c("rv_rr"), "MAR", env = environment())
+```
 
 ```{r rv-meta, results='asis'}
 write_meta(rv_rr, "EN")
@@ -85,6 +83,10 @@ knitr::kable(rvAllTable, align="l", caption="\\label{tab:rv_freq_table}Quality T
 
 ### **Passamaquoddy Bay Biodiversity Trawls (PBBT)**  {#pasBay-section}
 
+```{r pasBay-load, include=FALSE}
+load_rdata(c("pasBay_rr"), "MAR", env = environment())
+```
+
 ```{r pasBay-meta, results='asis'}
 write_meta(pasBay_rr, "EN")
 ```
@@ -138,6 +140,10 @@ knitr::kable(pasBayAllTable, align="l", caption="\\label{tab:pasBay_all_table}Qu
 
 
 ### **Inshore Lobster Trawl Survey (ILTS)**  {#ilts-section}
+
+```{r ilts-load, include=FALSE}
+load_rdata(c("ilts_rr"), "MAR", env = environment())
+```
 
 ```{r ilts-meta, results='asis'}
 write_meta(ilts_rr, "EN")
@@ -195,6 +201,10 @@ knitr::kable(iltsAllTable, align="l", caption="\\label{tab:ilts_all_table}Qualit
 
 #### ***Industry Survey Database (ISDB)*** {#ISDB-section}
 
+```{r isdb-load, include=FALSE}
+load_rdata(c("isdb_rr"), "MAR", env = environment())
+```
+
 ```{r isdb-meta, results='asis'}
 write_meta(isdb_rr, "EN")
 ```
@@ -204,6 +214,10 @@ The Industry Survey Database (ISDB) is a departmental database containing at-sea
 Without written consent, DFO is not permitted to release information or data products from ISDB (e.g., maps and data layers) that might reveal personal or third party information such as catch, landed values, and vessel-specific fishing locations, as this information is considered confidential. Information on privacy policy is available in the DFO staff informal release guidelines (i.e., Appendix B – “Catch and Effort and Quota Information: Do’s and Don’ts for Informal Release” (\\\\ent.dfo-mpo.ca\\ATLShares\\Shared\\ATIP Information\\Information_Release_Guidelines-eng.docx). If you are interested in including observer data in a publication, please remember to aggregate it (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r). 
 
 #### ***The Maritime Fishery Information System (MARFIS)***{#MARFIS-section}
+
+```{r marfis-load, include=FALSE}
+load_rdata(c("marfis_rr"), "MAR", env = environment())
+```
 
 ```{r marfis-meta, results='asis'}
 write_meta(marfis_rr, "EN")
@@ -283,6 +297,11 @@ if (!is.null(outputListM$studyData)) {
 ```
 
 ### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
+
+```{r obis-load, include=FALSE}
+load_rdata(c("obisFish_rr"), "MAR", env = environment())
+```
+
 ```{r obis-meta, results='asis'}
 write_meta(obisFish_rr, "EN")
 ```
@@ -321,6 +340,11 @@ if (!is.null(outputList$studyData)) {
 ```
 
 ### **OCEARCH Shark Tracker** {#OCEARCH-section}
+
+```{r ocearch-load, include=FALSE}
+load_rdata(c("ocearch_rr"), "MAR", env = environment())
+```
+
 ```{r ocearch-meta, results='asis'}
 write_meta(ocearch_rr, "EN")
 ```

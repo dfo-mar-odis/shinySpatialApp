@@ -305,6 +305,7 @@ pasBayPkgId <- "2dfa19db-a8cf-4460-97b9-710c2b856276"
 pasBay_rr <- get_opendata_rr(pasBayPkgId, NULL, region_sf = region_sf)
 pasBay_rr$metadata$contact <- email_format("Andrew.Cooper@dfo-mpo.gc.ca")
 pasBay_rr$metadata$qualityTier <- highQuality
+pasBay_rr$metadata$searchYears <- "2009-2017"
 
 catchDataResId <- "5f55acd2-fe48-4624-a357-fe7babe2604b"
 catchData <- download_extract_res_files(catchDataResId)
@@ -325,6 +326,7 @@ pasBay <- dplyr::mutate(pasBay,
 pasBay$geometry <- st_as_sfc(pasBay$wkt, crs = 4326)
 pasBay <- dplyr::select(pasBay, c("scientific_name", "common_name", "time_start", "geometry"))
 pasBay$common_name <- str_to_title(pasBay$common_name)
+pasBay$scientific_name <- str_to_sentence(pasBay$scientific_name)
 names(pasBay) <-  c("Scientific Name", "Common Name", "Start Time", "geometry")
 
 pasBay_sf <- st_as_sf(pasBay)

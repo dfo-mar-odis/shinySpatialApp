@@ -1,14 +1,12 @@
-``` {r load-planning-data, echo=FALSE}
-filesLoaded <- load_rdata(c("ebsa_rr", "conservationSites_rr"), "MAR", env = environment())
-
-```
-
-
 ## **AREAS DESIGNATED FOR SPATIAL PLANNING**
 
 This section describes information relevant to spatial planning from a variety of sources. Area-specific outputs are provided in sub-sections labeled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
 
 ### **Ecologically and Biologically Significant Areas (EBSA)**
+
+```{r EBSA-load, include=FALSE}
+load_rdata(c("ebsa_rr"), "MAR", env = environment())
+```
 
 ```{r EBSA-meta, results='asis'}
 write_meta(ebsa_rr, "EN")
@@ -59,9 +57,12 @@ if(!is.null(EBSAoutput$studyData)){
 
 ### **Draft Conservation Network Design** {#MPA-section}
 
+```{r MPA-load, include=FALSE}
+load_rdata(c("conservationSites_rr"), "MAR", env = environment())
+```
+
 ```{r MPA-section, results='asis'}
 write_meta(conservationSites_rr, "EN")
-
 ```
 
 A key milestone and focal point for the planning process is the Draft Conservation Network Design, which is a map of both existing and potential future marine protected areas (MPAs) and other spatial conservation areas that would contribute to the long-term conservation of marine biodiversity in the bioregion [@DFO2012MPAplanning]. The Draft Design was originally drafted in 2017 following an extensive spatial conservation analysis led by Fisheries and Oceans Canada (DFO). While some discussion on the Draft Design has been ongoing with provincial and First Nations partners since that time, events such as the COVID-19 pandemic have limited the scope and pace of the overall engagement process.
