@@ -44,7 +44,20 @@ listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Statu
 row.names(listed_species) <- NULL
 
 # Cetacean legend file
-cetLegend <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/CetaceanLegend.csv"), stringsAsFactors = FALSE)
+cetLegend <- data.frame("Scientific_Name" = c("Delphinapterus leucas","Balaenoptera musculus", "Balaenoptera physalus",
+                                              "Phocoena phocoena", "Orcinus orca", "Eubalaena glacialis",
+                                              "Hyperoodon ampullatus", "Balaenoptera borealis", "Mesoplodon bidens"),
+                        "Legend" = c("Beluga Whale: Endangered (SARA & COSEWIC)", 
+                                     "Blue Whale: Endangered (SARA & COSEWIC)",
+                                     "Fin Whale: Special Concern (SARA & COSEWIC)",
+                                     "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)",
+                                     "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)",
+                                     "North Atlantic Right Whale: Endangered (SARA & COSEWIC)",
+                                     "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)",
+                                     "Sei Whale: No Status (SARA) & Endangered (COSEWIC)",
+                                     "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)")
+                        )
+
 cetLegend <- dplyr::rename(cetLegend,c("Scientific Name" = "Scientific_Name"))
 
 save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, file = file.path(fileSavePath, "CommonData.RData"))
