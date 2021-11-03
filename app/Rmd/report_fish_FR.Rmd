@@ -335,6 +335,11 @@ if (!is.null(outputList$studyData)) {
 
 
 ### **Atlantic Sturgeon Foraging Areas in the Upper Bay of Fundy ** {#sturg-section}
+
+```{r sturg-load, include=FALSE}
+load_rdata(c("sturg_rr"), "MAR", env = environment())
+```
+
 ```{r sturg-meta, results='asis'}
 write_meta(sturg_rr, "EN")
 ```

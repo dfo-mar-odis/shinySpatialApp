@@ -341,6 +341,10 @@ if (!is.null(outputList$studyData)) {
 
 
 ### **Atlantic Sturgeon Foraging Areas in the Upper Bay of Fundy ** {#sturg-section}
+```{r sturg-load, include=FALSE}
+load_rdata(c("sturg_rr"), "MAR", env = environment())
+```
+
 ```{r sturg-meta, results='asis'}
 write_meta(sturg_rr, "EN")
 ```
@@ -380,7 +384,7 @@ if (!is.null(sturgOutputList$studyData)) {
 
 ```{r sturg-table, echo=FALSE, results='asis', caption="MPA table"}
 if (!is.null(sturgOutputList$studyData)) {
-  sturgTable <- dplyr::select(sturgOutputList$studyData, c("siteId", "Site"))
+  sturgTable <- dplyr::select(sturgOutputList$mapData, c("siteId", "Site"))
   st_geometry(sturgTable) <- NULL
   names(sturgTable) <- c("Site Id", "Site")
   knitr::kable(sturgTable, align="l", caption="Quality Tier: High Security level: none. Names of Survey sites for Atlantic Sturgeon Foraging Areas sampled during 2020.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
