@@ -155,9 +155,13 @@ create_table_ilts <- function(data_sf, sarTable) {
   sarTable <- rbind(sarTable, skateRow)
   sarData <- dplyr::inner_join(allSpeciesData, sarTable, by="Scientific Name", suffix = c(".x", ""))
   sarData <- dplyr::select(sarData, c("Scientific Name", "Common Name", "SARA status", "COSEWIC status", "Frequency"))
-  
+
+  allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
+  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
+    
   row.names(allSpeciesData) <- NULL
   row.names(sarData) <- NULL
+
   outList <- list("allSpecies" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }

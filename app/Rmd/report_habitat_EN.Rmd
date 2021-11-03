@@ -11,9 +11,11 @@ This section describes habitat information derived from a variety of data source
 
 Satellite-based Maps of Intertidal Vegetation and Rockweed presence polygons 
 
-```{r rockweed-meta, results='asis'}
-filesLoaded <- load_rdata(c("rockweed_rr"), "MAR", env = environment())
+```{r rockweed-load, include=FALSE}
+load_rdata(c("rockweed_rr"), "MAR", env = environment())
+```
 
+```{r rockweed-meta, results='asis'}
 write_meta(rockweed_rr, "EN")
 ```
 

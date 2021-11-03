@@ -4,16 +4,15 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r fish-setup}
-filesLoaded <- load_rdata(c("rv_rr", "ilts_rr", "isdb_rr", "marfis_rr", "ocearch_rr", "obisFish_rr"), "MAR", env = environment())
-
-```
-
 ## **POISSONS ET INVERTÉBRÉS**
 
 La présente section décrit les résultats tirés des sources de données suivantes : Enquête sur les navires de recherche (NR) dans les Maritimes, Base de données des relevés de l’industrie (BDRI), Système d’information sur les pêches des Maritimes (SIPMAR) et Système d’information sur la biodiversité des océans (SIBO). Les extrants propres à une zone sont fournis dans des sous-sections marquées selon la source de données. Des descriptions des données sources et des références et personnes-ressources appropriées sont fournis au début de chaque sous-section.
 
 ### **Enquête sur les navires de recherche dans les Maritimes**   
+
+```{r rv-load, include=FALSE}
+load_rdata(c("rv_rr"), "MAR", env = environment())
+```
 
 ```{r rv-meta, results='asis'}
 write_meta(rv_rr, "FR")
@@ -24,8 +23,6 @@ Description de l’ensemble de données (tirée du dossier des données ouvertes
 writeLines(noquote(rv_rr$text$fr))
 ```
 
-
-
 ```{r table-RV-read, echo=FALSE, cache=FALSE, include = FALSE}
 table_RV <- read.csv(here::here("app/data/misc/table_RV_FR.csv"))
 table_RV<- table_RV %>% dplyr::rename("Enquête d' sur les navires" = Enquête.d..sur.les.navires, "Saison/mois" = Saison.mois, "Description de l’étendue géographique" =  Description.de.l.étendue.géographique)
@@ -34,62 +31,6 @@ table_RV<- table_RV %>% dplyr::rename("Enquête d' sur les navires" = Enquête.d
 knitr::kable(table_RV, align="l",
       caption = "Résumé des données recueillies au cours des quatre enquêtes distinctes sur les navires de recherche dans les Maritimes. Se reporter à Chadwick et al. (2007)* pour obtenir de plus amples renseignements sur le calendrier et l’ajustement périodique des enquêtes 4VSW.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
-
-
-### **Inshore Lobster Trawl Survey (ILTS)**  {#ilts-section}
-
-```{r ilts-meta, results='asis'}
-write_meta(ilts_rr, "FR")
-```
-
-From [@ILTS]: “An annual trawl survey is conducted in Southwestern Nova Scotia and the Bay of Fundy to assess the lobster stocks in Lobster Fishing Areas (LFA) 34. The survey is conducted with the Northeast Fisheries Science Center Ecosystem Survey Trawl (NEST), a small mesh trawl with a cod end liner, which ensures the capture of various sizes of lobster. The dimensions and location of the trawl are monitored and recorded throughout the tow using an electronic trawl mensuration system. In addition, water temperature and depth are also recorded. The target tow length is 1 kilometer which is tracked using an Olex marine charting system. Vessel crew, DFO science staff and a contracted at sea observer work together to perform required tasks and collect all relevant data. Catch from each tow is separated by species, weighed and counted. Length frequency data is collected on select groundfish and crab species, detailed morphometric data is collected on each lobster.” 
-
-#### ***Area-specific search results for the Lobster Trawl Survey***
-
-```{r ilts-results, include=FALSE, cache=FALSE}
-iltsClipped <- master_intersect(ilts_rr$data_sf, mapDataList)
-
-tableList <- create_table_ilts(iltsClipped$studyData, listed_species)
-iltsAllTable <- tableList$allSpecies
-iltsSarTable <- tableList$sarData
-summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ILTS](#ilts-section)", iltsSarTable, "Common Name", "Common Name")
-
-```
-
-```{r ilts-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-iltsCheck <- if (!is.null(iltsClipped$studyData)) {
-    "* There are relevant records in the Lobster Trawl Survey for this search area."
-  } else {
-    "* There are no relevant records in the Lobster Trawl Survey for this search area. "
-  }
-writeLines(noquote(iltsCheck))
-```
-
-
-```{r ilts-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Black lines and arrows indicate the location and direction of each NEST trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area.'}
-
-if (!is.null(iltsClipped$studyData)) {
-    plot_rr_sf(areaMap, iltsClipped$mapData, lwd = 1, colour = "blue")
-}
-```
-<br>
-```{r ilts-SAR-table}
-if (!is.null(iltsClipped$studyData)) {
-  if (nrow(iltsSarTable) > 0) {
-    knitr::kable(iltsSarTable, align="l", caption="\\label{tab:ilts_SAR_table}Quality Tier: High. Security level: Protected B. Inshore Lobster Trawl Survey (ITLS) observation records of species contained within the search area and listed by the Species At Risk Act (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
-  }
-}
-```
-<br>
-```{r ilts-all-table}
-if (!is.null(iltsClipped$studyData)) {
-knitr::kable(iltsAllTable, align="l", caption="\\label{tab:ilts_all_table}Quality Tier: High. Security level: none. Inshore Lobster Trawl Survey (ITLS) observation records of all species contained within the search area, summarized by species or species group. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
-}
-```
-
-
-
-
 
 
 #### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes, par zone***
@@ -136,9 +77,131 @@ if (!is.null(outputList$studyData)) {
 }
 ```
 
+
+### **Chalut de biodiversité de la baie de Passamaquoddy (CBBP)**  {#pasBay-section}
+
+```{r pasBay-load, include=FALSE}
+load_rdata(c("pasBay_rr"), "MAR", env = environment())
+```
+
+```{r pasBay-meta, results='asis'}
+write_meta(pasBay_rr, "FR")
+```
+
+Description de l’ensemble de données (tirée du dossier des données ouvertes) [@OpenData_pasBay]:
+```{r pasBay-text, results='asis'}
+writeLines(noquote(pasBay_rr$text$fr))
+```
+
+#### ***Résultats de la Chalut de biodiversité de la baie de Passamaquoddy, par zone***
+
+
+```{r pasBay-results, include=FALSE, cache=FALSE}
+pasBayClipped <- master_intersect(pasBay_rr$data_sf, mapDataList)
+
+tableList <- create_table_ilts(pasBayClipped$studyData, listed_species)
+pasBayAllTable <- tableList$allSpecies
+pasBaySarTable <- tableList$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[CBBP](#pasBay-section)", pasBaySarTable, "Common Name", "Common Name")
+
+```
+
+```{r pasBay-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+pasBayCheck <- if (!is.null(pasBayClipped$studyData)) {
+    "*  Il existe des registres pertinents dans le chalut de biodiversité de la baie de Passamaquoddy pour cette zone de recherche."
+  } else {
+    "*  Il n'existe aucune registre pertinent dans le chalut de biodiversité de la baie de Passamaquoddy pour cette zone de recherche. "
+  }
+writeLines(noquote(pasBayCheck))
+```
+
+```{r pasBay-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: None. Map showing the search area defined by the user (red outline) used to query information from the Passamaquoddy Bay Biodiversity Trawls.  Blue lines indicate the location of each trawl sample.'}
+
+if (!is.null(pasBayClipped$studyData)) {
+    plot_rr_sf(areaMap, pasBayClipped$mapData, lwd = 0.7, colour = "blue")
+}
+```
+<br>
+```{r pasBay-SAR-table}
+if (!is.null(pasBayClipped$studyData)) {
+  if (nrow(pasBaySarTable) > 0) {
+    knitr::kable(pasBaySarTable, align="l", caption="\\label{tab:pasBay_SAR_table}Quality Tier: High. Security level: None. Passamaquoddy Bay Biodiversity Trawl observation records of species contained within the search area and listed by the Species At Risk Act (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  }
+}
+```
+<br>
+```{r pasBay-all-table}
+if (!is.null(pasBayClipped$studyData)) {
+knitr::kable(pasBayAllTable, align="l", caption="\\label{tab:pasBay_all_table}Quality Tier: High. Security level: none. Passamaquoddy Bay Biodiversity Trawl observation records of all species contained within the search area, summarized by species or species group. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
+
+
+### **Inshore Lobster Trawl Survey (ILTS)**  {#ilts-section}
+
+```{r ilts-load, include=FALSE}
+load_rdata(c("ilts_rr"), "MAR", env = environment())
+```
+
+```{r ilts-meta, results='asis'}
+write_meta(ilts_rr, "FR")
+```
+
+From [@ILTS]: “An annual trawl survey is conducted in Southwestern Nova Scotia and the Bay of Fundy to assess the lobster stocks in Lobster Fishing Areas (LFA) 34. The survey is conducted with the Northeast Fisheries Science Center Ecosystem Survey Trawl (NEST), a small mesh trawl with a cod end liner, which ensures the capture of various sizes of lobster. The dimensions and location of the trawl are monitored and recorded throughout the tow using an electronic trawl mensuration system. In addition, water temperature and depth are also recorded. The target tow length is 1 kilometer which is tracked using an Olex marine charting system. Vessel crew, DFO science staff and a contracted at sea observer work together to perform required tasks and collect all relevant data. Catch from each tow is separated by species, weighed and counted. Length frequency data is collected on select groundfish and crab species, detailed morphometric data is collected on each lobster.” 
+
+#### ***Area-specific search results for the Lobster Trawl Survey***
+
+```{r ilts-results, include=FALSE, cache=FALSE}
+iltsClipped <- master_intersect(ilts_rr$data_sf, mapDataList)
+
+tableList <- create_table_ilts(iltsClipped$studyData, listed_species)
+iltsAllTable <- tableList$allSpecies
+iltsSarTable <- tableList$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ILTS](#ilts-section)", iltsSarTable, "Common Name", "Common Name")
+
+```
+
+```{r ilts-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+iltsCheck <- if (!is.null(iltsClipped$studyData)) {
+    "* There are relevant records in the Lobster Trawl Survey for this search area."
+  } else {
+    "* There are no relevant records in the Lobster Trawl Survey for this search area. "
+  }
+writeLines(noquote(iltsCheck))
+```
+
+
+```{r ilts-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Blue lines indicate the location of each NEST trawl sample.'}
+
+if (!is.null(iltsClipped$studyData)) {
+    plot_rr_sf(areaMap, iltsClipped$mapData, lwd = 1, colour = "blue")
+}
+```
+<br>
+```{r ilts-SAR-table}
+if (!is.null(iltsClipped$studyData)) {
+  if (nrow(iltsSarTable) > 0) {
+    knitr::kable(iltsSarTable, align="l", caption="\\label{tab:ilts_SAR_table}Quality Tier: High. Security level: Protected B. Inshore Lobster Trawl Survey (ITLS) observation records of species contained within the search area and listed by the Species At Risk Act (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  }
+}
+```
+<br>
+```{r ilts-all-table}
+if (!is.null(iltsClipped$studyData)) {
+knitr::kable(iltsAllTable, align="l", caption="\\label{tab:ilts_all_table}Quality Tier: High. Security level: Protected B. Inshore Lobster Trawl Survey (ITLS) observation records of all species contained within the search area, summarized by species or species group. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
+
+
 ### **Bases de données des relevés de l’industrie et sur les pêches dans les Maritimes**  
 
 #### ***Base de données des relevés de l’industrie (BDRI)***  
+
+
+```{r isdb-load, include=FALSE}
+load_rdata(c("isdb_rr"), "MAR", env = environment())
+```
+
 ```{r isdb-meta, results='asis'}
 write_meta(isdb_rr, "FR")
 ```
@@ -148,6 +211,10 @@ La base de données des relevés de l’industrie (BDRI) est une base de donnée
 Sans consentement écrit, Pêches et Océans Canada n’est pas autorisé à communiquer des renseignements ou des produits de données de la BDRI (comme des cartes et des couches de données) qui pourraient révéler des renseignements personnels ou de tiers comme les prises, les valeurs au débarquement et les lieux de pêche propres aux navires, car ces renseignements sont considérés comme confidentiels. Des renseignements sur la politique de protection des renseignements personnels sont disponibles dans les lignes directrices sur la diffusion informelle à l’intention du personnel du MPO (c.-à-d. Annexe B – « Renseignements sur les prises et l’effort et sur les quotas : À faire et à ne pas faire lors de la diffusion informelle » \\\\ent.dfo-mpo.ca\\ATLShares\\Shared\\ATIP Information\\Information_Release_Guidelines-eng.docx). Si vous souhaitez inclure des données d’observateurs dans une publication, n’oubliez pas de les agréger (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r).
 
 #### ***Système d’information sur les pêches des Maritimes (SIPMAR)***  
+
+```{r marfis-load, include=FALSE}
+load_rdata(c("marfis_rr"), "MAR", env = environment())
+```
 
 ```{r marfis-meta, results='asis'}
 write_meta(marfis_rr, "FR")
@@ -226,6 +293,10 @@ if (!is.null(outputListM$studyData)) {
 ```
 ### **Système d’information sur la biodiversité des océans (SIBO)**  
 
+```{r obis-load, include=FALSE}
+load_rdata(c("obisFish_rr"), "MAR", env = environment())
+```
+
 ```{r obis-meta, results='asis'}
 write_meta(obisFish_rr, "FR")
 ```
@@ -263,6 +334,11 @@ if (!is.null(outputList$studyData)) {
 ```
 
 ### **OCEARCH Shark Tracker** {#OCEARCH-section}
+
+```{r ocearch-load, include=FALSE}
+load_rdata(c("ocearch_rr"), "MAR", env = environment())
+```
+
 ```{r ocearch-meta, results='asis'}
 write_meta(ocearch_rr, "FR")
 ```
