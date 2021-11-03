@@ -152,7 +152,8 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
 
 plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                           outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
-                          labelData=NULL, alphaMap=NULL, labelAttribute=NULL) {
+                          labelData=NULL, alphaMap=NULL, labelAttribute=NULL, 
+                          fillClr="#56B4E9") {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -175,8 +176,10 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   
   
   if (toupper(attribute) == "NONE") { # Case 1: plotting all polygons in one color
-    
-    polyPlot <- geom_sf(data=polyData, fill="#56B4E9", col=clr)
+    if (outlines) {
+      clr = fillClr
+    } 
+    polyPlot <- geom_sf(data = polyData, fill = fillClr, col = clr)
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
     polyData[[attribute]] = as.factor(polyData[[attribute]])
@@ -207,7 +210,11 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   }
   
   if(!is.null(labelData)) {
-    polyLabels <- geom_sf_label(data = labelData, aes(label = !!sym(labelAttribute)))
+    polyLabels <- ggrepel::geom_label_repel(data = labelData,
+                                            aes(label = !!sym(labelAttribute), geometry = geometry),
+                                            stat = "sf_coordinates",
+                                            min.segment.length = 0
+                                            )
   }
     
   polyMap <- baseMap +
