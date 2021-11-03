@@ -30,11 +30,11 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="lef
 minYear <- 2010
 
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
-copy_rdata_files() # make sure data files are up to date. 
-filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherback_rr", 
-                            "rv_rr", "ilts_rr", "isdb_rr", "marfis_rr", "obisFish_rr",
-                            "sturg_rr", "ocearch_rr", 
-                            "wsdb_rr", "whitehead_rr", "obisCet_rr", "blueWhaleHab_rr", 
+copy_rdata_files() # make sure data files are up to date.
+filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherback_rr",
+                            "rv_rr", "pasBay_rr", "ilts_rr", "isdb_rr", "marfis_rr",
+                            "obisFish_rr", "sturg_rr", "ocearch_rr", 
+                            "wsdb_rr", "whitehead_rr", "obisCet_rr", "blueWhaleHab_rr",
                             "nbw_rr", "narwc_rr", "rockweed_rr", "ebsa_rr",
                             "conservationSites_rr", "finWhale_rr", "harbourPorpoise_rr",
                             "humpbackWhale_rr", "seiWhale_rr"), "MAR", env = environment())
@@ -74,13 +74,13 @@ This section provides an overall synthesis of regional data and data products of
 
 ```{r cetacean-setup, echo=FALSE, include=FALSE, cache=FALSE}
 whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
-               "Blue Whale: Endangered (SARA & COSEWIC)" = "black", 
+               "Blue Whale: Endangered (SARA & COSEWIC)" = "black",
                "Fin Whale: Special Concern (SARA & COSEWIC)" = "chartreuse4",
                "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)" = "#F5A4E7",
-               "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)" = "#00AFBB", 
-               "North Atlantic Right Whale: Endangered (SARA & COSEWIC)" = "darkorchid4", 
-               "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)" = "#0827EF", 
-               "Sei Whale: No Status (SARA) & Endangered (COSEWIC)" = "#EF6408", 
+               "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)" = "#00AFBB",
+               "North Atlantic Right Whale: Endangered (SARA & COSEWIC)" = "darkorchid4",
+               "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)" = "#0827EF",
+               "Sei Whale: No Status (SARA) & Endangered (COSEWIC)" = "#EF6408",
                "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
@@ -111,6 +111,10 @@ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, wh
 # RV
 rvSarTable <- create_table_RV(rv_rr$data_sf, listed_species)$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "RV", rvSarTable, "Common Name", "Individuals")
+
+# Pas bay
+pasBaySarTable <- create_table_ilts(pasBay_rr$data_sf, listed_species)$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "PBBT", pasBaySarTable, "Common Name", "Common Name")
 
 # ILTS
 iltsSarTable <- create_table_ilts(ilts_rr$data_sf, listed_species)$sarData
@@ -198,13 +202,13 @@ formatedSarTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. 
   # add column for observations from sar table
   obsColumn <- apply(summarySarTable, 1, function(r) any(r %in% c(presentCode)))
   summaryHabTable$Obs <- ifelse(obsColumn, presentCode, absentCode)
-  
+
   summaryHabTable <- mutate_all(summaryHabTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", ""),
                   background = ifelse(. == presentCode, "green", ""), escape = FALSE))
 
   names(summaryHabTable) <- c("Species", "COSEWIC", "SARA", "Observations", "SAR Range", "SDM", "Important Habitat", "Critical Habitat")
 
-  
+
 ```
 
 ```{r output-hab-table}

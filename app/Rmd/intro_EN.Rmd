@@ -31,7 +31,7 @@ minYear <- 2010
 
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
 copy_rdata_files() # make sure data files are up to date.
-filesLoaded <- load_rdata(c("CommonData"), "MAR", env = environment())
+load_rdata(c("CommonData"), "MAR", env = environment())
 
 ```
 

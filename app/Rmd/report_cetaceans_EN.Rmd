@@ -28,15 +28,14 @@ whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
 whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
-filesLoaded <- load_rdata(c("wsdb_rr", "whitehead_rr", "narwc_rr", "obisCet_rr", 
-                            "finWhale_rr", "seiWhale_rr", "humpbackWhale_rr",
-                           "harbourPorpoise_rr", "nbw_rr", "blueWhaleHab_rr", 
-                           "nbw_rr"), "MAR", env = environment())
-
 
 ```
 
 ### **Whale Sightings Database (WSDB)** {#WSDB-section}
+
+```{r wsdb-load, include=FALSE}
+load_rdata(c("wsdb_rr"), "MAR", env = environment())
+```
 
 ```{r wsdb-meta, results='asis'}
 write_meta(wsdb_rr, "EN")
@@ -87,6 +86,11 @@ if (!is.null(wsdbClipped$studyData)) {
 ```
 
 ### **The Whitehead Lab, Dalhousie University** {#Whitehead-section}
+
+```{r whitehead-load, include=FALSE}
+load_rdata(c("whitehead_rr"), "MAR", env = environment())
+```
+
 ```{r whitehead-meta, results='asis'}
 write_meta(whitehead_rr, "EN")
 ```
@@ -128,6 +132,11 @@ if (!is.null(whiteheadClipped$studyData)) {
 ```
 
 ### **North Atlantic Right Whale Consortium (NARWC) Sightings Database**{#NARWC-section}
+
+```{r narwc-load, include=FALSE}
+load_rdata(c("narwc_rr"), "MAR", env = environment())
+```
+
 ```{r narwc-meta, results='asis'}
 write_meta(narwc_rr, "EN")
 ```
@@ -162,6 +171,11 @@ if (!is.null(narwcClipped$studyData)) {
 ```
 
 ### **Ocean Biodiversity Information System (OBIS) [for cetaceans]** {#obis-cetacean-section}
+
+```{r obis-cetacean-load, include=FALSE}
+load_rdata(c("obisCet_rr"), "MAR", env = environment())
+```
+
 ```{r obis-cetacean-meta, results='asis'}
 write_meta(obisCet_rr, "EN")
 ```
@@ -214,6 +228,11 @@ if (FALSE) {
 
 
 ### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans** {#sdm-section} 
+
+```{r sdm-load, include=FALSE}
+load_rdata(c("finWhale_rr", "harbourPorpoise_rr", "humpbackWhale_rr", "seiWhale_rr" ), "MAR", env = environment())
+```
+
 ```{r sdm-meta, results='asis'}
 write_meta(finWhale_rr, "EN")
 ```
@@ -256,6 +275,11 @@ plot_cetaceans_4grid(finWhale_rr$data_sf, harbourPorpoise_rr$data_sf, humpbackWh
 ```
 
 ### **Blue Whale Important Habitat** {#bwhab-section}
+
+```{r bwhab-load, include=FALSE}
+load_rdata(c("blueWhaleHab_rr"), "MAR", env = environment())
+```
+
 ```{r bwhab-meta, results='asis'}
 write_meta(blueWhaleHab_rr, "EN")
 ```
@@ -309,6 +333,10 @@ if (!is.null(clipped$mapData)){
 
 
 ### **Northern bottlenose whale important habitat in inter-canyon areas on the eastern Scotian Shelf**  {#nbw-hab-section}
+
+```{r nbw-load, include=FALSE}
+load_rdata(c("nbw_rr"), "MAR", env = environment())
+```
 
 ```{r nbw-meta, results='asis'}
 write_meta(nbw_rr, "EN")

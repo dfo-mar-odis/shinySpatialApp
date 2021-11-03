@@ -1,8 +1,3 @@
-
-```{r sara-loaddata, results='asis'}
-filesLoaded <- load_rdata(c("sardist_rr", "crithab_rr", "leatherback_rr"), "MAR", env = environment())
-```
-
 ## **INFORMATION FROM THE NATIONAL AQUATIC SPECIES AT RISK GEODATABASE**    
 **Contact:** Carolyn Bakelaar  
 **Internal GIS Tool URL:** <http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US#>  
@@ -19,6 +14,10 @@ This report is *not* the authoritative advice on Species at Risk data. Please ac
 
 #### ***DFO Species at Risk distribution (range)*** {#sardist-section}    
 
+```{r sardist-load, include=FALSE}
+load_rdata(c("sardist_rr"), "MAR", env = environment())
+```
+
 ```{r sardist-meta, results='asis'}
 write_meta(sardist_rr, "EN")
 ```
@@ -30,6 +29,10 @@ writeLines(noquote(sardist_rr$text$en))
 
 
 #### ***Critical Habitat of Species at Risk*** {#crithab-section}   
+
+```{r crithab-load, include=FALSE}
+load_rdata(c("crithab_rr", "leatherback_rr"), "MAR", env = environment())
+```
 
 ```{r crtihab-meta, results='asis'}
 write_meta(crithab_rr, "EN")

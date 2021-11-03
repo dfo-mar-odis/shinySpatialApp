@@ -1,6 +1,7 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
+fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
@@ -15,10 +16,8 @@ mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
 noneList <- list("en" = "None", "fr"= "Aucun")
 internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONLY")
 
-
 # ----------------COMMON DATA-------------
 region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-
 land10m_sf <- st_read(file.path(fileLoadPath, "Boundaries/Landmass/ne_10m_land_Clip.shp"), stringsAsFactors = FALSE)
 #remove State and Province column from land10m
 land10m_sf <- land10m_sf[-c(2)]
@@ -45,7 +44,20 @@ listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Statu
 row.names(listed_species) <- NULL
 
 # Cetacean legend file
-cetLegend <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/CetaceanLegend.csv"), stringsAsFactors = FALSE)
+cetLegend <- data.frame("Scientific_Name" = c("Delphinapterus leucas","Balaenoptera musculus", "Balaenoptera physalus",
+                                              "Phocoena phocoena", "Orcinus orca", "Eubalaena glacialis",
+                                              "Hyperoodon ampullatus", "Balaenoptera borealis", "Mesoplodon bidens"),
+                        "Legend" = c("Beluga Whale: Endangered (SARA & COSEWIC)", 
+                                     "Blue Whale: Endangered (SARA & COSEWIC)",
+                                     "Fin Whale: Special Concern (SARA & COSEWIC)",
+                                     "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)",
+                                     "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)",
+                                     "North Atlantic Right Whale: Endangered (SARA & COSEWIC)",
+                                     "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)",
+                                     "Sei Whale: No Status (SARA) & Endangered (COSEWIC)",
+                                     "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)")
+                        )
+
 cetLegend <- dplyr::rename(cetLegend,c("Scientific Name" = "Scientific_Name"))
 
 save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, file = file.path(fileSavePath, "CommonData.RData"))
@@ -267,7 +279,7 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
 save(rockweed_rr, file = file.path(fileSavePath, "Open/rockweed_rr.RData"))
 
 
-#-----------------------RV SURVEY---------------------
+#----------------------RV SURVEY---------------------
 rvPkgId <- "8ddcaeea-b806-4958-a79f-ba9ab645f53b"
 
 rv_rr <- get_opendata_rr(rvPkgId, NULL, region_sf = region_sf)
@@ -298,4 +310,40 @@ rv_sf <- sf::st_crop(rv_sf, region_sf)
 rv_rr$data_sf <- rv_sf
 rv_rr$metadata$searchYears <- "2010-2020"
 save(rv_rr, file = file.path(fileSavePath, "Open/rv_rr.RData"))
+
+
+#----------------------Passamaquoddy Bay Biodiversity Trawls---------------------
+pasBayPkgId <- "2dfa19db-a8cf-4460-97b9-710c2b856276"
+
+pasBay_rr <- get_opendata_rr(pasBayPkgId, NULL, region_sf = region_sf)
+pasBay_rr$metadata$contact <- email_format("Andrew.Cooper@dfo-mpo.gc.ca")
+pasBay_rr$metadata$qualityTier <- highQuality
+pasBay_rr$metadata$searchYears <- "2009-2017"
+
+catchDataResId <- "5f55acd2-fe48-4624-a357-fe7babe2604b"
+catchData <- download_extract_res_files(catchDataResId)
+catchData <- read.csv(file.path(fileLoadPath, "/NaturalResources/Species/PassamaquoddyBayBiodiversityTrawl/new_catch_data.csv"))
+catchData <- dplyr::select(catchData, c("setno", "scientific_name", "common_name"))
+
+setDataResId <- "4184b6d7-b711-430c-81ed-504c05657c16"
+setData <- download_extract_res_files(setDataResId)
+# manual fix of typo on open data....
+setData[(setData$setno == 2016.008),]$latitude_finish <- 45.09421
+
+pasBay <- left_join(catchData, setData, by = "setno")
+pasBay <- pasBay[!(is.na(pasBay$latitude_start)), ]
+pasBay <- dplyr::mutate(pasBay, 
+                        wkt = paste("LINESTRING (", longitude_start, " ", 
+                                    latitude_start, ", ", longitude_finish, " ",
+                                    latitude_finish, ")", sep = ""))
+pasBay$geometry <- st_as_sfc(pasBay$wkt, crs = 4326)
+pasBay <- dplyr::select(pasBay, c("scientific_name", "common_name", "time_start", "geometry"))
+pasBay$common_name <- str_to_title(pasBay$common_name)
+pasBay$scientific_name <- str_to_sentence(pasBay$scientific_name)
+names(pasBay) <-  c("Scientific Name", "Common Name", "Start Time", "geometry")
+
+pasBay_sf <- st_as_sf(pasBay)
+pasBay_sf <- sf::st_crop(pasBay_sf, region_sf)
+pasBay_rr$data_sf <- pasBay_sf
+save(pasBay_rr, file = file.path(fileSavePath, "Open/pasBay_rr.RData"))
 

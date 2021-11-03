@@ -1,9 +1,3 @@
-
-```{r sara-loaddata, results='asis'}
-filesLoaded <- load_rdata(c("sardist_rr", "crithab_rr", "leatherback_rr"), "MAR", env = environment())
-```
-
-
 ## **RENSEIGNEMENTS PROVENANT DU PROGRAMME NATIONAL SUR LES ESPÈCES AQUATIQUES EN PÉRIL**    
 **Personne-ressource :** Carolyn Bakelaar  
 **Lien pour SIG Interne :** <http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US#>  
@@ -20,6 +14,10 @@ Ce rapport *ne fait pas* autorité en ce qui concerne les données sur les espè
 
 #### ***Répartition des espèces en péril du MPO (aire de répartition)*** {-}    
 
+```{r sardist-load, include=FALSE}
+load_rdata(c("sardist_rr"), "MAR", env = environment())
+```
+
 ```{r sardist-meta, results='asis'}
 write_meta(sardist_rr, "FR")
 ```
@@ -30,6 +28,10 @@ writeLines(noquote(sardist_rr$text$fr))
 ```
 
 #### ***Habitat essentiel des espèces en péril***    
+
+```{r crithab-load, include=FALSE}
+load_rdata(c("crithab_rr", "leatherback_rr"), "MAR", env = environment())
+```
 
 ```{r crtihab-meta, results='asis'}
 write_meta(crithab_rr, "FR")

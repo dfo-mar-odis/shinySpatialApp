@@ -153,20 +153,31 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
 download_extract_res_files <- function(resId, csvFileList = NULL) {
   res <- resource_show(resId)
   zipUrl <- res$url
-  
   tempDir <- here::here("dataprocessing/temp")
-  temp <- here::here("dataprocessing/temp/temp.zip")
   
-  download.file(zipUrl, temp)
-  utils::unzip(temp, exdir = tempDir)
-
-  outFiles <-lapply(csvFileList, function(x, dir) {
-    list.files(dir, recursive=TRUE, pattern = x, 
-               include.dirs = TRUE, full.names = TRUE)
+  
+  if (res$format == "CSV") {
+    temp <- here::here("dataprocessing/temp/csvFile.csv")
+    download.file(zipUrl, temp)
+    dfList <- read.csv(temp)
+    
+  } else {
+    
+    temp <- here::here("dataprocessing/temp/temp.zip")
+    
+    download.file(zipUrl, temp)
+    utils::unzip(temp, exdir = tempDir)
+    
+    outFiles <-lapply(csvFileList, function(x, dir) {
+      list.files(dir, recursive=TRUE, pattern = x, 
+                 include.dirs = TRUE, full.names = TRUE)
     }, dir=tempDir)
+    
+    dfList <- lapply(outFiles, read.csv)
+    
+  }
   
-  dfList <- lapply(outFiles, read.csv)
-  
+
   # cleanup
   tempFiles <- list.files(tempDir, include.dirs = T, full.names = T, recursive = T)
   unlink(tempFiles, recursive = TRUE) 

@@ -28,14 +28,15 @@ whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
 whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
-filesLoaded <- load_rdata(c("wsdb_rr", "whitehead_rr", "narwc_rr", "obisCet_rr", 
-                            "finWhale_rr", "seiWhale_rr", "humpbackWhale_rr",
-                           "harbourPorpoise_rr", "nbw_rr", "blueWhaleHab_rr", 
-                           "nbw_rr"), "MAR", env = environment())
 
 ```
 
-### **Base de données des observations de baleines (BDOB)**  
+### **Base de données des observations de baleines (BDOB)**  {#WSDB-section}
+
+```{r wsdb-load, include=FALSE}
+load_rdata(c("wsdb_rr"), "MAR", env = environment())
+```
+
 ```{r wsdb-meta, results='asis'}
 write_meta(wsdb_rr, "FR")
 ```
@@ -61,7 +62,7 @@ Veuillez prendre note des avertissements et mises en garde importants suivants a
 
 ```{r wsdb, include=FALSE, cache=FALSE}
 wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)
-linkedSectionText <- "[WSDB](#WSDB-section)"
+linkedSectionText <- "[BDOB](#WSDB-section)"
 whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, wsdb_rr$attribute)
 if (!is.null(wsdbClipped$studyData)) {
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
@@ -69,12 +70,12 @@ if (!is.null(wsdbClipped$studyData)) {
  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
 }
 ```
-*
+
 ```{r wsdb-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_wsdb <- if (is.null(wsdbClipped$studyData)) {
-   "There are no relevant records in the WSDB for this search area."
+   "* Il existe des registres pertinents dans BDOB pour cette zone de recherche."
  } else {
-   "There are relevant records in the WSDB for this search area."
+   "* Il n’existe aucun registre pertinent dans BDOB pour cette zone de recherche."
  }
  writeLines(Report_wsdb)
 ```
@@ -85,7 +86,11 @@ if (!is.null(wsdbClipped$studyData)) {
 }
 ```
 
-### **Le laboratoire Whitehead, Université de Dalhousie**
+### **Le laboratoire Whitehead, Université de Dalhousie** {#Whitehead-section}
+
+```{r whitehead-load, include=FALSE}
+load_rdata(c("whitehead_rr"), "MAR", env = environment())
+```
 
 ```{r whitehead-meta, results='asis'}
 write_meta(whitehead_rr, "FR")
@@ -126,7 +131,12 @@ if (!is.null(whiteheadClipped$studyData)) {
 }
 ```
 
-### **Base de données des observations du North Atlantic Right Whale Consortium (NARWC)**  
+### **Base de données des observations du North Atlantic Right Whale Consortium (NARWC)**  {#NARWC-section}
+
+```{r narwc-load, include=FALSE}
+load_rdata(c("narwc_rr"), "MAR", env = environment())
+```
+
 ```{r narwc-meta, results='asis'}
 write_meta(narwc_rr, "FR")
 ```
@@ -163,7 +173,12 @@ if (!is.null(narwcClipped$studyData)) {
 }
 ```
 
-### **Système d’information sur la biodiversité des océans (SIBO) [pour les cétacés]**  
+### **Système d’information sur la biodiversité des océans (SIBO) [pour les cétacés]**  {#obis-cetacean-section}
+
+```{r obis-cetacean-load, include=FALSE}
+load_rdata(c("obisCet_rr"), "MAR", env = environment())
+```
+
 ```{r obis-cetacean-meta, results='asis'}
 write_meta(obisCet_rr, "FR")
 ```
@@ -199,6 +214,10 @@ if (!is.null(obisClipped$studyData)) {
 ```
 
 ### **Modèles de répartition des espèces (MRE) : zones prioritaires pour améliorer la surveillance des cétacés**  
+
+```{r sdm-load, include=FALSE}
+load_rdata(c("finWhale_rr", "harbourPorpoise_rr", "humpbackWhale_rr", "seiWhale_rr" ), "MAR", env = environment())
+```
 
 ```{r sdm-meta, results='asis'}
 write_meta(finWhale_rr, "FR")
@@ -239,7 +258,12 @@ summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "[SDM](#sdm-sectio
 plot_cetaceans_4grid(finWhale_rr$data_sf, harbourPorpoise_rr$data_sf, humpbackWhale_rr$data_sf, seiWhale_rr$data_sf, studyArea, land10m_sf, 50, bounds_sf)
 ```
 
-### **Habitat important pour le rorqual bleu**  
+### **Habitat important pour le rorqual bleu**  {#bwhab-section}
+
+```{r bwhab-load, include=FALSE}
+load_rdata(c("blueWhaleHab_rr"), "MAR", env = environment())
+```
+
 ```{r bwhab-meta, results='asis'}
 write_meta(blueWhaleHab_rr, "FR")
 ```
@@ -289,12 +313,15 @@ if (!is.null(clipped$mapData)){
 }
 ```
 
-### **Habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais**  
+### **Habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais**   {#nbw-hab-section}
+
+```{r nbw-load, include=FALSE}
+load_rdata(c("nbw_rr"), "MAR", env = environment())
+```
 
 ```{r nbw-meta, results='asis'}
 write_meta(nbw_rr, "FR")
 ```
-
 
 Description de l’ensemble de données (tirée du dossier des données ouvertes) [@DFO2020NBW_imphabitat] :
 ```{r nbw-text, results='asis'}

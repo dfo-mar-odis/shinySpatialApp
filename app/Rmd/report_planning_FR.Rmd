@@ -1,12 +1,11 @@
-``` {r load-planning-data, echo=FALSE}
-filesLoaded <- load_rdata(c("ebsa_rr", "conservationSites_rr"), "MAR", env = environment())
-
-```
-
 ## **ZONES DÉSIGNÉES POUR LA PLANIFICATION SPATIALE**  
 
 
 ### **Zones d’importance écologique et biologique (ZIEB)**  
+
+```{r EBSA-load, include=FALSE}
+load_rdata(c("ebsa_rr"), "MAR", env = environment())
+```
 
 ```{r EBSA-meta, results='asis'}
 write_meta(ebsa_rr, "FR")
@@ -60,6 +59,10 @@ if(!is.null(EBSAoutput$studyData)){
 ```
 
 ### **Draft Conservation Network Design: existing and potential future marine protected areas (MPAs) and other spatial conservation areas** {#MPA-section}
+
+```{r MPA-load, include=FALSE}
+load_rdata(c("conservationSites_rr"), "MAR", env = environment())
+```
 
 ```{r MPA-section, results='asis'}
 write_meta(conservationSites_rr, "FR")

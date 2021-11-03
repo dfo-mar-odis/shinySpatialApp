@@ -39,6 +39,7 @@ copy_rdata_files <- function() {
 load_rdata <- function(rdataNames, regionStr, env=globalenv()){
   regionDir <- here::here("app/data", regionStr)
   lapply(rdataNames, find_and_load, regionDir = regionDir, env = env)
+  return(NULL)
 }
 
 
@@ -47,15 +48,12 @@ find_and_load <- function(rdataStr, regionDir, env=globalenv()){
   fileList <- list.files(regionDir, fileName, recursive=TRUE, full.names=TRUE, include.dirs=FALSE)
   if (length(fileList) == 1) {
     load(fileList, envir = env)
-    return(TRUE)
   } else if(length(fileList) == 0) {
     errMessage <- paste("R data file", fileName, "not found in", regionDir, ".")
     warning(errMessage)
-    return(NULL)
   } else {
     errMessage <- paste("Duplicates of R data file", fileName, "found in", regionDir, ".")
     warning(errMessage)
-    return(NULL)
   }
 }
 
