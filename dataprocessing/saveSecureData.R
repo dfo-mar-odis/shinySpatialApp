@@ -178,9 +178,72 @@ save(ocearch_rr, file = file.path(fileSavePath, "Secure/ocearch_rr.RData"))
 # ---------------------ELECTROFISHING-----------------------------------
 
 # Electrofishing
-st_layers(here::here("../../../temp/EFishing_DFOScience.gdb"))
-EfSurvey_sf <- st_read(here::here("../../../temp/EFishing_DFOScience.gdb"), layer = "EFish_IBoF_2014_nonLGB_Rivers_2018" )
-EfSurvey_sf <- dplyr::select(EfSurvey_sf, c("AtlanticSalmon", "AmericanEel", "BrookTrout", "BrownTrout", "RainbowTrout",  "BlacknoseDace", 
-                                            "CommonShiner", "ChubSpp", "CreekChub", "LakeChub", "GoldenShiner", 
-                                            "SlimySculpin", "SticklebackSpp", "WhiteSucker", "Document", "Year_"))
+efSpecList <- data.frame("colNames" = c("AlosaUnidentified", "AmericanEel", "AtlanticSalmon", 
+                                        "BlacknoseDace", "BrookTrout", "BrownTrout", 
+                                        "ChubSpp", "CommonShiner", "CreekChub",  
+                                        "GoldenShiner", "LakeChub", "Lamprey", "Mummichog", 
+                                        "OtherCyprinids", "OtherSpp", "RainbowTrout",
+                                        "SeaLamprey", "SlimySculpin", "SmallmouthBass", 
+                                        "SticklebackSpp", "ThreespinedStickleback", "WhiteSucker"),
+                 "Common.Names" = c("Unidentified Alosa", "American Eel", "Atlantic Salmon", 
+                                    "Blacknose Dace", "Brook Trout", "Brown Trout", 
+                                    "Chub Spp", "Common Shiner", "Creek Chub",  
+                                    "Golden Shiner", "Lake Chub", "Lamprey", "Mummichog", 
+                                    "Other Cyprinids", "Other Spp", "Rainbow Trout",
+                                    "Sea Lamprey", "Slimy Sculpin", "Smallmouth Bass", 
+                                    "Stickleback Spp", "Three spined Stickleback", "White Sucker"), 
+                 "Scientific.Names" = c("Alosa", "Anguilla rostrata", "Salmo salar", 
+                                        "Rhinichthys atratulus", "Salvelinus fontinalis", 
+                                        "Salmo trutta", "Cyprinidae Spp",
+                                        "Luxilus cornutus", "Semotilus atromaculatus",  
+                                        "Notemigonus crysoleucas", "Couesius plumbeus", 
+                                        "Petromyzontiformes", "Fundulus heteroclitus", 
+                                        "Other Cyprinids", "Other Spp", "Oncorhynchus mykiss",
+                                        "Petromyzon marinus", "Cottus cognatus",
+                                        "Micropterus dolomieu", "Gasterosteidae Spp",
+                                        "Gasterosteus aculeatus", "Catostomus commersonii"))
+
+
+efSurvey_to_sf <- function(surveyData, efSpecList, region_sf){
+  extraCols <- c("Year_", "DataSource", "Document")
+  surveyLong <- tidyr::pivot_longer(surveyData, cols = any_of(efSpecList$colNames), names_to = "colNames", values_to = "count")
+  surveyLong <- dplyr::filter(surveyLong, count > 0)
+  surveyLong <- dplyr::select(surveyLong, c(extraCols, "Shape", "colNames"))
+  surveyLong <- left_join(surveyLong, efSpecList, by = "colNames")
+  survey_sf <- st_transform(st_as_sf(surveyLong), crs=4326)
+  survey_sf <- st_crop(survey_sf, region_sf)
+  survey_sf <- dplyr::select(survey_sf, !colNames)
+  names(survey_sf ) <- c("Year", "DataSource", "Document", "Common Name", "Scientific Name", "geometry")
+  st_geometry(survey_sf) <- "geometry"
+  return(survey_sf)
+}
+
+fGdbPath <- file.path(fileLoadPath, "NaturalResources/Species/Electrofishing/EFishing_DFOScience.gdb")
+st_layers(efGdbPath)
+
+efSurvey2009_sf <- st_read(efGdbPath, layer = "EFish_ECB_2006_2007_BowlbyGibson2009" )
+efSurvey2013_sf <- st_read(efGdbPath, layer = "EFish_SU_2000_2008_RPA_2013" )
+efSurvey2018A_sf <- st_read(efGdbPath, layer = "EFish_IBoF_2014_nonLGB_Rivers_2018" )
+efSurvey2018B_sf <- st_read(efGdbPath, layer = "EFish_IBoF_2013_Stewiacke_2018" )
+
+ef_sf <- efSurvey_to_sf(efSurvey2009_sf, efSpecList, region_sf)
+ef_sf <- rbind(ef_sf, efSurvey_to_sf(efSurvey2013_sf, efSpecList, region_sf))
+ef_sf <- rbind(ef_sf, efSurvey_to_sf(efSurvey2018A_sf, efSpecList, region_sf))
+ef_sf <- rbind(ef_sf, efSurvey_to_sf(efSurvey2018B_sf, efSpecList, region_sf))
+
+
+ef_rr <- list("title" = "Electrofishing Data","data_sf" = ef_sf,
+              "attribute" = "Year",
+              "metadata" = list("contact" = email_format("Dustin.Raab@dfo-mpo.gc.ca"), 
+                                "url" = lang_list("<https://www.ocearch.org/tracker/>"),
+                                "accessedOnStr" = list("en" ="October 18 2021 by Sean Butler", "fr" = "18 octobre 2021 par Sean Butler") ,
+                                "accessDate" = as.Date("2021-10-18"),
+                                "searchYears" = "2000-2014",
+                                "securityLevel" = noneList,
+                                "qualityTier" = highQuality,
+                                "constraints" = internalUse
+              )
+                   
+)
+save(ef_rr, file = file.path(fileSavePath, "Secure/ef_rr.RData"))
 

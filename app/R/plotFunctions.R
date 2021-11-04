@@ -385,12 +385,13 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
 #
 # Written by Quentin Stoyel for reproducible reporting project, September 2, 2021
 
-maps_setup <- function(studyArea, site, region, areaLandLayer, regionLandLayer, CANborder){
+maps_setup <- function(studyArea, region, areaLandLayer, regionLandLayer, CANborder){
+  site <- sf::st_centroid(studyArea)
   # The following defines studyBox geometry "look". studyBox_geom is input into area map or can be added to any map later
   studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1)
   
   # The following plots area map using function (output is a list)
-  areaMapList <- area_map(studyArea, site, areaLandLayer, 5, CANborder, studyBox_geom)
+  areaMapList <- area_map(studyArea, areaLandLayer, 5, CANborder, studyBox_geom)
   
   # The following separates items in the output list: first item is a map and second is a bounding box of the map
   areaMap <- areaMapList[[1]] # map
@@ -436,8 +437,8 @@ maps_setup <- function(studyArea, site, region, areaLandLayer, regionLandLayer, 
 # Written by Gordana Lazin for reproducible reporting project, April 12, 2021
 # ggplot map developed by Greg Puncher, winter/spring 2021
 
-area_map <- function(studyArea, site, landLayer, bufKm, CANborder, studyBoxGeom) {
-  
+area_map <- function(studyArea, landLayer, bufKm, CANborder, studyBoxGeom) {
+  site <- sf::st_centroid(studyArea)
   # buf is in km, and now converted to degrees
   bufx <- bufKm / 100
   bufy <- 0.72 * bufKm / 100 # scaled degrees

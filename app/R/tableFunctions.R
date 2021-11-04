@@ -119,14 +119,14 @@ create_table_RV <- function(data_sf, sarTable) {
 # Outputs: list containing 2 items
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. sarData: datatable of only listed species found within the studyArea
-create_table_ilts <- function(data_sf, sarTable) {
+create_table_ilts <- function(data_sf, sarTable, uniqueCols = c("geometry")) {
   
   if (is.null(data_sf)) {
     return(list("allSpecies" = NULL, "sarData" = NULL))
   }
   
   # calculate the number of unique sample locations
-  numTrawls <- dim(unique(data_sf[, c("geometry")]))[1]
+  numTrawls <- dim(unique(data_sf[, uniqueCols]))[1]
   recordCounts <- aggregate(
     x = list(Records = data_sf$`Scientific Name`),
     by = list("Scientific Name" = data_sf$`Scientific Name`),

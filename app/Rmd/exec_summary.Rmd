@@ -32,7 +32,8 @@ minYear <- 2010
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
 copy_rdata_files() # make sure data files are up to date. 
 filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherback_rr", 
-                            "rv_rr", "pasBay_rr", "ilts_rr", "isdb_rr", "marfis_rr", "obisFish_rr", "ocearch_rr", 
+                            "rv_rr", "pasBay_rr", "ilts_rr", "isdb_rr", "marfis_rr",
+                            "obisFish_rr", "ef_rr", "ocearch_rr", 
                             "wsdb_rr", "whitehead_rr", "obisCet_rr", "blueWhaleHab_rr", 
                             "nbw_rr", "narwc_rr", "rockweed_rr", "ebsa_rr",
                             "conservationSites_rr", "finWhale_rr", "harbourPorpoise_rr",
@@ -129,6 +130,12 @@ summarySarTable <- add_col_to_sar_summary(summarySarTable, "MARFIS", marfisSarTa
 # OBIS
 obisTable <- create_table_OBIS(obisFish_rr$data_sf)
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "OBIS", obisTable, "Common Name", "Common Name")
+
+# ELECTROFISHING
+efTable <- create_table_ilts(ef_rr$data_sf, listed_species, uniqueCols = c("geometry", "year"))$sarData
+
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "Electrofishing",
+                                          efTable, "Common Name", "Common Name")
 
 # OCEARCH
 if (!is.null(ocearch_rr$data_sf)) {
