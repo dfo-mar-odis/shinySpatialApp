@@ -6,8 +6,8 @@ write_meta <- function(rr, lang) {
       paste("Contact:", metadata$contact),
       ifelse("url" %in% names(metadata), paste("URL:", metadata$url$en), NA),
       paste("Last retrieved on:", metadata$accessedOnStr$en),
-      ifelse("searchYears" %in% names(metadata), paste("Search Years:", metadata$searchYears), NA),
-      paste("Quality Tier:", metadata$qualityTier$en),
+      ifelse("searchYears" %in% names(metadata), paste("Search Year:", metadata$searchYears), NA),
+      paste("Quality tier:", metadata$qualityTier$en),
       paste("Security level:", metadata$securityLevel$en), 
       paste("Data use constraints:", metadata$constraints$en),
       ifelse("reference" %in% names(metadata), paste("Reference:", metadata$reference$en), NA)

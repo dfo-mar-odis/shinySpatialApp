@@ -1,6 +1,6 @@
 ---
 output: html_document
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -147,7 +147,7 @@ load_rdata(c("ilts_rr"), "MAR", env = environment())
 write_meta(ilts_rr, "FR")
 ```
 
-From [@ILTS]: “An annual trawl survey is conducted in Southwestern Nova Scotia and the Bay of Fundy to assess the lobster stocks in Lobster Fishing Areas (LFA) 34. The survey is conducted with the Northeast Fisheries Science Center Ecosystem Survey Trawl (NEST), a small mesh trawl with a cod end liner, which ensures the capture of various sizes of lobster. The dimensions and location of the trawl are monitored and recorded throughout the tow using an electronic trawl mensuration system. In addition, water temperature and depth are also recorded. The target tow length is 1 kilometer which is tracked using an Olex marine charting system. Vessel crew, DFO science staff and a contracted at sea observer work together to perform required tasks and collect all relevant data. Catch from each tow is separated by species, weighed and counted. Length frequency data is collected on select groundfish and crab species, detailed morphometric data is collected on each lobster.” 
+From [@ILTS]: “An annual trawl survey is conducted in Southwestern Nova Scotia and the Bay of Fundy to assess the lobster stocks in Lobster Fishing Areas (LFA) 34. The survey is conducted with the Northeast Fisheries Science Center Ecosystem Survey Trawl (NEST), a small mesh trawl with a cod end liner, which ensures the capture of various sizes of lobster. The dimensions and location of the trawl are monitored and recorded throughout the tow using an electronic trawl mensuration system. In addition, water temperature and depth are also recorded. The target tow length is 1 kilometer which is tracked using an Olex marine charting system. Vessel crew, DFO science staff and a contracted at sea observer work together to perform required tasks and collect all relevant data. Catch from each tow is separated by species, weighed and counted. Length frequency data is collected on select groundfish and crab species, detailed morphometric data is collected on each lobster.”
 
 #### ***Area-specific search results for the Lobster Trawl Survey***
 
@@ -330,6 +330,61 @@ if (!is.null(outputList$studyData)) {
 ```{r obis-table, echo=FALSE, results='asis', caption="Les espèces prioritaires avec des observations contenues dans la base de données du SIBO, dans la zone de recherche."}
 if (!is.null(outputList$studyData)) {
   knitr::kable(obisTable, align="l", caption="Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Registres d’observation du système d’information sur la biodiversité des océans (SIBO) des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
+
+
+### **Atlantic Sturgeon Foraging Areas in the Upper Bay of Fundy ** {#sturg-section}
+
+```{r sturg-load, include=FALSE}
+load_rdata(c("sturg_rr"), "MAR", env = environment())
+```
+
+```{r sturg-meta, results='asis'}
+write_meta(sturg_rr, "EN")
+```
+
+Areas in the Minas Basin were selected for spatial analysis to examine foraging grounds for Atlantic Sturgeon, through a combination of using UAV’s, a novel approach to geoscience, with bottom sediment grain-size collection. Temporal studies will be carried out in the southern bight of Minas Basin at the Kingsport tidal-channel-flat complex to understand and document temporal morphodynamics. The Kingsport area will be studied as these tidal flats are used extensively by Atlantic Sturgeon for foraging from June to September and a large data set of grain size exists that can be used to help validate morphodynamic models. Ultimately this project will be used to predict future change to the tidal flats of the Minas Basin if a large scale tidal project such as the one proposed for Minas Channel is approved and to help understand Atlantic Sturgeons use of muddy tidal flats. This summary provides updates of validated foraging grounds for Atlantic Sturgeon identified though this project.
+
+#### ***Area-specific Atlantic Sturgeon search results:***
+```{r sturg-results, include=FALSE, cache=FALSE}
+sturgOutputList <- master_intersect(sturg_rr$data_sf, mapDataList)
+
+if (!is.null(sturgOutputList$studyData)) {
+   sturgSummaryRow <- data.frame("CommonName" = c("Atlantic Sturgeon"))
+} else {
+  sturgSummaryRow <- NULL
+}
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[Sturgeon](#sturg-section)",
+                                          sturgSummaryRow, "CommonName", "CommonName")
+
+```
+
+
+```{r sturg-check, echo=FALSE, results='asis',}
+sturgCheck <- if (is.null(sturgOutputList$studyData)) {
+  "* There are no relevant records of Atlantic Sturgeon foraging areas (selected sites) for this search area. "
+}else {
+  "* There are relevant records of  Atlantic Sturgeon foraging areas (selected sites) for this search area. "
+
+}
+writeLines(noquote(sturgCheck))
+```
+
+```{r sturg-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Survey sites illustrating Atlantic Sturgeon Foraging Areas sampled during 2020 in the Upper Bay of Fundy. Note that this map mostly represents survey sites. This map should not be interpreted as a comprehensive list of Atlantic Sturgeon foraging areas as additional locations are available, although not yet sampled, in the upper Bay of Fundy.  '}
+if (!is.null(sturgOutputList$studyData)) {
+  plot_rr_sf(areaMap, sturgOutputList$mapData, sturg_rr$attribute, outlines=FALSE,
+             labelData=sturgOutputList$mapData, labelAttribute = "siteId")
+}
+```
+
+```{r sturg-table, echo=FALSE, results='asis', caption="MPA table"}
+if (!is.null(sturgOutputList$studyData)) {
+  sturgTable <- dplyr::select(sturgOutputList$studyData, c("siteId", "Site"))
+  st_geometry(sturgTable) <- NULL
+  row.names(sturgTable) <- NULL
+  names(sturgTable) <- c("Site Id", "Site")
+  knitr::kable(sturgTable, align="l", caption="Quality Tier: High Security level: none. Names of Survey sites for Atlantic Sturgeon Foraging Areas sampled during 2020.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 

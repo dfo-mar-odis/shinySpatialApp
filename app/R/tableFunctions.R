@@ -57,7 +57,7 @@ create_table_RV <- function(data_sf, sarTable) {
   # the total number of individuals caught.
   individualCounts <- aggregate(
     x = list(Individuals = data_sf$TOTNO),
-    by = list(CODE = data_sf$CODE, "Scientific Name" = data_sf$`Scientific Name`, 
+    by = list(CODE = data_sf$CODE, "Scientific Name" = data_sf$`Scientific Name`,
               "Common Name" = data_sf$`Common Name`),
     FUN = sum)
 
@@ -65,7 +65,7 @@ create_table_RV <- function(data_sf, sarTable) {
     x = list(Records = data_sf$CODE),
     by = list(CODE = data_sf$CODE),
     FUN = length)
-  
+
   allSpeciesData <- merge(individualCounts, recordCounts, by = 'CODE')
   # add a field for the number of samples
   allSpeciesData$Samples <- Samples_study_no
@@ -105,7 +105,7 @@ create_table_RV <- function(data_sf, sarTable) {
 # Inputs:
 # 1. data_sf: an input point file of ILTS survey data found within the studyArea (eg. output from master_intersect)
 # 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
-# 3. uniqueCols: a list of the unique columns used for frequency counts, 
+# 3. uniqueCols: a list of the unique columns used for frequency counts,
 #    eg c("geometry", "year") will count sampling year at each site independently
 # 4. extraCols: a list of additional columns to include in the output, allows removal of frequency column
 #
@@ -114,15 +114,15 @@ create_table_RV <- function(data_sf, sarTable) {
 # 2. sarData: datatable of only listed species found within the studyArea
 
 create_sar_tables <- function(data_sf, sarTable, uniqueCols = c("geometry"), extraCols = c("Frequency")) {
-  
+
   if (is.null(data_sf)) {
     return(list("allSpecies" = NULL, "sarData" = NULL))
   }
-  
+
   allSpeciesData <- dplyr::select(data_sf, any_of(c("Scientific Name", "Common Name", extraCols)))
   allSpeciesData$geometry <- NULL
   allSpeciesData <- unique(allSpeciesData)
-  
+
   if ("Frequency" %in% extraCols) {
     # calculate the number of unique sample locations
     numTrawls <- dim(unique(data_sf[, uniqueCols]))[1]
@@ -131,37 +131,37 @@ create_sar_tables <- function(data_sf, sarTable, uniqueCols = c("geometry"), ext
       by = list("Scientific Name" = data_sf$`Scientific Name`),
       FUN = length)
     allSpeciesData <- merge(allSpeciesData, recordCounts, by = 'Scientific Name')
-    
+
     # add a field for the number of samples
     allSpeciesData$numTrawls <- numTrawls
     # combine the number of species records with number of samples
     # into a new field for Frequency
     allSpeciesData <- tidyr::unite(allSpeciesData, "Frequency",
-                                   c(Records, numTrawls), sep = "/", 
+                                   c(Records, numTrawls), sep = "/",
                                    remove = FALSE)
     allSpeciesData <- allSpeciesData[order(allSpeciesData$Records, decreasing = TRUE),]
   } else {
     allSpeciesData <- allSpeciesData[order(allSpeciesData$`Common Name`, decreasing = FALSE),]
   }
 
-  
-  
+
+
   allSpeciesData <- dplyr::select(allSpeciesData, c("Scientific Name", "Common Name", all_of(extraCols)))
-  
+
   skateRow <- filter(sarTable, COMMONNAME == "WINTER SKATE")
   skateRow$`Scientific Name` <- "Leucoraja ocellata	(Uncertain)"
   skateRow$`Common Name` <- "Winter Skate (possible Little Skate)"
   sarTable <- rbind(sarTable, skateRow)
-  
+
   sarData <- dplyr::inner_join(allSpeciesData, sarTable, by="Scientific Name", suffix = c(".x", ""))
   sarData <- dplyr::select(sarData, c("Scientific Name", "Common Name", "SARA status", "COSEWIC status", all_of(extraCols)))
-  
+
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
   sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
-  
+
   row.names(allSpeciesData) <- NULL
   row.names(sarData) <- NULL
-  
+
   outList <- list("allSpecies" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
@@ -337,7 +337,7 @@ table_crit <- function(CCH_sf, LB_sf, lang) {
   } else {
     stop("Specify Critical Habitat Table language choice (EN/FR)")
   }
-  
+
   if (!is.null(CCH_sf)){
     critTable <- dplyr::select(CCH_sf, all_of(critTableCols))
     critTable <- sf::st_drop_geometry(critTable)
