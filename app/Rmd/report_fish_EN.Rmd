@@ -101,7 +101,7 @@ writeLines(noquote(pasBay_rr$text$en))
 ```{r pasBay-results, include=FALSE, cache=FALSE}
 pasBayClipped <- master_intersect(pasBay_rr$data_sf, mapDataList)
 
-tableList <- create_table_ilts(pasBayClipped$studyData, listed_species)
+tableList <- create_sar_tables(pasBayClipped$studyData, listed_species)
 pasBayAllTable <- tableList$allSpecies
 pasBaySarTable <- tableList$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[PBBT](#pasBay-section)", pasBaySarTable, "Common Name", "Common Name")
@@ -157,7 +157,7 @@ From [@ILTS]: “An annual trawl survey is conducted in Southwestern Nova Scotia
 ```{r ilts-results, include=FALSE, cache=FALSE}
 iltsClipped <- master_intersect(ilts_rr$data_sf, mapDataList)
 
-tableList <- create_table_ilts(iltsClipped$studyData, listed_species)
+tableList <- create_sar_tables(iltsClipped$studyData, listed_species)
 iltsAllTable <- tableList$allSpecies
 iltsSarTable <- tableList$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ILTS](#ilts-section)", iltsSarTable, "Common Name", "Common Name")
@@ -313,7 +313,7 @@ OBIS is a global, open-access data and information clearing-house on marine biod
 ```{r obis-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(obisFish_rr$data_sf, mapDataList, Year = minYear)
 
-obisTable <- create_table_OBIS(outputList$studyData)
+obisTable <- create_sar_tables(outputList$studyData, listed_species, extraCols = c())$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", obisTable, "Common Name", "Common Name")
 
 ```
