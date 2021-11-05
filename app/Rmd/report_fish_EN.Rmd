@@ -356,7 +356,7 @@ The following is information summarized from Gibson et al. (2011) and Bowlby et 
 ```{r ef-results, include=FALSE, cache=FALSE}
 efOutputList <- master_intersect(ef_rr$data_sf, mapDataList)
 
-tableList <- create_table_ilts(efOutputList$studyData, listed_species, uniqueCols = c("geometry", "year"))
+tableList <- create_table_ilts(efOutputList$studyData, listed_species, uniqueCols = c("geometry", "Year"))
 efAllTable <- tableList$allSpecies
 efSarTable <- tableList$sarData
 
