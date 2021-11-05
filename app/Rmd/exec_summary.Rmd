@@ -113,11 +113,11 @@ rvSarTable <- create_table_RV(rv_rr$data_sf, listed_species)$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "RV", rvSarTable, "Common Name", "Individuals")
 
 # Pas bay
-pasBaySarTable <- create_table_ilts(pasBay_rr$data_sf, listed_species)$sarData
+pasBaySarTable <- create_sar_tables(pasBay_rr$data_sf, listed_species)$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "PBBT", pasBaySarTable, "Common Name", "Common Name")
 
 # ILTS
-iltsSarTable <- create_table_ilts(ilts_rr$data_sf, listed_species)$sarData
+iltsSarTable <- create_sar_tables(ilts_rr$data_sf, listed_species)$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "ILTS", iltsSarTable, "Common Name", "Common Name")
 
 # Marfis/ISDB
@@ -128,7 +128,7 @@ marfisSarTable <- create_table_MARFIS(marfis_rr$data_sf, listed_species, species
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "MARFIS", marfisSarTable, "Common Name", "Records")
 
 # OBIS
-obisTable <- create_table_OBIS(obisFish_rr$data_sf)
+obisTable <- create_sar_tables(obisFish_rr$data_sf, listed_species, extraCols = c())$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "OBIS", obisTable, "Common Name", "Common Name")
 
 # STURGEON

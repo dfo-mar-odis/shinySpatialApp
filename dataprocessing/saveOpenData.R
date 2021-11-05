@@ -87,11 +87,25 @@ if(!is.null(openEbsa_rr)) {
 # step through the functions.
 sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
 sardistResId <- "d16d8405-dddf-491b-8faf-8cc7a9f3a537"
+sardistCheckDate <-  get_check_date("sardist_rr")
 
-save_open_data(sardistPkgId, sardistResId, "sardist_rr", highQuality,
-               fileSavePath, contactEmail = email_format("info\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, gdbLayer = "DFO_SARA_Dist_2021_FGP_EN")
-
+openSardist_rr <- get_opendata_rr(sardistPkgId, sardistResId, 
+                                  region_sf = region_sf,
+                                  gdbLayer = "DFO_SARA_Dist_2021_FGP_EN", 
+                                  checkDate = sardistCheckDate)
+if(!is.null(openSardist_rr)) {
+  sardist_rr <- openSardist_rr
+  sardist_rr$metadata$qualityTier <- highQuality
+  sardist_rr$metadata$contact <- email_format("info\\@dfo-mpo.gc.ca")
+  sardist_rr$data_sf <- dplyr::select(sardist_rr$data_sf, 
+                                      c("Common_Name_EN", "Scientific_Name",
+                                        "Species_Link", "Shape"))
+  names(sardist_rr$data_sf) <- c("Common Name", "Scientific Name",
+                                 "Species_Link", "geometry")
+  st_geometry(sardist_rr$data_sf) <- "geometry"
+  
+  save(sardist_rr, file = file.path(fileSavePath, "Open/sardist_rr.RData"))
+}
 
 # -----------CritHab-------------- # check table cols.
 crithabPkgId <- "db177a8c-5d7d-49eb-8290-31e6a45d786c"
