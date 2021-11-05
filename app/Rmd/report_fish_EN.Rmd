@@ -350,13 +350,14 @@ load_rdata(c("ef_rr"), "MAR", env = environment())
 write_meta(ef_rr, "EN")
 ```
 
-The following is information summarized from Gibson et al. (2011) and Bowlby et al. (2013). Region wide electrofishing surveys in the Southern Upland region of Nova Scotian rivers were conducted in 2000 and in 2008/2009. Both surveys were and found to be similar in terms of total effort and coverage with a few differences. Marginally more sites were completed in 2008–2009 than in 2000 (151 versus 128), and two more rivers were visited (54 in 2008–2009; 52 in 2000). The majority of rivers in the latter survey were electrofished in 2008. However, as water conditions in 2008 prevented sampling in several rivers (predominantly north of the St. Mary’s River), the survey was continued in 2009 to fill in this gap. Electrofishing surveys have supported assessments of Atlantic salmon juvenile abundance, and information about other species including American eel, Brook Trout, Brown Trout, and White Sucker. This sections provides information primarily on species presence during these surveys. The absence of a species in the following summary should be interpreted as an absence of reporting, not necessarily as an absence of the species in a given river. For additional information, please access the following technical reports…
+The following is information summarized from Gibson et al. (2011) and Bowlby et al. (2013). Region wide electrofishing surveys in the Southern Upland region of Nova Scotian rivers were conducted in 2000 and in 2008/2009. Both surveys were and found to be similar in terms of total effort and coverage with a few differences. Marginally more sites were completed in 2008–2009 than in 2000 (151 versus 128), and two more rivers were visited (54 in 2008–2009; 52 in 2000). The majority of rivers in the latter survey were electrofished in 2008. However, as water conditions in 2008 prevented sampling in several rivers (predominantly north of the St. Mary’s River), the survey was continued in 2009 to fill in this gap. Electrofishing surveys have supported assessments of Atlantic salmon juvenile abundance, and information about other species including American eel, Brook Trout, Brown Trout, and White Sucker. This sections provides information primarily on species presence during these surveys. The absence of a species in the following summary should be interpreted as an absence of reporting, not necessarily as an absence of the species in a given river. For additional information, please access the following technical reports: [@Bowlby2009EF], [@Bowlby2013EF], [@Jones2018EF].
+
 
 #### ***Area-specific electrofishing survey search results***
 ```{r ef-results, include=FALSE, cache=FALSE}
 efOutputList <- master_intersect(ef_rr$data_sf, mapDataList)
 
-tableList <- create_table_ilts(efOutputList$studyData, listed_species, uniqueCols = c("geometry", "Year"))
+tableList <- create_sar_tables(efOutputList$studyData, listed_species, uniqueCols = c("geometry", "Year"))
 efAllTable <- tableList$allSpecies
 efSarTable <- tableList$sarData
 

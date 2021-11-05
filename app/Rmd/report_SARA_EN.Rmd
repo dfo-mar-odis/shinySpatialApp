@@ -63,8 +63,6 @@ outputListLB <- master_intersect(leatherback_rr$data_sf, mapDataList)
 
 critHabCheck <- !is.null(outputListCrithab$studyData) | !is.null(outputListLB$studyData)
 
-
-
 ```
 *
 ```{r sardist-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}

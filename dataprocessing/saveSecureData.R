@@ -208,7 +208,8 @@ efSurvey_to_sf <- function(surveyData, efSpecList, region_sf){
   extraCols <- c("Year_", "DataSource", "Document")
   surveyLong <- tidyr::pivot_longer(surveyData, cols = any_of(efSpecList$colNames), names_to = "colNames", values_to = "count")
   surveyLong <- dplyr::filter(surveyLong, count > 0)
-  surveyLong <- dplyr::select(surveyLong, c(extraCols, "Shape", "colNames"))
+  surveyLong <- dplyr::filter(surveyLong, Year_ > 2008)
+  surveyLong <- dplyr::select(surveyLong, all_of(c(extraCols, "Shape", "colNames")))
   surveyLong <- left_join(surveyLong, efSpecList, by = "colNames")
   survey_sf <- st_transform(st_as_sf(surveyLong), crs=4326)
   survey_sf <- st_crop(survey_sf, region_sf)
@@ -218,7 +219,7 @@ efSurvey_to_sf <- function(surveyData, efSpecList, region_sf){
   return(survey_sf)
 }
 
-fGdbPath <- file.path(fileLoadPath, "NaturalResources/Species/Electrofishing/EFishing_DFOScience.gdb")
+efGdbPath <- file.path(fileLoadPath, "NaturalResources/Species/Electrofishing/EFishing_DFOScience.gdb")
 st_layers(efGdbPath)
 
 efSurvey2009_sf <- st_read(efGdbPath, layer = "EFish_ECB_2006_2007_BowlbyGibson2009" )
@@ -235,10 +236,9 @@ ef_sf <- rbind(ef_sf, efSurvey_to_sf(efSurvey2018B_sf, efSpecList, region_sf))
 ef_rr <- list("title" = "Electrofishing Data","data_sf" = ef_sf,
               "attribute" = "Year",
               "metadata" = list("contact" = email_format("Dustin.Raab@dfo-mpo.gc.ca"), 
-                                "url" = lang_list("<https://www.ocearch.org/tracker/>"),
                                 "accessedOnStr" = list("en" ="October 18 2021 by Sean Butler", "fr" = "18 octobre 2021 par Sean Butler") ,
                                 "accessDate" = as.Date("2021-10-18"),
-                                "searchYears" = "2000-2014",
+                                "searchYears" = "2008-2014",
                                 "securityLevel" = noneList,
                                 "qualityTier" = highQuality,
                                 "constraints" = internalUse
