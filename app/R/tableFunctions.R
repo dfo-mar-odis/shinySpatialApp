@@ -1,14 +1,4 @@
-# --------List of table functions-----------
-# rockweed stats -three col table with area/status
-# create_table_RV
-# create_table_MARFIS
-# create_table_ISDB
-# create_table_OBIS
-# table_dist
-# table_crit
-# EBSA_report
-#
-
+# --------------Rockweed Table-------------
 # Rockweed stats
 # Inputs:
 # rockweed_sf: clipped rockweed_sf data
@@ -43,7 +33,7 @@ rockweedStats<- function(rockweed_sf) {
 }
 
 
-##### - create_table_RV function ##################################
+##### - create_table_RV ##################################
 # This function creates summary tables of the RV data
 # found within the studyArea
 #
@@ -108,66 +98,76 @@ create_table_RV <- function(data_sf, sarTable) {
   return(outList)
 }
 
-##### - create_table_ilts function ##################################
-# This function creates summary tables of the ILTS data
+##### - create_sar_tables ##################################
+# This function creates two summary tables of the species data
 # found within the studyArea
 #
 # Inputs:
 # 1. data_sf: an input point file of ILTS survey data found within the studyArea (eg. output from master_intersect)
 # 2. sarTable: a table of species at risk listed by SARA and/or COSEWIC
+# 3. uniqueCols: a list of the unique columns used for frequency counts, 
+#    eg c("geometry", "year") will count sampling year at each site independently
+# 4. extraCols: a list of additional columns to include in the output, allows removal of frequency column
 #
 # Outputs: list containing 2 items
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. sarData: datatable of only listed species found within the studyArea
-create_table_ilts <- function(data_sf, sarTable) {
+
+create_sar_tables <- function(data_sf, sarTable, uniqueCols = c("geometry"), extraCols = c("Frequency")) {
   
   if (is.null(data_sf)) {
     return(list("allSpecies" = NULL, "sarData" = NULL))
   }
   
-  # calculate the number of unique sample locations
-  numTrawls <- dim(unique(data_sf[, c("geometry")]))[1]
-  recordCounts <- aggregate(
-    x = list(Records = data_sf$`Scientific Name`),
-    by = list("Scientific Name" = data_sf$`Scientific Name`),
-    FUN = length)
-  
-  allSpeciesData <- dplyr::select(data_sf, c("Scientific Name", "Common Name"))
+  allSpeciesData <- dplyr::select(data_sf, any_of(c("Scientific Name", "Common Name", extraCols)))
   allSpeciesData$geometry <- NULL
   allSpeciesData <- unique(allSpeciesData)
-  allSpeciesData <- merge(allSpeciesData, recordCounts, by = 'Scientific Name')
   
-  # add a field for the number of samples
-  allSpeciesData$numTrawls <- numTrawls
-  # combine the number of species records with number of samples
-  # into a new field for Frequency
-  allSpeciesData <- tidyr::unite(allSpeciesData, "Frequency",
-                                 c(Records, numTrawls), sep = "/", 
-                                 remove = FALSE)
+  if ("Frequency" %in% extraCols) {
+    # calculate the number of unique sample locations
+    numTrawls <- dim(unique(data_sf[, uniqueCols]))[1]
+    recordCounts <- aggregate(
+      x = list(Records = data_sf$`Scientific Name`),
+      by = list("Scientific Name" = data_sf$`Scientific Name`),
+      FUN = length)
+    allSpeciesData <- merge(allSpeciesData, recordCounts, by = 'Scientific Name')
+    
+    # add a field for the number of samples
+    allSpeciesData$numTrawls <- numTrawls
+    # combine the number of species records with number of samples
+    # into a new field for Frequency
+    allSpeciesData <- tidyr::unite(allSpeciesData, "Frequency",
+                                   c(Records, numTrawls), sep = "/", 
+                                   remove = FALSE)
+    allSpeciesData <- allSpeciesData[order(allSpeciesData$Records, decreasing = TRUE),]
+  } else {
+    allSpeciesData <- allSpeciesData[order(allSpeciesData$`Common Name`, decreasing = FALSE),]
+  }
+
   
   
-  allSpeciesData <- allSpeciesData[order(allSpeciesData$Records, decreasing = TRUE),]
-  allSpeciesData <- dplyr::select(allSpeciesData, c("Scientific Name", "Common Name", "Frequency"))
+  allSpeciesData <- dplyr::select(allSpeciesData, c("Scientific Name", "Common Name", all_of(extraCols)))
   
   skateRow <- filter(sarTable, COMMONNAME == "WINTER SKATE")
   skateRow$`Scientific Name` <- "Leucoraja ocellata	(Uncertain)"
   skateRow$`Common Name` <- "Winter Skate (possible Little Skate)"
   sarTable <- rbind(sarTable, skateRow)
+  
   sarData <- dplyr::inner_join(allSpeciesData, sarTable, by="Scientific Name", suffix = c(".x", ""))
-  sarData <- dplyr::select(sarData, c("Scientific Name", "Common Name", "SARA status", "COSEWIC status", "Frequency"))
-
+  sarData <- dplyr::select(sarData, c("Scientific Name", "Common Name", "SARA status", "COSEWIC status", all_of(extraCols)))
+  
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
   sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
-    
+  
   row.names(allSpeciesData) <- NULL
   row.names(sarData) <- NULL
-
+  
   outList <- list("allSpecies" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
 
 
-##### - create_table_MARFIS function ##################################
+##### - create_table_MARFIS ##################################
 # This function creates summary tables of the MARFIS data
 # found within the studyArea
 #
@@ -228,10 +228,9 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
-##### - END create_table_MARFIS function ##################################
 
 
-##### - create_table_ISDB function ##################################
+##### - create_table_ISDB ##################################
 # This function creates summary tables of the ISDB data
 # found within the studyArea
 #
@@ -287,43 +286,8 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
-##### - END create_table_ISDB function ##################################
 
-
-##### - create_table_OBIS function ##################################
-# This function creates a summary table of the OBIS data
-# found within the studyArea
-# NOTE: the OBIS dataset has already been reduced down to just
-# SARA and COSEWIC listed species
-#
-# Inputs:
-# 1. data_sf: an input point file of OBIS data found within the studyArea
-#
-# Outputs: list containing 1 items
-# 1. outTable: datatable of all species found within the studyArea
-
-create_table_OBIS <- function(data_sf) {
-
-  if (is.null(data_sf)) {
-    return(NULL)
-  }
-
-  # calculate frequency of OBIS samples
-  outTable <- data_sf
-
-  outTable <- dplyr::select(outTable, "Scientific Name", "Common Name",
-                            "SARA status","COSEWIC status")
-  outTable$geometry <- NULL
-  outTable <- unique(outTable)
-
-  outTable$`Scientific Name` <- italicize_col(outTable$`Scientific Name`)
-
-  row.names(outTable) <- NULL
-  return(outTable)
-}
-
-
-##### - sfcoords_as_cols function ##################################
+##### - sfcoords_as_cols  ##################################
 # This function extracts X and Y coordinates from the
 # sf geometry field and puts them in new fields ("long", "lat")
 #
@@ -339,51 +303,6 @@ sfcoords_as_cols <- function(data_sf, names = c("long","lat")) {
   data_sf <- dplyr::bind_cols(data_sf, ret)
   return(data_sf)
 }
-##### - END sfcoords_as_cols function ##################################
-
-
-####### - Other functions (by Greg Puncher) ##########################################
-########## Species At Risk distribution and Critical Habitat data ##########
-
-# ---------TABLE DIST-------
-# Generates table for SAR distribution data
-# Inputs:
-# clippedSardist_sf: Sardist data clipped to area of interest
-#
-# Outputs:
-# distTable: table used in the report
-#
-table_dist <- function(clippedSardist_sf, lang) {
-
-  if (is.null(clippedSardist_sf)) {
-    return(NULL)
-  }
-  
-  if (lang == "EN") {
-    clippedSardist_sf <- dplyr::mutate(clippedSardist_sf, Common_Name_EN = str_replace(Common_Name_EN, "`", "'"))
-    distTable <- dplyr::select(clippedSardist_sf, Scientific_Name, Common_Name_EN,
-                               Population_EN, SARA_Status, Species_Link)
-    tableNames <-  c("Scientific Name", "Common Name", "Population", "SARA Status", "Species Link")
-  } else if(lang =="FR") {
-    clippedSardist_sf <- dplyr::mutate(clippedSardist_sf, Common_Name_FR = str_replace(Common_Name_FR, "`", "'"))
-    clippedSardist_sf <- dplyr::mutate(clippedSardist_sf, Population_FR = str_replace(Population_FR, "`", "'"))
-    
-    distTable <- dplyr::select(clippedSardist_sf, Scientific_Name, Common_Name_FR,
-                               Population_FR, SARA_Status, Species_Link)
-    tableNames <-  c("Nom Scientific", "Nom Commun", "Population", "Statut LEP", "Lien d'espèce")
-  } else {
-    stop("Specify language choice (EN/FR)")
-  }
-
-  sf::st_geometry(distTable) <- NULL
-  row.names(distTable) <- NULL
-  distTable <- unique(distTable)
-  distTable$Scientific_Name <- italicize_col(distTable$Scientific)
-  names(distTable) <- tableNames
-
-  return(distTable)
-}
-
 
 # helper function that italicizes a column of a table in RMD.
 italicize_col <- function(tableCol) {
@@ -443,9 +362,6 @@ table_crit <- function(CCH_sf, LB_sf, lang) {
     return(critTable)
   }
 }
-
-
-########## Spatial Planning Section ##########
 
 # ---------EBSA_report-------
 # Generates table for SAR SAR critical habitat data
