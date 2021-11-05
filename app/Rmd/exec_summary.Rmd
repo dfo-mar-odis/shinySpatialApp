@@ -156,6 +156,8 @@ summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH",
 # crithab, sardist
 critHabCheck <- !is.null(crithab_rr$data_sf) | !is.null(leatherback_rr$data_sf)
 distTable <- table_dist(sardist_rr$data_sf, "EN")
+distTable <- create_sar_tables(sardist_rr$data_sf, listed_species, extraCols = c("Species_Link"))$sarData
+
 summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "SAR Distribution",  distTable, "Common Name", "Common Name")
 
 if (critHabCheck) {
