@@ -52,6 +52,9 @@ Critical habitat presented in this section are available in the Government of Ca
 # not plotted
 outputListSardist <- master_intersect(sardist_rr$data_sf, mapDataList)
 
+distTable <- table_dist(outputListSardist$studyData, "EN")
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distribution](#sardist-section)",  distTable, "Common Name", "Common Name")
+
 # plotted with colour
 legendNameCrithab <- "Common Name"
 outputListCrithab <- master_intersect(crithab_rr$data_sf, mapDataList)
@@ -60,9 +63,6 @@ outputListCrithab <- master_intersect(crithab_rr$data_sf, mapDataList)
 outputListLB <- master_intersect(leatherback_rr$data_sf, mapDataList)
 
 critHabCheck <- !is.null(outputListCrithab$studyData) | !is.null(outputListLB$studyData)
-
-distTable <- table_dist(outputListSardist$studyData, "EN")
-summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distribution](#sardist-section)",  distTable, "Common Name", "Common Name")
 
 ```
 *

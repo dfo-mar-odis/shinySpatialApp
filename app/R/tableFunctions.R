@@ -376,11 +376,11 @@ table_dist <- function(clippedSardist_sf, lang) {
   }
 
   sf::st_geometry(distTable) <- NULL
-  row.names(distTable) <- NULL
   distTable <- unique(distTable)
   distTable$Scientific_Name <- italicize_col(distTable$Scientific)
   names(distTable) <- tableNames
-
+  row.names(distTable) <- NULL
+  
   return(distTable)
 }
 
