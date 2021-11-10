@@ -19,24 +19,16 @@ jobs:
       RENV_PATHS_ROOT: ~/.local/share/renv
     steps:
       - uses: actions/checkout@v2
-
-    
-      - name: Send greeting
-        run: echo "Hello World"
-          
-      - name: Cache packages
-        uses: actions/cache@v1
+      - uses: r-lib/actions/setup-r@v1
         with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
+          cache-version: 2
+          
+          
+      - name: Send greeting
+        run: ls
+          
 
-      - name: Restore packages
-        run: |
-          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
-          renv::restore()
-        shell: Rscript {0}
+
         
       - name: Send end  greeting
         run: echo "Goodbye World"
