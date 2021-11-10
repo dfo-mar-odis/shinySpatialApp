@@ -9,7 +9,7 @@ on:
         default: 'World'
         required: false
   schedule:
-  - cron: "0 0 * * *"
+  - cron: "0 12 * * *"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -20,6 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-renv@v1
         with:
           cache-version: 2
           
