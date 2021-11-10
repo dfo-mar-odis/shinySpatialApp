@@ -25,6 +25,12 @@ jobs:
         run: rm .Rprofile
     
       - uses: r-lib/actions/setup-r@v1
+      
+      - name: install devtools
+        run: |
+          install.packages("devtools")
+        shell: RScript {0}
+      
       - uses: r-lib/actions/setup-renv@v1
         with:
           cache-version: 2
