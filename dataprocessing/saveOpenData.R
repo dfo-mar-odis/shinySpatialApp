@@ -5,7 +5,7 @@ fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Da
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-loadResult <- load_rdata(c("CommonData", "ebsa_rr", "crithab_rr", "sardist_rr", "nbw_rr", 
+loadResult <- load_rdata(c("CommonData", "ebsa_rr", "crithab_rr", "sardist_rr",
                            "blueWhaleHab_rr", "obisCet_rr", "obisFish_rr",
                            "finWhale_rr", "seiWhale_rr", "humpbackWhale_rr",
                            "rockweed_rr", "harbourPorpoise_rr", "nbw_rr",
