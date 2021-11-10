@@ -28,7 +28,7 @@ jobs:
       
       - name: Fix units R package install asdf
         run: |
-          apt install libudunits2-dev
+          sudo apt install libudunits2-dev libgdal-dev
       
       - name: install devtools
         run: |
