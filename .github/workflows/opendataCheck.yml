@@ -21,14 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
     
-      name: nuke Rprofile
+      - name: nuke Rprofile
         run: rm .Rprofile
     
       - uses: r-lib/actions/setup-r@v1
       - uses: r-lib/actions/setup-renv@v1
-      with:
-        cache-version: 2
+        with:
+          cache-version: 2
       
       - name: Run opendata check
-        run: source(here::here("dataprocessing/openDataGitScript.R")) 
-        shell: Rscript {0}
+        run: RScript dataprocessing/openDataGitScript.R
+        
