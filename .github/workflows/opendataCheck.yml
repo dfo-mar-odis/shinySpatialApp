@@ -18,6 +18,9 @@ jobs:
     env:
       RENV_PATHS_ROOT: ~/.local/share/renv
     steps:
+      - uses: actions/checkout@v2
+
+    
       - name: Send greeting
         run: echo "Hello World"
           
