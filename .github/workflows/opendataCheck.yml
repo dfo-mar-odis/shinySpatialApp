@@ -24,11 +24,6 @@ jobs:
           cache-version: 2
           
           
-      - name: Send greeting
-        run: ls
-          
-
-
-        
-      - name: Send end  greeting
-        run: echo "Goodbye World"
+      - name: Run opendata check
+        run: source(here::here("dataprocessing/openDataGitScript.R")) 
+        shell: Rscript {0}
