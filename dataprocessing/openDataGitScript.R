@@ -13,7 +13,7 @@ check_for_open_data_updates <- function() {
     updatePkgs$msg <- paste("Update", updatePkgs$rr.Name, 
                             "object from opendata record:", updatePkgs$Title, 
                             "  \n\n")
-    warning(updatePkgs$msg)
+    stop(updatePkgs$msg)
   }
 }
 
