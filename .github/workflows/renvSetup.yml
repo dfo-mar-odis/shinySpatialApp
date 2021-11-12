@@ -25,9 +25,9 @@ jobs:
     
       - uses: r-lib/actions/setup-r@v1
       
-      - name: Fix units R package install asdf
+      - name: Fix units R package
         run: |
-          sudo apt install libudunits2-dev libgdal-dev
+          sudo apt install libudunits2-dev libgdal-dev libcurl4-openssl-dev 
       
       - name: install devtools
         run: |

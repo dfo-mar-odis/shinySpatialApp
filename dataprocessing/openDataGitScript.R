@@ -24,7 +24,7 @@ check_for_open_data_updates <- function() {
   openDataData$pkgDate <- lapply(openDataData$Package.Id, date_from_pkg)
   
   if (any(openDataData$pkgDate > openDataData$checkDate)) {
-    updatePkgs <- dplyr::filter(openDataData, pkgDate > checkDate)
+    updatePkgs <- subset(openDataData, pkgDate > checkDate)
     updatePkgs$msg <- paste("Update", updatePkgs$rr.Name, 
                             "object from opendata record:", updatePkgs$Title, 
                             "  \n\n")

@@ -23,8 +23,12 @@ jobs:
     
       - uses: r-lib/actions/setup-r@v1
       
+      - name: Fix units R package
+        run: |
+          sudo apt install libcurl4-openssl-dev 
+      
       - name: Run opendata check
         run: |
-          install.packages(c("ckanr", "here", "dplyr"))
+          install.packages(c("ckanr", "here"))
           source(here::here("dataprocessing/openDataGitScript.R"))
         shell: Rscript {0}
