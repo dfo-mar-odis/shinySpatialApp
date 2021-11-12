@@ -39,9 +39,4 @@ jobs:
         with:
           cache-version: 2
       
-      - name: Run opendata check
-        run: |
-          source(here::here("dataprocessing/openDataGitScript.R"))
-        shell: Rscript {0}
-        
         
