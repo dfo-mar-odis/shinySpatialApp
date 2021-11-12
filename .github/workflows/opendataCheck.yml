@@ -25,6 +25,6 @@ jobs:
       
       - name: Run opendata check
         run: |
-          install.packages("ckanr", "here", "dplyr")
+          install.packages(c("ckanr", "here", "dplyr"))
           source(here::here("dataprocessing/openDataGitScript.R"))
         shell: Rscript {0}
