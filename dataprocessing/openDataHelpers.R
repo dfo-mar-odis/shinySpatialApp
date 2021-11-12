@@ -1,4 +1,4 @@
-renv::install("ckanr") #you need to install the packages every time since it is a fresh container
+install.packages("ckanr") #you need to install the packages every time since it is a fresh container
 
 library(ckanr)
 library(sf)
