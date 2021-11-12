@@ -3,6 +3,7 @@ install.packages("ckanr") #you need to install the packages every time since it 
 library(ckanr)
 library(sf)
 source(here::here("app/R/helpers.R"))
+source(here::here("app/R/dataFunctions.R"))
 ckanr_setup(url="https://open.canada.ca/data")
 
 
