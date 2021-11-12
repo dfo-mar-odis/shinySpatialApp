@@ -57,7 +57,7 @@ Report_RV<-noquote(Report_RV)
 writeLines(Report_RV)
 ```
 
-```{r RV-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: none. Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area'}
+```{r RV-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(rv_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from the Maritimes Research Vessel (RV) Trawl Survey. Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Frequency represents number of trawls in which a given species was sampled, relative to the total number of trawls within the search area')}
 if (!is.null(outputList$studyData)) {
 areaMap +
     geom_segment(aes(x = Samples_bbox$long,
@@ -117,7 +117,7 @@ pasBayCheck <- if (!is.null(pasBayClipped$studyData)) {
 writeLines(noquote(pasBayCheck))
 ```
 
-```{r pasBay-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: None. Map showing the search area defined by the user (red outline) used to query information from the Passamaquoddy Bay Biodiversity Trawls.  Blue lines indicate the location of each trawl sample.'}
+```{r pasBay-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(pasBay_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from the Passamaquoddy Bay Biodiversity Trawls.  Blue lines indicate the location of each trawl sample.')}
 
 if (!is.null(pasBayClipped$studyData)) {
     plot_rr_sf(areaMap, pasBayClipped$mapData, lwd = 0.7, colour = "blue")
@@ -175,7 +175,7 @@ writeLines(noquote(iltsCheck))
 ```
 
 
-```{r ilts-plot, fig.height=8, fig.width=11, fig.cap= 'Quality Tier: High. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Blue lines indicate the location of each NEST trawl sample.'}
+```{r ilts-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(ilts_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Blue lines indicate the location of each NEST trawl sample.')}
 
 if (!is.null(iltsClipped$studyData)) {
     plot_rr_sf(areaMap, iltsClipped$mapData, lwd = 1, colour = "blue")
@@ -266,7 +266,7 @@ Report_marfis<-noquote(Report_marfis)
 writeLines(Report_marfis)
 ```
 
-```{r marfis-isdb-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: Protected B. Map showing the search area defined by the user (red outline) used to query aggregated information from Maritimes Fishery Information System (MARFIS) and/or Industry Survey Database (ISDB) observation records shown as black points, for all species. Rule of five was not applied.'}
+```{r marfis-isdb-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(marfis_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query aggregated information from Maritimes Fishery Information System (MARFIS) and/or Industry Survey Database (ISDB) observation records shown as black points, for all species. Rule of five was not applied.')}
 if (!is.null(outputListI$studyData) & !is.null(outputListM$studyData)) {
   areaMap + geom_point(data = Samples_bboxI, aes(x = long, y = lat), size = 2, shape = 16, col = "black") + geom_point(data = Samples_bboxM, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
 } else if (!is.null(outputListI$studyData)) {
@@ -328,7 +328,7 @@ Report_obis<-noquote(Report_obis)
 writeLines(Report_obis)
 ```
 
-```{r obis-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline) was used to query information from Ocean Biodiversity Information System (OBIS) observation records, for species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.'}
+```{r obis-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(obisFish_rr, "EN"), 'Map showing the search area defined by the user (red outline) was used to query information from Ocean Biodiversity Information System (OBIS) observation records, for species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
 if (!is.null(outputList$studyData)) {
   plot_rr_sf(areaMap, outputList$mapData)
 }
@@ -375,7 +375,7 @@ sturgCheck <- if (is.null(sturgOutputList$studyData)) {
 writeLines(noquote(sturgCheck))
 ```
 
-```{r sturg-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Survey sites illustrating Atlantic Sturgeon Foraging Areas sampled during 2020 in the Upper Bay of Fundy. Note that this map mostly represents survey sites. This map should not be interpreted as a comprehensive list of Atlantic Sturgeon foraging areas as additional locations are available, although not yet sampled, in the upper Bay of Fundy.  '}
+```{r sturg-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(sturg_rr, "EN"), 'Survey sites illustrating Atlantic Sturgeon Foraging Areas sampled during 2020 in the Upper Bay of Fundy. Note that this map mostly represents survey sites. This map should not be interpreted as a comprehensive list of Atlantic Sturgeon foraging areas as additional locations are available, although not yet sampled, in the upper Bay of Fundy.  ')}
 if (!is.null(sturgOutputList$studyData)) {
   plot_rr_sf(areaMap, sturgOutputList$mapData, sturg_rr$attribute, outlines=FALSE,
              labelData=sturgOutputList$mapData, labelAttribute = "siteId")
@@ -430,7 +430,7 @@ Report_ocearch <- if (is.null(ocearchOutputList$studyData)) {
 Report_obis<-noquote(Report_ocearch)
 writeLines(Report_ocearch)
 ```
-```{r ocearch-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user (red outline) was used to query information from OCEARCH Shark Tracker observation records, for White Shark. Dataset set has not yet been completely error-checked. The absence of a species in this figure should be interpreted as an absence of tracking data, not necessarily as an absence of the species in the area.'}
+```{r ocearch-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(ocearch_rr, "EN"), 'Map showing the search area defined by the user (red outline) was used to query information from OCEARCH Shark Tracker observation records, for White Shark. Dataset set has not yet been completely error-checked. The absence of a species in this figure should be interpreted as an absence of tracking data, not necessarily as an absence of the species in the area.')}
 if (!is.null(ocearchOutputList$studyData)) {
   plot_rr_sf(areaMap, ocearchOutputList$mapPoints)
 }

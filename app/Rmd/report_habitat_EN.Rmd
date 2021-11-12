@@ -48,7 +48,7 @@ polyText <- noquote(polyText)
 writeLines(polyText)
 ```
 
-```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
+```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(rockweed_rr, "EN"), 'Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.')}
 if(!is.null(clippedRW$studyData)){
   plot_rr_sf(areaMap, clippedRW$mapData, rockweed_rr$attribute, outlines = FALSE, legendName="Rockweed")
 }

@@ -362,8 +362,8 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   #Arrange all 4 cetaceans into grid
   gridExtra::grid.arrange(finWhalePlot, harbourPorpoisePlot, humpbackWhalePlot,
                           seiWhalePlot,
-                          bottom = expression(paste("Longitude ",degree,"N",sep="")),
-                          left = expression(paste("Latitude ",degree,"N",sep="")),
+                          bottom = "",
+                          left = "",
                           nrow = 2)
 }
 
@@ -541,12 +541,14 @@ format_ggplot <- function(ggplotIn, bbox) {
                                      gp=grid::gpar(fontsize=30, alpha=0.5, col="grey70", fontface="bold")),
                       xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
     annotation_scale(location = "bl") +
-    theme_bw()+
-    labs(x = expression(paste("Longitude ", degree, "W", sep = "")),
-         y = expression(paste("Latitude ", degree, "N", sep = "")),
+    theme_bw() +
+    labs(x = "",
+         y = "",
          col = "")  +
-    theme(axis.title.y = element_text(size = 13))+
-    theme(axis.title.x = element_text(size = 13))
+    theme(axis.title.y = element_text(size = 13)) +
+    theme(axis.title.x = element_text(size = 13)) + 
+    theme(axis.text.x = element_text(size = 14)) + 
+    theme(axis.text.y = element_text(size = 14))
   
   # crop to bbox if used:
   if (class(bbox) == "bbox") {

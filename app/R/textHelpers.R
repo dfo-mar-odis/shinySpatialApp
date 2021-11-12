@@ -28,4 +28,20 @@ write_meta <- function(rr, lang) {
   writeLines(noquote(outText), sep="  \n")
 }
   
+write_caption_blurb <- function(rr, lang) {
+  metadata <- rr$metadata
+  outText <- ""
+  if (lang == "EN"){
+    outText <- paste("Quality tier: ", metadata$qualityTier$en, ". ", 
+                     "Security level: ", metadata$securityLevel$en,
+                     ". ", sep="") 
+    
+  } else if (lang == "FR") {
+    outText <- paste("Niveau de qualité:", metadata$qualityTier$fr, ". ", 
+                     "Niveau de sécurité:", metadata$securityLevel$fr,
+                     ". ", sep="") 
+  }
+  return(outText)
+}
+
 
