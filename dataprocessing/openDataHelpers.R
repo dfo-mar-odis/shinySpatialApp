@@ -1,8 +1,9 @@
-renv::install("ckanr") #you need to install the packages every time since it is a fresh container
+install.packages("ckanr") #you need to install the packages every time since it is a fresh container
 
 library(ckanr)
 library(sf)
 source(here::here("app/R/helpers.R"))
+source(here::here("app/R/dataFunctions.R"))
 ckanr_setup(url="https://open.canada.ca/data")
 
 
