@@ -1,6 +1,6 @@
 # This is a workflow to check for open data updates
 
-name: Open Data Check
+name: Renv Setup
 on:
   workflow_dispatch:
     # Inputs the workflow accepts.
