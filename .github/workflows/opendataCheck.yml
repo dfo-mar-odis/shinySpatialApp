@@ -12,7 +12,7 @@ on:
   - cron: "0 0 10 * *"
 
 jobs:
-  setup_renv_check:
+  open_data_check:
     runs-on: ubuntu-latest
  
     steps:
@@ -23,12 +23,16 @@ jobs:
     
       - uses: r-lib/actions/setup-r@v1
       
-      - name: Fix units R package
+      - name: Fix ubuntu packages
         run: |
           sudo apt install libcurl4-openssl-dev 
       
-      - name: Run opendata check
+      - name: Install R packages
         run: |
-          install.packages(c("ckanr", "here"))
+          install.packages(c("ckanr", "here"), quiet=TRUE)
+        shell: Rscript {0}  
+        
+      - name: Run Script
+        run: |
           source(here::here("dataprocessing/openDataGitScript.R"))
         shell: Rscript {0}
