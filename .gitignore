@@ -28,6 +28,7 @@ tests/temp/*
 tests/*.RData
 !tests/temp/.gitkeep
 dataprocessing/temp/*
+!dataprocessing/openDataData.csv
 !dataprocessing/temp/.gitkeep
 # History files
 .Rhistory
