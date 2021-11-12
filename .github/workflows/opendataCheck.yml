@@ -41,7 +41,7 @@ jobs:
       
       - name: Run opendata check
         run: |
-          dataprocessing/openDataGitScript.R
+          source(here::here("dataprocessing/openDataGitScript.R"))
         shell: Rscript {0}
         
         
