@@ -322,7 +322,7 @@ if (!is.null(blueWhaleHab_rr$data_sf)){
 ```
 
 
-```{r bw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Map of Blue Whale Important Habitat located within the search area (red outline))'}
+```{r bw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality tier: High. Security level: none. Map of Blue Whale Important Habitat located within the search area (red outline))'}
 if (!is.null(clipped$mapData)){
   plot_rr_sf(areaMap, clipped$mapData, blueWhaleHab_rr$attribute, colorMap = bwPlotList$colorMap)
 }
@@ -368,13 +368,13 @@ polyText <- if(is.null(clipped$studyData)){"Search area does not overlap with No
  writeLines(polyText)
 ```
 
-```{r nbw-region-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: High. Security level: none. Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
+```{r nbw-region-plot, fig.height=8, fig.width=11, fig.cap='Quality tier: High. Security level: none. Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
 if (!is.null(nbw_rr$data_sf)){
   plot_rr_sf(regionMap, nbw_rr$data_sf, nbw_rr$attribute)
 }
 ```
 
-```{r nbw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf.'}
+```{r nbw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality tier: High. Security level: none. This map summarizes areas where the search polygon overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf.'}
 if (!is.null(clipped$mapData)){
   plot_rr_sf(areaMap, clipped$mapData, nbw_rr$attribute)
 }

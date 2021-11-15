@@ -285,6 +285,7 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
                                       "accessedOnStr" = list("en" ="February 17 2021", 
                                                              "fr" = "17 février 2021") ,
                                       "accessDate" = as.Date("2021-02-17"),
+                                      "searchYears" = "2020",
                                       "securityLevel" = noneList,
                                       "qualityTier" = mediumQuality,
                                       "constraints" = internalUse
