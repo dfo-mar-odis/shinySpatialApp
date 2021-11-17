@@ -1,15 +1,15 @@
 ---
 output: html_document
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 ## **HABITAT INFORMATION**
 
-This section describes habitat information derived from a variety of data sources, internal and external to DFO. Area-specific outputs are provided in sub-sections labelled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
+This module describes outputs of habitat derived from a variety of sources. Area-specific outputs are provided in sub-sections labelled according to each data source. Data descriptions, references and contact information are provided at the beginning of each sub-section.
 
 ### **Intertidal Vegetation and Rockweed**
 
-Satellite-based Maps of Intertidal Vegetation and Rockweed presence polygons 
+Satellite-based Maps of Intertidal Vegetation and Rockweed presence polygons
 
 ```{r rockweed-load, include=FALSE}
 load_rdata(c("rockweed_rr"), "MAR", env = environment())
@@ -21,7 +21,7 @@ write_meta(rockweed_rr, "EN")
 
 Rockweed (_Ascophyllum nodosum_) is a common, cold-water, intertidal, brown algae with long-lived holdfasts attached to rocky substrates. It dominates the rocky intertidal zone of Atlantic Canada and provides habitat for fish, invertebrates, and birds. There is little information available on spatial distribution of rockweed and intertidal vegetation in the Maritimes Region. The existing industry survey data are deemed proprietary and are not available. Consequently, regional scale satellite-derived maps were developed to indicate location, relative density of the intertidal vegetation, and polygons delineating areas likely occupied by rockweed [@Lazin2021].
 
-Maps are generated using clear sky Sentinel-2 satellite data in 10 m ground resolution by applying a well-established Normalized Difference Vegetation Index (NDVI) to detect intertidal vegetation exposed during low tide. Vegetation patches are delineated using thresholds, and likelihood of rockweed presence is assigned based on the shoreline substrate classification, aerial photo/video archives, and data from open access biodiversity databases. Final products will be maintained on the Government of Canada Open Data portal and will be continuously improved as new ground truth data becomes available. 
+Maps are generated using clear sky Sentinel-2 satellite data in 10 m ground resolution by applying a well-established Normalized Difference Vegetation Index (NDVI) to detect intertidal vegetation exposed during low tide. Vegetation patches are delineated using thresholds, and likelihood of rockweed presence is assigned based on the shoreline substrate classification, aerial photo/video archives, and data from open access biodiversity databases. Final products will be maintained on the Government of Canada Open Data portal and will be continuously improved as new ground truth data becomes available.
 
 Data notes:
 
@@ -63,7 +63,7 @@ if(!is.null(clippedRW$studyData)){
 
 ```{r rockweed-table}
 if(!is.null(clippedRW$studyData)){
-  knitr::kable(rwTable,align="l", caption = "Number of vegetation polygons and surface area occupied by each category for the study area. Total intertidal vegetations is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
+  knitr::kable(rwTable,align="l", caption = "Number of vegetation polygons and area (km2) occupied by each rockweed classification category for the search area. Total intertidal vegetation is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
-} 
+}
 ```
