@@ -1,0 +1,58 @@
+
+### **Blue Whale Important Habitat** {#bwhab-section}
+
+```{r bwhab-load, include=FALSE}
+load_rdata(c("blueWhaleHab_rr"), "MAR", env = environment())
+```
+
+```{r bwhab-meta, results='asis'}
+write_meta(blueWhaleHab_rr, "EN")
+```
+
+Dataset description from the Open Data record [@OpenData_blue_imphabitat]:
+```{r bwhab-text, results='asis'}
+# trim extra sections off.  
+blueWhaleText <- sub("The attribute table has been completed with the information contained in the following  research document: .*", "", blueWhaleHab_rr$text$en)
+writeLines(noquote(blueWhaleText))
+
+```
+
+Please see a list of all sources of information used in @Lesage2018 and the Open Data record [@OpenData_blue_imphabitat]: <https://open.canada.ca/data/en/dataset/8fafd919-fcbe-43a3-a911-3d9461273441>.
+
+#### ***Area-specific Blue Whale Important Habitat search results***
+
+```{r overlap-bw-habitat, echo=FALSE, results='asis'}
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- master_intersect(blueWhaleHab_rr$data_sf, mapDataList)
+if(!is.null(clipped$studyData)){
+  summaryBWTable <- data.frame("Species" = "Blue Whale")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[BW Habitat](#bwhab-section)", summaryBWTable, "Species", "Species")
+}
+
+```
+*
+```{r bw-result, echo=FALSE, results='asis'}
+polyText <- if(is.null(clipped$studyData)){
+  "Search area does not overlap with Blue Whale Important Habitat in the Western North Atlantic."
+} else {
+  "Search area overlaps with Blue Whale Important Habitat in the Western North Atlantic."
+}
+
+polyText <- noquote(polyText)
+writeLines(polyText)
+```
+
+```{r bw-region-plot, fig.height=4, fig.width=11, fig.cap=paste(write_caption_blurb(blueWhaleHab_rr, "EN"), 'Blue Whale Important Habitat in the Western North Atlantic. Polygons delimit areas in Canadian waters that are important to Blue Whales for foraging and migration. These areas identified in the report by Lesage et al. (2018) are considered important for the survival and recovery of Blue Whales from the western North Atlantic population. Blue Whales most likely need to use several of these important habitats to fulfill their biological needs. As a result, access corridors and habitat they connect need to be considered equally important for the population.')}
+if (!is.null(blueWhaleHab_rr$data_sf)){
+  bwPlotList <- plot_rr_sf(regionMap, blueWhaleHab_rr$data_sf, blueWhaleHab_rr$attribute, getColorMap = TRUE)
+  bwPlotList$polyMap
+}  
+```
+
+
+```{r bw-area-plot, fig.height=4, fig.width=11, fig.cap=paste(write_caption_blurb(blueWhaleHab_rr, "EN"), ' Map of Blue Whale Important Habitat located within the search area (red outline))')}
+if (!is.null(clipped$mapData)){
+  plot_rr_sf(areaMap, clipped$mapData, blueWhaleHab_rr$attribute, colorMap = bwPlotList$colorMap)
+}
+```
+

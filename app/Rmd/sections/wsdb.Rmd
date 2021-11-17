@@ -1,0 +1,54 @@
+
+### **Whale Sightings Database (WSDB)** {#WSDB-section}
+
+```{r wsdb-load, include=FALSE}
+load_rdata(c("wsdb_rr"), "MAR", env = environment())
+```
+
+```{r wsdb-meta, results='asis'}
+write_meta(wsdb_rr, "EN")
+```
+
+The Marine Mammal and Pelagic Animals, or Whale Sighting Database (WSDB), was implemented in 2002 by DFO to provide a central repository for reported sightings of marine animals, especially cetaceans, and to improve accessibility to sightings data from a variety of sources, including some data from marine mammal surveys and research activities [@WSDB]. Most efforts to collate available sightings data focused on the collecting data from various sources operating in Nova Scotia waters (including the Bay of Fundy and Scotian Shelf), and more recently in the Gulf of St. Lawrence, while less efforts were made to obtain available data from other regions. Most sightings were collected on an opportunistic basis and observations came from individuals with a wide range of expertise and experience in marine mammal identification. For more information see: <http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database> or @WSDB <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf>.
+
+This database does not actively seek to store information on marine mammal incidents (i.e., dead, killed, stranded, entangled, or injured animals) and, thus, this type of information is very incomplete. For this reason, in this report:
+
+-   Sightings with Behaviour coded as "dead", "killed" or "stranded" are not included.
+-   Sightings with Animal Condition coded as "dead" are not included.
+-   Sightings with Gear Impact recorded coded as "Entangled - dead on gear" or "dead - not entangled" are not included.
+
+Please note the following important disclaimers and caveats associated with sightings from the WSDB:
+
+-   The data represent an amalgamation of sightings across years and seasons. The sighting data are biased towards where and when activities were conducted; thus, sighting effort is unequal across months, years or areas. Therefore, apparent differences in seasonal or annual distribution patterns in the sighting data should not be considered definitive. Unfavorable weather and reduced visual effort in winter, spring, and autumn likely account for the fewer sighting records in these seasons compared to summer.
+-   Sighting effort has not been quantified (i.e., the data cannot be used to estimate true/relative species density or abundance for an area, or species absence). Species absence in an area should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.
+-   The sighting data have not been completely error-checked and may contain duplicate records. Sightings may also include sightings of the same animals reported by multiple platforms/vessels.
+-   The quality of some of the sighting data is unknown. Most sightings were collected on an opportunistic basis and observations come from individuals with a wide range of expertise and experience in marine-mammal identification.
+-   There is significant uncertainty in the number of animals included in each sighting due to the challenges associated with quantifying the number of individuals observed in a group.
+-   Sightings that could not be identified to species are listed to the lowest taxonomic group possible.
+
+#### ***Area-specific WSDB search results***
+
+```{r wsdb, include=FALSE, cache=FALSE}
+wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)
+linkedSectionText <- "[WSDB](#WSDB-section)"
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, wsdb_rr$attribute)
+if (!is.null(wsdbClipped$studyData)) {
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
+```
+*
+```{r wsdb-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_wsdb <- if (is.null(wsdbClipped$studyData)) {
+   "There are no relevant records in the WSDB for this search area."
+ } else {
+   "There are relevant records in the WSDB for this search area."
+ }
+writeLines(Report_wsdb)
+```
+```{r wsdb-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(wsdb_rr, "EN"), 'Map of cetacean species, listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), from the Whale Sightings Database (WSDB) (including sightings of groups of animals), observed within the search area (red outline). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.')}
+if (!is.null(wsdbClipped$studyData)) {
+  plot_rr_sf(areaMap, wsdbClipped$mapData, attribute=wsdb_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
+}
+```
