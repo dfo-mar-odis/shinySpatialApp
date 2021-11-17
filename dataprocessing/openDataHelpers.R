@@ -157,7 +157,7 @@ download_extract_res_files <- function(resId, csvFileList = NULL) {
   tempDir <- here::here("dataprocessing/temp")
   
   
-  if (res$format == "CSV") {
+  if (res$format == "CSV" & is.null(csvFileList)) {
     temp <- here::here("dataprocessing/temp/csvFile.csv")
     download.file(zipUrl, temp)
     dfList <- read.csv(temp)

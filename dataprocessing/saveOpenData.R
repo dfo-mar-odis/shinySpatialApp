@@ -307,18 +307,22 @@ minYear <- 2010
 fourVSWResId <- "ca308c48-2a87-4dcb-a4ba-90297b853635"
 fourVSWDfs <- download_extract_res_files(fourVSWResId, rvCsvList)
 fourVSW_sf <- RV_to_sf(fourVSWDfs[[1]], fourVSWDfs[[2]], fourVSWDfs[[3]], minYear)
+fourVSW_sf$surveyType <- "4VSW"
 # Spring
 springResId <- "eef5180a-6a1b-4c85-aeb2-247afffb2077"
 springDfs <- download_extract_res_files(springResId, rvCsvList)
 spring_sf <- RV_to_sf(springDfs[[1]], springDfs[[2]], springDfs[[3]], minYear)
+spring_sf$surveyType <- "Spring"
 # Summer
 summerResId <- "7f91a5ba-07dd-4494-b71d-89782cbb12bc"
 summerDfs <- download_extract_res_files(summerResId, rvCsvList)
 summer_sf <- RV_to_sf(summerDfs[[1]], summerDfs[[2]], summerDfs[[3]], minYear)
+summer_sf$surveyType <- "Summer"
 # Fall
 fallResId <- "6abb48d0-384b-4c3e-8f13-56b74be919c4"
 fallDfs <- download_extract_res_files(fallResId, rvCsvList)
 fall_sf <- RV_to_sf(fallDfs[[1]], fallDfs[[2]], fallDfs[[3]], minYear)
+summer_sf$surveyType <- "Fall"
 
 rv_sf <- rbind(fourVSW_sf, spring_sf, summer_sf, fall_sf)
 rv_sf <- sf::st_crop(rv_sf, region_sf)
