@@ -115,6 +115,6 @@ if(!is.null(mpaClipped$studyData)){
 
 ```{r mpa-table, echo=FALSE, results='asis', caption="MPA table"}
 if (!is.null(mpaTable)) {
-  knitr::kable(mpaTable, align="l", caption="Quality tier: High Security level: none. Area and names of spatial conservation areas that overlap the search area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(mpaTable, align="l", caption=paste(write_caption_blurb(ebsa_rr, "EN"), "Area and names of spatial conservation areas that overlap the search area.</b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
