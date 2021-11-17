@@ -68,9 +68,13 @@ For more information about this report, please contact Quentin.Stoyel@dfo-mpo.gc
 
 # **REPRODUCIBLE REPORTING**  
 
-#### **Comments provided by user**
-
-{{u_comments}}
+``` {r user-comments, results = 'asis'}
+if (nchar("{{u_comments}}") > 0){
+  commentSection <- "#### **Comments provided by user** \n\n
+{{u_comments}}"
+  writeLines(noquote(commentSection))
+}
+```
 
 #### **About this Report**
 
@@ -90,8 +94,12 @@ Data summaries and products (e.g., plots and tables) are presented in the report
 
 Datasets with information in more than one of these listed modules may be listed more than once in the report. Also, not all sections may be available in each report created as users have the ability to interactively select the modules to be included. 
 
-````{r area-map-plot, fig.height=8, fig.width=11, fig.cap='Map showing the search area defined by the user (outlined in red) to query information and automatically generate this report. '}
+````{r area-map-plot, fig.height=8, fig.width=11, fig.show="hold", out.width="50%", fig.cap="Map showing the search area defined by the user (red outline) to query information and automatically generate this report (left).  Map showing the study area's location relative to the DFO Maritimes Region (right).  Dashed grey line indicates international boundries."}
+
+par(mar = c(4, 4, .1, .1))
 mapDataList$areaMap
+mapDataList$regionMap
+
 ```
 
 ##### *System*
