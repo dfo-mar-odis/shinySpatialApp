@@ -1,0 +1,43 @@
+
+
+### **Ocean Biodiversity Information System (OBIS) [for cetaceans]** {#obis-cetacean-section}
+
+```{r obis-cetacean-load, include=FALSE}
+load_rdata(c("obisCet_rr"), "MAR", env = environment())
+```
+
+```{r obis-cetacean-meta, results='asis'}
+write_meta(obisCet_rr, "EN")
+```
+
+An OBIS search [@OBIS] was conducted to find additional relevant records for cetaceans listed by SARA, or assessed by COSEWIC. A first level QC process was performed by removing duplicate reports that are also present in WSDB. Subsequent versions of this report will aim at expanding our QC efforts for this source of information.
+
+#### ***Area-specific OBIS cetacean search results***
+
+```{r obis-cetecean, cache=FALSE, include=FALSE}
+obisClipped <- master_intersect(obisCet_rr$data_sf, mapDataList)
+
+linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
+if (!is.null(obisClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped$studyData, obisCet_rr$attribute)
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
+
+
+```
+*
+```{r obis-cetecean-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_obis_cet <-  if (is.null(obisClipped$studyData)) {
+  "There are no relevant records of cetaceans in the Ocean Biodiversity Information System (OBIS) for this search area."
+} else {
+  "There are relevant records of cetaceans in the Ocean Biodiversity Information System (OBIS) for this search area."
+}
+writeLines(Report_obis_cet)
+```
+```{r obis-cetecean-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(obisCet_rr, "EN"), 'Map showing the search area defined by the user (red outline). Map of cetacean species listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), from the Ocean Biodiversity Information System (OBIS) located within the search area (red outline). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.')}
+if (!is.null(obisClipped$studyData)) {
+  plot_rr_sf(areaMap, obisClipped$mapData, attribute = obisCet_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
+}
+```

@@ -1,0 +1,43 @@
+
+### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
+
+```{r obis-load, include=FALSE}
+load_rdata(c("obisFish_rr"), "MAR", env = environment())
+```
+
+```{r obis-meta, results='asis'}
+write_meta(obisFish_rr, "EN")
+```
+
+OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS searches were conducted to find additional relevant records for species listed by SARA, or assessed by COSEWIC. Future iterations of this reporting tool will aim at expanding our quality checks of the OBIS database.
+
+#### ***Area-specific OBIS fish and invertebrate search results***
+
+```{r obis-results, include=FALSE, cache=FALSE}
+outputList <- master_intersect(obisFish_rr$data_sf, mapDataList, Year = minYear)
+
+obisTable <- create_sar_tables(outputList$studyData, listed_species, extraCols = c())$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", obisTable, "Common Name", "Common Name")
+
+```
+*
+```{r obis-check, echo=FALSE, results='asis',}
+Report_obis <- if (is.null(outputList$studyData)) {
+  "There are no relevant records in the Ocean Biodiversity Information System (OBIS) for this search area."
+} else {
+  "There are relevant records in the Ocean Biodiversity Information System (OBIS) for this search area."
+}
+Report_obis<-noquote(Report_obis)
+writeLines(Report_obis)
+```
+
+```{r obis-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(obisFish_rr, "EN"), 'Map showing the search area defined by the user (red outline) was used to query information from Ocean Biodiversity Information System (OBIS) observation records, for species contained within the search area and listed by the <i>Species at Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
+if (!is.null(outputList$studyData)) {
+  plot_rr_sf(areaMap, outputList$mapData)
+}
+```
+```{r obis-table, echo=FALSE, results='asis', caption="Priority species with observations contained in the OBIS database within the search polygon area."}
+if (!is.null(outputList$studyData)) {
+  knitr::kable(obisTable, align="l", caption=paste(write_caption_blurb(obisFish_rr, "EN"), "Ocean Biodiversity Information System (OBIS) observation records of species contained within the search area and listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```

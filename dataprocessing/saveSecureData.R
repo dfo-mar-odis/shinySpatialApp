@@ -9,14 +9,6 @@ fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Da
 loadResult <- load_rdata(c("CommonData", "conservationSites_rr", "wsdb_rr", "whitehead_rr",
                            "narwc_rr", "leatherback_rr", "ocearch_rr", "sturg_rr"),  "MAR")
 
-
-highQuality <- list("en" = "High", "fr" = "Élevée")
-mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
-lowQuality <- list("en" = "Low", "fr" = "Faible")
-noneList <- list("en" = "None", "fr"= "Aucun")
-protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
-internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONLY")
-
 # -------------Marine Protected Areas (mpa)---------------------
 conservationSites_raw <- st_read(file.path(fileLoadPath, "Management/MPAN-Draft/MPAN_DraftDesign_Maritimes/MPAN_DraftDesign_Maritimes.shp"), stringsAsFactors = FALSE)
 conservationSites_sf <- st_transform(conservationSites_raw, crs = 4326)

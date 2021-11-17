@@ -6,7 +6,13 @@ source(here::here("app/R/helpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 ckanr_setup(url="https://open.canada.ca/data")
 
+highQuality <- list("en" = "High", "fr" = "Élevée")
+mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
+lowQuality <- list("en" = "Low", "fr" = "Faible")
 
+noneList <- list("en" = "None", "fr"= "Aucun")
+internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONLY")
+protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 
 # --------------get opendata rr-----------------
 # Function to retrieve opendata record and return an rr object.

@@ -11,11 +11,6 @@ loadResult <- load_rdata(c("CommonData", "ebsa_rr", "crithab_rr", "sardist_rr",
                            "rockweed_rr", "harbourPorpoise_rr", "nbw_rr",
                            "rv_rr"),  "MAR")
 
-highQuality <- list("en" = "High", "fr" = "Élevée")
-mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
-noneList <- list("en" = "None", "fr"= "Aucun")
-internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONLY")
-
 # ----------------COMMON DATA-------------
 region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
 land10m_sf <- st_read(file.path(fileLoadPath, "Boundaries/Landmass/ne_10m_land_Clip.shp"), stringsAsFactors = FALSE)
