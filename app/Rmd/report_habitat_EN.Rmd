@@ -5,7 +5,7 @@ editor_options:
 ---
 ## **HABITAT INFORMATION**
 
-This section describes habitat information derived from a variety of data sources, internal and external to DFO. Area-specific outputs are provided in sub-sections labelled according to the data source. Descriptions of the source data and appropriate references and contacts are provided at the beginning of each sub-section.
+This module describes outputs of habitat derived from a variety of sources. Area-specific outputs are provided in sub-sections labelled according to each data source. Data descriptions, references and contact information are provided at the beginning of each sub-section.
 
 ### **Intertidal Vegetation and Rockweed**
 
@@ -48,7 +48,7 @@ polyText <- noquote(polyText)
 writeLines(polyText)
 ```
 
-```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap='Quality Tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
+```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap='Quality tier: Medium. Security level: none. Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.'}
 if(!is.null(clippedRW$studyData)){
   plot_rr_sf(areaMap, clippedRW$mapData, rockweed_rr$attribute, outlines = FALSE, legendName="Rockweed")
 }
@@ -63,7 +63,7 @@ if(!is.null(clippedRW$studyData)){
 
 ```{r rockweed-table}
 if(!is.null(clippedRW$studyData)){
-  knitr::kable(rwTable,align="l", caption = "Number of vegetation polygons and surface area occupied by each category for the study area. Total intertidal vegetations is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
+  knitr::kable(rwTable,align="l", caption = "Number of vegetation polygons and area (km2) occupied by each rockweed classification category for the search area. Total intertidal vegetation is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
   kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 } 
 ```
