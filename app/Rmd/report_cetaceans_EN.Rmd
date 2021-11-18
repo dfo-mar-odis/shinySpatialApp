@@ -13,33 +13,18 @@ Please refer to the Passive Acoustic Cetacean Map (PACM) to explore when and whe
 
 This module does not endeavor to describe every source of information available; the data presented does not represent all available cetacean sightings data within the search area and additional sightings may be available from other sources, or more recent data may be available than what is presented here. In addition to the presence-only data, there may be data available that can be used to support species-specific conclusions about habitat preferences and possible or known occurrence near and within the search area. Please refer to the cited publications for additional information and contact Angelia.Vanderlaan@dfo-mpo.gc.ca (North Atlantic Right Whales) and Hilary.Moors-Murphy@dfo-mpo.gc.ca (other cetacean species) to discuss additional sources of information (e.g., acoustic detections). Data and sources not explicitly included in this report include information from past studies/publications, acoustic detections, prey sampling and tagging. While the value of these data in predicting and describing cetacean occurrences is vital, these types of data are not available for all species and are not yet available for data querying. In the future, as information from other data sources becomes available, these new data will help to provide a more comprehensive understanding of cetacean habitat use and occurrence in the search areas.
 
-```{r cetacean-setup, echo=FALSE, include=FALSE, cache=FALSE}
-whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
-              "Blue Whale: Endangered (SARA & COSEWIC)" = "black",
-              "Fin Whale: Special Concern (SARA & COSEWIC)" = "chartreuse4",
-              "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)" = "#F5A4E7",
-              "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)" = "#00AFBB",
-              "North Atlantic Right Whale: Endangered (SARA & COSEWIC)" = "darkorchid4",
-              "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)" = "#0827EF",
-              "Sei Whale: No Status (SARA) & Endangered (COSEWIC)" = "#EF6408",
-              "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
-whaleShape <- rep_len(15:20, length(names(whaleCol)))
-names(whaleShape) <- names(whaleCol)
-whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
+
+```{r child = here::here("sections/wsdb/wsdb_en.Rmd")}
 ```
 
-```{r child = here::here("app/Rmd/sections/wsdb.Rmd")}
+```{r child = here::here("sections/whitehead/whitehead_en.Rmd")}
 ```
 
-```{r child = here::here("app/Rmd/sections/whitehead.Rmd")}
+```{r child = here::here("sections/narwc/narwc_en.Rmd")}
 ```
 
-```{r child = here::here("app/Rmd/sections/narwc.Rmd")}
+```{r child = here::here("sections/obis/obisCet_en.Rmd")}
 ```
-
-```{r child = here::here("app/Rmd/sections/obisCet.Rmd")}
-```
-
 
 
 ```{r cetacean-summary-table, comment="", prompt=TRUE, echo=FALSE, results='asis'}
@@ -56,12 +41,12 @@ if (FALSE) {
 ```
 
 
-```{r child = here::here("app/Rmd/sections/sdm.Rmd")}
+```{r child = here::here("sections/sdm/sdm_en.Rmd")}
 ```
 
-```{r child = here::here("app/Rmd/sections/blueWhaleHab.Rmd")}
+```{r child = here::here("sections/blueWhaleHab/bwhab_en.Rmd")}
 ```
 
-```{r child = here::here("app/Rmd/sections/nbw.Rmd")}
+```{r child = here::here("sections/nbw/nbw_en.Rmd")}
 ```
 

@@ -1,0 +1,15 @@
+
+```{r echo=FALSE, include=FALSE, cache=FALSE}
+whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
+              "Blue Whale: Endangered (SARA & COSEWIC)" = "black",
+              "Fin Whale: Special Concern (SARA & COSEWIC)" = "chartreuse4",
+              "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)" = "#F5A4E7",
+              "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)" = "#00AFBB",
+              "North Atlantic Right Whale: Endangered (SARA & COSEWIC)" = "darkorchid4",
+              "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)" = "#0827EF",
+              "Sei Whale: No Status (SARA) & Endangered (COSEWIC)" = "#EF6408",
+              "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
+whaleShape <- rep_len(15:20, length(names(whaleCol)))
+names(whaleShape) <- names(whaleCol)
+whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
+```
