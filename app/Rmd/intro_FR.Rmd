@@ -14,45 +14,20 @@ output:
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
-<style>
-table {background-color: white !important;color: black !important;}
-caption {color: black !important;}
-a:link {color: #002080;}
-a:visited {color: #008040;}
-a:hover {color: #006080;}
-</style>
-
-```{r setup-and-libraries, echo=FALSE, include=FALSE, cache=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.align = "left")
-```
-
 ```{r load-data-and-functions, echo=FALSE, include=FALSE, cache=FALSE}
-minYear <- 2010
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
-copy_rdata_files() # make sure data files are up to date. 
-load_rdata(c("CommonData"), "MAR", env = environment())
-```
-
-```{r Load-Search-Area, echo=FALSE, include=FALSE, cache=FALSE}
 studyArea <- sf::st_read("{{path_to_geoms}}")
-# studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
 # Uncomment the following to test fixed polygon:
+# studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) # last area from app.
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_test.geojson")) #Offshore
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_coastal_test.geojson")) #coastal
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_no_land.geojson")) #no land
-site <- sf::st_centroid(studyArea)
+intro_setup(studyArea, env = environment())
 ```
 
-```{r parameters-for-area_map.r, echo=FALSE, include=FALSE, cache=FALSE}
-mapDataList <- maps_setup(studyArea, site, region_sf, land50k_sf, land10m_sf, bounds_sf)
-list2env(mapDataList, envir = environment())
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
 ```
 
-```{r set-up-summary-and-gap-tables, echo=FALSE, include=FALSE, cache=FALSE}
-summarySarTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`)
-summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`, "Obs" = NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA)
-
-```
 <!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
 <!-- # ``` -->
   <!--```{r child = '../Rmd/report_fish_FR.Rmd'} 

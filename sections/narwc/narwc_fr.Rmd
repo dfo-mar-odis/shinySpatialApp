@@ -1,0 +1,59 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+```{r child = here::here("sections/commonSections/commonCet.Rmd")}
+```
+
+### **Base de données des observations du North Atlantic Right Whale Consortium (NARWC)**  {#NARWC-section}
+
+```{r narwc-load, include=FALSE}
+load_rdata(c("narwc_rr"), "MAR", env = environment())
+```
+
+```{r narwc-meta, results='asis'}
+write_meta(narwc_rr, "FR")
+```
+
+Les renseignements suivants sont résumés sur le site de la base de données des observations du NARWC : https://www.narwc.org/sightings-database.html
+
+La base de données des observations du NARWC contient des registres de milliers d’observations de baleines noires dans l’océan Atlantique Nord, ainsi que d’observations d’autres espèces de baleines, de dauphins, de tortues de mer, de phoques et de gros poissons. Elle contient également des données de relevé associées à bon nombre de ces observations, qui pourraient être utilisées pour déterminer l’effort de relevé connexe. Toutefois, la base de données ne comprend pas les données sur la distance d’observation requises pour déterminer la densité ou l’abondance des espèces à partir de ces relevés. Les observations contenues dans la base de données proviennent d’une grande variété de contributeurs, y compris des membres du NARWC et d’autres. Chaque renseignement dans la base de données des observations représente un groupe de baleines (c.-à-d. un groupe de trois baleines a un seul renseignement, tout comme un groupe d’une seule baleine) et il peut y avoir ou non une preuve photographique d’une observation donnée de baleines noires. Les bases de données des observations et de photo-identification sont périodiquement recoupées, de sorte que les données d’identification individuelles de ces dernières peuvent être couplées aux données d’observation de la première. Pour cette raison, toutes les observations dans la base de données d’identification finissent par être incluses dans la base de données des observations (avec un décalage d’environ un an). Bien que les identifications individuelles des animaux ne soient pas incluses dans la base de données des observations, les deux bases de données peuvent être liées en fonction des champs communs. Cet article de synthèse de la base de données des observations fournit aux utilisateurs potentiels des renseignements importants : https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf [@NARWCdatabase].
+
+#### ***Résultats de la recherche du NARWC par zone***
+```{r narwc, include=FALSE, cache=FALSE}
+narwcClipped <- master_intersect(narwc_rr$data_sf, mapDataList)
+
+linkedSectionText <- "[NARWC](#NARWC-section)"
+if (!is.null(narwcClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped$studyData, narwc_rr$attribute)
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
+
+```
+
+```{r narwc-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_narwc <-  if (is.null(narwcClipped$studyData)) {
+   "* Il n’existe aucun registre pertinent dans la base de données du NARWC pour cette zone de recherche."
+ } else {
+   "* Il existe des registres pertinents dans la base de données du NARWC pour cette zone de recherche."
+ }
+writeLines(Report_narwc)
+```
+```{r narwc-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(narwc_rr, "FR"), 'Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés de la Base de données des observations du North Atlantic Right Whale Consortium (NARWC) pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone</b> , puisque l’effort de relevé est biaisé vers le nord-est des États-Unis, et les données sur la présence d’espèces provenant des détections acoustiques ne sont pas incluses. Pour de plus amples renseignements, consultez le site : <https://www.narwc.org/sightings-database.html>')}
+if (!is.null(narwcClipped$studyData)) {
+   plot_rr_sf(areaMap, narwcClipped$mapData, attribute=narwc_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
+}
+```

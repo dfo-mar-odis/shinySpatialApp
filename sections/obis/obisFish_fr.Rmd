@@ -1,0 +1,56 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+### **Système d’information sur la biodiversité des océans (SIBO)**  
+
+```{r obis-load, include=FALSE}
+load_rdata(c("obisFish_rr"), "MAR", env = environment())
+```
+
+```{r obis-meta, results='asis'}
+write_meta(obisFish_rr, "FR")
+```
+
+Le SIBO est un centre mondial de données et d’information en libre accès sur la biodiversité marine pour la science, la conservation et le développement durable. Il a pour vision de bâtir et de maintenir une alliance mondiale qui collabore avec les communautés scientifiques pour faciliter l’accès libre et ouvert à la biodiversité et aux données et informations biogéographiques sur la vie marine, ainsi que leur application. Des recherches du SIBO ont été effectuées pour trouver d’autres documents pertinents pour les espèces inscrites en vertu de la LEP ou évaluées par le COSEPAC. Les versions futures de cet outil de production de rapports viseront à élargir nos vérifications de la qualité de la base de données du SIBO.
+
+#### ***Résultats de recherche du SIBO sur les poissons et les invertébrés par zone***
+
+```{r obis-results, include=FALSE, cache=FALSE}
+outputList <- master_intersect(obisFish_rr$data_sf, mapDataList, Year = minYear)
+
+obisTable <- create_sar_tables(outputList$studyData, listed_species, extraCols = c())$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", obisTable, "Common Name", "Common Name")
+```
+*
+```{r obis-check, echo=FALSE, results='asis',}
+Report_obis <- if (is.null(outputList$studyData)) {
+  "Il n’y a aucun registre pertinent dans le système d’information sur la biodiversité des océans (SIB)O pour cette zone de recherche."
+} else {
+  "Il y a des registres pertinents dans le système d’information sur la biodiversité des océans (SIB)O pour cette zone de recherche."
+}
+Report_obis<-noquote(Report_obis)
+writeLines(Report_obis)
+```
+```{r obis-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(obisFish_rr, "FR"), ' Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge) a été utilisée pour rechercher des informations dans les registres d’observation du SIBO sur les espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). Les observations sur terre indiquent que les données d’observation n’ont pas encore été complètement vérifiées ou que des animaux ont été observés depuis la côte. <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>')}
+if (!is.null(outputList$studyData)) {
+  plot_rr_sf(areaMap, outputList$mapData)
+}
+```
+
+```{r obis-table, echo=FALSE, results='asis', caption="Les espèces prioritaires avec des observations contenues dans la base de données du SIBO, dans la zone de recherche."}
+if (!is.null(outputList$studyData)) {
+  knitr::kable(obisTable, align="l", caption="Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Registres d’observation du système d’information sur la biodiversité des océans (SIBO) des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```

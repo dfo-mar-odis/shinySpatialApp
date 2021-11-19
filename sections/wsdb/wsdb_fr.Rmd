@@ -1,0 +1,72 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+```{r child = here::here("sections/commonSections/commonCet.Rmd")}
+```
+
+### **Base de données des observations de baleines (BDOB)**  {#WSDB-section}
+
+```{r wsdb-load, include=FALSE}
+load_rdata(c("wsdb_rr"), "MAR", env = environment())
+```
+
+```{r wsdb-meta, results='asis'}
+write_meta(wsdb_rr, "FR")
+```
+
+La base de données sur les mammifères marins et les animaux pélagiques, ou Base de données des observations de baleines, a été mise en œuvre en 2002 par le MPO afin de fournir un dépôt central pour les observations d’animaux marins, en particulier de cétacés, et d’améliorer l’accessibilité aux données d’observation provenant de diverses sources, y compris certaines données provenant des relevés des mammifères marins et des activités de recherche (MacDonald et al., 2017). La plupart des efforts visant à rassembler les données d’observations disponibles ont porté sur la collecte de données provenant de diverses sources en exploitation dans les eaux de la Nouvelle-Écosse (y compris la baie de Fundy et le plateau néo-écossais), et plus récemment dans le golfe du Saint-Laurent, bien que moins d’efforts aient été déployés pour obtenir les données disponibles d’autres régions. La plupart des observations ont été recueillies de façon fortuite et provenaient de personnes possédant une vaste expertise et une vaste expérience en matière d’identification des mammifères marins. Pour de plus amples renseignements, consulter le site suivant : http://www.inter.dfo-mpo.gc.ca/Maritimes/SBSA/ecpop/lep/Bas-Donnees ou le document de MacDonald et al. (2017) <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf>.     
+
+Cette base de données ne cherche pas activement à stocker de l’information sur les incidents impliquant des mammifères marins (c.-à-d. morts, tués, échoués, enchevêtrés ou blessés) et, par conséquent, ce type d’information est très incomplet. Pour cette raison, dans le présent rapport :  
+
+- Les observations où le Comportement est associé au code « mort », « tué » ou « échoué » ne sont pas incluses.
+- Les observations où l’État de l’animal est associé au code « mort » ne sont pas incluses.
+- Les observations où l’Impact des engins de pêche est associé au code est « Empêtré – Mort sur l’engin » ou « Mort – Non empêtré » ne sont pas incluses.
+
+Veuillez prendre note des avertissements et mises en garde importants suivants associés aux observations de la BDOB :
+
+- Les données représentent une combinaison d’observations recueillies au fil des années et des saisons. Les données d’observation sont biaisées par le moment et l’endroit où les activités ont été menées; par conséquent, l’effort d’observation est inégal d’un mois, d’une année ou d’une région à l’autre. Donc, les différences apparentes dans les profils de répartition saisonniers ou annuels des données d’observation ne devraient pas être considérées comme définitives. Les conditions météorologiques défavorables et un effort visuel diminué en hiver, au printemps et à l’automne expliquent probablement le nombre moins élevé d’observation comparativement à l’été. 
+- L’effort d’observation n’a pas été quantifié (c.-à-d. les données ne peuvent pas être utilisées pour estimer la densité ou l’abondance réelle ou relative d’une espèce dans une région, ni l’absence d’une espèce). Si une espèce est absente dans une zone, cette absence devrait être interprétée comme une absence de déclaration, et pas nécessairement comme l’absence de l’espèce dans cette zone.
+- Les données d’observation n’ont pas encore été complètement vérifiées et peuvent contenir des dédoublements. Les observations peuvent également comprendre les observations des mêmes animaux signalées par plusieurs plateformes ou navires.
+- On ne connaît pas la qualité de certaines données d’observation. La plupart des observations ont été recueillies de façon fortuite et provenaient de personnes possédant une vaste expertise et une vaste expérience en matière d’identification des mammifères marins. 
+- Il existe une incertitude importante quant au nombre d’animaux inclus dans chaque observation en raison des difficultés associées à la quantification du nombre d’individus observés dans un groupe.
+- Les observations qui n’ont pu être reliées à des espèces sont classées dans le plus petit groupe taxonomique possible.
+
+#### ***Résultats de la recherche de la BDOB par zone***
+
+```{r wsdb, include=FALSE, cache=FALSE}
+wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)
+linkedSectionText <- "[BDOB](#WSDB-section)"
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, wsdb_rr$attribute)
+if (!is.null(wsdbClipped$studyData)) {
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
+```
+
+```{r wsdb-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_wsdb <- if (is.null(wsdbClipped$studyData)) {
+   "* Il existe des registres pertinents dans BDOB pour cette zone de recherche."
+ } else {
+   "* Il n’existe aucun registre pertinent dans BDOB pour cette zone de recherche."
+ }
+ writeLines(Report_wsdb)
+```
+
+```{r wsdb-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(wsdb_rr, "FR"), 'Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés de la base de données sur les observations de baleines (BDOB) (y compris les observations de groupes d’animaux), pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la Loi sur les espèces en péril (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b> L’absence peut être liée à un effort d’enquête faible ou nul. L’information sur les observations sous-représente la présence de cétacés, en particulier les espèces qui vivent en eau profonde (p. ex., les baleines à bec) et qui passent peu de temps à la surface. Cette carte n’inclut pas non plus les détections acoustiques. Les observations sur terre indiquent que les données d’observation n’ont pas encore été complètement vérifiées ou que des animaux ont été observés depuis la côte.')}
+if (!is.null(wsdbClipped$studyData)) {
+  plot_rr_sf(areaMap, wsdbClipped$mapData, attribute = wsdb_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
+}
+```

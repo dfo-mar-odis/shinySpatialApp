@@ -1,0 +1,83 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+### **Enquête sur les navires de recherche dans les Maritimes**   
+
+```{r rv-load, include=FALSE}
+load_rdata(c("rv_rr"), "MAR", env = environment())
+```
+
+```{r rv-meta, results='asis'}
+write_meta(rv_rr, "FR")
+```
+
+Description de l’ensemble de données (tirée du dossier des données ouvertes):
+```{r rv-text, results='asis'}
+writeLines(noquote(rv_rr$text$fr))
+```
+
+```{r table-RV-read, echo=FALSE, cache=FALSE, include = FALSE}
+table_RV <- read.csv(here::here("app/data/misc/table_RV_FR.csv"))
+table_RV<- table_RV %>% dplyr::rename("Enquête d' sur les navires" = Enquête.d..sur.les.navires, "Saison/mois" = Saison.mois, "Description de l’étendue géographique" =  Description.de.l.étendue.géographique)
+```
+```{r RV-table-setup}
+knitr::kable(table_RV, align="l",
+      caption = "Résumé des données recueillies au cours des quatre enquêtes distinctes sur les navires de recherche dans les Maritimes. Se reporter à Chadwick et al. (2007)* pour obtenir de plus amples renseignements sur le calendrier et l’ajustement périodique des enquêtes 4VSW.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+```
+
+
+#### ***Résultats des enquêtes sur les navires de recherche dans les Maritimes, par zone***
+
+```{r RV-results, include=FALSE, cache=FALSE}
+outputList <- master_intersect(rv_rr$data_sf, mapDataList, Year = minYear)
+
+Samples_bbox <- outputList$mapPoints
+
+tableList <- create_table_RV(outputList$studyData, listed_species)
+rvAllTable <- tableList$allSpecies
+rvSarTable <- tableList$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[RV](#RV-section)", rvSarTable, "Common Name", "Individuals")
+
+```
+*
+```{r RV-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_RV <- if (is.null(outputList$studyData)) {
+    "Il n’existe aucun registre pertinent des enquêtes sur les navires de recherche dans les Maritimes pour cette zone de recherche."
+  } else {
+    "Il existe des registres pertinents des enquêtes sur les navires de recherche dans les Maritimes pour cette zone de recherche."
+  }
+Report_RV<-noquote(Report_RV)
+writeLines(Report_RV)
+```
+
+```{r RV-plot, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge), utilisée pour demander des renseignements sur l’enquête sur le navire de recherche dans les Maritimes. Les lignes et les flèches noires indiquent l’emplacement et la direction de chaque exemple de chalut de fond à panneaux. La fréquence représente le nombre de chaluts où une espèce donnée a été échantillonnée, en comparaison au nombre total de chaluts dans la zone de recherche.'}
+if (!is.null(outputList$studyData)) {
+areaMap + geom_segment(aes(x = Samples_bbox$long, y = Samples_bbox$lat, xend = Samples_bbox$ELONG, yend = endy <- Samples_bbox$ELAT),arrow=arrow(length = unit(0.2,"cm")), size = 0.5)
+}
+```
+<br>
+```{r RV-SAR-table}
+if (!is.null(outputList$studyData)) {
+  if (nrow(rvSarTable) > 0) {
+    knitr::kable(rvSarTable, align="l", caption="\\label{tab:rv_SAR_table} Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  }
+}
+```
+<br>
+```{r RV-freq-table}
+if (!is.null(outputList$studyData)) {
+  knitr::kable(rvAllTable, align="l", caption="\\label{tab:rv_freq_table}QNiveau de qualité : Élevée. Niveau de sécurité : Aucun. Registres d’observation de l’enquête sur les navires de recherche dans les Maritimes de <u>toutes les espèces</u> contenues dans la zone de recherche, résumées par espèce ou groupe d’espèces. <b>Si une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
