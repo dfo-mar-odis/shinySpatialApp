@@ -66,8 +66,7 @@ Data summaries and products (e.g., plots and tables) are presented in the report
 
 Datasets with information in more than one of these listed modules may be listed more than once in the report. Also, not all sections may be available in each report created as users have the ability to interactively select the modules to be included. 
 
-````{r area-map-plot, fig.height=8, fig.width=11, fig.show="hold", out.width="50%", fig.cap="Map showing the search area defined by the user (red outline) to query information and automatically generate this report (left).  Map showing the study area's location relative to the DFO Maritimes Region (right).  Dashed grey line indicates international boundries."}
-
+```{r area-map-plot, fig.height=8, fig.width=11, fig.show="hold", out.width="50%", fig.cap="Map showing the search area defined by the user (red outline) to query information and automatically generate this report (left).  Map showing the study area's location relative to the DFO Maritimes Region (right).  Dashed grey line indicates international boundries."}
 par(mar = c(4, 4, .1, .1))
 mapDataList$areaMap
 mapDataList$regionMap
