@@ -1,3 +1,18 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
 ### **Regional Electrofishing Surveys** {#ef-section}
 
 ```{r ef-load, include=FALSE}
