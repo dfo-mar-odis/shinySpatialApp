@@ -1,11 +1,18 @@
-renv::install("ckanr") #you need to install the packages every time since it is a fresh container
+install.packages("ckanr") #you need to install the packages every time since it is a fresh container
 
 library(ckanr)
 library(sf)
 source(here::here("app/R/helpers.R"))
+source(here::here("app/R/dataFunctions.R"))
 ckanr_setup(url="https://open.canada.ca/data")
 
+highQuality <- list("en" = "High", "fr" = "Élevée")
+mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
+lowQuality <- list("en" = "Low", "fr" = "Faible")
 
+noneList <- list("en" = "None", "fr"= "Aucun")
+internalUse <- list("en" = "DFO INTERNAL USE ONLY", "fr" = "DFO INTERNAL USE ONLY")
+protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 
 # --------------get opendata rr-----------------
 # Function to retrieve opendata record and return an rr object.
@@ -156,7 +163,7 @@ download_extract_res_files <- function(resId, csvFileList = NULL) {
   tempDir <- here::here("dataprocessing/temp")
   
   
-  if (res$format == "CSV") {
+  if (res$format == "CSV" & is.null(csvFileList)) {
     temp <- here::here("dataprocessing/temp/csvFile.csv")
     download.file(zipUrl, temp)
     dfList <- read.csv(temp)
@@ -210,7 +217,6 @@ get_check_date <- function(varName) {
 lang_list <- function(inValue) {
   return(list("en" = inValue, "fr" = inValue))
 }
-
 
 # --------------email_format-----------------
 # Helper function that converts a string email address into a linked one for use in rmd
@@ -272,5 +278,94 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
   out_sf <- out_sf %>% dplyr::select("YEAR", "CODE", "Scientific Name", "Common Name", "TOTNO", "ELAT", "ELONG")
 }
 
+# ---------------GIT ACTION FUNCTIONS----------------
+
+check_for_open_data_updates <- function() {
+  openDataData <- read.csv(here::here("dataprocessing/openDataData.csv"))
+  
+  openDataData$checkDate <- as.numeric(strftime(
+    strptime(openDataData$Accessed.Date, "%Y-%m-%d"), "%Y%m%d"))
+  openDataData$pkgDate <- lapply(openDataData$Package.Id, date_from_pkg)
+  
+  if (any(openDataData$pkgDate > openDataData$checkDate)) {
+    updatePkgs <- filter(openDataData, pkgDate > checkDate)
+    updatePkgs$msg <- paste("Update", updatePkgs$rr.Name, 
+                            "object from opendata record:", updatePkgs$Title, 
+                            "  \n\n")
+    warning(updatePkgs$msg)
+  }
+}
+
+# create the open data data csv file
+gen_checkdate_csv <- function() {
+  dataSetDf <- data.frame("rrStr" = c("ebsa_rr", "crithab_rr", "sardist_rr", 
+                                      "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
+                                      "rv_rr", "pasBay_rr"))
+  load_rdata(dataSetDf$rrStr,  "MAR")
+  dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
+  dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
+  dataSetDf$AccessedDate <- lapply(lapply(dataSetDf$rr, "[[", "metadata"),
+                                   "[[", "accessedDate")
+  dataSetDf$title <- lapply(lapply(dataSetDf$rr, "[[", "title"),
+                            "[[", "en")
+  csvDf <- dplyr::select(dataSetDf, c("title", "rrStr", "pkgId", "AccessedDate"))
+  csvDf$AccessedDate <- lapply(csvDf$AccessedDate, strftime, "%Y-%m-%d")
+  names(csvDf) <- c("Title", "rr Name", "Package Id", "Accessed Date")
+  csvDf <- apply(csvDf, 2, as.character)
+  write.csv(csvDf, here::here("dataprocessing/openDataData.csv"), row.names = FALSE)
+}
+
+# helper function to extract package ids from open data rr objects
+pkg_id_from_url <- function(rr) {
+  if ("url" %in% names(rr$metadata)) {
+    pkgId <- sub("<https://open.canada.ca/data/en/dataset/", "", rr$metadata$url$en)
+    pkgId <- sub(">", "", pkgId)
+    return(pkgId)
+  }
+}
 
 
+# get update date from package
+date_from_pkg <- function(pkgId) {
+  opendataPKG <- package_show(pkgId)
+  pkgTime <- NULL
+  if ("date_modified" %in% names(opendataPKG)) {
+    pkgTime <- strptime(opendataPKG$date_modified, "%Y-%m-%d %H:%M:%S")  
+    pkgTime <- as.numeric(strftime(pkgTime, "%Y%m%d"))
+  } else if ("metadata_modified" %in% names(opendataPKG)) {
+    pkgTime <- strptime(opendataPKG$metadata_modified, "%Y-%m-%dT%H:%M:%S")  
+    pkgTime <- as.numeric(strftime(pkgTime, "%Y%m%d"))
+    
+  }
+  return(pkgTime)
+}
+
+
+# -------------GIT ACTION FUNCTIONS ----------------
+# create the open data data csv file
+gen_checkdate_csv <- function() {
+  dataSetDf <- data.frame("rrStr" = c("ebsa_rr", "crithab_rr", "sardist_rr", 
+                                      "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
+                                      "rv_rr", "pasBay_rr"))
+  load_rdata(dataSetDf$rrStr,  "MAR")
+  dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
+  dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
+  dataSetDf$AccessedDate <- lapply(lapply(dataSetDf$rr, "[[", "metadata"),
+                                   "[[", "accessedDate")
+  dataSetDf$title <- lapply(lapply(dataSetDf$rr, "[[", "title"),
+                            "[[", "en")
+  csvDf <- dplyr::select(dataSetDf, c("title", "rrStr", "pkgId", "AccessedDate"))
+  csvDf$AccessedDate <- lapply(csvDf$AccessedDate, strftime, "%Y-%m-%d")
+  names(csvDf) <- c("Title", "rr Name", "Package Id", "Accessed Date")
+  csvDf <- apply(csvDf, 2, as.character)
+  write.csv(csvDf, here::here("dataprocessing/openDataData.csv"), row.names = FALSE)
+}
+
+# helper function to extract package ids from open data rr objects
+pkg_id_from_url <- function(rr) {
+  if ("url" %in% names(rr$metadata)) {
+    pkgId <- sub("<https://open.canada.ca/data/en/dataset/", "", rr$metadata$url$en)
+    pkgId <- sub(">", "", pkgId)
+    return(pkgId)
+  }
+}

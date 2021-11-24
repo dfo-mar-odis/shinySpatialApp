@@ -1,0 +1,59 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+### **Modèles de répartition des espèces (MRE) : zones prioritaires pour améliorer la surveillance des cétacés**  
+
+```{r sdm-load, include=FALSE}
+load_rdata(c("finWhale_rr", "harbourPorpoise_rr", "humpbackWhale_rr", "seiWhale_rr" ), "MAR", env = environment())
+```
+
+```{r sdm-meta, results='asis'}
+write_meta(finWhale_rr, "FR")
+```
+
+Description de l’ensemble de données (tirée du dossier des données ouvertes) :
+```{r sdm-text, results='asis'}
+# trim extra sections off.  
+sdmText <- sub("Sources des données: .*", "", finWhale_rr$text$fr)
+writeLines(noquote(sdmText))
+```
+
+Considérations importantes relatives à l’utilisation : les prévisions modélisées dans cette section ne doivent pas être utilisées seules pour le présent rapport, à des fins de planification de l’espace marin et/ou pour délimiter un habitat important pour les espèces de cétacés. Les extrants devraient plutôt être utilisés conjointement avec d’autres sources d’information comme la répartition des proies, les données de marquage, les détections provenant de la surveillance acoustique, d’autres données sur la présence de cétacés et d’autres efforts de modélisation déjà disponibles pour la région. En fait, le produit de données résumé dans la section ci-dessous (habitat important pour le rorqual bleu dans l’ouest de l’Atlantique Nord) représente un excellent cadre dans lequel utiliser correctement les extrants de cette section.  
+
+#### ***Résultats de la recherche du MRE pour les cétacés, par zone***
+```{r sdm, include=FALSE, cache=FALSE}
+
+clippedFin <- master_intersect(finWhale_rr$data_sf, mapDataList)
+clippedHp <- master_intersect(harbourPorpoise_rr$data_sf, mapDataList)
+clippedHump <- master_intersect(humpbackWhale_rr$data_sf , mapDataList)
+clippedSei <- master_intersect(seiWhale_rr$data_sf, mapDataList)
+
+tableSDM <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
+                       "Habour Porpoise" = !is.null(clippedHp$studyData),
+                       "Humpback Whale" = !is.null(clippedHump$studyData),
+                       "Sei Whale" = !is.null(clippedSei$studyData), 
+                       check.names = FALSE)
+
+summarySDMTable <- data.frame("Species" = names(tableSDM), "present" = transpose(tableSDM)$V1)
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "[SDM](#sdm-section)", summarySDMTable, "Species", "present")
+```
+
+```{r sdm-table}
+ knitr::kable(tableSDM, align="cccc", caption=". Niveau de qualité : Faible. Niveau de sécurité : Aucun. Résultats indiquant si la zone de recherche chevauche les zones prioritaires prévues pour améliorer la surveillance de plusieurs espèces de cétacés (rorqual commun, marsouin commun, rorqual à bosse et rorqual boréal). VRAI = le polygone chevauche la zone prioritaire; FAUX = le polygone ne chevauche PAS la zone prioritaire.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+```
+
+```{r sdm-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(finWhale_rr, "FR"), 'La carte montre les résultats consolidés du modèle de répartition des espèces (taux d’occurrence prévu relatif de 60 à 100 %). Les polygones jaunes (habitats très appropriés) doivent être interprétés comme des zones où les efforts de surveillance des cétacés peuvent être priorisés et dont les résultats peuvent aider à diriger les activités de relevés dans le futur. En raison des nombreuses raisons énumérées dans la section de discussion de Gomez et al. (2020), ces données de modélisation sur les cétacés ne représentent pas une répartition complète et actuelle des cétacés dans la région. Elles représentent des zones prioritaires où diriger les efforts de surveillance des cétacés. Leur utilisation dans les processus de planification de l’espace marin devrait être accompagnée d’approches complémentaires telles que le processus résumé dans la section ci-dessous. Le produit de données résumé dans la section ci-dessous (habitat important pour le rorqual bleu dans l’ouest de l’Atlantique Nord) représente un excellent cadre dans lequel utiliser correctement les extrants de cette figure.')}
+plot_cetaceans_4grid(finWhale_rr$data_sf, harbourPorpoise_rr$data_sf, humpbackWhale_rr$data_sf, seiWhale_rr$data_sf, studyArea, land10m_sf, 50, bounds_sf)
+```

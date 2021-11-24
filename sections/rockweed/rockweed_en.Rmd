@@ -1,0 +1,60 @@
+### **Intertidal Vegetation and Rockweed**
+
+Satellite-based Maps of Intertidal Vegetation and Rockweed presence polygons
+
+```{r rockweed-load, include=FALSE}
+load_rdata(c("rockweed_rr"), "MAR", env = environment())
+```
+
+```{r rockweed-meta, results='asis'}
+write_meta(rockweed_rr, "EN")
+```
+
+Rockweed (_Ascophyllum nodosum_) is a common, cold-water, intertidal, brown algae with long-lived holdfasts attached to rocky substrates. It dominates the rocky intertidal zone of Atlantic Canada and provides habitat for fish, invertebrates, and birds. There is little information available on spatial distribution of rockweed and intertidal vegetation in the Maritimes Region. The existing industry survey data are deemed proprietary and are not available. Consequently, regional scale satellite-derived maps were developed to indicate location, relative density of the intertidal vegetation, and polygons delineating areas likely occupied by rockweed [@Lazin2021].
+
+Maps are generated using clear sky Sentinel-2 satellite data in 10 m ground resolution by applying a well-established Normalized Difference Vegetation Index (NDVI) to detect intertidal vegetation exposed during low tide. Vegetation patches are delineated using thresholds, and likelihood of rockweed presence is assigned based on the shoreline substrate classification, aerial photo/video archives, and data from open access biodiversity databases. Final products will be maintained on the Government of Canada Open Data portal and will be continuously improved as new ground truth data becomes available.
+
+Data notes:
+
+- NDVI values on the raster map indicate relative density of the intertidal vegetation (biomass) and are NOT calibrated (to be regarded as indication only). NDVI values on the maps range from 0.4 to 1 with larger values indicating denser vegetation.
+- Likelihood of rockweed presence in the polygons is categorized as following: Not present, Present, Likely present, and Unknown. “Likely present” attributes are assigned for the shorelines associated with rocky substrate while “Present” attributes are assigned based on the ground truth data. Unknown attributes are assigned for sand/mud shoreline types, and do not necessarily exclude presence of rockweed.
+- Regional maps represent a mosaic of daily images collected at different time of year from 2016 to 2019. These maps do not represent a long-term average, although intertidal vegetation patches tend to be stationary and persistent.
+- Due to the 10 m spatial resolution of the satellite data, NDVI values for each pixel represent a spatial average within an area of 10 m^2^, so sparse vegetation might not be captured in the map.
+
+#### ***Area-specific Intertidal Vegetation and Rockweed search results***  
+
+```{r overlap-rockweed, echo=FALSE, results='asis'}
+# intersect polyData with 3 polygons (region, map area, and study box)
+clippedRW <- master_intersect(rockweed_rr$data_sf, mapDataList)
+```
+*
+```{r overlap-rockweed-output, echo=FALSE, results='asis'}
+polyText <- if(is.null(clippedRW$studyData)){
+  "There are no relevant records of predicted intertidal vegetation for this search area."
+} else {
+  "There are relevant records of predicted intertidal vegetation for this search area."
+}
+
+polyText <- noquote(polyText)
+writeLines(polyText)
+```
+
+```{r rockweed-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(rockweed_rr, "EN"), 'Map showing the search area defined by the user: location of the proposed project/activity is highlighted in yellow (input polygon), surrounded by an exposure zone or user-defined buffer area in blue. Figure shows overlap between the search area and satellite-based maps of intertidal vegetation and rockweed presence polygons.')}
+if(!is.null(clippedRW$studyData)){
+  plot_rr_sf(areaMap, clippedRW$mapData, rockweed_rr$attribute, outlines = FALSE, legendName="Rockweed")
+}
+```
+
+```{r table-rockweed, echo=FALSE, cache=FALSE, include = FALSE}
+if(!is.null(clippedRW$studyData)){
+  rwTable <- rockweedStats(clippedRW$studyData)
+  names(rwTable) <- c("Category", "Number of Polygons", "Area km2")
+}
+```
+
+```{r rockweed-table}
+if(!is.null(clippedRW$studyData)){
+  knitr::kable(rwTable,align="l", caption = "Number of vegetation polygons and area (km2) occupied by each rockweed classification category for the search area. Total intertidal vegetation is a sum of all categories.", booktabs = T, escape = F, linesep = "") %>%
+  kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+}
+```

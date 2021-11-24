@@ -1,0 +1,42 @@
+# This is a workflow to check for open data updates
+
+name: Renv Setup
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        default: 'World'
+        required: false
+
+jobs:
+  setup_renv_check:
+    runs-on: ubuntu-latest
+    
+    env:
+      # Root path used by renv and cached
+      RENV_PATHS_ROOT: ~/.local/share/renv
+    
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: nuke Rprofile
+        run: rm .Rprofile
+    
+      - uses: r-lib/actions/setup-r@v1
+      
+      - name: Fix units R package
+        run: |
+          sudo apt install libudunits2-dev libgdal-dev libcurl4-openssl-dev 
+      
+      - name: install devtools
+        run: |
+          install.packages("devtools")
+        shell: Rscript {0}
+      
+      - uses: r-lib/actions/setup-renv@v1
+        with:
+          cache-version: 2
+      
+
+        

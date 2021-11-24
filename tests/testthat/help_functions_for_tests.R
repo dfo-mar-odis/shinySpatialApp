@@ -1,3 +1,15 @@
+source(here::here("app/R/dataFunctions.R"))
+
+test_render <- function(rmdPath){
+  testName <- paste("Test Render:", sub(here::here(), "", rmdPath))
+  test_that(testName, {
+    success <- render_check_delete(rmdPath)
+    expect_true(success)
+  })
+}
+
+
+
 # ----- RENDER CHECK DELETE -----
 # This function is used to ensure that an rmarkdown file can be run without error.
 # It will attempt to render the file, check if an output file was generated, 

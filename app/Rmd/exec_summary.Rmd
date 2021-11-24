@@ -30,11 +30,11 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="lef
 minYear <- 2010
 
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
-copy_rdata_files() # make sure data files are up to date. 
-filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherback_rr", 
+copy_rdata_files() # make sure data files are up to date.
+filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherback_rr",
                             "rv_rr", "pasBay_rr", "ilts_rr", "isdb_rr", "marfis_rr",
-                            "obisFish_rr", "ef_rr", "ocearch_rr", 
-                            "wsdb_rr", "whitehead_rr", "obisCet_rr", "blueWhaleHab_rr", 
+                            "obisFish_rr", "sturg_rr", "ef_rr", "ocearch_rr", 
+                            "wsdb_rr", "whitehead_rr", "obisCet_rr", "blueWhaleHab_rr",
                             "nbw_rr", "narwc_rr", "rockweed_rr", "ebsa_rr",
                             "conservationSites_rr", "finWhale_rr", "harbourPorpoise_rr",
                             "humpbackWhale_rr", "seiWhale_rr"), "MAR", env = environment())
@@ -74,13 +74,13 @@ This section provides an overall synthesis of regional data and data products of
 
 ```{r cetacean-setup, echo=FALSE, include=FALSE, cache=FALSE}
 whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
-               "Blue Whale: Endangered (SARA & COSEWIC)" = "black", 
+               "Blue Whale: Endangered (SARA & COSEWIC)" = "black",
                "Fin Whale: Special Concern (SARA & COSEWIC)" = "chartreuse4",
                "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)" = "#F5A4E7",
-               "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)" = "#00AFBB", 
-               "North Atlantic Right Whale: Endangered (SARA & COSEWIC)" = "darkorchid4", 
-               "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)" = "#0827EF", 
-               "Sei Whale: No Status (SARA) & Endangered (COSEWIC)" = "#EF6408", 
+               "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)" = "#00AFBB",
+               "North Atlantic Right Whale: Endangered (SARA & COSEWIC)" = "darkorchid4",
+               "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)" = "#0827EF",
+               "Sei Whale: No Status (SARA) & Endangered (COSEWIC)" = "#EF6408",
                "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
@@ -136,6 +136,14 @@ efTable <- create_table_ilts(ef_rr$data_sf, listed_species, uniqueCols = c("geom
 
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "Electrofishing",
                                           efTable, "Common Name", "Common Name")
+# STURGEON
+if (!is.null(sturg_rr$data_sf)) {
+   sturgSummaryRow <- data.frame("CommonName" = c("Atlantic Sturgeon"))
+} else {
+  sturgSummaryRow <- NULL
+}
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "Sturgeon",
+                                          sturgSummaryRow, "CommonName", "CommonName")
 
 # OCEARCH
 if (!is.null(ocearch_rr$data_sf)) {
@@ -153,6 +161,8 @@ summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH",
 # crithab, sardist
 critHabCheck <- !is.null(crithab_rr$data_sf) | !is.null(leatherback_rr$data_sf)
 distTable <- table_dist(sardist_rr$data_sf, "EN")
+distTable <- create_sar_tables(sardist_rr$data_sf, listed_species, extraCols = c("Species_Link"))$sarData
+
 summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "SAR Distribution",  distTable, "Common Name", "Common Name")
 
 if (critHabCheck) {
@@ -199,13 +209,13 @@ formatedSarTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. 
   # add column for observations from sar table
   obsColumn <- apply(summarySarTable, 1, function(r) any(r %in% c(presentCode)))
   summaryHabTable$Obs <- ifelse(obsColumn, presentCode, absentCode)
-  
+
   summaryHabTable <- mutate_all(summaryHabTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", ""),
                   background = ifelse(. == presentCode, "green", ""), escape = FALSE))
 
   names(summaryHabTable) <- c("Species", "COSEWIC", "SARA", "Observations", "SAR Range", "SDM", "Important Habitat", "Critical Habitat")
 
-  
+
 ```
 
 ```{r output-hab-table}

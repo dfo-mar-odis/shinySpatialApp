@@ -2,6 +2,20 @@ library(testthat)
 
 context("Render Tests")
 
+# create random study area:
+list2env(load_test_data(), envir = environment())
+regionBbox <- sf::st_bbox(region)
+xmin <-  runif(1, min=regionBbox$xmin, max=regionBbox$xmax)
+ymin <-  runif(1, min=regionBbox$ymin, max=regionBbox$ymax)
+xmax <- xmin + 1
+ymax <- ymin + 1
+polyMatrix <- matrix(c(xmin,ymin,xmax,ymin,xmax,ymax,xmin,ymax,xmin,ymin),ncol=2, byrow=TRUE)
+testStudyArea <- st_sfc(st_polygon(list(polyMatrix)))
+outputGeojson <- here::here("app/output/geoms_slc.geojson")
+unlink(outputGeojson)
+sf::st_write(testStudyArea, outputGeojson, append = FALSE)
+
+
 
 test_that("render Intro", {
   list2env(load_test_data(), envir = environment())
@@ -9,65 +23,24 @@ test_that("render Intro", {
   temp_files <- list.files(test_out_dir, include.dirs = T, full.names = T, recursive = T)
   unlink(temp_files, recursive = TRUE)
   out_file <- here::here("tests/temp/rmd_intro")
- 
-  chk <- renderReport(
-    # use sample input from application, with no sections:
-    input = readRDS(here::here("tests/testthat/input")),
-    geoms = studyArea,
-    outFileName = out_file,
-    dirIn = here::here("app/Rmd"),
-    dirOut = here::here("tests/temp")
-  )
-  
+  catch_all_output({
+    chk <- renderReport(
+      # use sample input from application, with no sections:
+      input = readRDS(here::here("tests/testthat/input")),
+      geoms = studyArea,
+      outFileName = out_file,
+      dirIn = here::here("app/Rmd"),
+      dirOut = here::here("tests/temp")
+    )
+  })
   expect_true(file.exists(here::here("tests/temp/rmd_intro_EN.html")))
 })
 
-test_that("render SARA", {
-  success <- render_check_delete(here::here("app/Rmd/report_SARA_EN.Rmd"))
-  expect_true(success)
-})
+enFiles <-list.files(path=here::here("sections/"), pattern=c("*_en.Rmd"),
+                     recursive=TRUE, full.names = TRUE)
 
-test_that("render Ceteceans", {
-  success <- render_check_delete(here::here("app/Rmd/report_cetaceans_EN.Rmd"))
-  expect_true(success)
-})
+frFiles <-list.files(path=here::here("sections/"), pattern=c("*_fr.Rmd"),
+                     recursive=TRUE, full.names = TRUE)
 
-test_that("render Fish", {
-  success <- render_check_delete(here::here("app/Rmd/report_fish_EN.Rmd"))
-  expect_true(success)
-})
+lapply(enFiles, test_render)
 
-test_that("render habitat", {
-  success <- render_check_delete(here::here("app/Rmd/report_habitat_EN.Rmd"))
-  expect_true(success)
-})
-
-test_that("render planning", {
-  success <- render_check_delete(here::here("app/Rmd/report_planning_EN.Rmd"))
-  expect_true(success)
-})
-
-test_that("render SARA FR", {
-  success <- render_check_delete(here::here("app/Rmd/report_SARA_FR.Rmd"))
-  expect_true(success)
-})
-
-test_that("render Ceteceans FR", {
-  success <- render_check_delete(here::here("app/Rmd/report_cetaceans_FR.Rmd"))
-  expect_true(success)
-})
-
-test_that("render Fish FR", {
-  success <- render_check_delete(here::here("app/Rmd/report_fish_FR.Rmd"))
-  expect_true(success)
-})
-
-test_that("render habitat FR", {
-  success <- render_check_delete(here::here("app/Rmd/report_habitat_FR.Rmd"))
-  expect_true(success)
-})
-
-test_that("render planning FR", {
-  success <- render_check_delete(here::here("app/Rmd/report_planning_FR.Rmd"))
-  expect_true(success)
-})

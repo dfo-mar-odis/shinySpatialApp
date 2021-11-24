@@ -44,7 +44,7 @@ ui <- fluidPage(
             choiceValues = list(1, 2, 3)
           ),
           br(),
-          actionButton("get_u_details", 'Validate', icon =icon("pencil")),
+          actionButton("get_u_details", 'Validate', icon =icon("pencil-alt")),
           hspace(2),
           uiOutput("valid_details", inline = TRUE)
         ),
@@ -52,7 +52,7 @@ ui <- fluidPage(
         # LAYER CREATION
         tabPanel(
           "Geometries",
-          icon = icon("pencil"),
+          icon = icon("pencil-alt"),
           myhelptxt("This tab allows you to create or import areas of interest using one of the three tabs below."),
 
           # Three selections panels
@@ -128,7 +128,7 @@ ui <- fluidPage(
           myhelptxt("This tab allows you to validate geometries you wish to use to generate the report and, if desired, add a buffer to selected geometries."),
           checkboxGroupInput("check_input_areas", choiceNames = "Input placeholder1", choiceValues = 1, c("none")),
           #
-          actionButton('add_geoms_to_map', 'Add to map', icon = icon("pencil")),
+          actionButton('add_geoms_to_map', 'Add to map', icon = icon("pencil-alt")),
           actionButton('valid_geoms', "Validate", icon = icon("check")),
           actionButton('clear_map', "Clear map", icon = icon("trash-alt")),
           br(),

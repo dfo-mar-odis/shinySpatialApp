@@ -1,0 +1,38 @@
+# This is a workflow to check for open data updates
+
+name: Open Data Check
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      name:
+        default: 'World'
+        required: false
+  schedule:
+  - cron: "0 0 10 * *"
+
+jobs:
+  open_data_check:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: nuke Rprofile
+        run: rm .Rprofile
+    
+      - uses: r-lib/actions/setup-r@v1
+      
+      - name: Fix ubuntu packages
+        run: |
+          sudo apt install libcurl4-openssl-dev 
+      
+      - name: Install R packages
+        run: |
+          install.packages(c("ckanr", "here"), quiet=TRUE)
+        shell: Rscript {0}  
+        
+      - name: Run Script
+        run: |
+          source(here::here("dataprocessing/openDataGitScript.R"))
+        shell: Rscript {0}

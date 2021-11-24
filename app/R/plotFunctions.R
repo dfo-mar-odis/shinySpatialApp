@@ -152,7 +152,8 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
 
 plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                           outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
-                          labelData=NULL, alphaMap=NULL, labelAttribute=NULL) {
+                          labelData=NULL, alphaMap=NULL, labelAttribute=NULL, 
+                          fillClr="#56B4E9") {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -175,8 +176,10 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   
   
   if (toupper(attribute) == "NONE") { # Case 1: plotting all polygons in one color
-    
-    polyPlot <- geom_sf(data=polyData, fill="#56B4E9", col=clr)
+    if (outlines) {
+      clr = fillClr
+    } 
+    polyPlot <- geom_sf(data = polyData, fill = fillClr, col = clr)
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
     polyData[[attribute]] = as.factor(polyData[[attribute]])
@@ -207,7 +210,11 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   }
   
   if(!is.null(labelData)) {
-    polyLabels <- geom_sf_label(data = labelData, aes(label = !!sym(labelAttribute)))
+    polyLabels <- ggrepel::geom_label_repel(data = labelData,
+                                            aes(label = !!sym(labelAttribute), geometry = geometry),
+                                            stat = "sf_coordinates",
+                                            min.segment.length = 0
+                                            )
   }
     
   polyMap <- baseMap +
@@ -311,8 +318,8 @@ get_rr_color_map <- function(dataCol) {
 #
 # Outputs: ggplot object with the 4 plots.
 
-plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
-                               humpback_whale_sf, sei_whale_sf, studyArea,
+plot_cetaceans_4grid<-function(finWhale_sf, harbourPorpoise_sf,
+                               humpbackWhale_sf, seiWhale_sf, studyArea,
                                landLayer, bufKm, bounds_sf) {
   # buf is in km, and now converted to degrees
   buf <- bufKm / 100
@@ -330,33 +337,33 @@ plot_cetaceans_4grid<-function(fin_whale_sf, harbour_porpoise_sf,
   
   land <- sf::st_crop(landLayer, bboxBuf)
   bound <- sf::st_crop(bounds_sf, bboxBuf)
-  fin_whale_sf <- sf::st_crop(fin_whale_sf, bboxBuf)
-  harbour_porpoise_sf <- sf::st_crop(harbour_porpoise_sf, bboxBuf)
-  humpback_whale_sf <- sf::st_crop(humpback_whale_sf, bboxBuf)
-  sei_whale_sf <- sf::st_crop(sei_whale_sf, bboxBuf)
+  finWhale_sf <- sf::st_crop(finWhale_sf, bboxBuf)
+  harbourPorpoise_sf <- sf::st_crop(harbourPorpoise_sf, bboxBuf)
+  humpbackWhale_sf <- sf::st_crop(humpbackWhale_sf, bboxBuf)
+  seiWhale_sf <- sf::st_crop(seiWhale_sf, bboxBuf)
   
   
   #Fin Whale
-  finWhalePlot <- whale_ggplot(fin_whale_sf, bound, land, studyArea,
+  finWhalePlot <- whale_ggplot(finWhale_sf, bound, land, studyArea,
                                "Fin Whale", bboxBuf)
   
   #Harbour Porpoise
-  harbourPorpoisePlot <- whale_ggplot(harbour_porpoise_sf, bound, land, studyArea,
+  harbourPorpoisePlot <- whale_ggplot(harbourPorpoise_sf, bound, land, studyArea,
                                       "Harbour Porpoise", bboxBuf)
   
   #humpback whale
-  humpbackWhalePlot <- whale_ggplot(humpback_whale_sf, bound, land, studyArea,
+  humpbackWhalePlot <- whale_ggplot(humpbackWhale_sf, bound, land, studyArea,
                                     "Humpback Whale", bboxBuf)
   
   #Sei Whale
-  seiWhalePlot <- whale_ggplot(sei_whale_sf, bound, land, studyArea,
+  seiWhalePlot <- whale_ggplot(seiWhale_sf, bound, land, studyArea,
                                "Sei Whale", bboxBuf)
   
   #Arrange all 4 cetaceans into grid
   gridExtra::grid.arrange(finWhalePlot, harbourPorpoisePlot, humpbackWhalePlot,
                           seiWhalePlot,
-                          bottom = expression(paste("Longitude ",degree,"N",sep="")),
-                          left = expression(paste("Latitude ",degree,"N",sep="")),
+                          bottom = "",
+                          left = "",
                           nrow = 2)
 }
 
@@ -531,16 +538,19 @@ format_ggplot <- function(ggplotIn, bbox) {
                                       (0.7 * (bbox$xmax[[1]] - bbox$xmin[[1]])))
   
   ggplotOut <- ggplotIn +
-    annotation_custom(grid::textGrob("DFO Internal Use Only", rot=rotTheta,
-                                     gp=grid::gpar(fontsize=30, alpha=0.5, col="grey70", fontface="bold")),
+    annotation_custom(grid::textGrob("DFO Internal Use Only", rot = rotTheta,
+                                     gp = grid::gpar(fontsize = 30, alpha = 0.5,
+                                                   col = "grey70",
+                                                   fontface = "bold")),
                       xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
     annotation_scale(location = "bl") +
-    theme_bw()+
-    labs(x = expression(paste("Longitude ", degree, "W", sep = "")),
-         y = expression(paste("Latitude ", degree, "N", sep = "")),
+    theme_bw() +
+    labs(x = "",
+         y = "",
          col = "")  +
-    theme(axis.title.y = element_text(size = 13))+
-    theme(axis.title.x = element_text(size = 13))
+    theme(axis.text.x = element_text(size = 14)) + 
+    theme(axis.text.y = element_text(size = 14))
+  
   
   # crop to bbox if used:
   if (class(bbox) == "bbox") {
@@ -565,6 +575,13 @@ whale_ggplot <- function(whale_sf, bound, landLayer, studyArea, plotTitle, plotB
     ggtitle(plotTitle) 
   
   outPlot <- format_ggplot(rawPlot, plotBbox)
+  
+  #set outplot axis tick marks
+  axisSigFigs <- ceiling(log10(plotBbox$xmax - plotBbox$xmin))
+  digits <- ifelse(axisSigFigs < 0, -axisSigFigs, 1)
+  breakVec <- round(seq(plotBbox$xmin, plotBbox$xmax, length.out = 5),
+                    digits = digits)
+  outPlot <- outPlot + scale_x_continuous(breaks = breakVec) 
   
   return(outPlot)
 }

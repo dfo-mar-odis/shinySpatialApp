@@ -1,0 +1,69 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+### **Habitat important pour le rorqual bleu**  {#bwhab-section}
+
+```{r bwhab-load, include=FALSE}
+load_rdata(c("blueWhaleHab_rr"), "MAR", env = environment())
+```
+
+```{r bwhab-meta, results='asis'}
+write_meta(blueWhaleHab_rr, "FR")
+```
+
+Description de l’ensemble de données (tirée du dossier des données ouvertes) :
+```{r bwhab-text, results='asis'}
+# trim extra sections off.  
+blueWhaleText <- sub("La table d'attributs a été complétée grâce aux informations contenues dans le rapport suivant : .*", "", blueWhaleHab_rr$text$fr)
+writeLines(noquote(blueWhaleText))
+
+```
+
+Veuillez consulter la liste de toutes les sources d’information utilisées dans Lesage et al. 2018 et le dossier des données ouvertes ici https://ouvert.canada.ca/data/fr/dataset/8fafd919-fcbe-43a3-a911-3d9461273441.
+
+#### ***Résultats de la recherche sur l’habitat important des rorquals bleus par zone***
+
+```{r overlap-bw-habitat, echo=FALSE, results='asis'}
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- master_intersect(blueWhaleHab_rr$data_sf, mapDataList)
+if(!is.null(clipped$studyData)){
+  summaryBWTable <- data.frame("Species" = "Blue Whale")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[BW Habitat](#bwhab-section)", summaryBWTable, "Species", "Species")
+}
+```
+*
+```{r bw-result, echo=FALSE, results='asis'}
+polyText<-if(is.null(clipped$studyData)){
+  "La zone de recherche ne chevauche pas l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
+} else {
+  "La zone de recherche chevauche l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
+}
+
+polyText<-noquote(polyText)
+writeLines(polyText)
+```
+
+```{r bw-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(blueWhaleHab_rr, "FR"), 'Habitat important pour le rorqual bleu dans l’ouest de l’Atlantique-Nord. Zones délimitées par des polygones dans les eaux canadiennes qui sont importantes pour les rorquals bleus pour l’alimentation et le transit. Ces zones d’habitat désignées dans le rapport par Lesage et al. (2018) sont considérées comme importantes pour la survie et le rétablissement des rorquals bleus de la population de l’ouest de l’Atlantique Nord. Les rorquals bleus ont fort probablement besoin d’utiliser plusieurs de ces habitats importants pour répondre à leurs besoins biologiques. Par conséquent, les corridors d’accès et l’habitat qu’ils relient doivent être considérés comme tout aussi importants pour la population.')}
+if (!is.null(blueWhaleHab_rr$data_sf)){
+  bwPlotList <- plot_rr_sf(regionMap, blueWhaleHab_rr$data_sf, blueWhaleHab_rr$attribute, getColorMap = TRUE)
+  bwPlotList$polyMap
+}  
+```
+
+```{r bw-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(blueWhaleHab_rr, "FR"), 'La carte résume les zones dans lesquelles le polygone de recherche chevauche l’habitat important pour le rorqual bleu.')}
+if (!is.null(clipped$mapData)){
+  plot_rr_sf(areaMap, clipped$mapData, blueWhaleHab_rr$attribute, colorMap = bwPlotList$colorMap)
+}
+```

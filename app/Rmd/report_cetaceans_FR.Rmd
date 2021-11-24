@@ -15,351 +15,40 @@ Veuillez consulter le Passive Acoustic Cetacean Map (PACM) pour examiner quand e
 
 La présente section ne vise pas à décrire toutes les sources d’information disponibles; les données présentées ne représentent pas toutes les données disponibles sur les observations de cétacés dans la zone de recherche, et d’autres observations peuvent provenir d’autres sources ou de données plus récentes que celles présentées ici. En plus des données sur la présence seulement, certaines des données disponibles peuvent être utilisées pour appuyer les conclusions propres aux espèces au sujet des préférences en matière d’habitat et de la présence possible ou connue à proximité et à l’intérieur de la zone de recherche. Veuillez consulter les publications citées pour obtenir de plus amples renseignements et communiquer avec Angelia Vanderlaan (baleines noires de l’Atlantique Nord) et Hilary Moors-Murphy (autres espèces de cétacés) pour discuter d’autres sources d’information (p. ex., détections acoustiques). Les données et les sources qui ne sont pas explicitement incluses dans le présent rapport comprennent des renseignements tirés d’études ou de publications antérieures, des détections acoustiques, l’échantillonnage des proies et le marquage. Bien que la valeur de ces données dans la prévision et la description de la présence des cétacés soit vitale, ces types de données ne sont pas disponibles pour toutes les espèces et ne peuvent pas encore être interrogées. À l’avenir, à mesure que l’information provenant d’autres sources de données deviendra disponible, ces nouvelles données aideront à mieux comprendre l’utilisation de l’habitat des cétacés et la présence de ceux-ci dans les zones de recherche.
 
-```{r cetacean-setup, echo=FALSE, include=FALSE, cache=FALSE}
-whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
-               "Blue Whale: Endangered (SARA & COSEWIC)" = "black", 
-               "Fin Whale: Special Concern (SARA & COSEWIC)" = "chartreuse4",
-               "Harbour Porpoise: Threatened (SARA) Special Concern (COSEWIC)" = "#F5A4E7",
-               "Killer Whale: No Status (SARA) & Special Concern (COSEWIC)" = "#00AFBB", 
-               "North Atlantic Right Whale: Endangered (SARA & COSEWIC)" = "darkorchid4", 
-               "Northern Bottlenose Whale: Endangered (SARA & COSEWIC)" = "#0827EF", 
-               "Sei Whale: No Status (SARA) & Endangered (COSEWIC)" = "#EF6408", 
-               "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
-whaleShape <- rep_len(15:20, length(names(whaleCol)))
-names(whaleShape) <- names(whaleCol)
-whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
 
+
+```{r child = here::here("sections/wsdb/wsdb_fr.Rmd")}
 ```
 
-### **Base de données des observations de baleines (BDOB)**  {#WSDB-section}
-
-```{r wsdb-load, include=FALSE}
-load_rdata(c("wsdb_rr"), "MAR", env = environment())
+```{r child = here::here("sections/whitehead/whitehead_fr.Rmd")}
 ```
 
-```{r wsdb-meta, results='asis'}
-write_meta(wsdb_rr, "FR")
+```{r child = here::here("sections/narwc/narwc_fr.Rmd")}
 ```
 
-La base de données sur les mammifères marins et les animaux pélagiques, ou Base de données des observations de baleines, a été mise en œuvre en 2002 par le MPO afin de fournir un dépôt central pour les observations d’animaux marins, en particulier de cétacés, et d’améliorer l’accessibilité aux données d’observation provenant de diverses sources, y compris certaines données provenant des relevés des mammifères marins et des activités de recherche (MacDonald et al., 2017). La plupart des efforts visant à rassembler les données d’observations disponibles ont porté sur la collecte de données provenant de diverses sources en exploitation dans les eaux de la Nouvelle-Écosse (y compris la baie de Fundy et le plateau néo-écossais), et plus récemment dans le golfe du Saint-Laurent, bien que moins d’efforts aient été déployés pour obtenir les données disponibles d’autres régions. La plupart des observations ont été recueillies de façon fortuite et provenaient de personnes possédant une vaste expertise et une vaste expérience en matière d’identification des mammifères marins. Pour de plus amples renseignements, consulter le site suivant : http://www.inter.dfo-mpo.gc.ca/Maritimes/SBSA/ecpop/lep/Bas-Donnees ou le document de MacDonald et al. (2017) <https://waves-vagues.dfo-mpo.gc.ca/Library/40642999.pdf>.     
+```{r child = here::here("sections/obis/obisCet_fr.Rmd")}
+```
 
-Cette base de données ne cherche pas activement à stocker de l’information sur les incidents impliquant des mammifères marins (c.-à-d. morts, tués, échoués, enchevêtrés ou blessés) et, par conséquent, ce type d’information est très incomplet. Pour cette raison, dans le présent rapport :  
+```{r cetacean-summary-table, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+if (FALSE) {
+  whaleSummaryTable <- subset(whaleSummaryTable, select = -c(specIndex))
 
-- Les observations où le Comportement est associé au code « mort », « tué » ou « échoué » ne sont pas incluses.
-- Les observations où l’État de l’animal est associé au code « mort » ne sont pas incluses.
-- Les observations où l’Impact des engins de pêche est associé au code est « Empêtré – Mort sur l’engin » ou « Mort – Non empêtré » ne sont pas incluses.
+  areaSums <- colSums(subset(whaleSummaryTable, select = -c(Species)))
+  areaSums$Species <- "Area Total"
+  whaleSummaryTable <- rbind(whaleSummaryTable, areaSums)
 
-Veuillez prendre note des avertissements et mises en garde importants suivants associés aux observations de la BDOB :
-
-- Les données représentent une combinaison d’observations recueillies au fil des années et des saisons. Les données d’observation sont biaisées par le moment et l’endroit où les activités ont été menées; par conséquent, l’effort d’observation est inégal d’un mois, d’une année ou d’une région à l’autre. Donc, les différences apparentes dans les profils de répartition saisonniers ou annuels des données d’observation ne devraient pas être considérées comme définitives. Les conditions météorologiques défavorables et un effort visuel diminué en hiver, au printemps et à l’automne expliquent probablement le nombre moins élevé d’observation comparativement à l’été. 
-- L’effort d’observation n’a pas été quantifié (c.-à-d. les données ne peuvent pas être utilisées pour estimer la densité ou l’abondance réelle ou relative d’une espèce dans une région, ni l’absence d’une espèce). Si une espèce est absente dans une zone, cette absence devrait être interprétée comme une absence de déclaration, et pas nécessairement comme l’absence de l’espèce dans cette zone.
-- Les données d’observation n’ont pas encore été complètement vérifiées et peuvent contenir des dédoublements. Les observations peuvent également comprendre les observations des mêmes animaux signalées par plusieurs plateformes ou navires.
-- On ne connaît pas la qualité de certaines données d’observation. La plupart des observations ont été recueillies de façon fortuite et provenaient de personnes possédant une vaste expertise et une vaste expérience en matière d’identification des mammifères marins. 
-- Il existe une incertitude importante quant au nombre d’animaux inclus dans chaque observation en raison des difficultés associées à la quantification du nombre d’individus observés dans un groupe.
-- Les observations qui n’ont pu être reliées à des espèces sont classées dans le plus petit groupe taxonomique possible.
-
-#### ***Résultats de la recherche de la BDOB par zone***
-
-```{r wsdb, include=FALSE, cache=FALSE}
-wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)
-linkedSectionText <- "[BDOB](#WSDB-section)"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, wsdb_rr$attribute)
-if (!is.null(wsdbClipped$studyData)) {
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
-} else {
- summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+  knitr::kable(whaleSummaryTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of records present in cetacean databases used in this report. ", booktabs = T, escape = F, linesep = "") %>%
+    kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 }
 ```
 
-```{r wsdb-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_wsdb <- if (is.null(wsdbClipped$studyData)) {
-   "* Il existe des registres pertinents dans BDOB pour cette zone de recherche."
- } else {
-   "* Il n’existe aucun registre pertinent dans BDOB pour cette zone de recherche."
- }
- writeLines(Report_wsdb)
+```{r child = here::here("sections/sdm/sdm_fr.Rmd")}
 ```
 
-```{r wsdb-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Faible. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés de la base de données sur les observations de baleines (BDOB) (y compris les observations de groupes d’animaux), pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la Loi sur les espèces en péril (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b> L’absence peut être liée à un effort d’enquête faible ou nul. L’information sur les observations sous-représente la présence de cétacés, en particulier les espèces qui vivent en eau profonde (p. ex., les baleines à bec) et qui passent peu de temps à la surface. Cette carte n’inclut pas non plus les détections acoustiques. Les observations sur terre indiquent que les données d’observation n’ont pas encore été complètement vérifiées ou que des animaux ont été observés depuis la côte.'}
-if (!is.null(wsdbClipped$studyData)) {
-  plot_rr_sf(areaMap, wsdbClipped$mapData, attribute = wsdb_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
-}
+```{r child = here::here("sections/blueWhaleHab/bwhab_fr.Rmd")}
 ```
 
-### **Le laboratoire Whitehead, Université de Dalhousie** {#Whitehead-section}
-
-```{r whitehead-load, include=FALSE}
-load_rdata(c("whitehead_rr"), "MAR", env = environment())
+```{r child = here::here("sections/nbw/nbw_fr.Rmd")}
 ```
 
-```{r whitehead-meta, results='asis'}
-write_meta(whitehead_rr, "FR")
-```
 
-Les renseignements suivants sont résumés dans ce site Web (https://whiteheadlab.weebly.com/). Le Whitehead Lab est basé au département de biologie de l’Université Dalhousie (Halifax, Nouvelle-Écosse). Depuis sa création en 1987, le laboratoire Whitehead a accueilli plus de 75 étudiants au niveau postdoctoral, au doctorat, à la maîtrise et au premier cycle. Ces étudiants mènent principalement des recherches axées sur la conservation sur le comportement, l’écologie et la biologie des populations des espèces de cétacés (principalement, les cachalots, les baleines à bec commune et les globicéphales noirs), et de nombreuses études sont axées sur les espèces dans les eaux de l’est du Canada. 
-
-La description suivante des méthodes de collecte de données sur les observations de cétacés utilisées par le laboratoire de Whitehead est tirée de Whitehead (2013); les données sur les observations de cétacés comprennent les observations d’espèces ciblées par la recherche ainsi que les observations fortuites de cétacés pendant des études sur les baleines à bec commune du Nord et, dans une moindre mesure, les cachalots dans le nord-ouest de l’Atlantique, principalement dans la ZPM du Gully, et les canyons adjacents le long de la limite est du plateau néo-écossais (les canyons Shortland et Haldimand). La collecte des données a été effectuée de façon comparable, à partir de deux navires de recherche similaires, un voilier auxiliaire de 10 mètres (utilisé lors des efforts antérieurs) et un voilier auxiliaire de 13 mètres (utilisé plus tard). Tous les cétacés observés ont été consignés, ainsi que le moment de l’observation, l’espèce (quand il était possible de la déterminer) et la position. À mesure que les définitions de la taille du groupe changent au cours de l’étude, les estimations de la taille du groupe peuvent être inexactes et peuvent être biaisées par des facteurs comme le comportement des animaux et les conditions météorologiques. Par conséquent, les lieux d’observation représentent des observations de groupes, qui pourraient être formés d’un ou de plusieurs animaux, plutôt que le nombre d’individus observés. Le laboratoire Whitehead fournit des observations de cétacés à la BDOB. Toutefois, en raison de son niveau de qualité élevé, cette base de données est résumée de manière indépendante dans cette section du rapport.
-
-#### ***Résultats de la recherche du laboratoire Whitehead par zone***
-
-```{r whitehead, include=FALSE, cache=FALSE}
-whiteheadClipped <- master_intersect(whitehead_rr$data_sf, mapDataList)
-
-linkedSectionText <- "[Whitehead](#Whitehead-section)"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, whitehead_rr$attribute)
-
-if (!is.null(whiteheadClipped$studyData)) {
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
-} else {
- summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
-}
-
-```
-*
-```{r whitehead-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_whitehead <-  if (is.null(whiteheadClipped$studyData)) {
-   "Il n’existe aucun registre pertinent dans la base de données du laboratoire Whitehead pour cette zone de recherche."
- } else {
-   "Il existe des registres pertinents dans la base de données du laboratoire Whitehead pour cette zone de recherche."
- }
-writeLines(Report_whitehead)
-```
-
-```{r whitehead-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés du laboratoire Whitehead pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la Loi sur les espèces en péril (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC)s. Les efforts sur le terrain ont surtout été menés dans la zone de protection marine de Gully et les canyons adjacents le long de la limite est du plateau néo-écossais, par beau temps (par exemple, consulter Whitehead 2013 pour voir une carte des efforts entre 1988 et 2011), bien que certaines données des relevés le long de la limite du plateau au large de la Nouvelle-Écosse et de Terre-Neuve-et-Labrador soient incluses. <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b> L’absence peut être liée à un effort d’enquête faible ou nul. Cette carte n’inclut pas non plus les détections acoustiques. L’information sur les observations sous-représente la présence de cétacés, en particulier les espèces qui vivent en eau profonde (p. ex., les baleines à bec) et qui passent peu de temps à la surface. Pour de plus amples renseignements, consultez le site :<https://whiteheadlab.weebly.com/contact.html>'}
-if (!is.null(whiteheadClipped$studyData)) {
-  plot_rr_sf(areaMap, whiteheadClipped$mapData, attribute=whitehead_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
-}
-```
-
-### **Base de données des observations du North Atlantic Right Whale Consortium (NARWC)**  {#NARWC-section}
-
-```{r narwc-load, include=FALSE}
-load_rdata(c("narwc_rr"), "MAR", env = environment())
-```
-
-```{r narwc-meta, results='asis'}
-write_meta(narwc_rr, "FR")
-```
-
-Les renseignements suivants sont résumés sur le site de la base de données des observations du NARWC : https://www.narwc.org/sightings-database.html
-
-La base de données des observations du NARWC contient des registres de milliers d’observations de baleines noires dans l’océan Atlantique Nord, ainsi que d’observations d’autres espèces de baleines, de dauphins, de tortues de mer, de phoques et de gros poissons. Elle contient également des données de relevé associées à bon nombre de ces observations, qui pourraient être utilisées pour déterminer l’effort de relevé connexe. Toutefois, la base de données ne comprend pas les données sur la distance d’observation requises pour déterminer la densité ou l’abondance des espèces à partir de ces relevés. Les observations contenues dans la base de données proviennent d’une grande variété de contributeurs, y compris des membres du NARWC et d’autres. Chaque renseignement dans la base de données des observations représente un groupe de baleines (c.-à-d. un groupe de trois baleines a un seul renseignement, tout comme un groupe d’une seule baleine) et il peut y avoir ou non une preuve photographique d’une observation donnée de baleines noires. Les bases de données des observations et de photo-identification sont périodiquement recoupées, de sorte que les données d’identification individuelles de ces dernières peuvent être couplées aux données d’observation de la première. Pour cette raison, toutes les observations dans la base de données d’identification finissent par être incluses dans la base de données des observations (avec un décalage d’environ un an). Bien que les identifications individuelles des animaux ne soient pas incluses dans la base de données des observations, les deux bases de données peuvent être liées en fonction des champs communs. Cet article de synthèse de la base de données des observations fournit aux utilisateurs potentiels des renseignements importants : https://www.narwc.org/uploads/1/1/6/6/116623219/narwc_users_guide__v_6_.pdf [@NARWCdatabase].
-
-#### ***Résultats de la recherche du NARWC par zone***
-```{r narwc, include=FALSE, cache=FALSE}
-narwcClipped <- master_intersect(narwc_rr$data_sf, mapDataList)
-
-linkedSectionText <- "[NARWC](#NARWC-section)"
-if (!is.null(narwcClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped$studyData, narwc_rr$attribute)
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
-} else {
- summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
-}
-
-```
-*
-```{r narwc-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_narwc <-  if (is.null(narwcClipped$studyData)) {
-   "Il n’existe aucun registre pertinent dans la base de données du NARWC pour cette zone de recherche."
- } else {
-   "Il existe des registres pertinents dans la base de données du NARWC pour cette zone de recherche."
- }
-writeLines(Report_narwc)
-```
-```{r narwc-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Élevée Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés de la Base de données des observations du North Atlantic Right Whale Consortium (NARWC) pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone</b> , puisque l’effort de relevé est biaisé vers le nord-est des États-Unis, et les données sur la présence d’espèces provenant des détections acoustiques ne sont pas incluses. Pour de plus amples renseignements, consultez le site : <https://www.narwc.org/sightings-database.html>'}
-if (!is.null(narwcClipped$studyData)) {
-   plot_rr_sf(areaMap, narwcClipped$mapData, attribute=narwc_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
-}
-```
-
-### **Système d’information sur la biodiversité des océans (SIBO) [pour les cétacés]**  {#obis-cetacean-section}
-
-```{r obis-cetacean-load, include=FALSE}
-load_rdata(c("obisCet_rr"), "MAR", env = environment())
-```
-
-```{r obis-cetacean-meta, results='asis'}
-write_meta(obisCet_rr, "FR")
-```
-
-Une recherche du SIBO a été effectuée pour trouver d’autres documents pertinents pour les cétacés inscrits en vertu de la LEP, ou évalués par le COSEPAC. Un processus de CQ de premier niveau a été effectué en supprimant les rapports en double qui sont également présents dans la BDOB. Les versions subséquentes de ce rapport viseront à étendre nos efforts de CQ pour cette source d’information.
-
-#### ***Résultats de la recherche du SIBO pour les cétacés, par zone***
-```{r obis-cetacean, include=FALSE, cache=FALSE}
-obisClipped <- master_intersect(obisCet_rr$data_sf, mapDataList)
-linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
-if (!is.null(obisClipped$studyData)) {
-  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped$studyData, obisCet_rr$attribute)
-  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
-} else {
- summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
-}
-
-```
-*
-```{r obis-cetacean-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-Report_obis_cet <-  if (is.null(obisClipped$studyData)) {
-  "Il n’existe aucun registre pertinent pour les cétacés dans le système d’information sur la biodiversité des océans (SIBO) pour cette zone de recherche."
-} else {
-  "Il existe des registres pertinents pour les cétacés dans le système d’information sur la biodiversité des océans (SIBO) pour cette zone de recherche."
-}
-writeLines(Report_obis_cet)
-```
-
-```{r obis-cetacean-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Moyenne. Niveau de sécurité : Aucun. Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés du SIBO pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b> . L’absence peut être liée à un effort d’enquête faible ou nul. L’information sur les observations sous-représente la présence de cétacés, en particulier les espèces qui vivent en eau profonde (p. ex., les baleines à bec) et qui passent peu de temps à la surface. Cette carte n’inclut pas non plus les détections acoustiques. Les observations sur terre indiquent que les données d’observation n’ont pas encore été complètement vérifiées ou que des animaux ont été observés depuis la côte.'}
-if (!is.null(obisClipped$studyData)) {
-  plot_rr_sf(areaMap, obisClipped$mapData, attribute = obisCet_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
-}
-```
-
-### **Modèles de répartition des espèces (MRE) : zones prioritaires pour améliorer la surveillance des cétacés**  
-
-```{r sdm-load, include=FALSE}
-load_rdata(c("finWhale_rr", "harbourPorpoise_rr", "humpbackWhale_rr", "seiWhale_rr" ), "MAR", env = environment())
-```
-
-```{r sdm-meta, results='asis'}
-write_meta(finWhale_rr, "FR")
-```
-
-Description de l’ensemble de données (tirée du dossier des données ouvertes) :
-```{r sdm-text, results='asis'}
-# trim extra sections off.  
-sdmText <- sub("Sources des données: .*", "", finWhale_rr$text$fr)
-writeLines(noquote(sdmText))
-```
-
-Considérations importantes relatives à l’utilisation : les prévisions modélisées dans cette section ne doivent pas être utilisées seules pour le présent rapport, à des fins de planification de l’espace marin et/ou pour délimiter un habitat important pour les espèces de cétacés. Les extrants devraient plutôt être utilisés conjointement avec d’autres sources d’information comme la répartition des proies, les données de marquage, les détections provenant de la surveillance acoustique, d’autres données sur la présence de cétacés et d’autres efforts de modélisation déjà disponibles pour la région. En fait, le produit de données résumé dans la section ci-dessous (habitat important pour le rorqual bleu dans l’ouest de l’Atlantique Nord) représente un excellent cadre dans lequel utiliser correctement les extrants de cette section.  
-
-#### ***Résultats de la recherche du MRE pour les cétacés, par zone***
-```{r sdm, include=FALSE, cache=FALSE}
-
-clippedFin <- master_intersect(finWhale_rr$data_sf, mapDataList)
-clippedHp <- master_intersect(harbourPorpoise_rr$data_sf, mapDataList)
-clippedHump <- master_intersect(humpbackWhale_rr$data_sf , mapDataList)
-clippedSei <- master_intersect(seiWhale_rr$data_sf, mapDataList)
-
-tableSDM <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
-                       "Habour Porpoise" = !is.null(clippedHp$studyData),
-                       "Humpback Whale" = !is.null(clippedHump$studyData),
-                       "Sei Whale" = !is.null(clippedSei$studyData), 
-                       check.names = FALSE)
-
-summarySDMTable <- data.frame("Species" = names(tableSDM), "present" = transpose(tableSDM)$V1)
-summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "[SDM](#sdm-section)", summarySDMTable, "Species", "present")
-```
-
-```{r sdm-table}
- knitr::kable(tableSDM, align="cccc", caption=". Niveau de qualité : Faible. Niveau de sécurité : Aucun. Résultats indiquant si la zone de recherche chevauche les zones prioritaires prévues pour améliorer la surveillance de plusieurs espèces de cétacés (rorqual commun, marsouin commun, rorqual à bosse et rorqual boréal). VRAI = le polygone chevauche la zone prioritaire; FAUX = le polygone ne chevauche PAS la zone prioritaire.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
-```
-
-```{r sdm-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Faible. Niveau de sécurité : Aucun. La carte montre les résultats consolidés du modèle de répartition des espèces (taux d’occurrence prévu relatif de 60 à 100 %). Les polygones jaunes (habitats très appropriés) doivent être interprétés comme des zones où les efforts de surveillance des cétacés peuvent être priorisés et dont les résultats peuvent aider à diriger les activités de relevés dans le futur. En raison des nombreuses raisons énumérées dans la section de discussion de Gomez et al. (2020), ces données de modélisation sur les cétacés ne représentent pas une répartition complète et actuelle des cétacés dans la région. Elles représentent des zones prioritaires où diriger les efforts de surveillance des cétacés. Leur utilisation dans les processus de planification de l’espace marin devrait être accompagnée d’approches complémentaires telles que le processus résumé dans la section ci-dessous. Le produit de données résumé dans la section ci-dessous (habitat important pour le rorqual bleu dans l’ouest de l’Atlantique Nord) représente un excellent cadre dans lequel utiliser correctement les extrants de cette figure.'}
-plot_cetaceans_4grid(finWhale_rr$data_sf, harbourPorpoise_rr$data_sf, humpbackWhale_rr$data_sf, seiWhale_rr$data_sf, studyArea, land10m_sf, 50, bounds_sf)
-```
-
-### **Habitat important pour le rorqual bleu**  {#bwhab-section}
-
-```{r bwhab-load, include=FALSE}
-load_rdata(c("blueWhaleHab_rr"), "MAR", env = environment())
-```
-
-```{r bwhab-meta, results='asis'}
-write_meta(blueWhaleHab_rr, "FR")
-```
-
-Description de l’ensemble de données (tirée du dossier des données ouvertes) :
-```{r bwhab-text, results='asis'}
-# trim extra sections off.  
-blueWhaleText <- sub("La table d'attributs a été complétée grâce aux informations contenues dans le rapport suivant : .*", "", blueWhaleHab_rr$text$fr)
-writeLines(noquote(blueWhaleText))
-
-```
-
-Veuillez consulter la liste de toutes les sources d’information utilisées dans Lesage et al. 2018 et le dossier des données ouvertes ici https://ouvert.canada.ca/data/fr/dataset/8fafd919-fcbe-43a3-a911-3d9461273441.
-
-#### ***Résultats de la recherche sur l’habitat important des rorquals bleus par zone***
-
-```{r overlap-bw-habitat, echo=FALSE, results='asis'}
-# intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(blueWhaleHab_rr$data_sf, mapDataList)
-if(!is.null(clipped$studyData)){
-  summaryBWTable <- data.frame("Species" = "Blue Whale")
-  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[BW Habitat](#bwhab-section)", summaryBWTable, "Species", "Species")
-}
-```
-*
-```{r bw-result, echo=FALSE, results='asis'}
-polyText<-if(is.null(clipped$studyData)){
-  "La zone de recherche ne chevauche pas l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
-} else {
-  "La zone de recherche chevauche l’habitat important des rorquals bleus dans l’ouest de l’Atlantique-Nord."
-}
-
-polyText<-noquote(polyText)
-writeLines(polyText)
-```
-
-```{r bw-region-plot, fig.height=4, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Habitat important pour le rorqual bleu dans l’ouest de l’Atlantique-Nord. Zones délimitées par des polygones dans les eaux canadiennes qui sont importantes pour les rorquals bleus pour l’alimentation et le transit. Ces zones d’habitat désignées dans le rapport par Lesage et al. (2018) sont considérées comme importantes pour la survie et le rétablissement des rorquals bleus de la population de l’ouest de l’Atlantique Nord. Les rorquals bleus ont fort probablement besoin d’utiliser plusieurs de ces habitats importants pour répondre à leurs besoins biologiques. Par conséquent, les corridors d’accès et l’habitat qu’ils relient doivent être considérés comme tout aussi importants pour la population.'}
-if (!is.null(blueWhaleHab_rr$data_sf)){
-  bwPlotList <- plot_rr_sf(regionMap, blueWhaleHab_rr$data_sf, blueWhaleHab_rr$attribute, getColorMap = TRUE)
-  bwPlotList$polyMap
-}  
-```
-
-```{r bw-area-plot, fig.height=4, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. La carte résume les zones dans lesquelles le polygone de recherche chevauche l’habitat important pour le rorqual bleu.'}
-if (!is.null(clipped$mapData)){
-  plot_rr_sf(areaMap, clipped$mapData, blueWhaleHab_rr$attribute, colorMap = bwPlotList$colorMap)
-}
-```
-
-### **Habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais**   {#nbw-hab-section}
-
-```{r nbw-load, include=FALSE}
-load_rdata(c("nbw_rr"), "MAR", env = environment())
-```
-
-```{r nbw-meta, results='asis'}
-write_meta(nbw_rr, "FR")
-```
-
-Description de l’ensemble de données (tirée du dossier des données ouvertes) [@DFO2020NBW_imphabitat] :
-```{r nbw-text, results='asis'}
-# trim extra sections off.  
-nbwText <- sub("References: .*", "", nbw_rr$text$fr)
-writeLines(noquote(nbwText))
-
-```
-
-Veuillez consulter la liste de toutes les sources d’information utilisées et le dossier des données ouvertes ici [@DFO2020NBW_imphabitat]: `r nbw_rr$metadata$url$en`.
-
-
-#### ***Résultats de la recherche sur l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais, par zone*** 
-```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
-# intersect polyData with 3 polygons (region, map area, and study box)
-clipped <- master_intersect(nbw_rr$data_sf, mapDataList)
-if(!is.null(clipped$studyData)){
-  summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
-  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[NBW Habitat](#nbw-hab-section)", summaryNBWTable, "Species", "Species")
-}
-```
-*
-```{r nbw-result, echo=FALSE, results='asis'}
-polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais."
-} else {"La zone de recherche chevauche l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais."}
-
- polyText<-noquote(polyText)
- writeLines(polyText)
-```
-
-```{r nbw-region-plot, fig.height=8, fig.width=11, fig.cap='Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Habitat important proposé pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais La baleine à bec commune est présente toute l’année dans les zones entre les canyons, qui servent d’habitat d’alimentation et de couloirs de déplacement. Veuillez prendre note que l’étendue de l’habitat important de la baleine à bec commune sur le plateau néo-écossais demeure inconnue. Veuillez consulter les renseignements complémentaires dans le document <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.'}
-if (!is.null(nbw_rr$data_sf)){
-  plot_rr_sf(regionMap, nbw_rr$data_sf, nbw_rr$attribute)
-}
-```
-
-```{r nbw-area-plot, fig.height=4, fig.width=11, fig.cap='Quality Tier: High. Security level: noneNiveau de qualité : Élevée. Niveau de sécurité : Aucun. La carte résume les zones dans lesquelles le polygone de recherche chevauche l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais.'}
-if (!is.null(clipped$mapData)){
-  plot_rr_sf(areaMap, clipped$mapData, nbw_rr$attribute)
-}
-```
