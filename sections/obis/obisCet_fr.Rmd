@@ -1,0 +1,57 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+```{r child = here::here("sections/commonSections/commonCet.Rmd")}
+```
+
+### **Système d’information sur la biodiversité des océans (SIBO) [pour les cétacés]**  {#obis-cetacean-section}
+
+```{r obis-cetacean-load, include=FALSE}
+load_rdata(c("obisCet_rr"), "MAR", env = environment())
+```
+
+```{r obis-cetacean-meta, results='asis'}
+write_meta(obisCet_rr, "FR")
+```
+
+Une recherche du SIBO a été effectuée pour trouver d’autres documents pertinents pour les cétacés inscrits en vertu de la LEP, ou évalués par le COSEPAC. Un processus de CQ de premier niveau a été effectué en supprimant les rapports en double qui sont également présents dans la BDOB. Les versions subséquentes de ce rapport viseront à étendre nos efforts de CQ pour cette source d’information.
+
+#### ***Résultats de la recherche du SIBO pour les cétacés, par zone***
+```{r obis-cetacean, include=FALSE, cache=FALSE}
+obisClipped <- master_intersect(obisCet_rr$data_sf, mapDataList)
+linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
+if (!is.null(obisClipped$studyData)) {
+  whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisClipped$studyData, obisCet_rr$attribute)
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
+
+```
+*
+```{r obis-cetacean-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_obis_cet <-  if (is.null(obisClipped$studyData)) {
+  "Il n’existe aucun registre pertinent pour les cétacés dans le système d’information sur la biodiversité des océans (SIBO) pour cette zone de recherche."
+} else {
+  "Il existe des registres pertinents pour les cétacés dans le système d’information sur la biodiversité des océans (SIBO) pour cette zone de recherche."
+}
+writeLines(Report_obis_cet)
+```
+
+```{r obis-cetacean-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(obisCet_rr, "FR"), 'Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés du SIBO pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b> . L’absence peut être liée à un effort d’enquête faible ou nul. L’information sur les observations sous-représente la présence de cétacés, en particulier les espèces qui vivent en eau profonde (p. ex., les baleines à bec) et qui passent peu de temps à la surface. Cette carte n’inclut pas non plus les détections acoustiques. Les observations sur terre indiquent que les données d’observation n’ont pas encore été complètement vérifiées ou que des animaux ont été observés depuis la côte.')}
+if (!is.null(obisClipped$studyData)) {
+  plot_rr_sf(areaMap, obisClipped$mapData, attribute = obisCet_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
+}
+```

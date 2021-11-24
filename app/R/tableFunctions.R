@@ -155,6 +155,7 @@ create_sar_tables <- function(data_sf, sarTable, uniqueCols = c("geometry"), ext
 
   sarData <- dplyr::inner_join(allSpeciesData, sarTable, by="Scientific Name", suffix = c(".x", ""))
   sarData <- dplyr::select(sarData, c("Scientific Name", "Common Name", "SARA status", "COSEWIC status", all_of(extraCols)))
+  names(sarData) <- c("Scientific Name", "Common Name", "SARA Status", "COSEWIC Status", all_of(extraCols))
 
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
   sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
