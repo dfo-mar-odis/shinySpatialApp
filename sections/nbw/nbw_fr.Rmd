@@ -52,13 +52,13 @@ polyText<-if(is.null(clipped$studyData)){"La zone de recherche ne chevauche pas 
  writeLines(polyText)
 ```
 
-```{r nbw-region-plot, fig.height=8, fig.width=11,fig.cap=paste(write_caption_blurb(nbw_rr, "FR"), 'Habitat important proposé pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais La baleine à bec commune est présente toute l’année dans les zones entre les canyons, qui servent d’habitat d’alimentation et de couloirs de déplacement. Veuillez prendre note que l’étendue de l’habitat important de la baleine à bec commune sur le plateau néo-écossais demeure inconnue. Veuillez consulter les renseignements complémentaires dans le document <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.')}
+```{r nbw-region-plot, fig.height=7, fig.width=11,fig.cap=paste(write_caption_blurb(nbw_rr, "FR"), 'Habitat important proposé pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais La baleine à bec commune est présente toute l’année dans les zones entre les canyons, qui servent d’habitat d’alimentation et de couloirs de déplacement. Veuillez prendre note que l’étendue de l’habitat important de la baleine à bec commune sur le plateau néo-écossais demeure inconnue. Veuillez consulter les renseignements complémentaires dans le document <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.')}
 if (!is.null(nbw_rr$data_sf)){
   plot_rr_sf(regionMap, nbw_rr$data_sf, nbw_rr$attribute)
 }
 ```
 
-```{r nbw-area-plot, fig.height=4, fig.width=11,fig.cap=paste(write_caption_blurb(nbw_rr, "FR"), 'La carte résume les zones dans lesquelles le polygone de recherche chevauche l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais.')}
+```{r nbw-area-plot, fig.height=7, fig.width=11,fig.cap=paste(write_caption_blurb(nbw_rr, "FR"), 'La carte résume les zones dans lesquelles le polygone de recherche chevauche l’habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais.')}
 if (!is.null(clipped$mapData)){
   plot_rr_sf(areaMap, clipped$mapData, nbw_rr$attribute)
 }

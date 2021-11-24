@@ -83,7 +83,7 @@ Report_marfis<-noquote(Report_marfis)
 writeLines(Report_marfis)
 ```
 
-```{r marfis-isdb-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(isdb_rr, "FR"), 'Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge) utilisée pour demander des renseignements agrégés provenant des dossiers d’observation du Système d’information sur les pêches des Maritimes (SIPMAR) et/ou de la Base de données des relevés de l’industrie (BDRI), qui sont présentés sous forme de points noirs, pour toutes les espèces. La règle des cinq n’a pas été appliquée.')}
+```{r marfis-isdb-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(isdb_rr, "FR"), 'Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge) utilisée pour demander des renseignements agrégés provenant des dossiers d’observation du Système d’information sur les pêches des Maritimes (SIPMAR) et/ou de la Base de données des relevés de l’industrie (BDRI), qui sont présentés sous forme de points noirs, pour toutes les espèces. La règle des cinq n’a pas été appliquée.')}
 if (!is.null(outputListI$studyData) & !is.null(outputListM$studyData)) {
   areaMap + geom_point(data = Samples_bboxI, aes(x = long, y = lat), size = 2, shape = 16, col = "black") + geom_point(data = Samples_bboxM, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
 } else if (!is.null(outputListI$studyData)) {

@@ -51,7 +51,7 @@ Report_ocearch <- if (is.null(ocearchOutputList$studyData)) {
 Report_obis<-noquote(Report_ocearch)
 writeLines(Report_ocearch)
 ```
-```{r ocearch-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(ocearch_rr, "FR"), 'Map showing the search area defined by the user (red outline) was used to query information from OCEARCH Shark Tracker observation records, for White Shark. Dataset set has not yet been completely error-checked. The absence of a species in this figure should be interpreted as an absence of tracking data, not necessarily as an absence of the species in the area.')}
+```{r ocearch-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ocearch_rr, "FR"), 'Map showing the search area defined by the user (red outline) was used to query information from OCEARCH Shark Tracker observation records, for White Shark. Dataset set has not yet been completely error-checked. The absence of a species in this figure should be interpreted as an absence of tracking data, not necessarily as an absence of the species in the area.')}
 if (!is.null(ocearchOutputList$studyData)) {
   plot_rr_sf(areaMap, ocearchOutputList$mapPoints)
 }

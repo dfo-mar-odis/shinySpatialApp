@@ -81,7 +81,7 @@ Report_marfis<-noquote(Report_marfis)
 writeLines(Report_marfis)
 ```
 
-```{r marfis-isdb-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(marfis_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query aggregated information from Maritimes Fishery Information System (MARFIS) and/or Industry Survey Database (ISDB) observation records shown as black points, for all species. Rule of five was not applied.')}
+```{r marfis-isdb-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(marfis_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query aggregated information from Maritimes Fishery Information System (MARFIS) and/or Industry Survey Database (ISDB) observation records shown as black points, for all species. Rule of five was not applied.')}
 if (!is.null(outputListI$studyData) & !is.null(outputListM$studyData)) {
   areaMap + geom_point(data = outputListI$mapPoints, aes(x = long, y = lat), size = 2, shape = 16, col = "black") + geom_point(data = outputListM$mapPoints, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
 } else if (!is.null(outputListI$studyData)) {

@@ -40,14 +40,14 @@ mpaCheckOuput <- if(!is.null(mpaClipped$studyData)){
 writeLines(mpaCheckOuput)
 ```
 
-```{r mpa-region-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(conservationSites_rr, "EN"), 'Map of the Draft Conservation Network Design for the Scotian Shelf-Bay of Fundy Bioregion. Boundaries of the proposed new sites are preliminary and subject to change following engagement and consultation.')}
+```{r mpa-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(conservationSites_rr, "EN"), 'Map of the Draft Conservation Network Design for the Scotian Shelf-Bay of Fundy Bioregion. Boundaries of the proposed new sites are preliminary and subject to change following engagement and consultation.')}
 if (!is.null(mpaClipped$regionData)){
   plot_rr_sf(regionMap, mpaClipped$regionData, conservationSites_rr$attribute, outlines=FALSE, colorMap = mpaCols,
                             alphaMap = mpaAlphas)
 }
 ```
 
-```{r mpa-area-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(conservationSites_rr, "EN"), 'Map of the Draft Conservation Network Design in the search area defined by the user (red outline). Please see table below for names of each specific area. Boundaries of the proposed new sites are preliminary and subject to change following engagement and consultation.')}
+```{r mpa-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(conservationSites_rr, "EN"), 'Map of the Draft Conservation Network Design in the search area defined by the user (red outline). Please see table below for names of each specific area. Boundaries of the proposed new sites are preliminary and subject to change following engagement and consultation.')}
 if(!is.null(mpaClipped$studyData)){
   mpaStudyLabels <- filter(st_centroid(mpaClipped$mapData), Id > 0) %>% dplyr::select(c("Id"))
 

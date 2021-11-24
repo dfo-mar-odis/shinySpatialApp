@@ -58,13 +58,13 @@ if (!is.null(EBSATable)){
 ```
 
 
-```{r EBSA-region-plot, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) par rapport à la zone de recherche définie par l’utilisateur (entourée de rouge).'}
+```{r EBSA-region-plot, fig.height=7, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) par rapport à la zone de recherche définie par l’utilisateur (entourée de rouge).'}
 if (!is.null(EBSAoutput$regionData)){
   plot_rr_sf(regionMap, EBSAoutput$regionData, ebsa_rr$attribute)
 }
 ```
 
-```{r EBSA-area-plot, fig.height=8, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) dans la zone de recherche définie par l’utilisateur (entourée de rouge).'}
+```{r EBSA-area-plot, fig.height=7, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) dans la zone de recherche définie par l’utilisateur (entourée de rouge).'}
 if(!is.null(EBSAoutput$studyData)){
   plot_rr_sf(areaMap, EBSAoutput$mapData, ebsa_rr$attribute)
 }

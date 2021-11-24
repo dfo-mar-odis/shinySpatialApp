@@ -54,13 +54,13 @@ if (!is.null(EBSATable)){
 }
 ```
 
-```{r EBSA-region-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).')}
+```{r EBSA-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).')}
 if (!is.null(EBSAoutput$regionData)){
   plot_rr_sf(regionMap, EBSAoutput$regionData, ebsa_rr$attribute)
 }
 ```
 
-```{r EBSA-area-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area (red outline).')}
+```{r EBSA-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area (red outline).')}
 if(!is.null(EBSAoutput$studyData)){
   plot_rr_sf(areaMap, EBSAoutput$mapData, ebsa_rr$attribute)
 }

@@ -54,7 +54,7 @@ polyText<-if(is.null(clippedRW$studyData)){
  writeLines(polyText)
 ```
 
-```{r rockweed-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(rockweed_rr, "FR"), 'Carte montrant la zone de recherche définie par l’utilisateur : l’emplacement du projet ou de l’activité proposé est surligné en jaune (polygone d’entrée), entouré d’une zone exposée ou d’une zone tampon définie par l’utilisateur en bleu. La figure illustre le chevauchement entre la zone de recherche et les cartes satellitaires de la végétation intertidale et des polygones de présence de fucus.')}
+```{r rockweed-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(rockweed_rr, "FR"), 'Carte montrant la zone de recherche définie par l’utilisateur : l’emplacement du projet ou de l’activité proposé est surligné en jaune (polygone d’entrée), entouré d’une zone exposée ou d’une zone tampon définie par l’utilisateur en bleu. La figure illustre le chevauchement entre la zone de recherche et les cartes satellitaires de la végétation intertidale et des polygones de présence de fucus.')}
 if(!is.null(clippedRW$studyData)){
   plot_rr_sf(areaMap, clippedRW$mapData, rockweed_rr$attribute, outlines=FALSE, legendName= "Végétation Intertidale")
 }

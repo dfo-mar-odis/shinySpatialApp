@@ -35,6 +35,9 @@ writeLines(noquote(sardist_rr$text$fr))
 # not plotted
 outputListSardist <- master_intersect(sardist_rr$data_sf, mapDataList)
 distTable <- create_sar_tables(outputListSardist$studyData, listed_species, extraCols = c("Species_Link"))$sarData
+names(distTable)[names(distTable) == 'Species_Link'] <- 'Species Link'
+
+
 summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distribution](#sardist-section)",  distTable, "Common Name", "Common Name")
 ```
 

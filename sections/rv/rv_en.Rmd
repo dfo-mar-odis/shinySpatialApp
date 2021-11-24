@@ -71,7 +71,7 @@ if (!is.null(surveyTypeDf) > 0) {
 
 ```
 
-```{r RV-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(rv_rr, "EN"), ' Map of the Maritimes Research Vessel (RV) Trawl Survey data in relation to the search area (red outline). Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Arrows shown outside of the search area are visualized for context, but not included in the results below.')}
+```{r RV-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(rv_rr, "EN"), ' Map of the Maritimes Research Vessel (RV) Trawl Survey data in relation to the search area (red outline). Black lines and arrows indicate the location and direction of each bottom otter trawl sample. Arrows shown outside of the search area are visualized for context, but not included in the results below.')}
 if (!is.null(outputList$studyData)) {
 areaMap +
     geom_segment(aes(x = outputList$mapPoints$long,

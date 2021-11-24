@@ -69,7 +69,7 @@ if(critHabCheck){
 
 ```
 <br>
-```{r crithab-region-plot, fig.height=6, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "FR"), 'Cette carte résume l’habitat essentiel des espèces en péril inscrites comme en voie de disparition ou menacées en vertu de la LEP de la biorégion du plateau néo-écossais. Veuillez consulter le tableau ci-dessous pour l’information complémentaire. Selon la définition de l’article 2 de la LEP, l’habitat essentiel est en fait « l’habitat nécessaire à la survie ou au rétablissement d’une espèce sauvage inscrite, qui est désigné comme tel dans un programme de rétablissement ou un plan d’action élaboré à l’égard de l’espèce ». L’habitat essentiel est désigné dans un programme de rétablissement final ou un plan d’action publié dans le Registre public des espèces en péril (http://www.sararegistry.gc.ca). Il ne s’agit <b>pas</b> d’une source ni d’un conseil faisant autorité en ce qui concerne les données sur les espèces en péril. Veuillez accéder au SIG des espèces en péril (http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) pour créer un rapport faisant autorité.')}
+```{r crithab-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "FR"), 'Cette carte résume l’habitat essentiel des espèces en péril inscrites comme en voie de disparition ou menacées en vertu de la LEP de la biorégion du plateau néo-écossais. Veuillez consulter le tableau ci-dessous pour l’information complémentaire. Selon la définition de l’article 2 de la LEP, l’habitat essentiel est en fait « l’habitat nécessaire à la survie ou au rétablissement d’une espèce sauvage inscrite, qui est désigné comme tel dans un programme de rétablissement ou un plan d’action élaboré à l’égard de l’espèce ». L’habitat essentiel est désigné dans un programme de rétablissement final ou un plan d’action publié dans le Registre public des espèces en péril (http://www.sararegistry.gc.ca). Il ne s’agit <b>pas</b> d’une source ni d’un conseil faisant autorité en ce qui concerne les données sur les espèces en péril. Veuillez accéder au SIG des espèces en péril (http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) pour créer un rapport faisant autorité.')}
 if (!is.null(crithab_rr$data_sf)){
   critPlotList <- plot_rr_sf(regionMap, crithab_rr$data_sf, crithab_rr$attribute, 
                              legendName = legendNameCrithab, outlines=FALSE, 
@@ -78,20 +78,20 @@ if (!is.null(crithab_rr$data_sf)){
 }    
 ```
 <br>
-```{r crithab-area-plot, fig.height=6, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "FR"), 'Cette carte résume les zones où le polygone de recherche chevauche l’habitat essentiel des espèces en péril inscrites comme en voie de disparition ou menacées en vertu de la LEP')}
+```{r crithab-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "FR"), 'Cette carte résume les zones où le polygone de recherche chevauche l’habitat essentiel des espèces en péril inscrites comme en voie de disparition ou menacées en vertu de la LEP')}
 if (!is.null(outputListCrithab$mapData)){
   plot_rr_sf(areaMap, outputListCrithab$mapData, crithab_rr$attribute, 
              legendName = legendNameCrithab, outlines=FALSE, colorMap = critPlotList$colorMap)
 }  
 ```
 <br>
-```{r letherback-region-plot, fig.height=6, fig.width=11, fig.cap=paste(write_caption_blurb(leatherback_rr, "FR"), 'Cette carte résume l’ébauche de l’habitat essentiel de la tortue luth de la biorégion du plateau néo-écossais, par rapport à la zone de recherche. ')}
+```{r letherback-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(leatherback_rr, "FR"), 'Cette carte résume l’ébauche de l’habitat essentiel de la tortue luth de la biorégion du plateau néo-écossais, par rapport à la zone de recherche. ')}
 if (!is.null(leatherback_rr$data_sf)){
   plot_rr_sf(regionMap, leatherback_rr$data_sf, leatherback_rr$attribute)
 }   
 ```
 <br>
-```{r leatherback-area-plot, fig.height=6, fig.width=11, fig.cap=paste(write_caption_blurb(leatherback_rr, "FR"), 'Cette carte résume les zones où le polygone de recherche chevauche  l’ébauche de l’habitat essentiel de la tortue luth.')}
+```{r leatherback-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(leatherback_rr, "FR"), 'Cette carte résume les zones où le polygone de recherche chevauche  l’ébauche de l’habitat essentiel de la tortue luth.')}
 if (!is.null(outputListLB$mapData)){
   plot_rr_sf(areaMap, outputListLB$mapData, leatherback_rr$attribute)
 } 
