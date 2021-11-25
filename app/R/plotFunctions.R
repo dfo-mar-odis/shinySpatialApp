@@ -152,8 +152,8 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
 
 plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                           outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
-                          labelData=NULL, alphaMap=NULL, labelAttribute=NULL, 
-                          fillClr="#56B4E9") {
+                          labelData=NULL, labelAttribute=NULL, 
+                          fillClr="#56B4E9", alpha=1) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -170,28 +170,21 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   # Case 1: all polygons are one color, no legend,
   # case 2: polygons are colored based on the "attribute" column, legend is included
   polyLabels <- NULL
-  polyAlpha <- NULL
   polyOutline <- NULL
   polyFill <- NULL
   
   
   if (toupper(attribute) == "NONE") { # Case 1: plotting all polygons in one color
-    if (outlines) {
+    if (!outlines) {
       clr = fillClr
     } 
-    polyPlot <- geom_sf(data = polyData, fill = fillClr, col = clr)
+    polyPlot <- geom_sf(data = polyData, fill = fillClr, col = clr, alpha=alpha)
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
     polyData[[attribute]] = as.factor(polyData[[attribute]])
     
     polyAes <- aes(fill = !!sym(attribute))
-    
-    if (!is.null(alphaMap)) {
-      alphaMap <- alphaMap[names(alphaMap) %in% polyData[[attribute]]]
-      polyAes <- modifyList(polyAes, aes(alpha = !!sym(attribute)))
-      polyAlpha <- scale_alpha_manual(values=alphaMap)
-    }
-    
+
     if (is.null(colorMap)){
       colorMap <- get_rr_color_map(polyData[[attribute]])
     } else {
@@ -200,14 +193,15 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     polyFill <- scale_fill_manual(values=colorMap, name=legendName)
     
     if (outlines) {
-      polyPlot <- geom_sf(data=polyData, polyAes, colour=clr)
+      polyPlot <- geom_sf(data=polyData, polyAes, colour=clr, alpha=alpha)
     }
     else {
       polyAes <- modifyList(polyAes, aes(col=!!sym(attribute)))
-      polyPlot <- geom_sf(data=polyData, polyAes)
+      polyPlot <- geom_sf(data=polyData, polyAes, alpha = alpha)
       polyOutline <- scale_color_manual(values=colorMap, guide="none")  
     }
   }
+  
   
   if(!is.null(labelData)) {
     polyLabels <- ggrepel::geom_label_repel(data = labelData,
@@ -219,7 +213,6 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     
   polyMap <- baseMap +
       polyPlot +
-      polyAlpha +
       polyFill +
       polyOutline +
       polyLabels +
