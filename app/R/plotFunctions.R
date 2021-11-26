@@ -75,7 +75,8 @@ get_study_box_layer <- function(inPlot) {
 # 
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
-plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMap=NULL, shapeMap=NULL) {
+plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", 
+                        colorMap=NULL, shapeMap=NULL, size=2.5) {
   
   # extract scaleBar layer to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
@@ -89,11 +90,11 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
   
   if (is.null(attribute)) {
     # just plot raw data (no colors, shapes, etc)
-    dataLayer <- geom_sf(data = data_sf, size = 2, shape = 20) 
+    dataLayer <- geom_sf(data = data_sf, size = size, shape = 20) 
     legendLayer <- NULL
   } else {
     data_sf[[attribute]] = as.factor(data_sf[[attribute]])
-    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = 2.5, shape = 20)  
+    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = size, shape = 20)  
     
     if (is.null(colorMap)){
       colorMap <- get_rr_color_map(data_sf[[attribute]])
@@ -103,7 +104,7 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
         shapeMap <- shapeMap[names(shapeMap) %in% data_sf[[attribute]]]
         shapeLabels <- names(shapeMap)
         shapeValues <- unname(shapeMap) 
-        dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute), shape=!!sym(attribute)), size = 2.5)
+        dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute), shape=!!sym(attribute)), size = size)
         shapeLayer <- scale_shape_manual(labels = shapeLabels, values = shapeValues, name=legendName)  
       }
     }
@@ -256,14 +257,14 @@ plot_lines <- function(baseMap, data_sf, ...) {
   dataLayer <- geom_sf(data = data_sf, ...) 
 
   
-  pointMap <- baseMap +
+  lineMap <- baseMap +
     dataLayer +
     axLim +
     watermarkLayer +
     studyBoxLayer +
     scaleBarLayer
   
-  return(pointMap) 
+  return(lineMap) 
 }
 
 

@@ -6,7 +6,7 @@ fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Da
 fileSavePath <- here::here("app/data/MAR")
 fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-loadResult <- load_rdata(c("CommonData", "ef_rr", "ws_rr"), "MAR")
+loadResult <- load_rdata(c("CommonData", "ef_rr", "ws_rr", "rivers_rr"), "MAR")
 
 # ---------------------ELECTROFISHING-----------------------------------
 
@@ -102,5 +102,27 @@ ws_rr <- list("title" = "Watershed Boundries",
                                 "constraints" = noneList
               )
 )
-save(ws_rr, file = file.path(fileSavePath, "Open/ws_rr.RData"))
+
+# rivers:
+
+riversShpPath <- file.path(fileLoadPath, "NaturalResources/Species/Electrofishing/rivers/NBNS_rivers.shp")
+st_layers(riversShpPath)
+
+rivers_sf <- st_read(riversShpPath, crs=4326)
+rivers_sf <- st_make_valid(rivers_sf)
+rivers_sf <- st_crop(rivers_sf, region_sf)
+
+
+rivers_rr <- list("title" = "Rivers",
+              "data_sf" = rivers_sf,
+              "attribute" = "NONE",
+              "metadata" = list("contact" = "https://novascotia.ca/opendata/contact-us/, http://www.snb.ca/geonb1/e/contact/contact-E.asp", 
+                                "accessedOnStr" = list("en" ="November 25 2021 by Quentin Stoyel", "fr" = "25 novembre 2021 par Quentin Stoye") ,
+                                "accessDate" = as.Date("2021-11-25"),
+                                "securityLevel" = noneList,
+                                "qualityTier" = highQuality,
+                                "constraints" = noneList
+              )
+)
+save(rivers_rr, file = file.path(fileSavePath, "Open/rivers_rr.RData"))
 
