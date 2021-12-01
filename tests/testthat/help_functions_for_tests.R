@@ -72,9 +72,8 @@ load_test_data <- function() {
                                                   "geoms_slc_coastal_test.geojson"))
     
     studyArea <- st_read(sample(studyAreaOpts, 1))
-    site <- sf::st_centroid(studyArea)
 
-    mapDataList <- maps_setup(studyArea, site, region_sf, land50k_sf, land10m_sf, bounds_sf)
+    mapDataList <- maps_setup(studyArea, region_sf, land50k_sf, land10m_sf, bounds_sf)
     list2env(mapDataList, envir = environment())
   })
   
@@ -84,7 +83,6 @@ load_test_data <- function() {
                   "presentCode" = "P",
                   "summarySarTable" = data.frame("Species" = listed_species$`Common Name`),
                   "summaryHabTable" = data.frame("Species" = listed_species$`Common Name`, "Obs"=NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA),
-                  "site" = site,
                   "studyBox_geom" = studyBox_geom, 
                   "areaMap" = areaMap, 
                   "bboxMap" = bboxMap,

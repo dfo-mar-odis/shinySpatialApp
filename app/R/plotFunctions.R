@@ -75,7 +75,8 @@ get_study_box_layer <- function(inPlot) {
 # 
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
-plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMap=NULL, shapeMap=NULL) {
+plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", 
+                        colorMap=NULL, shapeMap=NULL, size=2.5) {
   
   # extract scaleBar layer to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
@@ -89,11 +90,11 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
   
   if (is.null(attribute)) {
     # just plot raw data (no colors, shapes, etc)
-    dataLayer <- geom_sf(data = data_sf, size = 2, shape = 20) 
+    dataLayer <- geom_sf(data = data_sf, size = size, shape = 20) 
     legendLayer <- NULL
   } else {
     data_sf[[attribute]] = as.factor(data_sf[[attribute]])
-    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = 2.5, shape = 20)  
+    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = size, shape = 20)  
     
     if (is.null(colorMap)){
       colorMap <- get_rr_color_map(data_sf[[attribute]])
@@ -103,7 +104,7 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
         shapeMap <- shapeMap[names(shapeMap) %in% data_sf[[attribute]]]
         shapeLabels <- names(shapeMap)
         shapeValues <- unname(shapeMap) 
-        dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute), shape=!!sym(attribute)), size = 2.5)
+        dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute), shape=!!sym(attribute)), size = size)
         shapeLayer <- scale_shape_manual(labels = shapeLabels, values = shapeValues, name=legendName)  
       }
     }
@@ -152,8 +153,8 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="", colorMa
 
 plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                           outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
-                          labelData=NULL, alphaMap=NULL, labelAttribute=NULL, 
-                          fillClr="#56B4E9") {
+                          labelData=NULL, labelAttribute=NULL, 
+                          fillClr="#56B4E9", alpha=1) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -170,28 +171,21 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   # Case 1: all polygons are one color, no legend,
   # case 2: polygons are colored based on the "attribute" column, legend is included
   polyLabels <- NULL
-  polyAlpha <- NULL
   polyOutline <- NULL
   polyFill <- NULL
   
   
   if (toupper(attribute) == "NONE") { # Case 1: plotting all polygons in one color
-    if (outlines) {
+    if (!outlines) {
       clr = fillClr
     } 
-    polyPlot <- geom_sf(data = polyData, fill = fillClr, col = clr)
+    polyPlot <- geom_sf(data = polyData, fill = fillClr, col = clr, alpha=alpha)
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
     polyData[[attribute]] = as.factor(polyData[[attribute]])
     
     polyAes <- aes(fill = !!sym(attribute))
-    
-    if (!is.null(alphaMap)) {
-      alphaMap <- alphaMap[names(alphaMap) %in% polyData[[attribute]]]
-      polyAes <- modifyList(polyAes, aes(alpha = !!sym(attribute)))
-      polyAlpha <- scale_alpha_manual(values=alphaMap)
-    }
-    
+
     if (is.null(colorMap)){
       colorMap <- get_rr_color_map(polyData[[attribute]])
     } else {
@@ -200,14 +194,15 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     polyFill <- scale_fill_manual(values=colorMap, name=legendName)
     
     if (outlines) {
-      polyPlot <- geom_sf(data=polyData, polyAes, colour=clr)
+      polyPlot <- geom_sf(data=polyData, polyAes, colour=clr, alpha=alpha)
     }
     else {
       polyAes <- modifyList(polyAes, aes(col=!!sym(attribute)))
-      polyPlot <- geom_sf(data=polyData, polyAes)
+      polyPlot <- geom_sf(data=polyData, polyAes, alpha = alpha)
       polyOutline <- scale_color_manual(values=colorMap, guide="none")  
     }
   }
+  
   
   if(!is.null(labelData)) {
     polyLabels <- ggrepel::geom_label_repel(data = labelData,
@@ -219,7 +214,6 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     
   polyMap <- baseMap +
       polyPlot +
-      polyAlpha +
       polyFill +
       polyOutline +
       polyLabels +
@@ -263,14 +257,14 @@ plot_lines <- function(baseMap, data_sf, ...) {
   dataLayer <- geom_sf(data = data_sf, ...) 
 
   
-  pointMap <- baseMap +
+  lineMap <- baseMap +
     dataLayer +
     axLim +
     watermarkLayer +
     studyBoxLayer +
     scaleBarLayer
   
-  return(pointMap) 
+  return(lineMap) 
 }
 
 
@@ -392,12 +386,13 @@ plot_cetaceans_4grid<-function(finWhale_sf, harbourPorpoise_sf,
 #
 # Written by Quentin Stoyel for reproducible reporting project, September 2, 2021
 
-maps_setup <- function(studyArea, site, region, areaLandLayer, regionLandLayer, CANborder){
+maps_setup <- function(studyArea, region, areaLandLayer, regionLandLayer, CANborder){
+  site <- sf::st_centroid(studyArea)
   # The following defines studyBox geometry "look". studyBox_geom is input into area map or can be added to any map later
   studyBox_geom <- geom_sf(data=studyArea, fill=NA, col="red", size=1)
   
   # The following plots area map using function (output is a list)
-  areaMapList <- area_map(studyArea, site, areaLandLayer, 5, CANborder, studyBox_geom)
+  areaMapList <- area_map(studyArea, areaLandLayer, 5, CANborder, studyBox_geom)
   
   # The following separates items in the output list: first item is a map and second is a bounding box of the map
   areaMap <- areaMapList[[1]] # map
@@ -443,8 +438,8 @@ maps_setup <- function(studyArea, site, region, areaLandLayer, regionLandLayer, 
 # Written by Gordana Lazin for reproducible reporting project, April 12, 2021
 # ggplot map developed by Greg Puncher, winter/spring 2021
 
-area_map <- function(studyArea, site, landLayer, bufKm, CANborder, studyBoxGeom) {
-  
+area_map <- function(studyArea, landLayer, bufKm, CANborder, studyBoxGeom) {
+  site <- sf::st_centroid(studyArea)
   # buf is in km, and now converted to degrees
   bufx <- bufKm / 100
   bufy <- 0.72 * bufKm / 100 # scaled degrees

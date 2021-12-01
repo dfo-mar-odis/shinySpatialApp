@@ -19,7 +19,7 @@ test_that("region plot", {
 
 test_that("area plot list", {
   list2env(load_test_data(), envir = environment())
-  testPlotList <- area_map(studyArea, site, land50k_sf, 5, bounds_sf, studyBox_geom)
+  testPlotList <- area_map(studyArea, land50k_sf, 5, bounds_sf, studyBox_geom)
   expect_equal(length(testPlotList[[1]]$data), 0)
   expect_equal(length(testPlotList[[1]]$layers), 6)
   expect_equal(class(testPlotList[[2]]), "bbox")

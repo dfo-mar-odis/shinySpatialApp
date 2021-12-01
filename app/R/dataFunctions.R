@@ -72,7 +72,7 @@ intro_setup <- function(studyArea, env=globalenv()) {
 
   minYear <- 2010
   site <- sf::st_centroid(studyArea)
-  mapDataList <- maps_setup(studyArea, site, region_sf, land50k_sf, land10m_sf, bounds_sf)
+  mapDataList <- maps_setup(studyArea, region_sf, land50k_sf, land10m_sf, bounds_sf)
   
   list2env(mapDataList, envir = env)
   
