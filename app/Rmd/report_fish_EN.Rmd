@@ -20,11 +20,13 @@ This module describes outputs of fish and marine invertebrates derived from a va
 ```{r child = here::here("sections/isdb-marfis/isdbMarfis_en.Rmd")}
 ```
 
-```{r child = here::here("sections/obis/obisFish_en.Rmd")}
-```
-
 ```{r child = here::here("sections/sturg/sturg_en.Rmd")}
 ```
 
 ```{r child = here::here("sections/ocearch/ocearch_en.Rmd")}
 ```
+
+```{r child = here::here("sections/obis/obisFish_en.Rmd")}
+```
+
+
