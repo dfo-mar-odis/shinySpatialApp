@@ -85,15 +85,6 @@ Report_marfis<-noquote(Report_marfis)
 writeLines(Report_marfis)
 ```
 
-```{r marfis-isdb-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(marfis_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query aggregated information from Maritimes Fishery Information System (MARFIS) and/or Industry Survey Database (ISDB) observation records shown as black points, for all species. Rule of five was not applied.')}
-if (!is.null(outputListI$studyData) & !is.null(outputListM$studyData)) {
-  areaMap + geom_point(data = outputListI$mapPoints, aes(x = long, y = lat), size = 2, shape = 16, col = "black") + geom_point(data = outputListM$mapPoints, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
-} else if (!is.null(outputListI$studyData)) {
-    areaMap + geom_point(data = outputListI$mapPoints, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
-} else if (!is.null(outputListM$studyData)) {
-        areaMap + geom_point(data = outputListM$mapPoints, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
-}
-```
 ```{r isdb-SAR-table}
 if (!is.null(outputListI$studyData)) {
 knitr::kable(isdbSarTable, align="l", caption=paste(write_caption_blurb(isdb_rr, "EN"), "Industry Survey Database (ISDB) records of species observed within the search area and listed by the <i>Species at Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>"), booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")

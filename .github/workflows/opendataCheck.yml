@@ -9,7 +9,8 @@ on:
         default: 'World'
         required: false
   schedule:
-  - cron: "0 0 10 * *"
+  # run at 10am every wednesday
+  - cron: "0 10 * * 3"
 
 jobs:
   open_data_check:

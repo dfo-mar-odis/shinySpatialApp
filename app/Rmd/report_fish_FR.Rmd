@@ -21,12 +21,13 @@ La présente section décrit les résultats tirés des sources de données suiva
 ```{r child = here::here("sections/isdb-marfis/isdbMarfis_fr.Rmd")}
 ```
 
-```{r child = here::here("sections/obis/obisFish_fr.Rmd")}
-```
-
 ```{r child = here::here("sections/sturg/sturg_fr.Rmd")}
 ```
 
 ```{r child = here::here("sections/ocearch/ocearch_fr.Rmd")}
 ```
+
+```{r child = here::here("sections/obis/obisFish_fr.Rmd")}
+```
+
 
