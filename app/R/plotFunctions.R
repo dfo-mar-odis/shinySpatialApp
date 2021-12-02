@@ -57,6 +57,19 @@ get_study_box_layer <- function(inPlot) {
   return(studyBoxLayer)
 }
 
+# helper function to reduce tick mark counts on plots
+less_x_ticks <- function(inPlot, tickNum=5) {
+  xmin <- inPlot$coordinates$limits$x[1]
+  xmax <- inPlot$coordinates$limits$x[2]
+  #set outplot axis tick marks
+  axisSigFigs <- ceiling(log10(xmax - xmin))
+  digits <- ifelse(axisSigFigs < 0, -axisSigFigs, 1)
+  breakVec <- round(seq(xmin, xmax, length.out = tickNum),
+                    digits = digits)
+  outPlot <- inPlot + scale_x_continuous(breaks = breakVec) 
+  return(outPlot)
+}
+
 
 # Function for plotting point data for the reproducible report.
 #
@@ -154,7 +167,8 @@ plot_points <- function(baseMap, data_sf, attribute=NULL, legendName="",
 plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                           outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
                           labelData=NULL, labelAttribute=NULL, 
-                          fillClr="#56B4E9", alpha=1) {
+                          fillClr="#56B4E9", alpha=1, plotTitle=NULL, 
+                          tickNum = NULL) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -173,7 +187,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   polyLabels <- NULL
   polyOutline <- NULL
   polyFill <- NULL
-  
+  titleLayer <- NULL
   
   if (toupper(attribute) == "NONE") { # Case 1: plotting all polygons in one color
     if (!outlines) {
@@ -203,7 +217,6 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     }
   }
   
-  
   if(!is.null(labelData)) {
     polyLabels <- ggrepel::geom_label_repel(data = labelData,
                                             aes(label = !!sym(labelAttribute), geometry = geometry),
@@ -211,6 +224,11 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                                             min.segment.length = 0
                                             )
   }
+  
+  if (!is.null(plotTitle)) {
+    titleLayer <- ggtitle(plotTitle)
+  }
+  
     
   polyMap <- baseMap +
       polyPlot +
@@ -220,8 +238,14 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
       axLim +
       watermarkLayer +
       studyBoxLayer +
-      scaleBarLayer
-    
+      scaleBarLayer +
+      titleLayer
+  
+  
+  if (!is.null(tickNum)){
+    polyMap <- less_x_ticks(polyMap, tickNum)
+  }  
+  
   if (getColorMap) {
     outList <- list(colorMap=colorMap,
                     polyMap=polyMap)
@@ -230,7 +254,6 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     return(polyMap)  
   }
 }
-
 
 
 # Function for plotting linestring data for the reproducible report.
@@ -255,7 +278,6 @@ plot_lines <- function(baseMap, data_sf, ...) {
   
   # just plot raw data (no colors, shapes, etc)
   dataLayer <- geom_sf(data = data_sf, ...) 
-
   
   lineMap <- baseMap +
     dataLayer +
@@ -266,14 +288,6 @@ plot_lines <- function(baseMap, data_sf, ...) {
   
   return(lineMap) 
 }
-
-
-
-
-
-
-
-
 
 
 # helper function to generate colormap when not specified.  
@@ -570,12 +584,7 @@ whale_ggplot <- function(whale_sf, bound, landLayer, studyArea, plotTitle, plotB
   
   outPlot <- format_ggplot(rawPlot, plotBbox)
   
-  #set outplot axis tick marks
-  axisSigFigs <- ceiling(log10(plotBbox$xmax - plotBbox$xmin))
-  digits <- ifelse(axisSigFigs < 0, -axisSigFigs, 1)
-  breakVec <- round(seq(plotBbox$xmin, plotBbox$xmax, length.out = 5),
-                    digits = digits)
-  outPlot <- outPlot + scale_x_continuous(breaks = breakVec) 
+  outPlot <- less_x_ticks(outPlot, tickNum = 5)
   
   return(outPlot)
 }

@@ -39,6 +39,29 @@ names(distTable)[names(distTable) == 'Species_Link'] <- 'Species Link'
 
 
 summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distribution](#sardist-section)",  distTable, "Common Name", "Common Name")
+
+
+plotHeight <- 7
+#generate plots:
+if (!is.null(outputListSardist$studyData)) {
+  plotList <- list(1:nrow(outputListSardist$studyData))
+  # auto set fig height based on plot number:
+  if (nrow(outputListSardist$studyData) > 8) {
+    plotHeight <- nrow(outputListSardist$studyData) %/% 3 * 4
+  }
+  # needs to be a for loop as apply functions don't work well on sf's
+  for (rowId in 1:nrow(outputListSardist$studyData)) {
+    studyDataRow <- outputListSardist$studyData[rowId, ]
+    mapDataRow <- dplyr::filter(outputListSardist$mapData, Species_Link == studyDataRow$Species_Link)
+    p <- plot_rr_sf(areaMap, mapDataRow, 
+                    attribute = sardist_rr$attribute, outlines = FALSE, 
+                    plotTitle = outputListSardist$mapData[rowId, ]$`Common Name`,
+                    tickNum = 3)
+    plotList[[rowId]] <- p
+  }
+}
+
+
 ```
 
 ```{r sardist-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
@@ -48,6 +71,15 @@ Query_output_dist <- if(is.null(outputListSardist$studyData)){
   "* La zone de recherche chevauche l’aire de répartition des espèces en péril."
 }
 writeLines(Query_output_dist)
+```
+
+```{r sardist-plot, fig.height=plotHeight, fig.width=11, fig.cap=paste(write_caption_blurb(sardist_rr, "EN"), 'Maps showing the species distribution ranges overlapping with the search area defined by the user (red outline).')}
+if (!is.null(outputListSardist$studyData)) {
+  gridExtra::grid.arrange(grobs = plotList,
+                          bottom = "",
+                          left = "",
+                          ncol = 3)  
+}
 ```
 
 ```{r sardist-table, echo=FALSE, results='asis'}

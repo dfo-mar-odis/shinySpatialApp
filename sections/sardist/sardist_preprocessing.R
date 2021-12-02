@@ -8,6 +8,14 @@ fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Da
 loadResult <- load_rdata(c("CommonData", "sardist_rr"), "MAR")
 
 
+filter_and_union <- function(sciName, sfObj) {
+  filter_sf <- dplyr::filter(sfObj, `Scientific Name`==sciName)
+  out_sf <- filter_sf %>%
+    group_by(`Scientific Name`, `Common Name`, Species_Link) %>% 
+    summarize(geometry = st_union(geometry))
+  return(out_sf)
+}
+
 # -----------SAR DIST--------------
 # Creating the sardist rr object takes a LOT (>10gb) of ram which may cause errors
 # it is useful to run in a clean rstudio session and if needed, to manually 
@@ -26,12 +34,14 @@ if(!is.null(openSardist_rr)) {
   sardist_rr$metadata$contact <- email_format("info\\@dfo-mpo.gc.ca")
   sardist_rr$data_sf <- dplyr::select(sardist_rr$data_sf, 
                                       c("Common_Name_EN", "Scientific_Name",
-                                        "Species_Link", "Data_Source", "Shape"))
+                                        "Species_Link", "Shape"))
   names(sardist_rr$data_sf) <- c("Common Name", "Scientific Name",
-                                 "Species_Link", "Data_Source", "geometry")
+                                 "Species_Link", "geometry")
   st_geometry(sardist_rr$data_sf) <- "geometry"
-  
+  specNames <- names(table(sardist_rr$data_sf$`Scientific Name`))
+  outList <- lapply(specNames, filter_and_union, sfObj=sardist_rr$data_sf)
+  # !!! exapands the outlist in the argument, check ?"!!!" 
+  sardist_rr$data_sf <- bind_rows(!!!outList)
+    
   save(sardist_rr, file = file.path(fileSavePath, "Open/sardist_rr.RData"))
 }
-
-
