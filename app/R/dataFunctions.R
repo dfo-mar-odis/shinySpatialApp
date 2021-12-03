@@ -6,9 +6,11 @@ source(here::here("config.R"))
 # Outputs: confirmation that files are now up to date
 copy_rdata_files <- function() {
   
-  rDataDir <- file.path(fileLoadPath, "RData", "data")
+  rDataDir <- dirname(remoteFileSavePath)
+  # replace backslashes introduced by dirname:
+  rDataDir <- gsub("\\\\", "/", rDataDir) 
   
-  localDataDir <- here::here("app/data")
+  localDataDir <- dirname(localFileSavePath)
   
   remoteInfo <- file.info(list.files(rDataDir, recursive = TRUE, full.names = TRUE))
   remoteInfo["filenames"] <- sub(rDataDir, "", rownames(remoteInfo))
