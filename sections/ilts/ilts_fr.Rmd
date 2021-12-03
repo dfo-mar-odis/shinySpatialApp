@@ -17,7 +17,7 @@ if (FALSE) { #load in data:
 ### **Inshore Lobster Trawl Survey (ILTS)**  {#ilts-section}
 
 ```{r ilts-load, include=FALSE}
-load_rdata(c("ilts_rr"), "MAR", env = environment())
+load_rdata(c("ilts_rr"), regionStr, env = environment())
 ```
 
 ```{r ilts-meta, results='asis'}

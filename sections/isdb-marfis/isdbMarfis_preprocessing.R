@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "idb_rr", "marfis_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "idb_rr", "marfis_rr"), regionStr)
 
 
 # -------------------ISDB------------------------------
@@ -41,7 +41,7 @@ isdb_rr <- list("title" = "Industry Survey Database (ISDB)",
                                   "qualityTier" = mediumQuality,
                                   "constraints" = internalUse)
 )
-save(isdb_rr, ISSPECIESCODES, file = file.path(fileSavePath, "Protected/isdb_rr.RData"))
+save(isdb_rr, ISSPECIESCODES, file = file.path(localFileSavePath, "Protected/isdb_rr.RData"))
 
 
 load(file.path(fileLoadPath, "mar.wrangling/marfis.RData"))
@@ -58,5 +58,5 @@ marfis_rr <- list("title" = "Maritime Fishery Information System (MARFIS)",
                                     "qualityTier" = mediumQuality,
                                     "constraints" = internalUse)
 )
-save(marfis_rr, MARFISSPECIESCODES, file = file.path(fileSavePath, "Protected/marfis_rr.RData"))
+save(marfis_rr, MARFISSPECIESCODES, file = file.path(localFileSavePath, "Protected/marfis_rr.RData"))
 

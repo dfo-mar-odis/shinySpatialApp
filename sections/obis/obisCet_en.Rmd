@@ -20,7 +20,7 @@ if (FALSE) { #load in data:
 ### **Ocean Biodiversity Information System (OBIS) [for cetaceans]** {#obis-cetacean-section}
 
 ```{r obis-cetacean-load, include=FALSE}
-load_rdata(c("obisCet_rr"), "MAR", env = environment())
+load_rdata(c("obisCet_rr"), regionStr, env = environment())
 ```
 
 ```{r obis-cetacean-meta, results='asis'}

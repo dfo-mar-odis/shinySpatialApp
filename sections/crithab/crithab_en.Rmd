@@ -17,7 +17,7 @@ if (FALSE) { #load in data:
 #### ***Critical Habitat of Species at Risk*** {#crithab-section}   
 
 ```{r crithab-load, include=FALSE}
-load_rdata(c("crithab_rr", "leatherback_rr"), "MAR", env = environment())
+load_rdata(c("crithab_rr", "leatherback_rr"), regionStr, env = environment())
 ```
 
 ```{r crtihab-meta, results='asis'}

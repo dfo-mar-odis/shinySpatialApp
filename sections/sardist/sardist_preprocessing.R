@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "sardist_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "sardist_rr"), regionStr)
 
 
 # -----------SAR DIST--------------
@@ -31,7 +31,7 @@ if(!is.null(openSardist_rr)) {
                                  "Species_Link", "Data_Source", "geometry")
   st_geometry(sardist_rr$data_sf) <- "geometry"
   
-  save(sardist_rr, file = file.path(fileSavePath, "Open/sardist_rr.RData"))
+  save(sardist_rr, file = file.path(localFileSavePath, "Open/sardist_rr.RData"))
 }
 
 

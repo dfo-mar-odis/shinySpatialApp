@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "ilts_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "ilts_rr"), regionStr)
 
 # --------------------ILTS-----------------------------
 
@@ -41,4 +41,4 @@ ilts_rr <- list("title" = "Inshore Lobster Trawl Survey (ILTS)",
                                   "constraints" = internalUse)
 )
 
-save(ilts_rr, file = file.path(fileSavePath, "Protected/ilts_rr.RData"))
+save(ilts_rr, file = file.path(localFileSavePath, "Protected/ilts_rr.RData"))

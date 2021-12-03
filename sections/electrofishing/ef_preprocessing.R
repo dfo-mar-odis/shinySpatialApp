@@ -2,11 +2,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "ef_rr", "ws_rr", "rivers_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "ef_rr", "ws_rr", "rivers_rr"), regionStr)
 
 # ---------------------ELECTROFISHING-----------------------------------
 
@@ -78,7 +78,7 @@ ef_rr <- list("title" = "Electrofishing Data","data_sf" = ef_sf,
               )
               
 )
-save(ef_rr, file = file.path(fileSavePath, "Secure/ef_rr.RData"))
+save(ef_rr, file = file.path(localFileSavePath, "Secure/ef_rr.RData"))
 
 
 # watersheds:
@@ -124,5 +124,5 @@ rivers_rr <- list("title" = "Rivers",
                                 "constraints" = noneList
               )
 )
-save(rivers_rr, file = file.path(fileSavePath, "Open/rivers_rr.RData"))
+save(rivers_rr, file = file.path(localFileSavePath, "Open/rivers_rr.RData"))
 

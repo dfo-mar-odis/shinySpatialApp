@@ -20,7 +20,7 @@ if (FALSE) { #load in data:
 ### **North Atlantic Right Whale Consortium (NARWC) Sightings Database**{#NARWC-section}
 
 ```{r narwc-load, include=FALSE}
-load_rdata(c("narwc_rr"), "MAR", env = environment())
+load_rdata(c("narwc_rr"), regionStr, env = environment())
 ```
 
 ```{r narwc-meta, results='asis'}
