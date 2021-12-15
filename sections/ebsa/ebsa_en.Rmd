@@ -17,7 +17,7 @@ if (FALSE) { #load in data:
 ### **Ecologically and Biologically Significant Areas (EBSA)**
 
 ```{r EBSA-load, include=FALSE}
-load_rdata(c("ebsa_rr"), "MAR", env = environment())
+load_rdata(c("ebsa_rr"), regionStr, env = environment())
 ```
 
 ```{r EBSA-meta, results='asis'}

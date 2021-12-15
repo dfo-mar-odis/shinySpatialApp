@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "narwc_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "narwc_rr"), regionStr)
 
 # ----------------------NARWC-------------------------
 # North Atlantic Right Whale Consortium (narwc)
@@ -32,4 +32,4 @@ narwc_rr <- list("title" = "North Atlantic Right Whale consortium",
                                    "constraints" = internalUse
                  )
 )
-save(narwc_rr, file = file.path(fileSavePath, "Secure/narwc_rr.RData"))
+save(narwc_rr, file = file.path(localFileSavePath, "Secure/narwc_rr.RData"))

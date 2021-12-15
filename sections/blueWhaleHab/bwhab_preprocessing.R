@@ -1,11 +1,8 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
+source(here::here("config.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
-
-loadResult <- load_rdata(c("CommonData", "ebsa_rr"), "MAR")
+loadResult <- load_rdata(c("CommonData", "ebsa_rr"), regionStr)
 
 
 # -----------Blue Whale habitat-------------- 
@@ -33,6 +30,6 @@ if(!is.null(openBwhab_rr)) {
   blueWhaleHab_rr$attribute <- "Activity"
   blueWhaleHab_rr$metadata$reference <- lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>")
   
-  save(blueWhaleHab_rr, file = file.path(fileSavePath, "Open/blueWhaleHab_rr.RData"))
+  save(blueWhaleHab_rr, file = file.path(localFileSavePath, "Open/blueWhaleHab_rr.RData"))
 }
 

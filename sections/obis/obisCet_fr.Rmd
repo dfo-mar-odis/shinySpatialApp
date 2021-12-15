@@ -19,7 +19,7 @@ if (FALSE) { #load in data:
 ### **Système d’information sur la biodiversité des océans (SIBO) [pour les cétacés]**  {#obis-cetacean-section}
 
 ```{r obis-cetacean-load, include=FALSE}
-load_rdata(c("obisCet_rr"), "MAR", env = environment())
+load_rdata(c("obisCet_rr"), regionStr, env = environment())
 ```
 
 ```{r obis-cetacean-meta, results='asis'}

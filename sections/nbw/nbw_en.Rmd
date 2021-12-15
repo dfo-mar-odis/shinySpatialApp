@@ -17,7 +17,7 @@ if (FALSE) { #load in data:
 ### **Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf**  {#nbw-hab-section}
 
 ```{r nbw-load, include=FALSE}
-load_rdata(c("nbw_rr"), "MAR", env = environment())
+load_rdata(c("nbw_rr"), regionStr, env = environment())
 ```
 
 ```{r nbw-meta, results='asis'}

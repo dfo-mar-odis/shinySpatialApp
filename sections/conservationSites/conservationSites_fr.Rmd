@@ -16,7 +16,7 @@ if (FALSE) { #load in data:
 ### **Draft Conservation Network Design** {#MPA-section}
 
 ```{r MPA-load, include=FALSE}
-load_rdata(c("conservationSites_rr"), "MAR", env = environment())
+load_rdata(c("conservationSites_rr"), regionStr, env = environment())
 ```
 
 ```{r MPA-section, results='asis'}

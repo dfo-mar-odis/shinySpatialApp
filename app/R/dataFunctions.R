@@ -1,22 +1,22 @@
+source(here::here("config.R"))
+
 # -----------------copy_rdata_files-------------
 # Function syncs local copy of here::here("app/data") with remote data dir
 # Inputs: None
 # Outputs: confirmation that files are now up to date
-
 copy_rdata_files <- function() {
   
-  rDataDir <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\Rdata\\data"
-  rStrDir <- gsub("\\\\", "\\\\\\\\", rDataDir) # backslash escaping nonsense
+  rDataDir <- dirname(remoteFileSavePath)
+  # replace backslashes introduced by dirname:
+  rDataDir <- gsub("\\\\", "/", rDataDir) 
   
-  localDataDir <- here::here("app/data")
-  localStrDir <- gsub("\\\\", "\\\\\\\\", localDataDir) # backslash escaping nonsense
-  
+  localDataDir <- dirname(localFileSavePath)
   
   remoteInfo <- file.info(list.files(rDataDir, recursive = TRUE, full.names = TRUE))
-  remoteInfo["filenames"] <- sub(rStrDir, "", rownames(remoteInfo))
+  remoteInfo["filenames"] <- sub(rDataDir, "", rownames(remoteInfo))
   
   localInfo <- file.info(list.files(localDataDir, recursive = TRUE, full.names = TRUE))
-  localInfo["filenames"] <- sub(localStrDir, "", rownames(localInfo))
+  localInfo["filenames"] <- sub(localDataDir, "", rownames(localInfo))
   
   missingList <- !(remoteInfo$filenames %in% localInfo$filenames) 
   if (any(missingList)) {
@@ -39,7 +39,7 @@ copy_rdata_files <- function() {
 
 }
 
-# ----------------laod_rdata----------------
+# ----------------load_rdata----------------
 # loads an rdata object from the data dir into the environment
 load_rdata <- function(rdataNames, regionStr, env=globalenv()){
   regionDir <- here::here("app/data", regionStr)
@@ -64,11 +64,12 @@ find_and_load <- function(rdataStr, regionDir, env=globalenv()){
 }
 
 # ------------intro_setup----------------
-intro_setup <- function(studyArea, env=globalenv()) {
+intro_setup <- function(studyArea, env=globalenv(), regionStr) {
 
   copy_rdata_files() # make sure data files are up to date.
-  load_rdata(c("CommonData"), "MAR", env = env)
-  load_rdata(c("CommonData"), "MAR", env = environment())
+  #load common data into this function and passed environment
+  load_rdata(c("CommonData"), regionStr, env = env)
+  load_rdata(c("CommonData"), regionStr, env = environment())
 
   minYear <- 2010
   site <- sf::st_centroid(studyArea)
@@ -88,5 +89,4 @@ intro_setup <- function(studyArea, env=globalenv()) {
   list2env(otherDataList, envir = env)
   
   return("Data Setup Complete")
-  
 }

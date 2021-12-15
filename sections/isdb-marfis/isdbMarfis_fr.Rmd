@@ -20,7 +20,7 @@ if (FALSE) { #load in data:
 
 
 ```{r isdb-load, include=FALSE}
-load_rdata(c("isdb_rr"), "MAR", env = environment())
+load_rdata(c("isdb_rr"), regionStr, env = environment())
 ```
 
 ```{r isdb-meta, results='asis'}
@@ -34,7 +34,7 @@ Sans consentement écrit, Pêches et Océans Canada n’est pas autorisé à com
 #### ***Système d’information sur les pêches des Maritimes (SIPMAR)***  
 
 ```{r marfis-load, include=FALSE}
-load_rdata(c("marfis_rr"), "MAR", env = environment())
+load_rdata(c("marfis_rr"), regionStr, env = environment())
 ```
 
 ```{r marfis-meta, results='asis'}
@@ -83,15 +83,6 @@ Report_marfis<-noquote(Report_marfis)
 writeLines(Report_marfis)
 ```
 
-```{r marfis-isdb-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(isdb_rr, "FR"), 'Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge) utilisée pour demander des renseignements agrégés provenant des dossiers d’observation du Système d’information sur les pêches des Maritimes (SIPMAR) et/ou de la Base de données des relevés de l’industrie (BDRI), qui sont présentés sous forme de points noirs, pour toutes les espèces. La règle des cinq n’a pas été appliquée.')}
-if (!is.null(outputListI$studyData) & !is.null(outputListM$studyData)) {
-  areaMap + geom_point(data = Samples_bboxI, aes(x = long, y = lat), size = 2, shape = 16, col = "black") + geom_point(data = Samples_bboxM, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
-} else if (!is.null(outputListI$studyData)) {
-    areaMap + geom_point(data = Samples_bboxI, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
-} else if (!is.null(outputListM$studyData)) {
-        areaMap + geom_point(data = Samples_bboxM, aes(x = long, y = lat), size = 2, shape = 16, col = "black")
-}
-```
 ```{r isdb-SAR-table}
 if (!is.null(outputListI$studyData)) {
 knitr::kable(isdbSarTable, align="l", caption="Niveau de qualité : Moyenne. Niveau de sécurité : Protégé B. Registres d’observation de la base de données des relevés de l’industrie des espèces contenues dans la zone de recherche et inscrites en vertu de la <i>Loi sur les espèces en péril</i> (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC). <b>TSi une espèce est absente du présent tableau, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b>", booktabs = T, escape = F, linesep="")} %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")

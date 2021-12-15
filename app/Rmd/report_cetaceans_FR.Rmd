@@ -16,6 +16,8 @@ Veuillez consulter le Passive Acoustic Cetacean Map (PACM) pour examiner quand e
 La présente section ne vise pas à décrire toutes les sources d’information disponibles; les données présentées ne représentent pas toutes les données disponibles sur les observations de cétacés dans la zone de recherche, et d’autres observations peuvent provenir d’autres sources ou de données plus récentes que celles présentées ici. En plus des données sur la présence seulement, certaines des données disponibles peuvent être utilisées pour appuyer les conclusions propres aux espèces au sujet des préférences en matière d’habitat et de la présence possible ou connue à proximité et à l’intérieur de la zone de recherche. Veuillez consulter les publications citées pour obtenir de plus amples renseignements et communiquer avec Angelia Vanderlaan (baleines noires de l’Atlantique Nord) et Hilary Moors-Murphy (autres espèces de cétacés) pour discuter d’autres sources d’information (p. ex., détections acoustiques). Les données et les sources qui ne sont pas explicitement incluses dans le présent rapport comprennent des renseignements tirés d’études ou de publications antérieures, des détections acoustiques, l’échantillonnage des proies et le marquage. Bien que la valeur de ces données dans la prévision et la description de la présence des cétacés soit vitale, ces types de données ne sont pas disponibles pour toutes les espèces et ne peuvent pas encore être interrogées. À l’avenir, à mesure que l’information provenant d’autres sources de données deviendra disponible, ces nouvelles données aideront à mieux comprendre l’utilisation de l’habitat des cétacés et la présence de ceux-ci dans les zones de recherche.
 
 
+```{r child = here::here("sections/obis/obisCet_fr.Rmd")}
+```
 
 ```{r child = here::here("sections/wsdb/wsdb_fr.Rmd")}
 ```
@@ -24,9 +26,6 @@ La présente section ne vise pas à décrire toutes les sources d’information 
 ```
 
 ```{r child = here::here("sections/narwc/narwc_fr.Rmd")}
-```
-
-```{r child = here::here("sections/obis/obisCet_fr.Rmd")}
 ```
 
 ```{r cetacean-summary-table, comment="", prompt=TRUE, echo=FALSE, results='asis'}

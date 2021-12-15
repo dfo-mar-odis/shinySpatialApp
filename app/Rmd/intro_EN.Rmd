@@ -15,6 +15,7 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
 ```{r load-data-and-functions, echo=FALSE, include=FALSE, cache=FALSE}
+source(here::here("config.R"))
 lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
 studyArea <- sf::st_read("{{path_to_geoms}}")
 # Uncomment the following to test fixed polygon:
@@ -22,7 +23,7 @@ studyArea <- sf::st_read("{{path_to_geoms}}")
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_test.geojson")) #Offshore
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_coastal_test.geojson")) #coastal
 # studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_no_land.geojson")) #no land
-intro_setup(studyArea, env = environment())
+intro_setup(studyArea, env = environment(), regionStr = regionStr)
 ```
 
 ```{r child = here::here("sections/commonSections/commonIntro.Rmd")}

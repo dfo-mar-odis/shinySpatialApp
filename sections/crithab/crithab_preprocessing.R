@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "crithab_rr", "leatherback_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "crithab_rr", "leatherback_rr"), regionStr)
 
 # -----------CritHab-------------- # check table cols.
 crithabPkgId <- "db177a8c-5d7d-49eb-8290-31e6a45d786c"
@@ -24,7 +24,7 @@ if(!is.null(openCrithab_rr)) {
   crithab_rr$metadata$contact <- email_format("info@dfo-mpo.gc.ca")
   crithab_rr$attribute <- "Common_Nam"
   crithab_rr$data_sf$Common_Nam <- crithab_rr$data_sf$Common_Name_EN
-  save(crithab_rr, file = file.path(fileSavePath, "Open/crithab_rr.RData"))
+  save(crithab_rr, file = file.path(localFileSavePath, "Open/crithab_rr.RData"))
 }
 
 
@@ -49,5 +49,5 @@ leatherback_rr <- list("title" = " Leatherback Sea Turtle draft critical habitat
                                          "constraints" = internalUse
                        )
 )
-save(leatherback_rr, file = file.path(fileSavePath, "Secure/leatherback_rr.RData"))
+save(leatherback_rr, file = file.path(localFileSavePath, "Secure/leatherback_rr.RData"))
 

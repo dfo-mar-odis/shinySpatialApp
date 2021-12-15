@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "pasBay_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "pasBay_rr"), regionStr)
 
 #----------------------Passamaquoddy Bay Biodiversity Trawls---------------------
 pasBayPkgId <- "2dfa19db-a8cf-4460-97b9-710c2b856276"
@@ -40,5 +40,5 @@ names(pasBay) <-  c("Scientific Name", "Common Name", "Start Time", "geometry")
 pasBay_sf <- st_as_sf(pasBay)
 pasBay_sf <- sf::st_crop(pasBay_sf, region_sf)
 pasBay_rr$data_sf <- pasBay_sf
-save(pasBay_rr, file = file.path(fileSavePath, "Open/pasBay_rr.RData"))
+save(pasBay_rr, file = file.path(localFileSavePath, "Open/pasBay_rr.RData"))
 
