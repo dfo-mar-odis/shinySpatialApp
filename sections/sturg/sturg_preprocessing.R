@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "sturg_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "sturg_rr"), regionStr)
 
 # --------------------STURGEON---------------------
 sturgDatafile <- file.path(here::here("../../../temp/Sturgeon_Layers/commondata/sturgeon/Sturgeon_AOI_polygons.shp"))
@@ -32,4 +32,4 @@ sturg_rr <- list("title" = "Atlantic Sturgeon Foraging Areas in the Upper Bay of
                                    "constraints" = internalUse
                  )
 )
-save(sturg_rr, file = file.path(fileSavePath, "Secure/sturg_rr.RData"))
+save(sturg_rr, file = file.path(localFileSavePath, "Secure/sturg_rr.RData"))

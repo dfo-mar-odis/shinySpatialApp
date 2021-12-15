@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
+source(here::here("config.R"))
 fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-loadResult <- load_rdata(c("CommonData", "whitehead_rr"), "MAR")
+
+loadResult <- load_rdata(c("CommonData", "whitehead_rr"), regionStr)
 
 # ----------------WHITEHEAD--------------
 # Whitehead lab

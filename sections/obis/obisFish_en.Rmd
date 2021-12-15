@@ -17,7 +17,7 @@ if (FALSE) { #load in data:
 ### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
 
 ```{r obis-load, include=FALSE}
-load_rdata(c("obisFish_rr"), "MAR", env = environment())
+load_rdata(c("obisFish_rr"), regionStr, env = environment())
 ```
 
 ```{r obis-meta, results='asis'}

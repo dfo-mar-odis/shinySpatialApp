@@ -37,7 +37,7 @@ filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherba
                             "wsdb_rr", "whitehead_rr", "obisCet_rr", "blueWhaleHab_rr",
                             "nbw_rr", "narwc_rr", "rockweed_rr", "ebsa_rr",
                             "conservationSites_rr", "finWhale_rr", "harbourPorpoise_rr",
-                            "humpbackWhale_rr", "seiWhale_rr"), "MAR", env = environment())
+                            "humpbackWhale_rr", "seiWhale_rr"), regionStr, env = environment())
 
 listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
 row.names(listed_species) <- NULL

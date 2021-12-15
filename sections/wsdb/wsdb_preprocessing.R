@@ -3,9 +3,9 @@ source(here::here("app/R/dataFunctions.R"))
 
 fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
 fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
 
-loadResult <- load_rdata(c("CommonData", "wsdb_rr"), "MAR")
+
+loadResult <- load_rdata(c("CommonData", "wsdb_rr"), regionStr)
 
 #------------------WSDB--------------------
 # Whale Sightings Database (wsdb)

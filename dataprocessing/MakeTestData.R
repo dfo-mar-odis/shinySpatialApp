@@ -28,8 +28,9 @@ get_random_points <- function(mult = 10) {
   samp1 <- st_sample(st_as_sfc(st_bbox(studyArea1)), 1 * mult)
   samp2 <- st_sample(st_as_sfc(st_bbox(studyArea2)), 1 * mult)
   samp3 <- st_sample(st_as_sfc(st_bbox(studyArea3)), 1 * mult)
-  Region <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
-  samp_region <- st_sample(st_as_sfc(st_bbox(Region)), 7 * mult)
+  region_sf <- st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBound/geoms_slc_MarBioRegion.geojson"))
+  
+  samp_region <- st_sample(st_as_sfc(st_bbox(region_sf)), 7 * mult)
   out_samp <- c(samp1, samp2, samp3, samp_region)
   return(out_samp)
 }

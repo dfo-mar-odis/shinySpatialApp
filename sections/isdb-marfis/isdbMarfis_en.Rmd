@@ -19,7 +19,7 @@ if (FALSE) { #load in data:
 #### ***Industry Survey Database (ISDB)*** {#ISDB-section}
 
 ```{r isdb-load, include=FALSE}
-load_rdata(c("isdb_rr"), "MAR", env = environment())
+load_rdata(c("isdb_rr"), regionStr, env = environment())
 ```
 
 ```{r isdb-meta, results='asis'}
@@ -37,7 +37,7 @@ Without written consent, DFO is not permitted to release information or data pro
 #### ***The Maritime Fishery Information System (MARFIS)***{#MARFIS-section}
 
 ```{r marfis-load, include=FALSE}
-load_rdata(c("marfis_rr"), "MAR", env = environment())
+load_rdata(c("marfis_rr"), regionStr, env = environment())
 ```
 
 ```{r marfis-meta, results='asis'}

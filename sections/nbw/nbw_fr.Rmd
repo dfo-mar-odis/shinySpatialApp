@@ -16,7 +16,7 @@ if (FALSE) { #load in data:
 ### **Habitat important pour la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais**   {#nbw-hab-section}
 
 ```{r nbw-load, include=FALSE}
-load_rdata(c("nbw_rr"), "MAR", env = environment())
+load_rdata(c("nbw_rr"), regionStr, env = environment())
 ```
 
 ```{r nbw-meta, results='asis'}

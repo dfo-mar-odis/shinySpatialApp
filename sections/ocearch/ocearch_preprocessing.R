@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "ocearch_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "ocearch_rr"), regionStr)
 
 
 # --------------------OCEARCH---------------------
@@ -31,4 +31,4 @@ ocearch_rr <- list("title" = "OCEARCH Shark Tracker",
                                      "constraints" = internalUse
                    )
 )
-save(ocearch_rr, file = file.path(fileSavePath, "Secure/ocearch_rr.RData"))
+save(ocearch_rr, file = file.path(localFileSavePath, "Secure/ocearch_rr.RData"))

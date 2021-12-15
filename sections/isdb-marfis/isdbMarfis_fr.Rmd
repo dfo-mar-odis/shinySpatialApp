@@ -20,7 +20,7 @@ if (FALSE) { #load in data:
 
 
 ```{r isdb-load, include=FALSE}
-load_rdata(c("isdb_rr"), "MAR", env = environment())
+load_rdata(c("isdb_rr"), regionStr, env = environment())
 ```
 
 ```{r isdb-meta, results='asis'}
@@ -34,7 +34,7 @@ Sans consentement écrit, Pêches et Océans Canada n’est pas autorisé à com
 #### ***Système d’information sur les pêches des Maritimes (SIPMAR)***  
 
 ```{r marfis-load, include=FALSE}
-load_rdata(c("marfis_rr"), "MAR", env = environment())
+load_rdata(c("marfis_rr"), regionStr, env = environment())
 ```
 
 ```{r marfis-meta, results='asis'}

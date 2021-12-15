@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "ebsa_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "ebsa_rr"), regionStr)
 
 # ----------------EBSA----------------- 
 ebsaPkgId <- "d2d6057f-d7c4-45d9-9fd9-0a58370577e0"
@@ -21,6 +21,6 @@ if(!is.null(openEbsa_rr)) {
                                             ".pdf", ".html")
   ebsa_rr$metadata$qualityTier <- highQuality
   ebsa_rr$metadata$contact <- email_format("carissa.philippe\\@dfo-mpo.gc.ca")
-  save(ebsa_rr, file = file.path(fileSavePath, "Open/ebsa_rr.RData"))
+  save(ebsa_rr, file = file.path(localFileSavePath, "Open/ebsa_rr.RData"))
 }
 

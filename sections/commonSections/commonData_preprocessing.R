@@ -1,14 +1,11 @@
+source(here::here("config.R"))
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
-
-loadResult <- load_rdata(c("CommonData"), "MAR")
+loadResult <- load_rdata(c("CommonData"), regionStr)
 
 # ----------------COMMON DATA-------------
-region_sf <- st_read(here::here("app/studyAreaTest/geoms_slc_MarBioRegion.geojson"))
+region_sf <- st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBound/geoms_slc_MarBioRegion.geojson"))
 land10m_sf <- st_read(file.path(fileLoadPath, "Boundaries/Landmass/ne_10m_land_Clip.shp"), stringsAsFactors = FALSE)
 #remove State and Province column from land10m
 land10m_sf <- land10m_sf[-c(2)]
@@ -51,4 +48,4 @@ cetLegend <- data.frame("Scientific_Name" = c("Delphinapterus leucas","Balaenopt
 
 cetLegend <- dplyr::rename(cetLegend,c("Scientific Name" = "Scientific_Name"))
 
-save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, file = file.path(fileSavePath, "CommonData.RData"))
+save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, file = file.path(localFileSavePath, "CommonData.RData"))

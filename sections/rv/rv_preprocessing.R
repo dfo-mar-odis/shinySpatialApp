@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "rv_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "rv_rr"), regionStr)
 
 
 #----------------------RV SURVEY---------------------
@@ -42,6 +42,6 @@ rv_sf <- rbind(fourVSW_sf, spring_sf, summer_sf, fall_sf)
 rv_sf <- sf::st_crop(rv_sf, region_sf)
 rv_rr$data_sf <- rv_sf
 rv_rr$metadata$searchYears <- "2010-2020"
-save(rv_rr, file = file.path(fileSavePath, "Open/rv_rr.RData"))
+save(rv_rr, file = file.path(localFileSavePath, "Open/rv_rr.RData"))
 
 

@@ -1,11 +1,11 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-fileLoadPath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data"
+source(here::here("config.R"))
 
-loadResult <- load_rdata(c("CommonData", "obisCet_rr", "obisFish_rr"), "MAR")
+
+
+loadResult <- load_rdata(c("CommonData", "obisCet_rr", "obisFish_rr"), regionStr)
 
 #-------------------OBIS-------------------
 
@@ -50,7 +50,7 @@ obisFish_rr <- list("title" = "OBIS observations",
                                       "constraints" = noneList
                     )
 )
-save(obisFish_rr, file = file.path(fileSavePath, "Open/obisFish_rr.RData"))
+save(obisFish_rr, file = file.path(localFileSavePath, "Open/obisFish_rr.RData"))
 
 # OBIS cetaceans
 obisCet <- merge(obis, Legend, by='Scientific Name')
@@ -74,5 +74,5 @@ obisCet_rr <- list("title" = "OBIS observations (cetaceans)",
                                      "constraints" = noneList
                    )
 )
-save(obisCet_rr, file = file.path(fileSavePath, "Open/obisCet_rr.RData"))
+save(obisCet_rr, file = file.path(localFileSavePath, "Open/obisCet_rr.RData"))
 
