@@ -25,7 +25,7 @@ protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 #
 # Outputs:
 # 1 .out_rr: output rr object containing spatial data and metadata
-get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, checkDate=NULL) {
+get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
   opendataPKG <- package_show(pkgId)
   
   # check if package has been updated since checkdate
@@ -47,7 +47,7 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile
   contactInfo <- opendataPKG$metadata_contact
   pkgText <- opendataPKG$notes_translated
   if (!is.null(resId)) {
-    data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer, tifFile=tifFile)  
+    data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer, tifFile=tifFile, returnRaster=returnRaster)  
   } else {
     data_sf <- NULL
   }
@@ -106,9 +106,9 @@ get_opendata_sf <- function(resId, ...) {
 #
 # Outputs:
 # 1 .out_sf: output sf object containing spatial data
-download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NULL, tifFile = NULL) {
+download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NULL, tifFile = NULL, returnRaster=FALSE) {
   tempDir <- here::here("dataprocessing/temp")
-  temp <- here::here("dataprocessing/temp/temp.zip")
+  temp <- file.path(tempDir, "temp.zip")
   
   download.file(zipUrl, temp)
   utils::unzip(temp, exdir = tempDir)
@@ -125,6 +125,18 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
     out_sf$geometry <- st_geometry(out_sf)
   } else if (length(tifRasterFile) > 0) {
     tifRaster <- raster(tifRasterFile)
+    if (returnRaster){
+      if (!is.null(region_sf)) {
+        tifRaster <- projectRaster(tifRaster, crs=crs(region_sf))
+        if (length(st_intersection(st_as_sfc(st_bbox(tifRaster)), region_sf)) > 0) {
+          tifRaster <- crop(tifRaster, region_sf)
+        } else {
+          # no overlap, return valid empty raster:
+          tifRaster <- NULL
+        }
+      }
+      return(tifRaster)
+    }
     out_sf <- stars::st_as_stars(tifRaster) %>% sf::st_as_sf()
   }
   
