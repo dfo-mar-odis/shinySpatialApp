@@ -10,7 +10,7 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 if (FALSE) { #load in data:
   lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
   studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
-  intro_setup(studyArea, env = environment())  
+  intro_setup(studyArea, env = environment(), regionStr = regionStr)  
 }
 ```
 

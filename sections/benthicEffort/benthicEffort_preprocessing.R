@@ -22,6 +22,19 @@ allRasters <- c(ea_rr$data_sf, gsl_rr$data_sf, nl_rr$data_sf, ss_rr$data_sf)
 minResIndx <- which.min(sapply(allRasters, xres))
 allRasters <- sapply(allRasters, projectRaster, allRasters[[minResIndx]])
 
-firstOverlay <- overlay(allRasters[[1]], allRasters[[2]], fun=function(x, y) ifelse(x==0 | is.na(x), y, x))
-secondOverlay <- overlay(firstOverlay, allRasters[[3]], fun=function(x, y) ifelse(x==0 | is.na(x), y, x))
-plot(secondOverlay)
+if (length(allRasters) > 0){
+  mergeRaster <- allRasters[[1]]
+  for (rasterIndex in 2:length(allRasters)) {
+    mergeRaster <- overlay(mergeRaster, allRasters[[rasterIndex]], 
+                           fun=function(x, y) ifelse(x==0 | is.na(x), y, x))
+  }
+} else {
+  mergeRaster <- NULL
+}
+
+benthicEffort_rr <- ea_rr
+benthicEffort_rr$metadata$qualityTier <- mediumQuality
+benthicEffort_rr$data_sf <- mergeRaster
+
+save(benthicEffort_rr, file = file.path(localFileSavePath, "Open/benthicEffort_rr.RData"))
+

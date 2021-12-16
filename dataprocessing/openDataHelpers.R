@@ -131,7 +131,6 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
         if (length(st_intersection(st_as_sfc(st_bbox(tifRaster)), region_sf)) > 0) {
           tifRaster <- crop(tifRaster, region_sf)
         } else {
-          # no overlap, return valid empty raster:
           tifRaster <- NULL
         }
       }
