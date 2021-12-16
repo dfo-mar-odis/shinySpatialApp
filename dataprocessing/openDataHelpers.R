@@ -2,6 +2,7 @@ install.packages("ckanr") #you need to install the packages every time since it 
 
 library(ckanr)
 library(sf)
+source(here::here("config.R"))
 source(here::here("app/R/helpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 ckanr_setup(url="https://open.canada.ca/data")
@@ -355,9 +356,7 @@ date_from_pkg <- function(pkgId) {
 # -------------GIT ACTION FUNCTIONS ----------------
 # create the open data data csv file
 gen_checkdate_csv <- function() {
-  dataSetDf <- data.frame("rrStr" = c("ebsa_rr", "crithab_rr", "sardist_rr", 
-                                      "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
-                                      "rv_rr", "pasBay_rr"))
+  dataSetDf <- rr_openDataList
   load_rdata(dataSetDf$rrStr,  "MAR")
   dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
   dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
