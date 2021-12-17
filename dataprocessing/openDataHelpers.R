@@ -9,6 +9,7 @@ ckanr_setup(url="https://open.canada.ca/data")
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
+variableQuality <- list("en" = "variable depending on dataset", "fr" = "varie selon donnes")
 lowQuality <- list("en" = "Low", "fr" = "Faible")
 
 noneList <- list("en" = "None", "fr"= "Aucun")

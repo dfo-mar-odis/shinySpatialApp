@@ -9,6 +9,13 @@
     ]
   },
   "Packages": {
+    "BH": {
+      "Package": "BH",
+      "Version": "1.78.0-0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4e348572ffcaa2fb1e610e7a941f6f3a"
+    },
     "DBI": {
       "Package": "DBI",
       "Version": "1.1.1",
@@ -263,6 +270,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "0f22be39ec1d141fd03683c06f3a6e67"
+    },
+    "conditionz": {
+      "Package": "conditionz",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "94d63622fa8251219092b34de47a4136"
     },
     "cpp11": {
       "Package": "cpp11",
@@ -551,6 +565,13 @@
       "Repository": "CRAN",
       "Hash": "76147821cd3fcd8c4b04e1ef0498e7fb"
     },
+    "httpcache": {
+      "Package": "httpcache",
+      "Version": "1.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "1199297226d95ef7f4b8283ba1b47c13"
+    },
     "httpcode": {
       "Package": "httpcode",
       "Version": "0.3.0",
@@ -803,6 +824,13 @@
       "Repository": "CRAN",
       "Hash": "2d632e0d963a653a0329756ce701ecdd"
     },
+    "oai": {
+      "Package": "oai",
+      "Version": "0.3.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "502b2f98bbad783bfd82d179247e48d4"
+    },
     "openssl": {
       "Package": "openssl",
       "Version": "1.4.5",
@@ -978,6 +1006,13 @@
       "Repository": "CRAN",
       "Hash": "bb5996d0bd962d214a11140d77589917"
     },
+    "rgbif": {
+      "Package": "rgbif",
+      "Version": "3.6.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "bf7f7f62a8107a68235316151f35d189"
+    },
     "rgdal": {
       "Package": "rgdal",
       "Version": "1.5-27",
@@ -1012,6 +1047,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "320017b52d05a943981272b295750388"
+    },
+    "robis": {
+      "Package": "robis",
+      "Version": "2.8.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d2cbbe47aa51d5639213f71d477057c9"
     },
     "rosm": {
       "Package": "rosm",
@@ -1293,6 +1335,13 @@
       "Repository": "CRAN",
       "Hash": "e99d80ad34457a4853674e89d5e806de"
     },
+    "wellknown": {
+      "Package": "wellknown",
+      "Version": "0.7.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "5508d2da9b514f2214357cec1d4df46a"
+    },
     "whisker": {
       "Package": "whisker",
       "Version": "0.4",
@@ -1306,6 +1355,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "ad03909b44677f930fa156d47d7a3aeb"
+    },
+    "wk": {
+      "Package": "wk",
+      "Version": "0.5.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "60e191a866c5649a8f58a458f5e60edf"
     },
     "xfun": {
       "Package": "xfun",
