@@ -12,7 +12,12 @@
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
 plot_rr_sf <- function(baseMap, data_sf, ...) {
-  if (inherits(sf::st_geometry(data_sf), c("sfc_POINT"))) {
+  
+  if (inherits(data_sf, "RasterLayer")) {
+    
+    outPlot <- plot_raster(baseMap, data_sf, ...)
+    
+  }else if (inherits(sf::st_geometry(data_sf), c("sfc_POINT"))) {
     
     outPlot <- plot_points(baseMap, data_sf, ...)
     
@@ -69,6 +74,55 @@ less_x_ticks <- function(inPlot, tickNum=5) {
   outPlot <- inPlot + scale_x_continuous(breaks = breakVec) 
   return(outPlot)
 }
+
+
+# Function for plotting raster data for the reproducible report.
+#
+# Inputs:
+# 1. baseMap = map object, either areaMap or regionMap
+# 2. data_sf: raster data to be plotted 
+#    (ideally, pre-clipped to map area with the master_intersect function, using bboxMap, or regionBox)
+# 3. legendName: string, sets the name of the legend for cases where the attribute is not appropriate. Defaults to
+#                the attribute.  
+# 
+# Created by Quentin Stoyel, December 16, 2021 for reproducible reporting project
+
+plot_raster <- function(baseMap, rasterData, legendName="", bgCutoff=0,
+                        rescaleLim=c(0,100), midpoint=50) {
+  
+  # extract layers to ensure it plots over polygons/study area box
+  scaleBarLayer = get_scale_bar_layer(baseMap)
+  studyBoxLayer = get_study_box_layer(baseMap)
+  watermarkLayer = get_watermark_layer(baseMap)
+  
+  # axis limits based on baseMap
+  axLim = ggplot2::coord_sf(xlim=baseMap$coordinates$limits$x, 
+                            ylim=baseMap$coordinates$limits$y, expand=FALSE) 
+  
+  raster_spdf <- as(rasterData, "SpatialPixelsDataFrame")
+  raster_df <- as.data.frame(raster_spdf)
+  colnames(raster_df) <- c("value", "x", "y")
+  raster_df$value <- round(scales::rescale(raster_df$value, rescaleLim))
+  raster_df$value[raster_df$value < bgCutoff] <- NA
+  
+  dataLayer <- geom_tile(data=raster_df, aes(x=x, y=y, fill=value))
+  
+  
+  legendLayer <-   scale_fill_gradient2(low = 'red', mid="yellow", high = 'green',
+                                       na.value = NA, midpoint=midpoint, name=legendName)  
+
+  rasterMap <- baseMap +
+    legendLayer +
+    dataLayer +
+    axLim +
+    watermarkLayer +
+    studyBoxLayer +
+    scaleBarLayer
+  
+  return(rasterMap) 
+}
+
+
 
 
 # Function for plotting point data for the reproducible report.

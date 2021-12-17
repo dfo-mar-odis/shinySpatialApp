@@ -32,60 +32,74 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
     return(outList)
   }
   
-  if (!inherits(sf::st_geometry(data_sf), c("sfc_POINT", 
-                                            "sfc_POLYGON", 
-                                            "sfc_LINESTRING",
-                                            "sfc_MULTIPOLYGON",
-                                            "sfc_GEOMETRY")))
-  {
-    outList <- list(regionData = NULL,
-                    studyData = NULL, 
-                    mapData = NULL, 
-                    mapPoints = NULL)
-    return(outList)
-  }
-  
   # convert bbox to sf object representing the map
-  mapArea <- sf::st_as_sfc(mapDataList$bboxMap)
+  mapArea <- st_as_sfc(mapDataList$bboxMap)
   
-  # Crop data
-  if (getRegion) {
-    regionData <- sf::st_crop(data_sf, mapDataList$region)  
-    if (nrow(regionData) == 0) {regionData <- NULL}
-  } else {
-    regionData <- NULL
-  }
-  
-  mapData <- sf::st_crop(data_sf, mapArea)
-  studyData <- sf::st_crop(mapData, mapDataList$studyArea)
-  
-  # if there is no intersect with the box, set return to NULL
-  if (nrow(mapData) == 0) {mapData <- NULL}
-  
-  if (nrow(studyData) > 0) {
-    # if there is point data in the study area, drop uneeded columns and 
-    # duplicate geometries
-    # for RV the ELAT and ELONG fields are necessary as well
-    if (inherits(sf::st_geometry(data_sf), "sfc_POINT")) {
-      if ("ELAT" %in% colnames(mapData)) {
-        mapPoints <- dplyr::select(mapData, ELAT, ELONG, geometry)
-      } 
-      else {
-        mapPoints <- dplyr::select(mapData, geometry)
-      }
-      # remove redundant geometries and set lat/long columns:
-      mapPoints <- unique(mapPoints)
-      mapPoints <- sfcoords_as_cols(mapPoints)
-    } # end of test for point geometry
-    else {
-      mapPoints <- NULL
+  if (inherits(data_sf, "RasterLayer")) {
+    raster_sf <- st_as_sfc(st_bbox(data_sf))
+    if (getRegion & (length(st_intersection(raster_sf, mapDataList$region)) > 0)) {
+      regionData <- raster::crop(data_sf, mapDataList$region)  
+    } else {
+      regionData <- NULL
     }
-  } # end of test for zero samples
-  else {
+    if (length(st_intersection(raster_sf, st_as_sf(mapArea))) > 0) {
+      mapData <- raster::crop(data_sf, region_sf)
+    } else {
+      mapData <- NULL
+    }
     studyData <- NULL
     mapPoints <- NULL
+    
+  } else if (!inherits(st_geometry(data_sf), c("sfc_POINT", 
+                                                   "sfc_POLYGON", 
+                                                   "sfc_LINESTRING",
+                                                   "sfc_MULTIPOLYGON",
+                                                   "sfc_GEOMETRY"))) {
+    regionData = NULL
+    studyData = NULL
+    mapData = NULL
+    mapPoints = NULL
+    
+  } else {
+    # Crop data
+    if (getRegion) {
+      regionData <- st_crop(data_sf, mapDataList$region)  
+      if (nrow(regionData) == 0) {regionData <- NULL}
+    } else {
+      regionData <- NULL
+    }
+    
+    mapData <- st_crop(data_sf, mapArea)
+    studyData <- st_crop(mapData, mapDataList$studyArea)
+    
+    # if there is no intersect with the box, set return to NULL
+    if (nrow(mapData) == 0) {mapData <- NULL}
+    
+    if (nrow(studyData) > 0) {
+      # if there is point data in the study area, drop uneeded columns and 
+      # duplicate geometries
+      # for RV the ELAT and ELONG fields are necessary as well
+      if (inherits(st_geometry(data_sf), "sfc_POINT")) {
+        if ("ELAT" %in% colnames(mapData)) {
+          mapPoints <- dplyr::select(mapData, ELAT, ELONG, geometry)
+        } 
+        else {
+          mapPoints <- dplyr::select(mapData, geometry)
+        }
+        # remove redundant geometries and set lat/long columns:
+        mapPoints <- unique(mapPoints)
+        mapPoints <- sfcoords_as_cols(mapPoints)
+      } # end of test for point geometry
+      else {
+        mapPoints <- NULL
+      }
+    } # end of test for zero samples
+    else {
+      studyData <- NULL
+      mapPoints <- NULL
+    }
   }
-  
+
   outList <- list(regionData = regionData,
                   studyData = studyData, 
                   mapData = mapData, 

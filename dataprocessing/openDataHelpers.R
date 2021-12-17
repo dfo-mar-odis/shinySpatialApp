@@ -2,6 +2,7 @@ install.packages("ckanr") #you need to install the packages every time since it 
 
 library(ckanr)
 library(sf)
+source(here::here("config.R"))
 source(here::here("app/R/helpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 ckanr_setup(url="https://open.canada.ca/data")
@@ -25,7 +26,7 @@ protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 #
 # Outputs:
 # 1 .out_rr: output rr object containing spatial data and metadata
-get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, checkDate=NULL) {
+get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
   opendataPKG <- package_show(pkgId)
   
   # check if package has been updated since checkdate
@@ -47,7 +48,7 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile
   contactInfo <- opendataPKG$metadata_contact
   pkgText <- opendataPKG$notes_translated
   if (!is.null(resId)) {
-    data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer, tifFile=tifFile)  
+    data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer, tifFile=tifFile, returnRaster=returnRaster)  
   } else {
     data_sf <- NULL
   }
@@ -106,9 +107,9 @@ get_opendata_sf <- function(resId, ...) {
 #
 # Outputs:
 # 1 .out_sf: output sf object containing spatial data
-download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NULL, tifFile = NULL) {
+download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NULL, tifFile = NULL, returnRaster=FALSE) {
   tempDir <- here::here("dataprocessing/temp")
-  temp <- here::here("dataprocessing/temp/temp.zip")
+  temp <- file.path(tempDir, "temp.zip")
   
   download.file(zipUrl, temp)
   utils::unzip(temp, exdir = tempDir)
@@ -125,6 +126,17 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
     out_sf$geometry <- st_geometry(out_sf)
   } else if (length(tifRasterFile) > 0) {
     tifRaster <- raster(tifRasterFile)
+    if (returnRaster){
+      if (!is.null(region_sf)) {
+        tifRaster <- projectRaster(tifRaster, crs=crs(region_sf))
+        if (length(st_intersection(st_as_sfc(st_bbox(tifRaster)), region_sf)) > 0) {
+          tifRaster <- crop(tifRaster, region_sf)
+        } else {
+          tifRaster <- NULL
+        }
+      }
+      return(tifRaster)
+    }
     out_sf <- stars::st_as_stars(tifRaster) %>% sf::st_as_sf()
   }
   
@@ -344,9 +356,7 @@ date_from_pkg <- function(pkgId) {
 # -------------GIT ACTION FUNCTIONS ----------------
 # create the open data data csv file
 gen_checkdate_csv <- function() {
-  dataSetDf <- data.frame("rrStr" = c("ebsa_rr", "crithab_rr", "sardist_rr", 
-                                      "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
-                                      "rv_rr", "pasBay_rr"))
+  dataSetDf <- rr_openDataList
   load_rdata(dataSetDf$rrStr,  "MAR")
   dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
   dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
