@@ -87,7 +87,8 @@ less_x_ticks <- function(inPlot, tickNum=5) {
 # 
 # Created by Quentin Stoyel, December 16, 2021 for reproducible reporting project
 
-plot_raster <- function(baseMap, rasterData, legendName="") {
+plot_raster <- function(baseMap, rasterData, legendName="", bgCutoff=0,
+                        rescaleLim=c(0,100), midpoint=50) {
   
   # extract layers to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
@@ -101,14 +102,14 @@ plot_raster <- function(baseMap, rasterData, legendName="") {
   raster_spdf <- as(rasterData, "SpatialPixelsDataFrame")
   raster_df <- as.data.frame(raster_spdf)
   colnames(raster_df) <- c("value", "x", "y")
-  raster_df$value <- round(scales::rescale(raster_df$value, c(0,100)))
-  raster_df$value[raster_df$value < 15] <- NA
+  raster_df$value <- round(scales::rescale(raster_df$value, rescaleLim))
+  raster_df$value[raster_df$value < bgCutoff] <- NA
   
   dataLayer <- geom_tile(data=raster_df, aes(x=x, y=y, fill=value))
   
   
   legendLayer <-   scale_fill_gradient2(low = 'red', mid="yellow", high = 'green',
-                                       na.value = NA, midpoint=50, name=legendName)  
+                                       na.value = NA, midpoint=midpoint, name=legendName)  
 
   rasterMap <- baseMap +
     legendLayer +
