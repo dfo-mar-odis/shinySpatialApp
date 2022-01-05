@@ -39,13 +39,15 @@ load_rdata(c("gbifCet_rr"), regionStr, env = environment())
 write_meta(gbifCet_rr, "EN")
 ```
 
-GBIS is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth (GBIF, 2021). Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of December 2021, GBIF has over 1.9 billion species occurrence records and over 63,000 datasets globally. 
+GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth (GBIF, 2021). Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of December 2021, GBIF has over 1.9 billion species occurrence records and over 63,000 datasets globally. 
 
 
 #### ***Area-specific OBIS cetacean search results***
 
 ```{r obis-cetecean, cache=FALSE, include=FALSE}
 obisClipped <- master_intersect(obisCet_rr$data_sf, mapDataList)
+
+obisTable <- create_sar_tables(obisClipped$studyData, listed_species, extraCols = c("url", "citation"))$sarData
 
 linkedSectionText <- "[OBIS-Cetaceans](##obis-cetacean-section)"
 if (!is.null(obisClipped$studyData)) {
@@ -66,11 +68,18 @@ Report_obis_cet <-  if (is.null(obisClipped$studyData)) {
 }
 writeLines(Report_obis_cet)
 ```
-```{r obis-cetecean-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(obisCet_rr, "EN"), 'Map showing the search area defined by the user (red outline). Map of cetacean species listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), from the Ocean Biodiversity Information System (OBIS) located within the search area (red outline). <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings on land are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore.')}
+```{r obis-cetecean-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(obisCet_rr, "EN"), 'Map of Ocean Biodiversity Information System (OBIS) observation records of cetaceans observed within the search area (red outline), and listed by the Species at Risk Act (SARA) and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. Coloured circles indicate individual observations for each whale species. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Absence may be related to low or no survey effort. Sightings information is known to under-represent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections. Sightings near shore (< 300 m from the coastline) are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. Observations ≥ 300 m from shore were removed due to positional accuracy and species identification concerns. ')}
 if (!is.null(obisClipped$studyData)) {
   plot_rr_sf(areaMap, obisClipped$mapData, attribute = obisCet_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
 }
 ```
+
+```{r obis-cetacean-table, echo=FALSE, results='asis'}
+if (!is.null(obisClipped$studyData)) {
+  knitr::kable(obisTable, align="l", caption=paste(write_caption_blurb(obisCet_rr, "EN"), "Ocean Biodiversity Information System (OBIS) observation records of cetacean species observed within the search area, and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Observations ≥ 300 m from shore were removed due to positional accuracy and species identification concerns."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
+
 
 #### ***Area-specific GBIF  search results***
 
@@ -79,12 +88,8 @@ inaturalist_sf = subset(gbifCet_rr$data_sf, title == "iNaturalist Research-grade
 inaturalistClipped <- master_intersect(inaturalist_sf, mapDataList)
 inaturalistTable <- create_sar_tables(inaturalistClipped$studyData, listed_species, extraCols = c("url", "citation"))$sarData
 
-machineObs_sf = subset(gbifCet_rr$data_sf, basisOfRecord == "MACHINE_OBSERVATION")
-machineObsClipped <- master_intersect(machineObs_sf, mapDataList)
-machineObsTable <- create_sar_tables(machineObsClipped$studyData, listed_species, extraCols = c("url", "citation"))$sarData
 
-otherGbif_sf = subset(gbifCet_rr$data_sf, title != "iNaturalist Research-grade Observations" 
-                      & basisOfRecord != "MACHINE_OBSERVATION")
+otherGbif_sf = subset(gbifCet_rr$data_sf, title != "iNaturalist Research-grade Observations")
 gbifClipped <- master_intersect(otherGbif_sf, mapDataList)
 gbifTable <- create_sar_tables(gbifClipped$studyData, listed_species, extraCols = c("url", "citation"))$sarData
 # Add to summary tables!
@@ -102,37 +107,25 @@ reportGbif <-  if (is.null(gbifClipped$studyData)) {
 writeLines(reportGbif)
 ```
 
-```{r gbif-cetacean-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbifCet_rr, "EN"), 'Global Biodiversity Information Facility (GBIF)  observation records (black circles) of cetaceans observed within the search area (red outline) and listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
+```{r gbif-cetacean-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbifCet_rr, "EN"), 'Map of Global Biodiversity Information Facility (GBIF) observation records of cetaceans observed within the search area (red outline), and listed by the Species at Risk Act (SARA) and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. Coloured circles indicate individual observations for each whale species. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Absence may be related to low or no survey effort. Sightings information is known to under-represent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. This map also does not include acoustic detections.  Sightings near shore (< 300 m from the coastline) are an indicator that the sighting data have not yet been completely error-checked or that animals were sighted from shore. Observations ≥ 300 m from shore were removed due to positional accuracy and species identification concerns. ')}
 if (!is.null(gbifClipped$studyData)) {
   plot_rr_sf(areaMap, gbifClipped$mapData, attribute=gbifCet_rr$attribute)
 }
 ```
 
-```{r gbif-cetacean-table, echo=FALSE, results='asis', caption="Priority species with observations contained in the OBIS database within the search polygon area."}
+```{r gbif-cetacean-table, echo=FALSE, results='asis'}
 if (!is.null(gbifClipped$studyData)) {
-  knitr::kable(gbifTable, align="l", caption=paste(write_caption_blurb(gbifCet_rr, "EN"), "Global Biodiversity Information Facility (GBIF) observation records of cetaceans observed within the search area, and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(gbifTable, align="l", caption=paste(write_caption_blurb(gbifCet_rr, "EN"), "Global Biodiversity Information Facility (GBIF) observation records of cetacean species observed within the search area, and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Observations ≥ 300 m from shore were removed due to positional accuracy and species identification concerns. "), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
-```{r inaturalist-cetaceans-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbifCet_rr, "EN"), 'Research-grade iNaturalist observations within the search area (red outline) of cetaceans that have been added to the Global Biodiversity Information Facility (GBIF). Species included have been listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. Observations are coloured to show coordinate uncertainties of the data, where observations with coordinate uncertainties >20 km represent locations that have been obscured due to geoprivacy concerns (e.g., hunting). NAs refer to observations with no provided coordinate uncertainty. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. ')}
+```{r inaturalist-cetaceans-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbifCet_rr, "EN"), 'Research-grade iNaturalist observations within the search area (red outline) of cetacean species that have been added to the Global Biodiversity Information Facility (GBIF). Species included have been listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. Observations are coloured to show coordinate uncertainties of the data, where observations with coordinate uncertainties >20 km represent locations that have been obscured due to geoprivacy concerns (e.g., hunting). NAs refer to observations with no provided coordinate uncertainty. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
 if (!is.null(inaturalistClipped$studyData)) {
   plot_rr_sf(areaMap, inaturalistClipped$mapData, attribute=gbifCet_rr$attribute)
 }
 ```
 
-```{r inaturalist-cetaceans-table, echo=FALSE, results='asis', caption="Priority species with observations contained in the OBIS database within the search polygon area."}
+```{r inaturalist-cetaceans-table, echo=FALSE, results='asis'}
 if (!is.null(inaturalistClipped$studyData)) {
   knitr::kable(inaturalistTable, align="l", caption=paste(write_caption_blurb(gbifCet_rr, "EN"), "Research-grade iNaturalist observations of cetaceans within the search area and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
-}
-```
-
-```{r machineObs-cetaceans-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbifCet_rr, "EN"), 'Observations made by Machines within the search area (red outline) of cetaceans that have been added to the Global Biodiversity Information Facility (GBIF). Species included have been listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. Observations are coloured to show coordinate uncertainties of the data, where observations with coordinate uncertainties >20 km represent locations that have been obscured due to geoprivacy concerns (e.g., hunting). NAs refer to observations with no provided coordinate uncertainty. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. ')}
-if (!is.null(machineObsClipped$studyData)) {
-  plot_rr_sf(areaMap, machineObsClipped$mapData, attribute=gbifCet_rr$attribute)
-}
-```
-
-```{r machineObs-cetaceans-table, echo=FALSE, results='asis', caption="Priority species with observations contained in the OBIS database within the search polygon area."}
-if (!is.null(machineObsClipped$studyData)) {
-  knitr::kable(machineObsTable, align="l", caption=paste(write_caption_blurb(gbifCet_rr, "EN"), "Observations made by Machines of cetaceans within the search area and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```

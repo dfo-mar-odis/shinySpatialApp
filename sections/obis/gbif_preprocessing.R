@@ -4,8 +4,6 @@ source(here::here("app/R/dataFunctions.R"))
 source(here::here("config.R"))
 
 library(rgbif)
-library(robis)
-
 
 loadResult <- load_rdata(c("CommonData", "gbifFish_rr", "gbifCet_rr"), regionStr)
 
@@ -48,6 +46,11 @@ citation_df <- as.data.frame(do.call(rbind, gbifCitations))
 citationsOnly_df <- as.data.frame(do.call(rbind, citation_df$citation))
 
 dsInfo_df$citation <- unlist(citationsOnly_df$citation)
+
+# add dates to citations:
+citDate <- as.character(Sys.Date())
+dsInfo_df$citation <- gsub("yyyy-mm-dd", citDate, dsInfo_df$citation)
+
 dsInfo_df$title <- unlist(citationsOnly_df$title)
 
 # Get URLs for each dataset

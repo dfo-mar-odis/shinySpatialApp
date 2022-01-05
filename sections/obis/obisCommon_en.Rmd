@@ -118,7 +118,7 @@ there are additional records that may be useful.
 
 #### Basis of Record
 
-The Basis of Record field (i.e., column name) specifies the nature of
+The Basis of Record field (i.e., column name) is a required term that specifies the nature of
 the record, such as how the observation was obtained or stored (more
 information here: <https://obis.org/manual/darwincore/#records>). There
 are various options the data submitter can select from. The following
@@ -147,17 +147,7 @@ within the report:
 -   Unknown: includes records without a defined basis of record or with
     an unrecognized value for this field
 
-The following cases were displayed separately from those above because
-they contain aggregated location information:
-
--   MachineObservation: observations are derived from machine or
-    computer-based detections such as automated sensors (e.g., DNA
-    sequencers) or image recognition. For the Scotian Shelf Bioregion,
-    Machine Observations only include satellite telemetry records of
-    humpback whales. Observations are reported when tagged whales when
-    they come to the surface to breathe, and are aggregated within a
-    1-degree cell. There are currently no Machine Observation records
-    for fish or invertebrate species in this region.
+Observations may also be listed as MachineObservation, which are derived from machine or computer-based detections such as automated sensors (e.g., DNA sequencers), acoustic tagging, or image recognition. Currently, there are no MachineObservation records for fish or invertebrate species in this region.
 
 #### iNaturalist data
 

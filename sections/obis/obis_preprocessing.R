@@ -1,6 +1,6 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
-
+library(robis)
 source(here::here("config.R"))
 
 
@@ -27,13 +27,15 @@ occurrenceNS = occurrence(scientificname=listed_species$`Scientific Name`,
 # This is due to the way the information is stored in OBIS (known as the Darwin Core Standard)
 datasetNS = dataset(datasetid = unique(occurrenceNS$dataset_id))
 
+# add dates to citations:
+citDate <- as.character(Sys.Date())
+# Vertical bar: | in gsub strings gets treated as an OR clause:
+datasetNS$citation <- gsub("INSERT DATE|yyyy-mm-dd|Access date", citDate, datasetNS$citation)
+
 ##############################################################################################################################
 ## Prepare and combine data into appropriate format
 
-# Want lat/lon data to be written in Well-Known Text (WKT) format
-# Most of the footprintWKT column is already in the correct WKT format
-# Some point data have NAs. These need to be replaced. They should begin with "POINT(" 
-# and close with ")". I don't know why POINT data have one bracket, but POLYLINES have two
+# Replace NA geometries with WKT:
 occurrenceNS$updateFootprint = ifelse(is.na(occurrenceNS$footprintWKT)=="TRUE",
                                       paste0("POINT(",paste(occurrenceNS$decimalLatitude, occurrenceNS$decimalLongitude),")"),
                                       occurrenceNS$footprintWKT)
@@ -58,10 +60,6 @@ obis_df = dplyr::select(comboDataNS.remove, scientificName, "Common Name",
                    basisOfRecord, flags, eventDate, 
                    basisOfRecord, shoredistance, decimalLatitude, 
                    decimalLongitude)
-
-# Separate out the Machine Observations records for making tables/figures
-machineobs = subset(alldataNS, basisOfRecord=="MachineObservation")
-everythingelse = subset(alldataNS, basisOfRecord!="MachineObservation") # exclude machine observation records
 
 # Things I still need to do:
 # Separate fish/invertebrates from cetaceans (this should also remove sea turtle records)
