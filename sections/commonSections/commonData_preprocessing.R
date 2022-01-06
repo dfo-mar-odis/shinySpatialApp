@@ -28,8 +28,6 @@ listed_species <- listed_species %>% rename("SARA status" = Schedule.status,
                                             "COMMONNAME" = Common_Name_upper,
                                             "Scientific Name" = Scientific_Name,
                                             "Common Name" = Common_Name)
-listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
-listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "Non-active" & listed_species$`SARA status` == "No Status"), ]
 row.names(listed_species) <- NULL
 
 # Cetacean legend file

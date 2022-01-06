@@ -81,6 +81,9 @@ gbif_df = dplyr::select(gbif_df, "Scientific Name", "Common Name", COSEWIC.popul
                         basisOfRecord, eventDate, coordinateUncertaintyInMeters,
                         decimalLatitude, decimalLongitude)
 
+names(gbif_df)[names(gbif_df) == 'url'] <- 'URL'
+names(gbif_df)[names(gbif_df) == 'citation'] <- 'Citation'
+
 # Separate out the iNaturalist records and the Machine Observations records for making tables/figures
 machineobs = subset(gbif_df, basisOfRecord == "MACHINE_OBSERVATION")
 everythingelse = subset(gbif_df, title != "iNaturalist Research-grade Observations" & # exclude iNaturalist data

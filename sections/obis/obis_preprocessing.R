@@ -3,8 +3,6 @@ source(here::here("app/R/dataFunctions.R"))
 library(robis)
 source(here::here("config.R"))
 
-
-
 loadResult <- load_rdata(c("CommonData", "obisCet_rr", "obisFish_rr"), regionStr)
 
 #-------------------OBIS-------------------
@@ -60,6 +58,10 @@ obis_df = dplyr::select(comboDataNS.remove, scientificName, "Common Name",
                    basisOfRecord, flags, eventDate, 
                    basisOfRecord, shoredistance, decimalLatitude, 
                    decimalLongitude)
+
+names(obis_df)[names(obis_df) == 'url'] <- 'URL'
+names(obis_df)[names(obis_df) == 'citation'] <- 'Citation'
+
 
 # Things I still need to do:
 # Separate fish/invertebrates from cetaceans (this should also remove sea turtle records)

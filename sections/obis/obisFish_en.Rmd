@@ -13,33 +13,14 @@ if (FALSE) { #load in data:
 }
 ```
 
-### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
 
-```{r obis-load, include=FALSE}
-load_rdata(c("obisFish_rr"), regionStr, env = environment())
+```{r obis-gbif-load, include=FALSE}
+load_rdata(c("obisFish_rr", "gbifFish_rr"), regionStr, env = environment())
 ```
 
-```{r obis-meta, results='asis'}
-write_meta(obisFish_rr, "EN")
-```
-
-OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open-access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS accepts data from any organization, consortium, project or individual who wishes to contribute data (OBIS, 2021). As of December 2021, OBIS has over 80 million species occurrence records and over 4,300 datasets globally.
-
-
-### **Global Biodiversity Information Facility (GBIF)** {#gbif-fish-section}
-
-```{r gbif-load, include=FALSE}
-load_rdata(c("gbifFish_rr"), regionStr, env = environment())
-```
-
-```{r gbif-meta, results='asis'}
-write_meta(gbifFish_rr, "EN")
-```
-
-GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth (GBIF, 2021). Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of December 2021, GBIF has over 1.9 billion species occurrence records and over 63,000 datasets globally. 
-
-```{r child = here::here("sections/obis/obisCommon_en.Rmd")}
-
+```{r child = here::here("sections/obis/obisCommon_en.Rmd"), eval=!exists('commonObis')}
+# chunk will only run if commonObis variable does not exist.
+assign('commonObis', TRUE, envir = globalenv())
 ```
 
 #### ***Area-specific OBIS fish and invertebrate search results***
@@ -47,7 +28,7 @@ GBIF is an international network and data infrastructure funded by the world's g
 ```{r obis-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(obisFish_rr$data_sf, mapDataList, Year = minYear)
 
-obisTable <- create_sar_tables(outputList$studyData, listed_species, extraCols = c("url", "citation"))$sarData
+obisTable <- create_sar_tables(outputList$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", obisTable, "Common Name", "Common Name")
 ```
 
@@ -79,11 +60,11 @@ if (!is.null(outputList$studyData)) {
 ```{r gbif-results, cache=FALSE, include=FALSE}
 inaturalist_sf = subset(gbifFish_rr$data_sf, title == "iNaturalist Research-grade Observations")
 inaturalistClipped <- master_intersect(inaturalist_sf, mapDataList)
-inaturalistTable <- create_sar_tables(inaturalistClipped$studyData, listed_species, extraCols = c("url", "citation"))$sarData
+inaturalistTable <- create_sar_tables(inaturalistClipped$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
 
 otherGbif_sf = subset(gbifFish_rr$data_sf, title != "iNaturalist Research-grade Observations")
 gbifClipped <- master_intersect(otherGbif_sf, mapDataList)
-gbifTable <- create_sar_tables(gbifClipped$studyData, listed_species, extraCols = c("url", "citation"))$sarData
+gbifTable <- create_sar_tables(gbifClipped$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
 
 
 # Add to summary tables!
