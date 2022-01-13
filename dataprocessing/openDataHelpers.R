@@ -313,7 +313,7 @@ gen_checkdate_csv <- function() {
   dataSetDf <- data.frame("rrStr" = c("ebsa_rr", "crithab_rr", "sardist_rr", 
                                       "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
                                       "rv_rr", "pasBay_rr"))
-  load_rdata(dataSetDf$rrStr,  "MAR")
+  load_rdata(dataSetDf$rrStr,  regionStr)
   dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
   dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
   dataSetDf$AccessedDate <- lapply(lapply(dataSetDf$rr, "[[", "metadata"),
@@ -357,7 +357,7 @@ date_from_pkg <- function(pkgId) {
 # create the open data data csv file
 gen_checkdate_csv <- function() {
   dataSetDf <- rr_openDataList
-  load_rdata(dataSetDf$rrStr,  "MAR")
+  load_rdata(dataSetDf$rrStr,  regionStr)
   dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
   dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
   dataSetDf$AccessedDate <- lapply(lapply(dataSetDf$rr, "[[", "metadata"),
