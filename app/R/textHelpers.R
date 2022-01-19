@@ -1,3 +1,10 @@
+
+######### WRITE META ##############
+# Function writes a blurb based on the metadata of an rr object.
+# Typically used at the start of each subsection in the reports
+# Inputs:
+# rr: An rr object
+# lang: EN or FR used to the set the language of the blurb.
 write_meta <- function(rr, lang) {
   metadata <- rr$metadata
   outText <- ""
@@ -27,7 +34,14 @@ write_meta <- function(rr, lang) {
   outText <- outText[!is.na(outText)]
   writeLines(noquote(outText), sep="  \n")
 }
-  
+
+
+
+######## WRITE CAPTION BLURB ############  
+# Used to output a blurb containing the information used in figure and table captions.
+# Inputs:
+# rr: An rr object
+# lang: EN or FR used to the set the language of the blurb.
 write_caption_blurb <- function(rr, lang) {
   metadata <- rr$metadata
   outText <- ""

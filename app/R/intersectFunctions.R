@@ -6,20 +6,22 @@
 #
 # Written by Philip Greyson for Reproducible Reporting project, May/2021
 
-##### - master_intersect function ##################################
-# This function clips various data sources (e.g. MARFIS, ISDB, etc.)
-# to the extent of the studyArea and the map bounding box.
-# The map bounding box is created by the area_map() function
+###### master_intersect function ##################################
+# This function clips input data to the two relevant areas needed 
+# in the reports: the extents of the Study Area (for analysis) and 
+# the Map Area (for plotting).
+# The Map and Study Area geometries are contained in the mapDataList object.
 #
 # Inputs:
 # 1. data_sf: an input polygon vector file
 # 2. mapDataList: list output from maps_setup, contains needed study area info
-# 3. getRegion: If false, region data will not be calculated which speeds up runtime.
+# 3. getRegion: If True, the data will also be clipped to the region.
 #
 # Outputs: list containing 4 items
 # 1. studyData: the full dataset from clipping data_sf by the studyArea
 # 2. mapData: the full dataset from clipping data_sf by the Bounding box
-# 3. regionData: the full dataset from clipping data_sf by the region
+# 3. regionData: the full dataset from clipping data_sf by the region,
+#                NULL unless getRegion is TRUE.
 # 4. mapPoints: Unique collection of points to be plotted on a map.
 master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
 

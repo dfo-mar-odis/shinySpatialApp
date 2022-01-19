@@ -12,7 +12,9 @@ source(here::here("config.R"))
 loadResult <- load_rdata(c("CommonData", "template_rr"), regionStr)
 
 # ---------------------TEMPLATE-----------------------------------
+# LOADING AND PROCESSING CODE HERE
 
+# rr object structure:
 template_rr <- list("title" = "Template Title","data_sf" = "an sf object",
               "attribute" = "Column to plot, or NONE",
               "metadata" = list("contact" = email_format("email@email.com"), 

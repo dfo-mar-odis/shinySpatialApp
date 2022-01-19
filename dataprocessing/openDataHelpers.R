@@ -1,11 +1,11 @@
 install.packages("ckanr") #you need to install the packages every time since it is a fresh container
-
 library(ckanr)
+ckanr_setup(url="https://open.canada.ca/data")
+
 library(sf)
 source(here::here("config.R"))
 source(here::here("app/R/helpers.R"))
 source(here::here("app/R/dataFunctions.R"))
-ckanr_setup(url="https://open.canada.ca/data")
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
@@ -21,7 +21,7 @@ protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 # Inputs:
 # 1. pkgId: Id string of the open data package to retrieve, used to rab metadata and text
 # 2. resId: Id string of the specific open data resource containing the spatial data
-# 3. Additional parameters passed to get_opendata_sf
+# 3. Additional parameters passed to get_opendata_sf indicating file type
 # 4. checkDate: optional parameter to check if opendata resource has been updated
 #
 # Outputs:
@@ -292,71 +292,11 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
 
 # ---------------GIT ACTION FUNCTIONS----------------
 
-check_for_open_data_updates <- function() {
-  openDataData <- read.csv(here::here("dataprocessing/openDataData.csv"))
-  
-  openDataData$checkDate <- as.numeric(strftime(
-    strptime(openDataData$Accessed.Date, "%Y-%m-%d"), "%Y%m%d"))
-  openDataData$pkgDate <- lapply(openDataData$Package.Id, date_from_pkg)
-  
-  if (any(openDataData$pkgDate > openDataData$checkDate)) {
-    updatePkgs <- filter(openDataData, pkgDate > checkDate)
-    updatePkgs$msg <- paste("Update", updatePkgs$rr.Name, 
-                            "object from opendata record:", updatePkgs$Title, 
-                            "  \n\n")
-    warning(updatePkgs$msg)
-  }
-}
-
 # create the open data data csv file
 gen_checkdate_csv <- function() {
   dataSetDf <- data.frame("rrStr" = c("ebsa_rr", "crithab_rr", "sardist_rr", 
                                       "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
                                       "rv_rr", "pasBay_rr"))
-  load_rdata(dataSetDf$rrStr,  regionStr)
-  dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
-  dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
-  dataSetDf$AccessedDate <- lapply(lapply(dataSetDf$rr, "[[", "metadata"),
-                                   "[[", "accessedDate")
-  dataSetDf$title <- lapply(lapply(dataSetDf$rr, "[[", "title"),
-                            "[[", "en")
-  csvDf <- dplyr::select(dataSetDf, c("title", "rrStr", "pkgId", "AccessedDate"))
-  csvDf$AccessedDate <- lapply(csvDf$AccessedDate, strftime, "%Y-%m-%d")
-  names(csvDf) <- c("Title", "rr Name", "Package Id", "Accessed Date")
-  csvDf <- apply(csvDf, 2, as.character)
-  write.csv(csvDf, here::here("dataprocessing/openDataData.csv"), row.names = FALSE)
-}
-
-# helper function to extract package ids from open data rr objects
-pkg_id_from_url <- function(rr) {
-  if ("url" %in% names(rr$metadata)) {
-    pkgId <- sub("<https://open.canada.ca/data/en/dataset/", "", rr$metadata$url$en)
-    pkgId <- sub(">", "", pkgId)
-    return(pkgId)
-  }
-}
-
-
-# get update date from package
-date_from_pkg <- function(pkgId) {
-  opendataPKG <- package_show(pkgId)
-  pkgTime <- NULL
-  if ("date_modified" %in% names(opendataPKG)) {
-    pkgTime <- strptime(opendataPKG$date_modified, "%Y-%m-%d %H:%M:%S")  
-    pkgTime <- as.numeric(strftime(pkgTime, "%Y%m%d"))
-  } else if ("metadata_modified" %in% names(opendataPKG)) {
-    pkgTime <- strptime(opendataPKG$metadata_modified, "%Y-%m-%dT%H:%M:%S")  
-    pkgTime <- as.numeric(strftime(pkgTime, "%Y%m%d"))
-    
-  }
-  return(pkgTime)
-}
-
-
-# -------------GIT ACTION FUNCTIONS ----------------
-# create the open data data csv file
-gen_checkdate_csv <- function() {
-  dataSetDf <- rr_openDataList
   load_rdata(dataSetDf$rrStr,  regionStr)
   dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
   dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)

@@ -16,7 +16,7 @@ rv_rr$metadata$contact <- email_format("DFO.MAR-PED-Data-Request-Demande-de-donn
 rv_rr$metadata$qualityTier <- highQuality
 
 rvCsvList <- c("GSCAT.csv", "GSINF.csv", "GSSPECIES.csv")
-minYear <- 2010
+minYear <- rrMinYear
 # 4VSW
 fourVSWResId <- "ca308c48-2a87-4dcb-a4ba-90297b853635"
 fourVSWDfs <- download_extract_res_files(fourVSWResId, rvCsvList)
@@ -41,7 +41,7 @@ summer_sf$surveyType <- "Fall"
 rv_sf <- rbind(fourVSW_sf, spring_sf, summer_sf, fall_sf)
 rv_sf <- sf::st_crop(rv_sf, region_sf)
 rv_rr$data_sf <- rv_sf
-rv_rr$metadata$searchYears <- "2010-2020"
+rv_rr$metadata$searchYears <- paste(rrMinYear, "-2020", sep="")
 save(rv_rr, file = file.path(localFileSavePath, "Open/rv_rr.RData"))
 
 

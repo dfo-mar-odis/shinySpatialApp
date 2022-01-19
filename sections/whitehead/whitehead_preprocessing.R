@@ -11,7 +11,7 @@ loadResult <- load_rdata(c("CommonData", "whitehead_rr"), regionStr)
 # Whitehead lab
 whitehead <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/Whitehead_Lab/whitehead_lab.csv"), stringsAsFactors = FALSE)
 whitehead$YEAR <- lubridate::year(whitehead$Date)
-whitehead <- whitehead %>% dplyr::filter(YEAR >= 2010)
+whitehead <- whitehead %>% dplyr::filter(YEAR >= rrMinYear)
 whitehead <- whitehead %>% rename("Scientific Name"= species.name)
 whitehead <- merge(whitehead, cetLegend, by='Scientific Name')
 whitehead <- dplyr::select(whitehead, 'Scientific Name', YEAR, Legend, Lat, Long)
@@ -27,7 +27,7 @@ whitehead_rr <- list("title" = "Whitehead lab (Dalhousie University)",
                                        "url" = lang_list("<https://whiteheadlab.weebly.com/contact.html>"),
                                        "accessedOnStr" = list("en" ="January 12 2021  by Laura Feyrer", "fr" = "12 janvier 2021 par Laura Feyrer  ") ,
                                        "accessDate" = as.Date("2021-01-12"),
-                                       "searchYears" = "2010-2019",
+                                       "searchYears" = paste(rrMinYear, "-2019", sep=""),
                                        "securityLevel" = noneList,
                                        "qualityTier" = highQuality,
                                        "constraints" = internalUse

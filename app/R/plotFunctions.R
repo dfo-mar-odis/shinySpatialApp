@@ -1,15 +1,14 @@
 # --------------PLOT RR SF-----------------
-# Function for plotting sf data for the reproducible report.
+# Common function for plotting sf data for the reproducible report.
 #
 # Inputs:
-# 1. baseMap = map object, either areaMap or regionMap
+# 1. baseMap: map object that data will be added ontop of, either areaMap or regionMap
 # 2. data_sf: sf data to be plotted, can contain either point or polygon data
 #    (ideally, pre-clipped to map area with the master_intersect function, using bboxMap, or regionBox)
-# 3. Additional parameters passed to plot_points or plot_polygons depending on geometry type
+# 3. Additional parameters passed to subfunctions depending on geometry type
 #
 # Outputs:
-# Outputs of plot_points or plot_polygons
-# Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
+# outplot: plot of the data
 
 plot_rr_sf <- function(baseMap, data_sf, ...) {
   
@@ -206,14 +205,6 @@ plot_points <- function(baseMap, data_sf, attribute="NONE", legendName="",
 #              values should be color codes.  eg. WhaleCol.
 # 7. getColorMap: TRUE/FALSE flag.  If True, plot_polygons will return a named list including the color mapping
 #                 used which can be used to match colors between plots.  
-# 
-# Examples of use:
-#
-#   To plot on region map: plot_polygons(regionMap, regionBox, studyBox_geom, data$regionPoly, attribute="NONE")
-#                          (only parameters to change are data$regionPoly and attribute)
-#
-#   To plot area map: plot_polygons(areaMap, bboxMap, studyBox_geom, data$regionPoly, attribute="NONE")
-#                          (only parameters to change are data$regionPoly and attribute)
 #
 # Created by Gordana Lazin, July 2, 2021 for reproducible reporting project
 
@@ -317,8 +308,6 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
 # 2. data_sf: sf data to be plotted 
 #    (ideally, pre-clipped to map area with the master_intersect function, using bboxMap, or regionBox)
 # 
-# Created by Quentin Stoyel, October 28, 2021 for reproducible reporting project
-
 plot_lines <- function(baseMap, data_sf, ...) {
   
   # extract scaleBar layer to ensure it plots over polygons/study area box
@@ -452,7 +441,6 @@ plot_cetaceans_4grid<-function(finWhale_sf, harbourPorpoise_sf,
 # 7. regionBox, bounding box of the region
 # 8. regionMap, map of the study region, used as a base map for plots in the report
 #
-# Written by Quentin Stoyel for reproducible reporting project, September 2, 2021
 
 maps_setup <- function(studyArea, region, areaLandLayer, regionLandLayer, CANborder){
   site <- sf::st_centroid(studyArea)
@@ -503,8 +491,6 @@ maps_setup <- function(studyArea, region, areaLandLayer, regionLandLayer, CANbor
 # 1. map, that can be used as a basemap for adding data layers
 # 2. bounding box of the map that can be used for cropping datasets
 #
-# Written by Gordana Lazin for reproducible reporting project, April 12, 2021
-# ggplot map developed by Greg Puncher, winter/spring 2021
 
 area_map <- function(studyArea, landLayer, bufKm, CANborder, studyBoxGeom) {
   site <- sf::st_centroid(studyArea)
@@ -563,10 +549,6 @@ area_map <- function(studyArea, landLayer, bufKm, CANborder, studyBoxGeom) {
 # 
 # Output: map, that can be used as a basemap for adding data layers
 # 
-# Modified by Gordana Lazin, June 29, 2021
-# Written by Philip Greyson for reproducible reporting project, June 17, 2021
-#   (modified from area_map)
-# ggplot map developed by Greg Puncher, winter/spring 2021
 
 region_map <- function(regionBbox, studyArea, landLayer, CANborder) {
   
