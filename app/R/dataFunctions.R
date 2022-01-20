@@ -41,6 +41,13 @@ copy_rdata_files <- function() {
 
 # ----------------load_rdata----------------
 # loads an rdata object from the data dir into the environment
+# searches in app/data/"regionStr" based on the input regionStr.
+# Will raise a warning if the file is not found, but otherwise will not produce 
+# an output.
+# inputs: 
+# rdataNames: list of string names of data to load
+# regionStr: string defining the directory to search in, 
+#            typically set and used from the config file.
 load_rdata <- function(rdataNames, regionStr, env=globalenv()){
   regionDir <- here::here("app/data", regionStr)
   lapply(rdataNames, find_and_load, regionDir = regionDir, env = env)
@@ -64,6 +71,8 @@ find_and_load <- function(rdataStr, regionDir, env=globalenv()){
 }
 
 # ------------intro_setup----------------
+# Loads common data needed for the report into the passed environment
+# and initializes the base maps and summary tables for the report.
 intro_setup <- function(studyArea, env=globalenv(), regionStr) {
 
   copy_rdata_files() # make sure data files are up to date.
@@ -71,7 +80,7 @@ intro_setup <- function(studyArea, env=globalenv(), regionStr) {
   load_rdata(c("CommonData"), regionStr, env = env)
   load_rdata(c("CommonData"), regionStr, env = environment())
 
-  minYear <- 2010
+  minYear <- rrMinYear
   site <- sf::st_centroid(studyArea)
   mapDataList <- maps_setup(studyArea, region_sf, land50k_sf, land10m_sf, bounds_sf)
   
