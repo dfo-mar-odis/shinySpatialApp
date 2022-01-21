@@ -27,8 +27,7 @@ cat('### **Ocean Biodiversity Information System and Global Biodiversity Informa
 ```
 
 ```{r child = here::here("sections/obis/obisCommon_en.Rmd"), eval=!exists('commonObis')}
-# chunk will only run if commonObis variable does not exist.
-assign('commonObis', TRUE, envir = globalenv())
+# chunk will only run if commonObis variable does not exist, set in commonObis.rmd.
 ```
 
 #### ***Area-specific OBIS cetacean search results***

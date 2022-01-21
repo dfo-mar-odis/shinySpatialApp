@@ -12,6 +12,8 @@ editor_options:
 ### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
 
 ```{r obis-load, include=FALSE}
+# prevent furture common obis sections from running
+assign('commonObis', TRUE, envir = globalenv()) 
 load_rdata(c("obisFish_rr"), regionStr, env = environment())
 ```
 

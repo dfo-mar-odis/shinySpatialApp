@@ -19,8 +19,7 @@ load_rdata(c("obisFish_rr", "gbifFish_rr"), regionStr, env = environment())
 ```
 
 ```{r child = here::here("sections/obis/obisCommon_en.Rmd"), eval=!exists('commonObis')}
-# chunk will only run if commonObis variable does not exist.
-assign('commonObis', TRUE, envir = globalenv())
+# chunk will only run if commonObis variable does not exist, set in common obis.
 ```
 
 #### ***Area-specific OBIS fish and invertebrate search results***
