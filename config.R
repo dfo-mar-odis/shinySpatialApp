@@ -1,4 +1,4 @@
-regionStr <- "MAR"
+regionStr <- "QC"
 rrMinYear <- 2010
 
 # Dir where the remote RData files are stored

@@ -6,6 +6,9 @@ loadResult <- load_rdata(c("CommonData"), regionStr)
 
 # ----------------COMMON DATA-------------
 region_sf <- st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBound/geoms_slc_MarBioRegion.geojson"))
+if (regionStr == "QC") {
+  region_sf <- st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBound/geoms_slc_MarBioRegion.geojson"))
+}
 land10m_sf <- st_read(file.path(fileLoadPath, "Boundaries/Landmass/ne_10m_land_Clip.shp"), stringsAsFactors = FALSE)
 #remove State and Province column from land10m
 land10m_sf <- land10m_sf[-c(2)]
@@ -49,3 +52,4 @@ cetLegend <- data.frame("Scientific_Name" = c("Delphinapterus leucas","Balaenopt
 cetLegend <- dplyr::rename(cetLegend,c("Scientific Name" = "Scientific_Name"))
 
 save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, file = file.path(localFileSavePath, "CommonData.RData"))
+
