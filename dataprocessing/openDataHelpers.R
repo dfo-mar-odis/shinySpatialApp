@@ -63,6 +63,8 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile
   accessedDate$fr <-paste(strftime(today(), "%B %d, %Y"), "sur le Portail de données ouvertes")
   Sys.setlocale(locale = "English")
   accessedDate$en <- paste(strftime(today(), "%B %d, %Y"), "from Open Data")
+  # reset locale to default:
+  Sys.setlocale(locale="")
   
   out_rr <- list("title" = pkgTitle,
                  "text" = pkgText,
