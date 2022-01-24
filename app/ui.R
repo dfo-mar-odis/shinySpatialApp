@@ -145,7 +145,7 @@ ui <- fluidPage(
 
         # REPORT
         tabPanel(
-          "Report",
+          "Full report",
           icon = icon("book"),
           myhelptxt("This tab allows you to customize and generate your report."),
 
@@ -159,10 +159,11 @@ ui <- fluidPage(
                 choiceNames = c(
                   "National Aquatic Species at Risk Program",
                   "Fish and Invertebrates",
-                  "Cetaceans"
+                  "Cetaceans", 
+                  "Aquatic Invasive Species"
                 ),
-                selected = 1:3,
-                choiceValues = 1:3,
+                selected = 1:4,
+                choiceValues = 1:4,
               ),
               checkboxGroupInput("extra_sections",
                 label = "Context",
@@ -171,6 +172,16 @@ ui <- fluidPage(
                   "Habitat"
                 ),
                 choiceValues = 1:2,
+              ),
+              checkboxGroupInput("extra_sections",
+                label = "Human threats",
+                choiceNames = c(
+                  "Fishing",
+                  "Shipping",
+                  "Miscellaneous",
+                  "Cumulative impact mapping"
+                ),
+                choiceValues = 1:4,
               ),
 
             ),
@@ -205,8 +216,21 @@ ui <- fluidPage(
               downloadButton("dl_outputs", "Download outputs")
             )
             )
+          ),
+          
+          tabPanel(
+            "Customized reports",
+            icon = icon("book"),
+            myhelptxt("This tab allows you to customize and generate your report.")
+            
           )
+          
+          
         ),
+        
+        
+        
+        
 
         hr(),
         # FOOTER 
