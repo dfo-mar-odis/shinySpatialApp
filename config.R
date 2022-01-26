@@ -1,4 +1,5 @@
 regionStr <- "MAR"
+rrMinYear <- 2010
 
 # Dir where the remote RData files are stored
 remoteFileSavePath <- file.path("//ent.dfo-mpo.ca","ATLShares", "Science", "BIODataSvc", 

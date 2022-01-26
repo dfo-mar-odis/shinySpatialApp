@@ -9,9 +9,10 @@ R Shiny App to select search area(s) and generate reproducible reports (R Markdo
 ## Installation
 
 ## Set up Revn:
-Make sure that [RTools](https://cran.r-project.org/bin/windows/Rtools/) is installed.  
 
-```r
+Make sure that [RTools](https://cran.r-project.org/bin/windows/Rtools/) is installed.
+
+``` r
 install.packages("devtools")
 install.packages("renv")
 renv::activate()
@@ -54,12 +55,16 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 
 ## Repo structure
 
+-   `config.R` contains key configuration parameters, including the region, file paths, and the list of Open Data records checked by the github action;
 -   `app` includes all the files needed to run the application;
 -   `app/www` includes image (e.g. logos), the `.css` file, and report preview once generated;
+-   `app/data` contains the local versions of all data used in running the application.
 -   `app/R` includes the R files to be loaded (it loads packages and functions);
--   `app/Rmd` includes all the `.Rmd` files needed to generate the report(s);
--   `app/output` includes all outputs once generated: selected geometries as a `.geojson` and the report in all format (the different section are also added).
--   `dataprocessing` contains all of the preprocessing scripts to prepare data for use in the application.
+-   `app/Rmd` includes the base `.Rmd` files for each report section;
+-   `app/output` includes all outputs once generated: selected geometries as a `.geojson` and the report in all format (the different section are also added);
+-   `dataprocessing` contains the common preprocessing functions to prepare data for use in the application, as well as the scripts used in github actions;
+-   `sections` includes the rmarkdown and preprocessing script for each subsection of the report;
+-   `sections/template` contains a simple template with basic functionality;
 -   `tests/testthat` contains the unit test scripts that are run when test_local() is called.
 
 # **Collaborative Workflow**

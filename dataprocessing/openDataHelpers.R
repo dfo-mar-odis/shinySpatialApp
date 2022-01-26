@@ -1,11 +1,11 @@
 install.packages("ckanr") #you need to install the packages every time since it is a fresh container
-
 library(ckanr)
+ckanr_setup(url="https://open.canada.ca/data")
+
 library(sf)
 source(here::here("config.R"))
 source(here::here("app/R/helpers.R"))
 source(here::here("app/R/dataFunctions.R"))
-ckanr_setup(url="https://open.canada.ca/data")
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
@@ -22,12 +22,12 @@ protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 # Inputs:
 # 1. pkgId: Id string of the open data package to retrieve, used to rab metadata and text
 # 2. resId: Id string of the specific open data resource containing the spatial data
-# 3. Additional parameters passed to get_opendata_sf
+# 3. Additional parameters passed to get_opendata_sf indicating file type
 # 4. checkDate: optional parameter to check if opendata resource has been updated
 #
 # Outputs:
 # 1 .out_rr: output rr object containing spatial data and metadata
-get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
+get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
   opendataPKG <- package_show(pkgId)
   
   # check if package has been updated since checkdate
@@ -64,6 +64,8 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile
   accessedDate$fr <-paste(strftime(today(), "%B %d, %Y"), "sur le Portail de données ouvertes")
   Sys.setlocale(locale = "English")
   accessedDate$en <- paste(strftime(today(), "%B %d, %Y"), "from Open Data")
+  # reset locale to default:
+  Sys.setlocale(locale="")
   
   out_rr <- list("title" = pkgTitle,
                  "text" = pkgText,
@@ -99,12 +101,14 @@ get_opendata_sf <- function(resId, ...) {
 
 
 # --------------download_extract_validate_sf-----------------
-# Function that downloads a zip file, extracts it, loads an sf and cleans the sf
+# Function that downloads and processes a file into an sf object
 #
 # Inputs:
-# 1. zipUrl: Id string of the specific open data resource containing the spatial data
+# 1. zipUrl: URL string of zipped file containing the spatial data
 # 2. region_sf: Sf object to crop the output sf too
-# 2. Additional parameters: used to specify spatial data file type
+# 3. gdbLayer: if the file is a geodatabase, name of the layer to be read
+# 4. tifFile: if the unzipped files are Tifs, name of the file to be used
+# 5. returnRaster: if False, rasters will be converted into vector files
 #
 # Outputs:
 # 1 .out_sf: output sf object containing spatial data
@@ -162,11 +166,11 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
 
 
 # --------------download_extract_res_file-----------------
-# Function that downloads a zip file of csvs, extracts it and reads the csv.
+# Function that downloads a zip file of csvs from open data, extracts it and reads the csv.
 #
 # Inputs:
 # 1. resId: Id string of the specific open data resource containing the data
-# 2. csvFileList: names of the csv file to extract from the zip file
+# 2. csvFileList: names of the csv files to extract from the zip file
 #
 # Outputs:
 # 1  dfList: list of dfs, one for each csv file in csvFileList
@@ -293,72 +297,12 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
 
 # ---------------GIT ACTION FUNCTIONS----------------
 
-check_for_open_data_updates <- function() {
-  openDataData <- read.csv(here::here("dataprocessing/openDataData.csv"))
-  
-  openDataData$checkDate <- as.numeric(strftime(
-    strptime(openDataData$Accessed.Date, "%Y-%m-%d"), "%Y%m%d"))
-  openDataData$pkgDate <- lapply(openDataData$Package.Id, date_from_pkg)
-  
-  if (any(openDataData$pkgDate > openDataData$checkDate)) {
-    updatePkgs <- filter(openDataData, pkgDate > checkDate)
-    updatePkgs$msg <- paste("Update", updatePkgs$rr.Name, 
-                            "object from opendata record:", updatePkgs$Title, 
-                            "  \n\n")
-    warning(updatePkgs$msg)
-  }
-}
-
 # create the open data data csv file
 gen_checkdate_csv <- function() {
   dataSetDf <- data.frame("rrStr" = c("ebsa_rr", "crithab_rr", "sardist_rr", 
                                       "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
                                       "rv_rr", "pasBay_rr"))
-  load_rdata(dataSetDf$rrStr,  "MAR")
-  dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
-  dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
-  dataSetDf$AccessedDate <- lapply(lapply(dataSetDf$rr, "[[", "metadata"),
-                                   "[[", "accessedDate")
-  dataSetDf$title <- lapply(lapply(dataSetDf$rr, "[[", "title"),
-                            "[[", "en")
-  csvDf <- dplyr::select(dataSetDf, c("title", "rrStr", "pkgId", "AccessedDate"))
-  csvDf$AccessedDate <- lapply(csvDf$AccessedDate, strftime, "%Y-%m-%d")
-  names(csvDf) <- c("Title", "rr Name", "Package Id", "Accessed Date")
-  csvDf <- apply(csvDf, 2, as.character)
-  write.csv(csvDf, here::here("dataprocessing/openDataData.csv"), row.names = FALSE)
-}
-
-# helper function to extract package ids from open data rr objects
-pkg_id_from_url <- function(rr) {
-  if ("url" %in% names(rr$metadata)) {
-    pkgId <- sub("<https://open.canada.ca/data/en/dataset/", "", rr$metadata$url$en)
-    pkgId <- sub(">", "", pkgId)
-    return(pkgId)
-  }
-}
-
-
-# get update date from package
-date_from_pkg <- function(pkgId) {
-  opendataPKG <- package_show(pkgId)
-  pkgTime <- NULL
-  if ("date_modified" %in% names(opendataPKG)) {
-    pkgTime <- strptime(opendataPKG$date_modified, "%Y-%m-%d %H:%M:%S")  
-    pkgTime <- as.numeric(strftime(pkgTime, "%Y%m%d"))
-  } else if ("metadata_modified" %in% names(opendataPKG)) {
-    pkgTime <- strptime(opendataPKG$metadata_modified, "%Y-%m-%dT%H:%M:%S")  
-    pkgTime <- as.numeric(strftime(pkgTime, "%Y%m%d"))
-    
-  }
-  return(pkgTime)
-}
-
-
-# -------------GIT ACTION FUNCTIONS ----------------
-# create the open data data csv file
-gen_checkdate_csv <- function() {
-  dataSetDf <- rr_openDataList
-  load_rdata(dataSetDf$rrStr,  "MAR")
+  load_rdata(dataSetDf$rrStr,  regionStr)
   dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
   dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
   dataSetDf$AccessedDate <- lapply(lapply(dataSetDf$rr, "[[", "metadata"),
