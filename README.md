@@ -8,7 +8,7 @@ R Shiny App to select search area(s) and generate reproducible reports (R Markdo
 
 ## Installation
 
-## Set up Revn:
+## Set up `renv`:
 
 Make sure that [RTools](https://cran.r-project.org/bin/windows/Rtools/) is installed.
 
@@ -34,7 +34,7 @@ After adding a new package, commit the updated renv.lock file to source control.
 After making sure that you have the necessary permissions to access the data, run:
 
 ``` r
-source(here::here("app/R/CopyRData.R"))
+source(here::here("app/R/dataFunctions.R"))
 copy_rdata_files()
 ```
 
