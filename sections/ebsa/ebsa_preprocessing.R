@@ -17,8 +17,6 @@ openEbsa_rr <- get_opendata_rr(ebsaPkgId, ebsaResId, region_sf = region_sf,
                                checkDate = ebsaCheckDate)
 if(!is.null(openEbsa_rr)) {
   ebsa_rr <- openEbsa_rr
-  ebsa_rr$data_sf$Report_URL <- str_replace(ebsa_rr$data_sf$Report_URL,
-                                            ".pdf", ".html")
   ebsa_rr$metadata$qualityTier <- highQuality
   ebsa_rr$metadata$contact <- email_format("carissa.philippe\\@dfo-mpo.gc.ca")
   save(ebsa_rr, file = file.path(localFileSavePath, "Open/ebsa_rr.RData"))
