@@ -26,7 +26,7 @@ protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 #
 # Outputs:
 # 1 .out_rr: output rr object containing spatial data and metadata
-get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
+get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
   opendataPKG <- package_show(pkgId)
   
   # check if package has been updated since checkdate
@@ -63,6 +63,8 @@ get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile
   accessedDate$fr <-paste(strftime(today(), "%B %d, %Y"), "sur le Portail de données ouvertes")
   Sys.setlocale(locale = "English")
   accessedDate$en <- paste(strftime(today(), "%B %d, %Y"), "from Open Data")
+  # reset locale to default:
+  Sys.setlocale(locale="")
   
   out_rr <- list("title" = pkgTitle,
                  "text" = pkgText,
@@ -98,12 +100,14 @@ get_opendata_sf <- function(resId, ...) {
 
 
 # --------------download_extract_validate_sf-----------------
-# Function that downloads a zip file, extracts it, loads an sf and cleans the sf
+# Function that downloads and processes a file into an sf object
 #
 # Inputs:
-# 1. zipUrl: Id string of the specific open data resource containing the spatial data
+# 1. zipUrl: URL string of zipped file containing the spatial data
 # 2. region_sf: Sf object to crop the output sf too
-# 2. Additional parameters: used to specify spatial data file type
+# 3. gdbLayer: if the file is a geodatabase, name of the layer to be read
+# 4. tifFile: if the unzipped files are Tifs, name of the file to be used
+# 5. returnRaster: if False, rasters will be converted into vector files
 #
 # Outputs:
 # 1 .out_sf: output sf object containing spatial data
@@ -161,11 +165,11 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
 
 
 # --------------download_extract_res_file-----------------
-# Function that downloads a zip file of csvs, extracts it and reads the csv.
+# Function that downloads a zip file of csvs from open data, extracts it and reads the csv.
 #
 # Inputs:
 # 1. resId: Id string of the specific open data resource containing the data
-# 2. csvFileList: names of the csv file to extract from the zip file
+# 2. csvFileList: names of the csv files to extract from the zip file
 #
 # Outputs:
 # 1  dfList: list of dfs, one for each csv file in csvFileList
