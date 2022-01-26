@@ -26,7 +26,7 @@ protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 #
 # Outputs:
 # 1 .out_rr: output rr object containing spatial data and metadata
-get_opendata_rr <- function(pkgId, resId, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
+get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
   opendataPKG <- package_show(pkgId)
   
   # check if package has been updated since checkdate
@@ -165,7 +165,7 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
 
 
 # --------------download_extract_res_file-----------------
-# Function that downloads a zip file of csvs, extracts it and reads the csv.
+# Function that downloads a zip file of csvs from open data, extracts it and reads the csv.
 #
 # Inputs:
 # 1. resId: Id string of the specific open data resource containing the data
