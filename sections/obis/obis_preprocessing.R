@@ -94,7 +94,7 @@ save(obisCet_rr, file = file.path(localFileSavePath, "Open/obisCet_rr.RData"))
 
 obisFish_rr <- list("title" = "Ocean Biodiversity Information System (OBIS)",
                     "data_sf" = obisFish_sf,
-                    "attribute" = NULL,
+                    "attribute" = "NONE",
                     "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
                                       "url" = lang_list("<https://obis.org/>"),
                                       "accessedOnStr" = list("en" ="December 17 2021 using robis", 

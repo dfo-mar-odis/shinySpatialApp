@@ -115,7 +115,7 @@ save(gbifCet_rr, file = file.path(localFileSavePath, "Open/gbifCet_rr.RData"))
 
 gbifFish_rr <- list("title" = "Global Biodiversity Information Facility (GBIF)",
                 "data_sf" = gbifFish_sf,
-                "attribute" = NULL,
+                "attribute" = "NONE",
                 "metadata" = list("contact" = email_format("info@gbif.org"), 
                                    "url" = lang_list("<https://gbif.org/>"),
                                       "accessedOnStr" = list("en" ="December 17 2021 using rgbif", 
