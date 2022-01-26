@@ -3,7 +3,7 @@ source(here::here("config.R"))
 # function to make sure that the data dir for this region is set up
 data_dir_check <- function() {
   data_dir <- here::here("app/data/", regionStr)
-  dirList <- file.path(data_dir, c("open", "secure", "protected"))
+  dirList <- file.path(data_dir, c("Open", "Secure", "Protected"))
   # if dir already exists, this will fail silently
   output <- lapply(dirList, dir.create, showWarnings = FALSE)
   return()
