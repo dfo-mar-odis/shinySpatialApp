@@ -1,5 +1,16 @@
 source(here::here("config.R"))
 
+# function to make sure that the data dir for this region is set up
+data_dir_check <- function() {
+  data_dir <- here::here("app/data/", regionStr)
+  dirList <- file.path(data_dir, c("Open", "Secure", "Protected"))
+  # if dir already exists, this will fail silently
+  output <- lapply(dirList, dir.create, showWarnings = FALSE)
+  return()
+}
+# run this any time this file is sourced
+data_dir_check()
+
 # -----------------copy_rdata_files-------------
 # Function syncs local copy of here::here("app/data") with remote data dir
 # Inputs: None
