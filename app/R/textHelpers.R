@@ -10,7 +10,7 @@ write_meta <- function(rr, lang) {
   outText <- ""
   if (lang == "EN"){
     outText <- c(
-      paste("Contact:", metadata$contact),
+      paste("Contact:", lang_check(metadata$contact, lang)),
       ifelse("url" %in% names(metadata), paste("URL:", metadata$url$en), NA),
       paste("Last retrieved on:", metadata$accessedOnStr$en),
       ifelse("searchYears" %in% names(metadata), paste("Search Year:", metadata$searchYears), NA),
@@ -21,7 +21,7 @@ write_meta <- function(rr, lang) {
     )
   } else if (lang == "FR") {
     outText <- c(
-      paste("Personne-ressource:", metadata$contact),
+      paste("Personne-ressource:",lang_check(metadata$contact, lang)),
       ifelse("url" %in% names(metadata), paste("LIEN:", metadata$url$fr), NA),
       paste("Consulté le:", metadata$accessedOnStr$fr),
       ifelse("searchYears" %in% names(metadata), paste("Année de recherche:", metadata$searchYears), NA),
@@ -35,6 +35,14 @@ write_meta <- function(rr, lang) {
   writeLines(noquote(outText), sep="  \n")
 }
 
+
+lang_check <- function(metadata_arg, lang){
+  if (lang == "FR") {
+    return(ifelse(has_name(metadata_arg, "fr"), metadata_arg$fr, metadata_arg))
+  } else if (lang == "EN") {
+    return(ifelse(has_name(metadata_arg, "en"), metadata_arg$en, metadata_arg))
+  }
+}
 
 
 ######## WRITE CAPTION BLURB ############  
