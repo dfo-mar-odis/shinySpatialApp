@@ -71,7 +71,7 @@ find_and_load <- function(rdataStr, regionDir, env=globalenv()){
   fileName <- paste(rdataStr, ".RData", sep="")
   fileList <- list.files(regionDir, fileName, recursive=TRUE, full.names=TRUE, include.dirs=FALSE)
   if (length(fileList) == 1) {
-    load(fileList, envir = env)
+    base::load(fileList, envir = env)
   } else if(length(fileList) == 0) {
     errMessage <- paste("R data file", fileName, "not found in", regionDir, ".")
     warning(errMessage)
