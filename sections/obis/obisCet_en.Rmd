@@ -85,7 +85,7 @@ gbifTable <- create_sar_tables(gbifClipped$studyData, listed_species, extraCols 
 
 ```{r gbif-cetacean-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 reportGbif <-  if (is.null(gbifClipped$studyData)) {
-  "*	There are relevant records in the Global Biodiversity Information Facility (GBIF) for this search area."
+  "*	There no are relevant records in the Global Biodiversity Information Facility (GBIF) for this search area."
 } else if (is.null(inaturalistClipped$studyData)){
   "*	There are relevant records in the Global Biodiversity Information Facility (GBIF) for this search area."
 } else {
