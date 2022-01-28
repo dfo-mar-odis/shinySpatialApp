@@ -2,6 +2,8 @@ source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
 library(robis)
 source(here::here("config.R"))
+library(robis)
+library(rgbif)
 
 loadResult <- load_rdata(c("CommonData", "obisCet_rr", "obisFish_rr"), regionStr)
 

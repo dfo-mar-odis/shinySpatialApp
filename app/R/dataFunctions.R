@@ -1,10 +1,21 @@
 source(here::here("config.R"))
 
+# function to make sure that the data dir for this region is set up
+data_dir_check <- function() {
+  data_dir <- here::here("app/data/", regionStr)
+  dirList <- file.path(data_dir, c("Open", "Secure", "Protected"))
+  # if dir already exists, this will fail silently
+  output <- lapply(dirList, dir.create, showWarnings = FALSE)
+  return()
+}
+
 # -----------------copy_rdata_files-------------
 # Function syncs local copy of here::here("app/data") with remote data dir
 # Inputs: None
 # Outputs: confirmation that files are now up to date
 copy_rdata_files <- function() {
+  # make sure dirs are present:
+  data_dir_check()
   
   rDataDir <- dirname(remoteFileSavePath)
   # replace backslashes introduced by dirname:
@@ -49,6 +60,7 @@ copy_rdata_files <- function() {
 # regionStr: string defining the directory to search in, 
 #            typically set and used from the config file.
 load_rdata <- function(rdataNames, regionStr, env=globalenv()){
+  data_dir_check()
   regionDir <- here::here("app/data", regionStr)
   lapply(rdataNames, find_and_load, regionDir = regionDir, env = env)
   return(NULL)
@@ -60,7 +72,7 @@ find_and_load <- function(rdataStr, regionDir, env=globalenv()){
   fileName <- paste(rdataStr, ".RData", sep="")
   fileList <- list.files(regionDir, fileName, recursive=TRUE, full.names=TRUE, include.dirs=FALSE)
   if (length(fileList) == 1) {
-    load(fileList, envir = env)
+    base::load(fileList, envir = env)
   } else if(length(fileList) == 0) {
     errMessage <- paste("R data file", fileName, "not found in", regionDir, ".")
     warning(errMessage)
