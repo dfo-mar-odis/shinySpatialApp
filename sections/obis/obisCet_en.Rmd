@@ -23,7 +23,7 @@ load_rdata(c("obisCet_rr", "gbifCet_rr"), regionStr, env = environment())
 ```
 
 ```{r cet-short-obis, results = 'asis', eval=exists('commonObis')}
-cat('### **Ocean Biodiversity Information System and Global Biodiversity Information Facility** \n\n To avoid duplication of text, please refer to the overview for OBIS and GBIF provided in the Fish and Invertebrates section. ')
+cat('### **Ocean Biodiversity Information System and Global Biodiversity Information Facility** \n\n To avoid duplication of text, please refer to the overview for OBIS and GBIF provided in the Fish and Invertebrates section: [OBIS section](#OBIS-section). ')
 ```
 
 ```{r child = here::here("sections/obis/obisCommon_en.Rmd"), eval=!exists('commonObis')}
