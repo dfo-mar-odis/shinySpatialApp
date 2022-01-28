@@ -28,7 +28,6 @@ listed_species <- listed_species %>% rename("SARA status" = Schedule.status,
                                             "COMMONNAME" = Common_Name_upper,
                                             "Scientific Name" = Scientific_Name,
                                             "Common Name" = Common_Name)
-listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
 row.names(listed_species) <- NULL
 
 # Cetacean legend file
@@ -46,6 +45,15 @@ cetLegend <- data.frame("Scientific_Name" = c("Delphinapterus leucas","Balaenopt
                                      "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)")
 )
 
-cetLegend <- dplyr::rename(cetLegend,c("Scientific Name" = "Scientific_Name"))
+cetLegend <- dplyr::rename(cetLegend, c("Scientific Name" = "Scientific_Name"))
 
-save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, file = file.path(localFileSavePath, "CommonData.RData"))
+
+rr_otherSpecies <- data.frame("Common_Name" = c("LOGGERHEAD SEA TURTLE", "ATLANTIC WALRUS",
+                                          "HARBOUR SEAL LACS DES LOUPS MARINS SUBSPECIES", 
+                                          "LEATHERBACK SEA TURTLE"),
+                        "Scientific_Name" = c("Odobenus rosmarus  rosmarus", 
+                                              "Phoca vitulina mellonae", 
+                                              "Dermochelys coriacea",
+                                              "Caretta caretta"))
+
+save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, rr_otherSpecies, file = file.path(localFileSavePath, "CommonData.RData"))

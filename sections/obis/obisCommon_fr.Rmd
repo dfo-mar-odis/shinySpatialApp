@@ -1,0 +1,227 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
+
+```{r obis-load, include=FALSE}
+# prevent furture common obis sections from running
+assign('commonObis', TRUE, envir = globalenv()) 
+load_rdata(c("obisFish_rr"), regionStr, env = environment())
+```
+
+```{r obis-meta, results='asis'}
+write_meta(obisFish_rr, "FR")
+```
+
+OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open-access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS accepts data from any organization, consortium, project or individual who wishes to contribute data (OBIS, 2021). As of December 2021, OBIS has over 80 million species occurrence records and over 4,300 datasets globally.
+
+
+### **Global Biodiversity Information Facility (GBIF)** {#gbif-section}
+
+```{r gbif-load, include=FALSE}
+load_rdata(c("gbifFish_rr"), regionStr, env = environment())
+```
+
+```{r gbif-meta, results='asis'}
+write_meta(gbifFish_rr, "FR")
+```
+
+GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth (GBIF, 2021). Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of December 2021, GBIF has over 1.9 billion species occurrence records and over 63,000 datasets globally. 
+
+
+
+### Background descriptions for both OBIS and GBIF
+
+Both OBIS and GBIF are large online data portals, consisting of numerous
+datasets from multiple sources. Due to their many commonalities, the
+following descriptions and caveats are applicable to both and therefore
+written together.
+
+#### Data structure
+
+Data submitted to GBIF and OBIS must be formatted according to the
+Darwin Core, a body of standards outlining how to format biological data
+(<https://obis.org/manual/darwincore/> and
+<https://www.gbif.org/darwin-core>). These standards define which
+attributes (i.e., column names) are included when structuring the
+datasets, and describe how other supplemental information such as study
+design, associated environmental conditions (e.g., sea surface
+temperature), or biological characteristics (e.g., abundance, biomass,
+etc.) can be formatted and included. Due to these requirements, OBIS and
+GBIF are generally best suited for point data, although other vector
+formats (e.g., lines, polygons) can be uploaded. Because this report
+focuses on species presence, detailed information outlining the study
+design, environmental conditions, or biological characteristics are not
+included, but may be available for each dataset if required.
+
+OBIS and GBIF submissions also follow the Ecological Metadata Language
+format, a metadata standard for ecological data (more information here:
+<https://obis.org/manual/eml/>). This is created as an XML file for each
+dataset.
+
+For more detailed metadata including information such as the data
+collection date, survey methods, institution name, and license type,
+refer to the provided URL for each dataset.
+
+#### Disclaimers
+
+There are various issues involved with using data extracted from OBIS
+and GBIF, which are described below in more detail. Future iterations of
+this reporting tool will aim at expanding our quality checks to address
+these concerns. Because these portals contain data from many different
+sources, this is not an exhaustive list of all of the potential caveats
+of each data source. Users should refer to each source separately to
+review these concerns.
+
+#### Differing research objectives
+
+Each dataset within these portals was acquired to fulfill its own unique
+research objectives, and therefore may not be suitable for all
+applications. When data are viewed spatially, other factors that can
+affect the results including the study design, data collection methods,
+and collection date may not be immediately apparent. In particular, the
+absence of a species should be interpreted as an absence of reporting,
+not necessarily as an absence of the species in the area.
+
+#### Observations over land
+
+Although this report focuses on marine biodiversity data, observations
+on land for the species of interest are often uploaded to these portals.
+Several aquatic species have life history strategies involving presence
+within freshwater ecosystems, rather than existing solely within marine
+or oceanic ecosystems (e.g., anadromous fish). Observations appearing
+"on land" may therefore represent species observed within freshwater
+ecosystems such as rivers or ponds, which may not be obvious in the
+Figures shown. Fish and invertebrate species occurring on land were
+therefore not removed from the report. Cetaceans observations on land
+typically indicate that animals were sighted from shore. Any
+observations \>300 m from the shore were removed due to positional
+accuracy and species identification concerns. Because geopositional
+errors are known to occur within these portals, users should
+double-check observations occurring on land to ensure they contain
+accurate information.
+
+OBIS performs multiple data quality checks, including flagging data over
+land. For a complete description of the QC procedures OBIS performs, see
+<https://github.com/iobis/obis-qc> and Vandepitte et al. (2015). Data
+quality checks are less extensive in GBIF, various information is
+required (e.g., scientific name, event date) or the records will not be
+accepted (<https://www.gbif.org/data-quality-requirements-occurrences>).
+
+#### Duplicate datasets
+
+Several of the datasets uploaded to OBIS and GBIF are also listed as
+separate data sources/sections within this report. These have been
+removed from this section of the report and include:
+
+-   Maritimes Research Vessel Surveys
+
+-   Whale Sightings Database (named "DFO Maritimes Region Cetacean
+    Sightings" in OBIS and GBIF)
+
+Duplicates datasets and occurrence records may also exist between OBIS
+and GBIF. Data contributors are encouraged to upload to both portals
+simultaneously, although in some instances, data is only uploaded to one
+portal, which can lead to discrepancies between the two. Also, records
+are often shared between multiple data contributors, and as a result,
+some records may be included in several different datasets. Currently, R
+tools are being developed to address these data duplicate issues
+(<https://www.rdocumentation.org/packages/spoccutils/versions/0.1.0/topics/spocc_duplicates>).
+These tools may be incorporated in future iterations of this report when
+they become available.
+
+#### Additional data
+
+In some cases, data uploaded to OBIS or GBIF may not represent the
+entire dataset available. Users should review the URLs for each dataset
+to identify these instances and contact the original data providers if
+there are additional records that may be useful.
+
+#### Basis of Record
+
+The Basis of Record field (i.e., column name) is a required term that specifies the nature of
+the record, such as how the observation was obtained or stored (more
+information here: <https://obis.org/manual/darwincore/#records>). There
+are various options the data submitter can select from. The following
+cases were removed from the report because they do not contain relevant
+or current specimen data:
+
+-   FossilSpecimen: specimen is a fossil record.
+
+-   LivingSpecimen: specimen is intentionally kept or cultivated such as
+    a culture organism, zoo or aquarium species.
+
+The following cases provide relevant information and were combined
+within the report:
+
+-   MaterialSample: A physical sample from the sampling event has been
+    retained. The recorded location is the in situ sampling location.
+
+-   PreservedSpecimen: organism is collected at the recorded location
+    but then preserved (e.g., in ethanol at a location such as museum,
+    university, or research institute.)
+
+-   HumanObservation: includes visual sightings of the organism, or
+    observations where specimens were collected and then discarded after
+    counting (e.g., a benthic grab sample).
+
+-   Unknown: includes records without a defined basis of record or with
+    an unrecognized value for this field
+
+Observations may also be listed as MachineObservation, which are derived from machine or computer-based detections such as automated sensors (e.g., DNA sequencers), acoustic tagging, or image recognition. Currently, there are no MachineObservation records for fish or invertebrate species in this region.
+
+#### iNaturalist data
+
+iNaturalist is an open-source platform where naturalists, citizen
+scientists, and biologists can map species observations (iNaturalist,
+2021). As of December 2021, iNaturalist has over 86 million species
+observations and over 1.9 million registered users/contributors
+globally. Every week, iNaturalist data that are considered "Research
+Grade" (i.e., the record contains a date, is georeferenced, has photos
+or sounds, isn't a captive or cultivated organism, and two thirds of
+identifiers agree on the species identification) are added to GBIF (more
+information here:
+<https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7>).
+iNaturalist records are not added to OBIS.
+
+iNaturalist records include a coordinate uncertainty, which is added by
+the user to provide an estimation of the geopositional accuracy of the
+observation. This may reflect information such as the accuracy of the
+user's phone's GPS, or an estimation of error if an observation was
+spotted from a distance
+(<https://greece.inaturalist.org/posts/28376-making-yourobservations-more-valuable-for-conservation-location-uncertainty>).
+
+For species that may be put at risk if their true location is known
+(e.g., due to hunting or poaching), the location can be obscured, either
+at the request of the submitter, or done automatically by iNaturalist.
+iNaturalist moderators may obscure a species location if the species has
+a certain conservation status (e.g., the IUCN equivalent of "Near
+Threatened" or worse), or based on local knowledge of the species in the
+region (<https://www.inaturalist.org/pages/curator+guide>). For species
+with obscured locations, a random location within a 0.2 x 0.2 degree
+cell (\~22 km x 22 km) is generated
+(<https://www.inaturalist.org/pages/help#geoprivacy>). In GBIF, it is
+not explicitly stated if the species position has been obscured, but can
+implied if the coordinate uncertainty is \~22 km.
+
+Due to these issues with the coordinate uncertainty, occurrence records
+from iNaturalist data are listed separately within the GBIF data
+section, and the associated coordinate uncertainty is provided.
+
+#### Data searches
+
+OBIS and GBIF records included in this section were extracted using the
+robis (Provoost & Bosch, 2021) and rgbif (Chamberlain et al., 2021) R
+packages, respectively. Data in this report were compiled for fish and
+invertebrate species that have been listed by SARA, and/or assessed by
+COSEWIC within the user-defined search area. The code used for these
+searches can be found here:
+<https://github.com/dfo-mar-odis/shinySpatialApp>.

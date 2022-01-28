@@ -1,80 +1,111 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
-
+library(robis)
 source(here::here("config.R"))
 library(robis)
 library(rgbif)
 
-
-
 loadResult <- load_rdata(c("CommonData", "obisCet_rr", "obisFish_rr"), regionStr)
 
 #-------------------OBIS-------------------
+##############################################################################################################################
+# Downloading Ocean Biodiversity Information System (OBIS) data for the Reproducible Report: DRAFT
+# Created by Stephen Finnis, Quentin Stoyel, and Catalina Gomez in November 2021
+# Code will download data from OBIS within the Scotian Shelf Bioregion
+# Will obtain records for fish and invertebrate species, and cetaceans listed by the Species at Risk Act and/or
+# assessed by the Committee on the Status of Endangered Wildlife in Canada
+##############################################################################################################################
+# Get occurrence data for these data within the Scotian Shelf Bioregion (approximate location) from 2010 to present
+# This may take a few minutes to run
+regionWKT <- sf::st_as_text(region_sf$geometry)
 
-# Legend file for displaying cetacean results in consistent colours
-Legend <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/CetaceanLegend.csv"), stringsAsFactors = FALSE)
-Legend <- dplyr::rename(Legend,c("Scientific Name" = "Scientific_Name"))
-cetacean_list <- c("BELUGA WHALE", "NORTH ATLANTIC RIGHT WHALE", "FIN WHALE", 
-                   "NORTHERN BOTTLENOSE WHALE",
-                   "HARBOUR PORPOISE", "KILLER WHALE", "BLUE WHALE", "SEI WHALE", "SOWERBY'S BEAKED WHALE")
+occurrenceNS = occurrence(scientificname=listed_species$`Scientific Name`, 
+                          geometry = regionWKT, startdate = "2010-01-01")
+
+# Get the dataset information for the each of the occurrence records above
+# Most of the dataset information has to be accessed separately from the occurrence data 
+# This is due to the way the information is stored in OBIS (known as the Darwin Core Standard)
+datasetNS = dataset(datasetid = unique(occurrenceNS$dataset_id))
+
+# add dates to citations:
+citDate <- as.character(Sys.Date())
+# Vertical bar: | in gsub strings gets treated as an OR clause:
+datasetNS$citation <- gsub("INSERT DATE|yyyy-mm-dd|Access date", citDate, datasetNS$citation)
+
+##############################################################################################################################
+## Prepare and combine data into appropriate format
+
+# Replace NA geometries with WKT:
+occurrenceNS$updateFootprint = ifelse(is.na(occurrenceNS$footprintWKT)=="TRUE",
+                                      paste0("POINT(",paste(occurrenceNS$decimalLatitude, occurrenceNS$decimalLongitude),")"),
+                                      occurrenceNS$footprintWKT)
+
+# Combine the occurrence and dataset dataframes based on their dataset IDs
+occDatasetNS = full_join(occurrenceNS, datasetNS, by=c("dataset_id"="id"))
+
+# Then combine with the MAR species spreadsheet to get other relevant info (e.g., SARA/COSEWIC schedules, and Schedule status)
+comboDataNS = full_join(occDatasetNS, listed_species, by=c("scientificName" = "Scientific Name"))
+
+# Remove records from datasets that are already included in the report
+comboDataNS.remove = subset(comboDataNS, title!="Maritimes Summer Research Vessel Surveys" & 
+                              title!= "Maritimes Spring Research Vessel Surveys"& 
+                              title!= "Maritimes 4VSW Research Vessel Surveys" & 
+                              title!= "DFO Maritimes Region Cetacean Sightings"& # aka Whale Sightings Database
+                              dataset_id!= "NA") # these represent species that didn't have any OBIS occurrences but got added when joined with the MAR species spreadsheet
+
+# Select the required columns. We may decide later that more are useful
+obis_df = dplyr::select(comboDataNS.remove, scientificName, "Common Name", 
+                   COSEWIC.population, date_year, url,
+                   citation, title, "COSEWIC status", SARA.schedule, 
+                   basisOfRecord, flags, eventDate, 
+                   basisOfRecord, shoredistance, decimalLatitude, 
+                   decimalLongitude)
+
+names(obis_df)[names(obis_df) == 'url'] <- 'URL'
+names(obis_df)[names(obis_df) == 'citation'] <- 'Citation'
 
 
-other_species_list <- c("LOGGERHEAD SEA TURTLE", "ATLANTIC WALRUS", "HARBOUR SEAL LACS DES LOUPS MARINS SUBSPECIES", "LEATHERBACK SEA TURTLE")
-listed_cetacean_species <- subset(listed_species, COMMONNAME %in% cetacean_list)
-listed_other_species <- subset(listed_species, COMMONNAME %in% other_species_list)
-listed_fish_invert_species <- listed_species[ ! listed_species$COMMONNAME %in% c(other_species_list,cetacean_list), ]
+# Things I still need to do:
+# Separate fish/invertebrates from cetaceans (this should also remove sea turtle records)
+# Once that is done, exclude cetacean data that are >300m from shore i.e. "shoredistance < -300"
+obis_sf <- st_as_sf(obis_df, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
 
-# Ocean Biogeographic Information System (OBIS)
-obis <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/OBIS_GBIF_iNaturalist/OBIS_MAR_priority_records.csv"), stringsAsFactors = FALSE)
-obis <- dplyr::select(obis, scientificName, decimalLatitude, decimalLongitude, year)
-obis <- obis %>% transmute(obis, scientificName = str_to_sentence(scientificName))
-obis <- obis %>% rename("Scientific Name" = scientificName, "YEAR" = year)
-obis <- obis %>% dplyr::filter(YEAR >= 2010)
+# split off the cetaceans, cetLegend and rr_otherspecies are from common data
+obis_sf <- dplyr::rename(obis_sf, "Scientific Name"="scientificName")
 
-# OBIS fish and inverts
-obisFish <- merge(obis, listed_fish_invert_species, by='Scientific Name')
-obisFish <- dplyr::select(obisFish, "Scientific Name", YEAR, "Common Name", "COSEWIC status",
-                          "SARA status", decimalLatitude, decimalLongitude)
-obisFish_sf <- st_as_sf(obisFish, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
-obisFish_sf <- sf::st_crop(obisFish_sf, region_sf)
+obisCet_sf <- subset(obis_sf, obis_sf$`Scientific Name` %in% cetLegend$`Scientific Name`)
+obisCet_sf <- merge(obisCet_sf, cetLegend, by='Scientific Name')
+obisFish_sf <- subset(obis_sf, !(obis_sf$`Scientific Name` %in% cetLegend$`Scientific Name`)
+                      & !(obis_sf$`Scientific Name` %in% rr_otherSpecies$Scientific_Name))
 
-obisFish_rr <- list("title" = "OBIS observations",
-                    "data_sf" = obisFish_sf,
-                    "attribute" = "Legend",
-                    "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
-                                      "url" = lang_list("<https://obis.org/>"),
-                                      "accessedOnStr" = list("en" ="January 27 2021 by Gregory Puncher from OBIS", 
-                                                             "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
-                                      "accessDate" = as.Date("2021-01-27"),
-                                      "searchYears" = "2010-2020",
-                                      "securityLevel" = noneList,
-                                      "qualityTier" = mediumQuality,
-                                      "constraints" = noneList
-                    )
-)
-save(obisFish_rr, file = file.path(localFileSavePath, "Open/obisFish_rr.RData"))
-
-# OBIS cetaceans
-obisCet <- merge(obis, Legend, by='Scientific Name')
-obisCet <- dplyr::select(obisCet, "Scientific Name", YEAR, Legend,
-                         decimalLatitude, decimalLongitude)
-obisCet_sf <- st_as_sf(obisCet, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
-obisCet_sf <- sf::st_crop(obisCet_sf, region_sf)
-
-
-obisCet_rr <- list("title" = "OBIS observations (cetaceans)",
+obisCet_rr <- list("title" = "Ocean Biodiversity Information System (OBIS), Cetaceans",
                    "data_sf" = obisCet_sf,
                    "attribute" = "Legend",
                    "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
                                      "url" = lang_list("<https://obis.org/>"),
-                                     "accessedOnStr" = list("en" ="January 27 2021 by Gregory Puncher from OBIS", 
-                                                            "fr" = "27 janvier 2021 par Gregory Puncher du SIBO") ,
-                                     "accessDate" = as.Date("2021-01-27"),
-                                     "searchYears" = "2010-2020",
+                                     "accessedOnStr" = list("en" ="December 17 2021 using robis", 
+                                                            "fr" = "17 decmbre 2021 par robis") ,
+                                     "accessDate" = as.Date("2021-12-17"),
+                                     "searchYears" = "2010-2021",
                                      "securityLevel" = noneList,
-                                     "qualityTier" = mediumQuality,
+                                     "qualityTier" = variableQuality,
                                      "constraints" = noneList
                    )
 )
 save(obisCet_rr, file = file.path(localFileSavePath, "Open/obisCet_rr.RData"))
 
+obisFish_rr <- list("title" = "Ocean Biodiversity Information System (OBIS)",
+                    "data_sf" = obisFish_sf,
+                    "attribute" = "NONE",
+                    "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
+                                      "url" = lang_list("<https://obis.org/>"),
+                                      "accessedOnStr" = list("en" ="December 17 2021 using robis", 
+                                                             "fr" = "17 decmbre 2021 par robis") ,
+                                      "accessDate" = as.Date("2021-12-17"),
+                                      "searchYears" = "2010-2021",
+                                      "securityLevel" = noneList,
+                                      "qualityTier" = variableQuality,
+                                      "constraints" = noneList
+                    )
+)
+save(obisFish_rr, file = file.path(localFileSavePath, "Open/obisFish_rr.RData"))
