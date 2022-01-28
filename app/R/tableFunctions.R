@@ -203,23 +203,29 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   # caught
   data1 <- merge(data1, sarTable, by = 'Common_Name_MARFIS')
   # data1 <- data1 %>% rename("SCIENTIFICNAME" = Scientific_Name)
-
-  sarData <- aggregate(
-    x = list(Records = data1$'Scientific Name'),
-    by = list('Scientific Name' = data1$'Scientific Name'),
-    length)
-  sarData <- merge(sarData, sarTable, by = 'Scientific Name')
+  
+  if (nrow(data1) == 0) {
+    sarData <- NULL
+  } else {
+    sarData <- aggregate(
+      x = list(Records = data1$'Scientific Name'),
+      by = list('Scientific Name' = data1$'Scientific Name'),
+      length)
+    sarData <- merge(sarData, sarTable, by = 'Scientific Name')
+    sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
+                             "SARA status","COSEWIC status", Records)
+    sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
+  }
+  
 
   allSpeciesData <- dplyr::select(allSpeciesData, 'Common Name', Records)
   allSpeciesData <- allSpeciesData %>% rename(CName = 'Common Name')
   allSpeciesData <- allSpeciesData %>% transmute(allSpeciesData,
                                                  CName = str_to_sentence(CName))
   allSpeciesData <- allSpeciesData %>% rename('Common Name' = CName)
-  sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
-                           "SARA status","COSEWIC status", Records)
+  
 
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
-  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
 
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
@@ -263,26 +269,26 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   # and create a frequency table of all listed species
   # caught
   data1 <- merge(data1, sarTable, by = 'Scientific Name')
-
-  sarData <- aggregate(
-    x = list(Records = data1$'Scientific Name'),
-    by = list('Scientific Name' = data1$'Scientific Name'),
-    length)
-  sarData <- merge(sarData, sarTable, by = 'Scientific Name')
-
+  if (nrow(data1) == 0) {
+    sarData <- NULL
+  } else {
+    sarData <- aggregate(
+      x = list(Records = data1$'Scientific Name'),
+      by = list('Scientific Name' = data1$'Scientific Name'),
+      length)
+    sarData <- merge(sarData, sarTable, by = 'Scientific Name')
+    sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
+                             "SARA status","COSEWIC status", Records)
+    sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
+    sarData <- sarData[with(sarData, order(-Records)), ]
+    row.names(sarData) <- NULL
+  }
 
   allSpeciesData <- dplyr::select(allSpeciesData, 'Scientific Name', 'Common Name', Records)
-  sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
-                           "SARA status","COSEWIC status", Records)
-
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
-  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
-
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
-  sarData <- sarData[with(sarData, order(-Records)), ]
   row.names(allSpeciesData) <- NULL
-  row.names(sarData) <- NULL
 
   outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
