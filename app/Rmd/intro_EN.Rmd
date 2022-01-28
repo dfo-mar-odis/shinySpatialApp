@@ -14,6 +14,10 @@ output:
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
+```{r pre-clean, echo=FALSE, include=FALSE, cache=FALSE}
+rm(list=ls(env=globalenv()))
+```
+
 ```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
 ```
 
