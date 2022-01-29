@@ -1,7 +1,3 @@
-# load R scripts (including packages)
-lapply(list.files("R/", pattern = ".[Rr]$", full.names = TRUE), source)
-
-
 ui <- fluidPage(
 
   useShinyjs(),
@@ -31,8 +27,8 @@ ui <- fluidPage(
           myhelptxt("This tab allows you to identify yourself, detail the reason(s)
           why you are generating the report and abide by terms and conditions."),
           # input
-          textInput("u_name", label = "Enter your name", value = "Lorem ipsum"),
-          textInput("u_email", label = "Enter your email", value = "lipsum@dfo-mpo.gc.ca"),
+          textInput("u_name", label = "Enter your name", value = "Rod Knee"),
+          textInput("u_email", label = "Enter your email", value = "rod_knee@dfo-mpo.gc.ca"),
           textAreaInput("u_notes", label = "Provide the reason/rationale for generating the report", value = ""),
           # terms and conditions
           checkboxGroupInput("u_consent", label = "Terms and conditions",
@@ -219,19 +215,15 @@ ui <- fluidPage(
           ),
           
           tabPanel(
-            "Customized reports",
+            "Custom report",
             icon = icon("book"),
-            myhelptxt("This tab allows you to customize and generate your report.")
-            
+            customReportUI(id = "custom_report")  
           )
-          
           
         ),
         
         
         
-        
-
         hr(),
         # FOOTER 
         HTML(
@@ -258,15 +250,20 @@ ui <- fluidPage(
           icon = icon("map"),
           mapedit::editModUI("map")
         ),
-        # REPORT
+        # FULL REPORT
         tabPanel(
-          "Report",
+          "Full report",
           icon = icon("book"),
           htmlOutput("report_html")
+        ),
+        # CUSTOM REPORTS 
+        tabPanel(
+          "Custom report",
+          icon = icon("book"),
+          htmlOutput("custom_report_html")
         )
       ),
     )
-
 
   )
 

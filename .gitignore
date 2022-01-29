@@ -2,7 +2,10 @@
 app/data/*
 !app/data/.gitkeep
 app/www/*.html
+app/www/reports/*
+!app/www/reports/.gitkeep
 !app/www/empty_report.html
+
 
 *.log
 app/output/*.geojson

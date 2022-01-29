@@ -9,6 +9,7 @@ Authors@R: c(
 Imports:
   cli,
   crayon,
+  fs,
   glue,
   leaflet,
   leafem,
@@ -16,8 +17,8 @@ Imports:
   sf,
   shiny,
   shinyjs,
+  shinyvalidate,
   raster,
   rmarkdown,
-  tools,
   whisker
 RoxygenNote: 7.1.1

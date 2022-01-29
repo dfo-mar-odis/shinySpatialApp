@@ -44,6 +44,22 @@
   text-align: center;
 }
 
+/* Warning page style */
+
+#msg_warning {
+  color: #e41848;
+  text-align: center;
+}
+
+#msg_warning h1 {
+  color: #e41848;
+  font-size: 6em;
+}
+
+#msg_warning h2 {
+  font-size: 2em;
+}
+
 
 /* custom details see  https://stackoverflow.com/questions/10813581/replace-the-expand-icon-of-html5-details-tag*/
 

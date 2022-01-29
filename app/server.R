@@ -8,10 +8,13 @@ server <- function(input, output, session) {
   # EMPTY REPORT 
   output$report_html <- renderUI(includeHTML("www/empty_report.html"))
 
+
   # SWITCH MAIN TAB FROM MAP TO REPORT WHEN SIDE TAB IS REPORT
   observeEvent(input$active_panel, {
-    if (input$active_panel == "Report") {
-      slc <- "Report"
+    if (input$active_panel == "Full report") {
+      slc <- "Full report"
+    } else if (input$active_panel == "Custom report") {
+      slc <- "Custom report"
     } else slc <- "Map"
     updateTabsetPanel(session, "map_or_report", selected = slc)
   })
@@ -182,8 +185,8 @@ server <- function(input, output, session) {
         output$report_html <- renderUI({
         # NB Use a iframe so that the css of the report does not affect
         # the css of the app
-          tags$iframe(id = "iframe_report", src = chk$html, width = '100%',
-            frameborder = 'no')
+        tags$iframe(id = "iframe_report", src = chk$html, width = '100%',
+          frameborder = 'no')
         })
         output$dl_outputs <- downloadHandler(
           filename = "output.zip",
@@ -198,6 +201,27 @@ server <- function(input, output, session) {
       }
     }
 
+  })
+  
+  # renderCustomReport("custom_report")
+  rv <- reactiveValues(
+    full_html = "www/empty_report.html",
+    custom_html = "www/empty_report.html"
+  )
+  renderCustomReport("custom_report", rv, input$u_name, input$u_email)
+  
+  output$custom_report_html <- renderUI({
+    if (rv$custom_html == "www/empty_report.html") {
+      includeHTML(rv$custom_html)
+    } else {
+      # remove www/ for inclusion in iframe
+      html <- strsplit(rv$custom_html, "www/")[[1]][2]
+      print(html)
+      # NB Use a iframe so that the css of the report does not affect
+      # the css of the app
+      tags$iframe(id = "iframe_report", src = html, width = '100%',
+        frameborder = 'no')
+    }
   })
 
 }

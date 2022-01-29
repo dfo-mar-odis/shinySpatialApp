@@ -1,11 +1,3 @@
-library(shiny)
-library(shinyjs)
-library(leaflet)
-library(leafem)
-library(mapedit)
-library(sf)
-library(glue)
-
 ## R messages 
 msgInfo <- function(..., appendLF = TRUE) {
   txt <- paste(cli::symbol$info, ...)
@@ -72,7 +64,7 @@ info_valid <- function(x, ok = TRUE, chk = FALSE) {
 
 # do not include dots in new extension as it is added
 switch_ext <- function(x, y) {
-  ext <- tools::file_ext(x)
+  ext <- fs::path_ext(x)
   sub(glue(".{ext}$"), glue(".{y}"), x) 
 }
 
@@ -83,6 +75,9 @@ clear_www_html <- function() {
 }
 
 clear_output <- function() {
-  fls <- list.files("output", full.names = TRUE)
-  file.remove(fls[fls != "output/.gitkeep"])
+  fls <- c(
+    list.files("output", full.names = TRUE),
+    list.files("www/reports", full.names = TRUE)
+  )
+  file.remove(fls[!grepl("gitkeep", fls)])
 }
