@@ -18,7 +18,7 @@ server <- function(input, output, session) {
   valid_details <- reactive({
     
     # 2Bimproved with shinyvalidate
-    # impprove consent
+    # improve consent
     output$valid_details <- renderText("")
     if (check_name(input$u_name)) {
       if (check_email(input$u_email)) {
@@ -129,6 +129,31 @@ server <- function(input, output, session) {
     )
   }, ignoreNULL = FALSE)
 
+  observeEvent(input$search_loc, {
+    bb <- osmdata::getbb(input$location)
+    if (!is.na(bb[1, 1])) {
+      # https://github.com/r-spatial/sf/issues/572
+      sf_loc <- st_as_sf(
+          st_as_sfc(
+            st_bbox(
+              c(
+                xmin = bb[1, 1], 
+                xmax = bb[1, 2], 
+                ymin = bb[2, 1], 
+                ymax = bb[2,2]
+              )
+            ),
+            crs = 4326
+          )
+        )
+      # review selection area so that default setup depends on selection
+      map <- selectionMap(sf_loc)
+      callModule(editMod, leafmap = map, id = "map")
+    }
+  
+  })
+    
+    
   observeEvent(input$check_input_areas, {
     n <- length(input$check_input_areas)
     output$nb_geoms_selected <- info_valid(glue("Number of geoms selected: {n}"), n)

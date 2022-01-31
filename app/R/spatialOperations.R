@@ -45,7 +45,7 @@ valid_import <- function(x, nm) {
 
 
 # use projection 3857 to add buffer
-add_buffer <- function(x, buffer) {
+add_buffer <- function(x, buffer = 0) {
   if (buffer > 0) {
     st_transform(
       st_buffer(st_transform(x, crs = 3857), dist = buffer),
@@ -55,7 +55,7 @@ add_buffer <- function(x, buffer) {
 }
 
 # function to append/stack sf object and add buffer
-append_geom <- function(geoms, x, buffer) {
+append_geom <- function(geoms, x, buffer = 0) {
   tmp <- add_buffer(x, buffer)
   if (is.null(geoms)) tmp else rbind(geoms, tmp)
 }

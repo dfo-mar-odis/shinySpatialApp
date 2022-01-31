@@ -125,10 +125,13 @@ ui <- fluidPage(
         # VALID GEOMS
         tabPanel(
             "Check",
-            icon = icon("check-square"),
-            myhelptxt("This tab allows you to validate geometries you wish to use to generate the report and, if desired, add a buffer to selected geometries."),
+            icon = icon("map"),
+            myhelptxt("This tab allows you to validate geometries you wish to use to generate a report and. It also allows you to look up a specific location."),
+            div(style="display: inline-block;",
+            textInput("location", label = "Enter a location", value = "Halifax")),
+            actionButton("search_loc", "Search location", icon = icon("search")),
+            br(),
             checkboxGroupInput("check_input_areas", choiceNames = "Input placeholder1", choiceValues = 1, c("none")),
-            #
             actionButton('add_geoms_to_map', 'Add to map', icon = icon("pencil-alt")),
             actionButton('valid_geoms', "Validate", icon = icon("check")),
             actionButton('clear_map', "Clear map", icon = icon("trash-alt")),
