@@ -1,11 +1,10 @@
 # Interactive map created with `leaflet` and called in `mapedit::callModule`.
 
-selectionMap <- function(geoms = NULL) {
+selectionMap <- function(geoms = NULL, set_view = TRUE) {
   
   out <- leaflet::leaflet(height = 2000) %>% 
     leaflet::addTiles() %>% 
     leafem::addMouseCoordinates() %>%
-    leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7) %>%
     leaflet::addProviderTiles('Esri.OceanBasemap', group = 'OceaBasemap') %>%
     leaflet::addProviderTiles("OpenTopoMap", group = "OpenTopoMap") %>%
     leaflet::addProviderTiles("OpenStreetMap", group = "OpenStreetMap") %>%
@@ -15,6 +14,9 @@ selectionMap <- function(geoms = NULL) {
     
   if (!is.null(geoms)) out <- leafem::addFeatures(out, geoms)
 
-  out
+  if (set_view) {
+    out %>% leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7)
+  } else out 
+
 }
 

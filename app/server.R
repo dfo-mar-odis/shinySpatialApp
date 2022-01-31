@@ -43,7 +43,7 @@ server <- function(input, output, session) {
 
 
   # CREATE GEOMS
-  geoms <- reactiveValues(select = NULL, final = NULL)
+  geoms <- reactiveValues(select = NULL, final = NULL, locations = NULL)
 
   # GEOMS CREATED
   nb_geom <- reactive({
@@ -128,7 +128,7 @@ server <- function(input, output, session) {
       selected = seq_along(x)
     )
   }, ignoreNULL = FALSE)
-
+  # Search location
   observeEvent(input$search_loc, {
     bb <- osmdata::getbb(input$location)
     if (!is.na(bb[1, 1])) {
@@ -147,7 +147,7 @@ server <- function(input, output, session) {
           )
         )
       # review selection area so that default setup depends on selection
-      map <- selectionMap(sf_loc)
+      map <- selectionMap(sf_loc, FALSE)
       callModule(editMod, leafmap = map, id = "map")
     }
   
