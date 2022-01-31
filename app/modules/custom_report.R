@@ -29,7 +29,7 @@ customReportUI <- function(id) {
 }
 
 
-renderCustomReport <- function(id, rv, u_name, u_email) {
+renderCustomReport <- function(id, preview, u_name, u_email, u_consent) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -37,41 +37,50 @@ renderCustomReport <- function(id, rv, u_name, u_email) {
       shinyjs::hide(id = "report_dl")
       
       observeEvent(input$report_gen, {
-        # template path
-        tpl <- glue_path("templates", input$lang, "custom", input$type)
-        # out path (add EN/FR)
-        fln <- ifelse(
-            input$filename == "", 
-            glue(
-              fs::path_ext_remove(input$type), 
-              "_", tolower(input$lang), ".Rmd"
-            ),
-            glue(input$filename, "_", tolower(input$lang), ".Rmd")
+        print(u_consent)
+        print(u_name)
+        if (length(u_consent) != 3) {
+          showNotification(
+            "Please abide by terms and conditions in 'User' tab.", 
+            type = "error"
           )
-        out <- glue_path("www", "reports", fln)
-        # render template 
-        writeLines(
-          whisker::whisker.render(
-            readLines(tpl, warn = FALSE), 
-            list(
-              u_name = u_name,
-              u_email = u_email,
-              u_text = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors in Maritimes Region."
+        } else {
+          # template path
+          tpl <- glue_path("templates", input$lang, "custom", input$type)
+          # out path (add EN/FR)
+          fln <- ifelse(
+              input$filename == "", 
+              glue(
+                fs::path_ext_remove(input$type), 
+                "_", tolower(input$lang), ".Rmd"
+              ),
+              glue(input$filename, "_", tolower(input$lang), ".Rmd")
             )
-          ),  
-          out
-        )
-        # render document
-        showNotification("Rendering HTML", type = "message")
-        rv$custom_html <- rmarkdown::render(out, "html_document")
-        # unlink(out) # to remove rmd file
-        shinyjs::show(id = "report_dl")
+          out <- glue_path("www", "reports", fln)
+          # render template 
+          writeLines(
+            whisker::whisker.render(
+              readLines(tpl, warn = FALSE), 
+              list(
+                u_name = u_name,
+                u_email = u_email,
+                u_text = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors in Maritimes Region."
+              )
+            ),  
+            out
+          )
+          # render document
+          showNotification("Rendering HTML", type = "message")
+          preview$custom_html <- rmarkdown::render(out, "html_document")
+          # unlink(out) # to remove rmd file
+          shinyjs::show(id = "report_dl")
+        }
       })
       
       # see https://mastering-shiny.org/action-transfer.html
       output$report_dl <- downloadHandler(
         filename = function() {
-          switch_ext(basename(rv$custom_html), "pdf")
+          switch_ext(basename(preview$custom_html), "pdf")
         },
         content = function(file) {      
           id <- showNotification(
@@ -80,10 +89,9 @@ renderCustomReport <- function(id, rv, u_name, u_email) {
             closeButton = FALSE
           )
           on.exit(removeNotification(id), add = TRUE)
-          fs::file_copy(pagedown::chrome_print(rv$custom_html), file)
+          fs::file_copy(pagedown::chrome_print(preview$custom_html), file)
         })
         
-      
     }
   )
 }

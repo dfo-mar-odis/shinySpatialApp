@@ -76,7 +76,7 @@ clear_www_html <- function() {
 
 clear_output <- function() {
   fls <- c(
-    list.files("output", full.names = TRUE),
+    list.files("output", full.names = TRUE, recursive = TRUE),
     list.files("www/reports", full.names = TRUE)
   )
   file.remove(fls[!grepl("gitkeep", fls)])

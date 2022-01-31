@@ -1,13 +1,8 @@
 server <- function(input, output, session) {
 
-
   # INITIATE MAP
   map <- selectionMap()
   edits <- callModule(editMod, leafmap = map, id = "map")
-  
-  # EMPTY REPORT 
-  output$report_html <- renderUI(includeHTML("www/empty_report.html"))
-
 
   # SWITCH MAIN TAB FROM MAP TO REPORT WHEN SIDE TAB IS REPORT
   observeEvent(input$active_panel, {
@@ -22,7 +17,8 @@ server <- function(input, output, session) {
   # VALID AND STORE USER INFO
   valid_details <- reactive({
     
-    # 2Bimproved
+    # 2Bimproved with shinyvalidate
+    # impprove consent
     output$valid_details <- renderText("")
     if (check_name(input$u_name)) {
       if (check_email(input$u_email)) {
@@ -167,56 +163,42 @@ server <- function(input, output, session) {
 
 
   # GENERATE REPORT
-  shinyjs::hide(id = "dl_outputs")
-  
-  observeEvent(input$generate_rmd, {
-
-    if (length(input$u_consent) != 3) {
-      output$render_success <- info_valid("Please abide by terms and conditions in the User tab.", FALSE)
-    } else {
-      showNotification("Rendering")
-      chk <- renderReport(
-          input = reactiveValuesToList(input),
-          geoms = geoms$final,
-          fl = input$report_name
-        )
-      if (chk$ok) {
-        output$render_success <- info_valid(chk$msg, chk$ok)
-        output$report_html <- renderUI({
-        # NB Use a iframe so that the css of the report does not affect
-        # the css of the app
-        tags$iframe(id = "iframe_report", src = chk$html, width = '100%',
-          frameborder = 'no')
-        })
-        output$dl_outputs <- downloadHandler(
-          filename = "output.zip",
-          content = function(file) zip(file, "./output")
-          )
-        showNotification("Success", type = "message")
-        shinyjs::show(id = "dl_outputs")
-      } else {
-        showNotification("Abort rendering", type = "error")
-        output$render_success <- info_valid(chk$msg, FALSE)
-        shinyjs::hide(id = "dl_outputs")
-      }
-    }
-
-  })
-  
-  # renderCustomReport("custom_report")
-  rv <- reactiveValues(
+  preview <- reactiveValues(
     full_html = "www/empty_report.html",
     custom_html = "www/empty_report.html"
   )
-  renderCustomReport("custom_report", rv, input$u_name, input$u_email)
   
+  # FULL REPORT 
+  renderFullReport("tmp_full_report", geoms, preview, input$u_name, 
+    input$u_email, input$u_consent)
+  
+  # FULL REPORT PREVIEW 
+  output$full_report_html <- renderUI({
+      if (preview$full_html == "www/empty_report.html") {
+        includeHTML(preview$full_html)
+      } else {
+        # remove www/ for inclusion in iframe
+        html <- strsplit(preview$full_html, "www/")[[1]][2]
+        print(html)
+        # NB Use a iframe so that the css of the report does not affect
+        # the css of the app
+        tags$iframe(id = "iframe_report", src = html, width = '100%',
+          frameborder = 'no')
+      }
+    })
+
+  
+  # CUSTOM REPORT
+  renderCustomReport("custom_report", preview, input$u_name, input$u_email, 
+    input$u_consent)
+
+  # CUSTOM REPORT PREVIEW 
   output$custom_report_html <- renderUI({
-    if (rv$custom_html == "www/empty_report.html") {
-      includeHTML(rv$custom_html)
+    if (preview$custom_html == "www/empty_report.html") {
+      includeHTML(preview$custom_html)
     } else {
       # remove www/ for inclusion in iframe
-      html <- strsplit(rv$custom_html, "www/")[[1]][2]
-      print(html)
+      html <- strsplit(preview$custom_html, "www/")[[1]][2]
       # NB Use a iframe so that the css of the report does not affect
       # the css of the app
       tags$iframe(id = "iframe_report", src = html, width = '100%',

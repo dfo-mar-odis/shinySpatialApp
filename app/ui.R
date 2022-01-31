@@ -122,98 +122,28 @@ ui <- fluidPage(
             uiOutput("nb_geoms")
           ),
 
-
         # VALID GEOMS
         tabPanel(
-          "Check",
-          icon = icon("check-square"),
-          myhelptxt("This tab allows you to validate geometries you wish to use to generate the report and, if desired, add a buffer to selected geometries."),
-          checkboxGroupInput("check_input_areas", choiceNames = "Input placeholder1", choiceValues = 1, c("none")),
-          #
-          actionButton('add_geoms_to_map', 'Add to map', icon = icon("pencil-alt")),
-          actionButton('valid_geoms', "Validate", icon = icon("check")),
-          actionButton('clear_map', "Clear map", icon = icon("trash-alt")),
-          br(),
-          br(),
-          uiOutput("nb_geoms_selected")
-        ),
-
-
-        # REPORT
-        tabPanel(
-          "Full report",
-          icon = icon("book"),
-          myhelptxt("This tab allows you to customize and generate your report."),
-
-          tabsetPanel(
-
-            tabPanel(
-              "Select sections",
-              myhelptxt("This tab allows you to select the sections you wish to include to your report."),
-              checkboxGroupInput("main_sections",
-                label = "Species",
-                choiceNames = c(
-                  "National Aquatic Species at Risk Program",
-                  "Fish and Invertebrates",
-                  "Cetaceans", 
-                  "Aquatic Invasive Species"
-                ),
-                selected = 1:4,
-                choiceValues = 1:4,
-              ),
-              checkboxGroupInput("extra_sections",
-                label = "Context",
-                choiceNames = c(
-                  "Areas designated for spatial planning",
-                  "Habitat"
-                ),
-                choiceValues = 1:2,
-              ),
-              checkboxGroupInput("extra_sections",
-                label = "Human threats",
-                choiceNames = c(
-                  "Fishing",
-                  "Shipping",
-                  "Miscellaneous",
-                  "Cumulative impact mapping"
-                ),
-                choiceValues = 1:4,
-              ),
-
-            ),
-
-            tabPanel(
-              "Generate report",
-              myhelptxt("This tab allows you to generate your report"),
-              checkboxGroupInput("report_lang",
-                label = "Select target language(s) for report",
-                choiceNames = c("English", "French"),
-                choiceValues = c("EN", "FR"),
-                selected = "EN",
-                inline = TRUE
-              ),
-              textAreaInput(
-                "u_text",
-                label = "Subtitle",
-                value = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors in Maritimes Region."
-              ),
-              textAreaInput("u_comments", label = "Comments", value = ""),
-              textInput(
-                "report_name",
-                label = "Report filename (optional, do not specify the file extension)",
-                value = ""
-              ),
-              hr(),
-              actionButton("generate_rmd", "Generate report", icon("book")),
-              hspace(2),
-              uiOutput("render_success", inline = TRUE),
-              br(),
-              br(),
-              downloadButton("dl_outputs", "Download outputs")
-            )
-            )
+            "Check",
+            icon = icon("check-square"),
+            myhelptxt("This tab allows you to validate geometries you wish to use to generate the report and, if desired, add a buffer to selected geometries."),
+            checkboxGroupInput("check_input_areas", choiceNames = "Input placeholder1", choiceValues = 1, c("none")),
+            #
+            actionButton('add_geoms_to_map', 'Add to map', icon = icon("pencil-alt")),
+            actionButton('valid_geoms', "Validate", icon = icon("check")),
+            actionButton('clear_map', "Clear map", icon = icon("trash-alt")),
+            br(),
+            br(),
+            uiOutput("nb_geoms_selected")
           ),
-          
+
+          # REPORTS  
+          tabPanel(
+            "Full report",
+            icon = icon("book"),
+            fullReportUI(id = "tmp_full_report")  
+            ),
+            
           tabPanel(
             "Custom report",
             icon = icon("book"),
@@ -254,7 +184,7 @@ ui <- fluidPage(
         tabPanel(
           "Full report",
           icon = icon("book"),
-          htmlOutput("report_html")
+          htmlOutput("full_report_html")
         ),
         # CUSTOM REPORTS 
         tabPanel(

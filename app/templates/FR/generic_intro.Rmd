@@ -7,8 +7,6 @@ output:
   html_document:
     theme: paper
     toc: yes
-  pdf_document:
-    toc: yes
   word_document:
     toc: yes
 ---
@@ -27,43 +25,35 @@ minYear <- 2002
 cat(AquaSiteName)
 ```
 
-```{r setup, echo=FALSE, include=FALSE, cache=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, 
+  warning = FALSE,
+  message = FALSE, 
+  fig.align = "left",
+  fig.path = "figs/")
 library(knitr)
 library(rgdal)
 library(maps)
 library(lubridate)
 ```
 
-<!-- KC: this is done on application load  -->
-<!-- ```{r source functions, echo=FALSE, include=FALSE, cache=FALSE}
-source("../R/site_map.r")
-source("../R/plot_wsdb.r")
-source("../R/filter_wsdb.r")
-``` -->
 
 ```{r Set up paths, echo=FALSE, include=FALSE, cache=FALSE}
 # KC: paths were modified 
-dataPath <- file.path("../data/Zones/", paste0(AquaSiteName, PEZversion))
-polyPath <- "../data/Zones/"
+dataPath <- file.path("./data/Zones/", paste0(AquaSiteName, PEZversion))
+polyPath <- "./data/Zones/"
 # KC: That's the studyArea
 studyArea <- as(st_read("{{path_to_geoms}}"), "Spatial")
 # site <- readOGR(polyPath,layer=paste0("Site_",AquaSiteName))
-wsdbFile <- "../data/MarWSDBSightingsForCGomez_27Oct2020.csv"
+wsdbFile <- "./data/MarWSDBSightingsForCGomez_27Oct2020.csv"
 ```
 
 ```{r read baseline data for maps, echo=FALSE, include=FALSE, cache=FALSE}
-landGDB <- "../data/Boundaries/Coast50K/Coastline50k.gdb"
+landGDB <- "./data/Boundaries/Coast50K/Coastline50k.gdb"
 land <- readOGR(dsn=landGDB,layer="Land50k_Maritimes",stringsAsFactors=F)
 ```
 
-```{r Define PEZ!, echo=FALSE, include=FALSE, cache=FALSE}
-# KC: no longer needed
-# pl <- list.files(polyPath, paste0(PEZversion, ".shp$"), full.names = TRUE)
-# # KC: not 100% what was meant with the line below
-# pl <- pl[!grepl("xml", pl)]
-# PEZ_poly <- readOGR(pl)
-```
 
 ```{r echo=FALSE, results='asis'}
 cat(AquaSiteName)
@@ -90,6 +80,8 @@ plot_wsdb(studyArea, wsdb_filter, 5)
 
 
 <!-- END  -->
+
+
 
 
 
@@ -158,8 +150,11 @@ cat(PEZversion)
 <!-- MAIN SECTIONS -->
 # **Search Results for Species at Risk**  
 
-{{add_main_sections}}
+{{add_species_parts}}
 
+
+<!-- Human threats -->
+{{add_human_threats_parts}}
 
 
 <!-- EBSA -->
