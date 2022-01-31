@@ -482,12 +482,14 @@ add_col_to_sar_summary <- function(sarSummary, dbName, dataTable, indexCol, attr
     dataTable$speciesCol <- dataTable[[indexCol]]
     dataTable <- filter(dataTable, speciesCol %in% sarSummary$Species)
   } else {
+    # dataTable was null:
     dataTable <- sarSummary
     dataTable$speciesCol <- dataTable$Species
     dataTable$summaryCol <- rep(absentCode, nrow(sarSummary))
   }
 
-  sarSummary[[dbName]] <- merge(sarSummary, dataTable, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol
+  sarSummary[[dbName]] <- dplyr::left_join(sarSummary, dataTable, by=c("Species" = "speciesCol"))$summaryCol
+  
   return(sarSummary)
 }
 # ---------add_to_hab_summary-------
@@ -509,7 +511,7 @@ add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCo
     dataTable$speciesCol <- dataTable[[indexCol]]
     dataTable <- filter(dataTable, speciesCol %in% summaryTable$Species)
     dataTable <- filter(dataTable, lengths(summaryCol) > 0)
-    tempCol <- merge(summaryTable, dataTable, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol
+    tempCol <- dplyr::left_join(summaryTable, dataTable, by=c("Species"="speciesCol"))$summaryCol
 
     # nested ifelse to set column value to either new value if not NA, or
     # combination of old and new if both were present
