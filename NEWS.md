@@ -1,10 +1,20 @@
-# devel
+# shinySpatialApp 2.0.0-rc1
 
-* includes DFO functions to create map and extract data. 
-* includes `app/data/` folder where data should be included. 
+* Render documents only in HTML (for preview) and print HTML to PDF if desired (see #11).
+* Introduce a new module `full_report` to render full reports and review how reports are generated (see 4159a29).
+* Add a new feature to look up location on a map (see #13).
+* Introduce a new module 'Custom report' that allows for the creation of new R Markdown reports (see #6).
+* Hide "spatial projection" option (see #8).
+* New section for the full report has been added (see #5).
+* Change default options for latitude, longitude and buffer (see #9).
+* Rename 'X' "Longitude" and 'Y' "Latitude" (see #15).
+* Change default options for latitude, longitude and buffer (see #9).
+* Includes DFO functions to create map and extract data. 
+* Includes `app/data/` folder where data should be included. 
 * `report_pt1_generic_intro_EN.Rmd` includes a example of extraction and map.
 
-# Version 1.0.0 
+
+# shinySpatialApp 1.0.0 
 
 The application have been completed on February 18th, 2021. The application
 allows the user to select searching areas (4 methods to do so have been

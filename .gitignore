@@ -1,4 +1,5 @@
 # Project-specific files 
+RELEASE*.pdf
 app/data/*
 !app/data/.gitkeep
 app/www/*.html
