@@ -203,23 +203,29 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   # caught
   data1 <- merge(data1, sarTable, by = 'Common_Name_MARFIS')
   # data1 <- data1 %>% rename("SCIENTIFICNAME" = Scientific_Name)
-
-  sarData <- aggregate(
-    x = list(Records = data1$'Scientific Name'),
-    by = list('Scientific Name' = data1$'Scientific Name'),
-    length)
-  sarData <- merge(sarData, sarTable, by = 'Scientific Name')
+  
+  if (nrow(data1) == 0) {
+    sarData <- NULL
+  } else {
+    sarData <- aggregate(
+      x = list(Records = data1$'Scientific Name'),
+      by = list('Scientific Name' = data1$'Scientific Name'),
+      length)
+    sarData <- merge(sarData, sarTable, by = 'Scientific Name')
+    sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
+                             "SARA status","COSEWIC status", Records)
+    sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
+  }
+  
 
   allSpeciesData <- dplyr::select(allSpeciesData, 'Common Name', Records)
   allSpeciesData <- allSpeciesData %>% rename(CName = 'Common Name')
   allSpeciesData <- allSpeciesData %>% transmute(allSpeciesData,
                                                  CName = str_to_sentence(CName))
   allSpeciesData <- allSpeciesData %>% rename('Common Name' = CName)
-  sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
-                           "SARA status","COSEWIC status", Records)
+  
 
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
-  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
 
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
@@ -263,26 +269,26 @@ create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
   # and create a frequency table of all listed species
   # caught
   data1 <- merge(data1, sarTable, by = 'Scientific Name')
-
-  sarData <- aggregate(
-    x = list(Records = data1$'Scientific Name'),
-    by = list('Scientific Name' = data1$'Scientific Name'),
-    length)
-  sarData <- merge(sarData, sarTable, by = 'Scientific Name')
-
+  if (nrow(data1) == 0) {
+    sarData <- NULL
+  } else {
+    sarData <- aggregate(
+      x = list(Records = data1$'Scientific Name'),
+      by = list('Scientific Name' = data1$'Scientific Name'),
+      length)
+    sarData <- merge(sarData, sarTable, by = 'Scientific Name')
+    sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
+                             "SARA status","COSEWIC status", Records)
+    sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
+    sarData <- sarData[with(sarData, order(-Records)), ]
+    row.names(sarData) <- NULL
+  }
 
   allSpeciesData <- dplyr::select(allSpeciesData, 'Scientific Name', 'Common Name', Records)
-  sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
-                           "SARA status","COSEWIC status", Records)
-
   allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
-  sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
-
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
-  sarData <- sarData[with(sarData, order(-Records)), ]
   row.names(allSpeciesData) <- NULL
-  row.names(sarData) <- NULL
 
   outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
@@ -476,12 +482,14 @@ add_col_to_sar_summary <- function(sarSummary, dbName, dataTable, indexCol, attr
     dataTable$speciesCol <- dataTable[[indexCol]]
     dataTable <- filter(dataTable, speciesCol %in% sarSummary$Species)
   } else {
+    # dataTable was null:
     dataTable <- sarSummary
     dataTable$speciesCol <- dataTable$Species
     dataTable$summaryCol <- rep(absentCode, nrow(sarSummary))
   }
 
-  sarSummary[[dbName]] <- merge(sarSummary, dataTable, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol
+  sarSummary[[dbName]] <- dplyr::left_join(sarSummary, dataTable, by=c("Species" = "speciesCol"))$summaryCol
+  
   return(sarSummary)
 }
 # ---------add_to_hab_summary-------
@@ -503,7 +511,7 @@ add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCo
     dataTable$speciesCol <- dataTable[[indexCol]]
     dataTable <- filter(dataTable, speciesCol %in% summaryTable$Species)
     dataTable <- filter(dataTable, lengths(summaryCol) > 0)
-    tempCol <- merge(summaryTable, dataTable, by.x="Species", by.y ="speciesCol", all=TRUE)$summaryCol
+    tempCol <- dplyr::left_join(summaryTable, dataTable, by=c("Species"="speciesCol"))$summaryCol
 
     # nested ifelse to set column value to either new value if not NA, or
     # combination of old and new if both were present

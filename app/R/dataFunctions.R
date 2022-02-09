@@ -8,14 +8,14 @@ data_dir_check <- function() {
   output <- lapply(dirList, dir.create, showWarnings = FALSE)
   return()
 }
-# run this any time this file is sourced
-data_dir_check()
 
 # -----------------copy_rdata_files-------------
 # Function syncs local copy of here::here("app/data") with remote data dir
 # Inputs: None
 # Outputs: confirmation that files are now up to date
 copy_rdata_files <- function() {
+  # make sure dirs are present:
+  data_dir_check()
   
   rDataDir <- dirname(remoteFileSavePath)
   # replace backslashes introduced by dirname:
@@ -60,6 +60,7 @@ copy_rdata_files <- function() {
 # regionStr: string defining the directory to search in, 
 #            typically set and used from the config file.
 load_rdata <- function(rdataNames, regionStr, env=globalenv()){
+  data_dir_check()
   regionDir <- here::here("app/data", regionStr)
   lapply(rdataNames, find_and_load, regionDir = regionDir, env = env)
   return(NULL)

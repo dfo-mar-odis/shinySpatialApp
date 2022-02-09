@@ -14,29 +14,12 @@ output:
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
-```{r load-data-and-functions, echo=FALSE, include=FALSE, cache=FALSE}
-source(here::here("config.R"))
-lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
-studyArea <- sf::st_read("{{path_to_geoms}}")
-# Uncomment the following to test fixed polygon:
-# studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) # last area from app.
-# studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_test.geojson")) #Offshore
-# studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_coastal_test.geojson")) #coastal
-# studyArea <- st_read(here::here("app/studyAreaTest/geoms_slc_no_land.geojson")) #no land
-intro_setup(studyArea, env = environment(), regionStr = regionStr)
+```{r pre-clean, echo=FALSE, include=FALSE, cache=FALSE}
+rm(list=ls(env=globalenv()))
 ```
 
 ```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
 ```
-
-<!-- # ```{r child = c('../Rmd/report_cetaceans_EN.Rmd', 'report_fish_EN.Rmd', 'report_habitat_EN.Rmd', 'report_planning_EN.Rmd', 'report_SARA_EN.Rmd')} -->
-<!-- # ``` -->
-  <!--```{r child = '../Rmd/report_fish_FR.Rmd'} 
-  ``` -->
-
-<!-- END  -->
-
-<!-- MAIN SECTIONS -->
 
 # **RAPPORTS REPRODUCTIBLES**  
 
