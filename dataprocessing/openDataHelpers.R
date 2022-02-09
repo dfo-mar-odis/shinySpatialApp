@@ -179,7 +179,7 @@ download_extract_res_files <- function(resId, csvFileList = NULL) {
   zipUrl <- res$url
   tempDir <- here::here("dataprocessing/temp")
   
-  
+  # if no file list is supplied, assume no extraction needed:
   if (res$format == "CSV" & is.null(csvFileList)) {
     temp <- here::here("dataprocessing/temp/csvFile.csv")
     download.file(zipUrl, temp)
@@ -192,6 +192,7 @@ download_extract_res_files <- function(resId, csvFileList = NULL) {
     download.file(zipUrl, temp)
     utils::unzip(temp, exdir = tempDir)
     
+    # get path of each filename in input
     outFiles <-lapply(csvFileList, function(x, dir) {
       list.files(dir, recursive=TRUE, pattern = x, 
                  include.dirs = TRUE, full.names = TRUE)
@@ -200,7 +201,6 @@ download_extract_res_files <- function(resId, csvFileList = NULL) {
     dfList <- lapply(outFiles, read.csv)
     
   }
-  
 
   # cleanup
   tempFiles <- list.files(tempDir, include.dirs = T, full.names = T, recursive = T)

@@ -142,7 +142,7 @@ plot_raster <- function(baseMap, rasterData, legendName="", bgCutoff=0,
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
 plot_points <- function(baseMap, data_sf, attribute="NONE", legendName="", 
-                        colorMap=NULL, shapeMap=NULL, size=2.5) {
+                        colorMap=NULL, shapeMap=NULL, size=2.5, shape=20, color="black") {
   
   # extract scaleBar layer to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
@@ -156,11 +156,11 @@ plot_points <- function(baseMap, data_sf, attribute="NONE", legendName="",
   
   if (toupper(attribute) == "NONE") {
     # just plot raw data (no colors, shapes, etc)
-    dataLayer <- geom_sf(data = data_sf, size = size, shape = 20) 
+    dataLayer <- geom_sf(data = data_sf, size = size, shape = shape, color=color) 
     legendLayer <- NULL
   } else {
     data_sf[[attribute]] = as.factor(data_sf[[attribute]])
-    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = size, shape = 20)  
+    dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = size, shape = shape)  
     
     if (is.null(colorMap)){
       colorMap <- get_rr_color_map(data_sf[[attribute]])
