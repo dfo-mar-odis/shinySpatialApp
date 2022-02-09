@@ -85,8 +85,8 @@ find_and_load <- function(rdataStr, regionDir, env=globalenv()){
 # ------------intro_setup----------------
 # Loads common data needed for the report into the passed environment
 # and initializes the base maps and summary tables for the report.
-intro_setup <- function(studyArea, env=globalenv(), regionStr) {
-
+intro_setup <- function(studyArea, env=globalenv()) {
+  source(here::here("config.R"), local=TRUE)
   copy_rdata_files() # make sure data files are up to date.
   #load common data into this function and passed environment
   load_rdata(c("CommonData"), regionStr, env = env)
