@@ -1,9 +1,6 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
-
 source(here::here("config.R"))
-
-
 
 loadResult <- load_rdata(c("CommonData", "pasBay_rr"), regionStr)
 
@@ -13,26 +10,23 @@ pasBayPkgId <- "2dfa19db-a8cf-4460-97b9-710c2b856276"
 pasBay_rr <- get_opendata_rr(pasBayPkgId, NULL, region_sf = region_sf)
 pasBay_rr$metadata$contact <- email_format("Andrew.Cooper@dfo-mpo.gc.ca")
 pasBay_rr$metadata$qualityTier <- highQuality
-pasBay_rr$metadata$searchYears <- "2009-2017"
+pasBay_rr$metadata$searchYears <- "2009-2019"
 
-catchDataResId <- "5f55acd2-fe48-4624-a357-fe7babe2604b"
+catchDataResId <- "9ee042ea-ab9b-4af8-8cf5-de9c89a77a95"
 catchData <- download_extract_res_files(catchDataResId)
 catchData <- read.csv(file.path(fileLoadPath, "/NaturalResources/Species/PassamaquoddyBayBiodiversityTrawl/new_catch_data.csv"))
 catchData <- dplyr::select(catchData, c("setno", "scientific_name", "common_name"))
 
-setDataResId <- "4184b6d7-b711-430c-81ed-504c05657c16"
+setDataResId <- "b1379a08-7bbc-4ae7-b805-7e609e8d0f02"
 setData <- download_extract_res_files(setDataResId)
-# manual fix of typo on open data....
-setData[(setData$setno == 2016.008),]$latitude_finish <- 45.09421
 
-pasBay <- left_join(catchData, setData, by = "setno")
-pasBay <- pasBay[!(is.na(pasBay$latitude_start)), ]
+pasBay <- left_join(catchData, setData, by = c("setno" = "set_ensemble"))
 pasBay <- dplyr::mutate(pasBay, 
-                        wkt = paste("LINESTRING (", longitude_start, " ", 
-                                    latitude_start, ", ", longitude_finish, " ",
-                                    latitude_finish, ")", sep = ""))
+                        wkt = paste("LINESTRING (", longitude_start_début_de_longitude, " ", 
+                                    latitude_start_début_de_latitude, ", ", longitude_finish_longitude.d.arrivée, " ",
+                                    latitude_finish_latitude_d.arrivée, ")", sep = ""))
 pasBay$geometry <- st_as_sfc(pasBay$wkt, crs = 4326)
-pasBay <- dplyr::select(pasBay, c("scientific_name", "common_name", "time_start", "geometry"))
+pasBay <- dplyr::select(pasBay, c("scientific_name", "common_name", "time_start_heure_de_début", "geometry"))
 pasBay$common_name <- str_to_title(pasBay$common_name)
 pasBay$scientific_name <- str_to_sentence(pasBay$scientific_name)
 names(pasBay) <-  c("Scientific Name", "Common Name", "Start Time", "geometry")

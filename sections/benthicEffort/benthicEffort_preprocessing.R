@@ -1,6 +1,5 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 source(here::here("app/R/dataFunctions.R"))
-
 source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "benthicEffort_rr"), regionStr)
@@ -9,7 +8,7 @@ loadResult <- load_rdata(c("CommonData", "benthicEffort_rr"), regionStr)
 # -----------Benthic Fishing Effort--------------
 
 benthicEffortPkgId <- "273df20a-47ae-42c0-bc58-01e451d4897a"
-benthicEffortResId <- "fc685885-9ffe-4a7c-a0e1-78119ce68e98"
+benthicEffortResId <- "2bcd161c-d6f6-4145-9c53-265a51376494"
 benthicEffortCheckDate <-  get_check_date("benthicEffort_rr")
 
 

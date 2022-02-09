@@ -299,10 +299,9 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
 
 # create the open data data csv file
 gen_checkdate_csv <- function() {
-  dataSetDf <- data.frame("rrStr" = c("ebsa_rr", "crithab_rr", "sardist_rr", 
-                                      "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
-                                      "rv_rr", "pasBay_rr"))
-  load_rdata(dataSetDf$rrStr,  regionStr)
+  source(here::here("config.R"), local=TRUE)
+  dataSetDf <- rr_openDataList
+  load_rdata(rr_openDataList$rrStr,  regionStr)
   dataSetDf$rr <- lapply(dataSetDf$rrStr, get) 
   dataSetDf$pkgId <- lapply(dataSetDf$rr, pkg_id_from_url)
   dataSetDf$AccessedDate <- lapply(lapply(dataSetDf$rr, "[[", "metadata"),

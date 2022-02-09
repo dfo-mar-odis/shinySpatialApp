@@ -16,7 +16,7 @@ if (!exists("mapDataList")){
   source(here::here("config.R"))
   lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a   list of packages
   studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) # last area from app.
-  intro_setup(studyArea, env = environment(), regionStr=regionStr)
+  intro_setup(studyArea, env = environment())
   # need to clear this global env variable here.
   if (exists("commonObis", envir=globalenv())) { 
     rm("commonObis", envir=globalenv())
