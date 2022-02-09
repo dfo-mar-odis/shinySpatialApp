@@ -1,0 +1,12 @@
+---
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+## **Human Activities**
+
+This module summarizes human activity information available from various DFO and non-DFO sources.
+
+```{r child = here::here("sections/benthicEffort/benthicEffort_fr.Rmd")}
+```
+
