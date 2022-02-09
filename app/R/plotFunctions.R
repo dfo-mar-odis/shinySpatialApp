@@ -213,7 +213,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                           outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
                           labelData=NULL, labelAttribute=NULL, 
                           fillClr="#56B4E9", alpha=1, plotTitle=NULL, 
-                          tickNum = NULL) {
+                          tickNum = NULL, continuousAttr=FALSE) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -241,16 +241,22 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     polyPlot <- geom_sf(data = polyData, fill = fillClr, col = clr, alpha=alpha)
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
-    polyData[[attribute]] = as.factor(polyData[[attribute]])
-    
     polyAes <- aes(fill = !!sym(attribute))
+    
+    if (continuousAttr){
+      polyFill <- scale_fill_continuous(type="viridis", name=legendName, labels = comma)  
+    } else {
+      polyData[[attribute]] = as.factor(polyData[[attribute]])
+      
+      polyFill <- scale_fill_manual(values=colorMap, name=legendName)
+    }
+    
 
     if (is.null(colorMap)){
       colorMap <- get_rr_color_map(polyData[[attribute]])
     } else {
       colorMap <- colorMap[names(colorMap) %in% polyData[[attribute]]]
     }
-    polyFill <- scale_fill_manual(values=colorMap, name=legendName)
     
     if (outlines) {
       polyPlot <- geom_sf(data=polyData, polyAes, colour=clr, alpha=alpha)
