@@ -295,6 +295,20 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
   out_sf <- out_sf %>% dplyr::select("YEAR", "CODE", "Scientific Name", "Common Name", "TOTNO", "ELAT", "ELONG")
 }
 
+
+get_esri_rest <- function(mapServerUrl, layer="1") {
+  url <- parse_url(url)
+  url$path <- paste(url$path, layer, "query", sep = "/")
+  url$query <- list(where = "OBJECTID>0",
+                    outFields = "*",
+                    returnGeometry = "true",
+                    f = "geojson")
+  request <- build_url(url)
+  out_sf <- st_read(request)
+  return(out_sf)
+}
+
+
 # ---------------GIT ACTION FUNCTIONS----------------
 
 # create the open data data csv file
@@ -323,3 +337,5 @@ pkg_id_from_url <- function(rr) {
     return(pkgId)
   }
 }
+
+
