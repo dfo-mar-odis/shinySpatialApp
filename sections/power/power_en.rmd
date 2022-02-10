@@ -1,0 +1,78 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { 
+  # load in generic data, e.g.functions, study area, and base maps into the 
+  # environment, when knitting, these will be loaded through the child rmd.
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
+  intro_setup(studyArea, env = environment())
+}
+```
+
+### **Clean power generating stations by type in megawatts (MW)** {#power-section}
+
+```{r power-load, include=FALSE}
+# load in section specific data
+load_rdata(c("power_rr"), regionStr, env = environment())
+
+```
+
+```{r power-meta, results='asis'}
+# metadata blurb at start of each section
+write_meta(power_rr, "EN")
+```
+
+
+Dataset description from the Open Data record [@OpenData_power]:
+```{r power-text, results='asis'}
+writeLines(noquote(power_rr$text$en))
+
+```
+
+
+#### ***Area-specific Clean Power Generating Stations***
+```{r power-results, include=FALSE, cache=FALSE}
+# clip the data to the Study and Map areas:
+powerOutputList <- master_intersect(power_rr$data_sf, mapDataList, getRegion = TRUE)
+
+powerTable <- NULL
+if (!is.null(powerOutputList$studyData)){
+  powerTable <- dplyr::select(powerOutputList$studyData, c("STATION", "STATION_OW", "MEGAWATTS", "CLEAN_TYPE")) %>% st_drop_geometry()
+  names(powerTable) <- c("Station", "Station Owner", "Megawatts", "Type")
+  rownames(powerTable) <- NULL
+}
+
+
+```
+
+```{r power-check, echo=FALSE, results='asis',}
+# Check if there is any data in the study area
+powerReport <- if (is.null(powerOutputList$studyData)) {
+  "* There are no relevant clean power generating station records for this search area."
+} else {
+  "* There are relevant clean power generating station records for this search area."
+}
+writeLines(noquote(powerReport))
+```
+
+```{r power-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(power_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query disposal site records.')}
+if (!is.null(powerOutputList$studyData)) {
+    plot(plot_rr_sf(areaMap, powerOutputList$mapData, 
+                    attribute=power_rr$attribute, size=6,
+                    legendName="Megawatts", continuousAttr=TRUE))
+
+}
+```
+
+```{r power-all-table}
+if (!is.null(powerOutputList$studyData)) {
+knitr::kable(powerTable, align="l", caption=paste("\\label{tab:power_table}", write_caption_blurb(power_rr, "EN"), "Clean power generation sites contained within the search area, The absence of a power generation site in this table should be interpreted as an absence of reporting, not necessarily as an absence of power generation sites in the area. </b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
