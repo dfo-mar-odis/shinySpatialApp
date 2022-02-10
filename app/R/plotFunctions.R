@@ -213,7 +213,8 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                           outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
                           labelData=NULL, labelAttribute=NULL, 
                           fillClr="#56B4E9", alpha=1, plotTitle=NULL, 
-                          tickNum = NULL, continuousAttr=FALSE) {
+                          tickNum = NULL, continuousAttr=FALSE, minScale=NULL,
+                          maxScale=NULL) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -244,7 +245,15 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     polyAes <- aes(fill = !!sym(attribute))
     
     if (continuousAttr){
-      polyFill <- scale_fill_continuous(type="viridis", name=legendName, labels = comma)  
+      if (is.null(minScale)){
+        minScale = min(polyData[[attribute]])
+      }
+      if (is.null(maxScale)){
+        maxScale = max(polyData[[attribute]])
+      }
+      
+      polyFill <- scale_fill_continuous(type="viridis", name=legendName, 
+                                        labels = comma, limits=c(minScale, maxScale))  
     } else {
       polyData[[attribute]] = as.factor(polyData[[attribute]])
       
