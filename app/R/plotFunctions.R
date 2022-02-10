@@ -214,7 +214,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                           labelData=NULL, labelAttribute=NULL, 
                           fillClr="#56B4E9", alpha=1, plotTitle=NULL, 
                           tickNum = NULL, continuousAttr=FALSE, minScale=NULL,
-                          maxScale=NULL) {
+                          maxScale=NULL, lwd=1) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -244,6 +244,12 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
     polyAes <- aes(fill = !!sym(attribute))
     
+    if (is.null(colorMap)){
+      colorMap <- get_rr_color_map(polyData[[attribute]])
+    } else {
+      colorMap <- colorMap[names(colorMap) %in% polyData[[attribute]]]
+    }
+    
     if (continuousAttr){
       if (is.null(minScale)){
         minScale = min(polyData[[attribute]])
@@ -251,7 +257,6 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
       if (is.null(maxScale)){
         maxScale = max(polyData[[attribute]])
       }
-      
       polyFill <- scale_fill_continuous(type="viridis", name=legendName, 
                                         labels = comma, limits=c(minScale, maxScale))  
     } else {
@@ -261,18 +266,12 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     }
     
 
-    if (is.null(colorMap)){
-      colorMap <- get_rr_color_map(polyData[[attribute]])
-    } else {
-      colorMap <- colorMap[names(colorMap) %in% polyData[[attribute]]]
-    }
-    
     if (outlines) {
       polyPlot <- geom_sf(data=polyData, polyAes, colour=clr, alpha=alpha)
     }
     else {
       polyAes <- modifyList(polyAes, aes(col=!!sym(attribute)))
-      polyPlot <- geom_sf(data=polyData, polyAes, alpha = alpha)
+      polyPlot <- geom_sf(data=polyData, polyAes, alpha = alpha, lwd=lwd)
       polyOutline <- scale_color_manual(values=colorMap, guide="none")  
     }
   }

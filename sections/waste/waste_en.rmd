@@ -1,0 +1,65 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { 
+  # load in generic data, e.g.functions, study area, and base maps into the 
+  # environment, when knitting, these will be loaded through the child rmd.
+  lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
+  intro_setup(studyArea, env = environment())
+}
+```
+
+### **Active and Inactive Disposal at Sea Sites** {#waste-section}
+
+```{r waste-load, include=FALSE}
+# load in section specific data
+load_rdata(c("waste_rr"), regionStr, env = environment())
+
+```
+
+```{r waste-meta, results='asis'}
+# metadata blurb at start of each section
+write_meta(waste_rr, "EN")
+```
+
+
+Dataset description from the Open Data record [@OpenData_waste]:
+```{r waste-text, results='asis'}
+writeLines(noquote(waste_rr$text$en))
+
+```
+
+
+#### ***Area-specific  Active and Inactive Disposal at Sea Sites***
+```{r waste-results, include=FALSE, cache=FALSE}
+# clip the data to the Study and Map areas:
+wasteOutputList <- master_intersect(waste_rr$data_sf, mapDataList)
+
+```
+
+```{r waste-check, echo=FALSE, results='asis',}
+# Check if there is any data in the study area
+wasteReport <- if (is.null(wasteOutputList$studyData)) {
+  "* There are no relevant disposal site records for this search area."
+} else {
+  "* There are relevant disposal site records for this search area."
+}
+writeLines(noquote(wasteReport))
+```
+
+```{r waste-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(waste_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query disposal site records.')}
+if (!is.null(wasteOutputList$studyData)) {
+    plot(plot_rr_sf(areaMap, wasteOutputList$mapData, 
+                    attribute=waste_rr$attribute, outlines=FALSE,
+                    legendName="Nitrogen Load (kg/yr)", lwd=2))
+
+}
+```
+
