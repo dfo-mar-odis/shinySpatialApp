@@ -24,7 +24,7 @@
 #                NULL unless getRegion is TRUE.
 # 4. mapPoints: Unique collection of points to be plotted on a map.
 master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
-
+  
   # check that data_sf is an accepted format:
   if (is.null(data_sf)) {
     outList <- list(regionData = NULL,
@@ -55,6 +55,7 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
   } else if (!inherits(st_geometry(data_sf), c("sfc_POINT", 
                                                    "sfc_POLYGON", 
                                                    "sfc_LINESTRING",
+                                                   "sfc_MULTILINESTRING",
                                                    "sfc_MULTIPOLYGON",
                                                    "sfc_GEOMETRY"))) {
     regionData = NULL
@@ -63,16 +64,17 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
     mapPoints = NULL
     
   } else {
+    geometryType <- toString(st_geometry_type(data_sf, by_geometry = FALSE))
     # Crop data
     if (getRegion) {
-      regionData <- st_crop(data_sf, mapDataList$region)  
+      regionData <- st_crop(data_sf, mapDataList$region) %>% st_cast(geometryType)
       if (nrow(regionData) == 0) {regionData <- NULL}
     } else {
       regionData <- NULL
     }
     
-    mapData <- st_crop(data_sf, mapArea)
-    studyData <- st_crop(mapData, mapDataList$studyArea)
+    mapData <- st_crop(data_sf, mapArea) %>% st_cast(geometryType)
+    studyData <- st_crop(mapData, mapDataList$studyArea) %>% st_cast(geometryType)
     
     # if there is no intersect with the box, set return to NULL
     if (nrow(mapData) == 0) {mapData <- NULL}

@@ -24,7 +24,7 @@ plot_rr_sf <- function(baseMap, data_sf, ...) {
     
     outPlot <- plot_polygons(baseMap, data_sf, ...)
     
-  } else if (inherits(sf::st_geometry(data_sf), "sfc_LINESTRING")) {
+  } else if (inherits(sf::st_geometry(data_sf), c("sfc_LINESTRING", "sfc_MULTILINESTRING"))) {
     
     outPlot <- plot_lines(baseMap, data_sf, ...)
     

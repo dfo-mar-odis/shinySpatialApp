@@ -3,6 +3,7 @@ library(ckanr)
 ckanr_setup(url="https://open.canada.ca/data")
 
 library(sf)
+library(httr)
 source(here::here("config.R"))
 source(here::here("app/R/helpers.R"))
 source(here::here("app/R/dataFunctions.R"))
@@ -296,10 +297,10 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
 }
 
 
-get_esri_rest <- function(mapServerUrl, layer="1") {
+get_esri_rest <- function(mapServerUrl, layer="1", where="OBJECTID>0") {
   url <- parse_url(url)
   url$path <- paste(url$path, layer, "query", sep = "/")
-  url$query <- list(where = "OBJECTID>0",
+  url$query <- list(where = where,
                     outFields = "*",
                     returnGeometry = "true",
                     f = "geojson")
