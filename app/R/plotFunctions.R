@@ -12,19 +12,27 @@
 
 plot_rr_sf <- function(baseMap, data_sf, ...) {
   
+  if (is.null(data_sf)) {
+    return(baseMap)
+  }
+  if (nrow(data_sf) == 0) {
+    return(baseMap)
+  }
+  
+  # only check first row of data_sf to avoid sfc_geometry for mixed poly/multiploys and lines/multilines
   if (inherits(data_sf, "RasterLayer")) {
     
     outPlot <- plot_raster(baseMap, data_sf, ...)
     
-  }else if (inherits(sf::st_geometry(data_sf), c("sfc_POINT"))) {
+  }else if (inherits(sf::st_geometry(data_sf[1, ]), c("sfc_POINT"))) {
     
     outPlot <- plot_points(baseMap, data_sf, ...)
     
-  } else if (inherits(sf::st_geometry(data_sf), c("sfc_POLYGON", "sfc_MULTIPOLYGON", "sfc_GEOMETRY"))) {
+  } else if (inherits(sf::st_geometry(data_sf[1, ]), c("sfc_POLYGON", "sfc_MULTIPOLYGON"))) {
     
     outPlot <- plot_polygons(baseMap, data_sf, ...)
     
-  } else if (inherits(sf::st_geometry(data_sf), c("sfc_LINESTRING", "sfc_MULTILINESTRING"))) {
+  } else if (inherits(sf::st_geometry(data_sf[1, ]), c("sfc_LINESTRING", "sfc_MULTILINESTRING"))) {
     
     outPlot <- plot_lines(baseMap, data_sf, ...)
     
@@ -257,7 +265,8 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
       colorMap <- colorMap[names(colorMap) %in% polyData[[attribute]]]
     }
     
-    polyFill <- scale_bar_layer(polyData, attribute, continuousAttr, minScale, maxScale, legendName)
+    polyFill <- scale_bar_layer(polyData, attribute, continuousAttr, minScale,
+                                maxScale, legendName, colorMap)
     
     if (outlines) {
       polyPlot <- geom_sf(data=polyData, polyAes, colour=clr, alpha=alpha)
@@ -360,7 +369,7 @@ get_rr_color_map <- function(dataCol) {
   return(colorMap)
 }
 
-scale_bar_layer <- function(data_sf, attribute, continuous, minValue, maxValue, legendName, fill=TRUE){
+scale_bar_layer <- function(data_sf, attribute, continuous, minValue, maxValue, legendName, colorMap, fill=TRUE){
   if (continuous){
     if (is.null(minValue)){
       minScale = min(data_sf[[attribute]])

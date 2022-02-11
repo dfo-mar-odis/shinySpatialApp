@@ -58,7 +58,7 @@ writeLines(noquote(wasteReport))
 if (!is.null(wasteOutputList$studyData)) {
     plot(plot_rr_sf(areaMap, wasteOutputList$mapData, 
                     attribute=waste_rr$attribute, outlines=FALSE,
-                    legendName="Nitrogen Load (kg/yr)", lwd=2))
+                    legendName="Waste Site Status", lwd=2))
 
 }
 ```

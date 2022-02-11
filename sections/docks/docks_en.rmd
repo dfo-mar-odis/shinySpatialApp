@@ -30,7 +30,7 @@ write_meta(docks_rr, "EN")
 ```
 
 Dataset description from the Open Data record [@OpenData_docks]:
-```{r nitroLoad-text, results='asis'}
+```{r docks-text, results='asis'}
 writeLines(noquote(docks_rr$text$en))
 
 ```

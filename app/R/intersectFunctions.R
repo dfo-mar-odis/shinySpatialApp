@@ -64,17 +64,16 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
     mapPoints = NULL
     
   } else {
-    geometryType <- toString(st_geometry_type(data_sf, by_geometry = FALSE))
     # Crop data
     if (getRegion) {
-      regionData <- st_crop(data_sf, mapDataList$region) %>% st_cast(geometryType)
+      regionData <- st_crop(data_sf, mapDataList$region)
       if (nrow(regionData) == 0) {regionData <- NULL}
     } else {
       regionData <- NULL
     }
     
-    mapData <- st_crop(data_sf, mapArea) %>% st_cast(geometryType)
-    studyData <- st_crop(mapData, mapDataList$studyArea) %>% st_cast(geometryType)
+    mapData <- st_crop(data_sf, mapArea)
+    studyData <- st_crop(mapData, mapDataList$studyArea)
     
     # if there is no intersect with the box, set return to NULL
     if (nrow(mapData) == 0) {mapData <- NULL}

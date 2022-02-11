@@ -7,6 +7,22 @@ editor_options:
 
 This module summarizes human activity information available from various DFO and non-DFO sources.
 
-```{r child = here::here("sections/benthicEffort/benthicEffort_en.Rmd")}
+```{r child = here::here("sections/nitroLoad/nitroLoad_en.rmd")}
 ```
+
+```{r child = here::here("sections/benthicEffort/benthicEffort_en.rmd")}
+```
+
+```{r child = here::here("sections/lobsterEffort/lobsterEffort_en.rmd")}
+```
+
+```{r child = here::here("sections/docks/docks_en.rmd")}
+```
+
+```{r child = here::here("sections/waste/waste_en.rmd")}
+```
+
+```{r child = here::here("sections/power/power_en.rmd")}
+```
+
 
