@@ -184,9 +184,17 @@ server <- function(input, output, session) {
     geoms$final <- geoms$select[input$check_input_areas, ]
   })
 
-
-
-
+  # HIDE / SHOW FULL REPORT BASED ON REGION SELECTED IN USER TAB
+  observeEvent(input$u_region, {
+    if (input$u_region == "Gulf Region") {
+      hideTab(inputId = "active_panel", target = "Full report")
+      hideTab(inputId = "map_or_report", target = "Full report")
+    } else {
+      showTab(inputId = "active_panel", target = "Full report")
+      showTab(inputId = "map_or_report", target = "Full report")
+    }
+  })
+  
   # GENERATE REPORT
   preview <- reactiveValues(
     full_html = "www/empty_report.html",
