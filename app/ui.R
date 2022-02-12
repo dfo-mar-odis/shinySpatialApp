@@ -53,13 +53,17 @@ ui <- fluidPage(
         tabPanel(
           "View map",
           icon = icon("map"),
-          myhelptxt("Explore the map."),
+          myhelptxt("Search and explore map."),
+          h5("Set view"),
+          actionButton("reset_view", "Reset view", icon = icon("rotate")),
+          actionButton('select_view', "View selected", icon = icon("check")),
+          br(),br(),
           div(style="display: inline-block;",
-          textInput("location", label = "Enter a location", value = "Halifax")),
-          actionButton("search_loc", "Search location", icon = icon("search")),
+          textInput("location", label = "Explore by location", value = "Halifax")),
+          actionButton("search_loc", "Search", icon = icon("search")),
           br(),
-          myhelptxt("This tab allows you to create or import geometries, and validate which geometries to use to generate the report. 1. Select/create/import geometries in `Geometries`. 2. Validate geometries in `Validate`."),
-          
+        
+          myhelptxt("The following tabs allow you to select and validate the geometries used to generate the report. 1. Select geometries in `Geometries`. 2. Validate geometries in `Validate`."),  
           tabsetPanel(
             # LAYER CREATION
             tabPanel(

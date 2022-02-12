@@ -161,9 +161,11 @@ server <- function(input, output, session) {
     if (n) {
       shinyjs::show(id = "add_geoms_to_map")
       shinyjs::show(id = "valid_geoms")
+      shinyjs::show(id = "select_view")
     } else {
       shinyjs::hide(id = "add_geoms_to_map")
       shinyjs::hide(id = "valid_geoms")
+      shinyjs::hide(id = "select_view")
     }
 
   }, ignoreNULL = FALSE)
