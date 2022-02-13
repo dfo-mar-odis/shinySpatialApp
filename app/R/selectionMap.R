@@ -12,11 +12,14 @@ selectionMap <- function(geoms = NULL, set_view = TRUE) {
       baseGroups = c('OpenStreetMap', 'Ocean Basemap', 'OpenTopoMap'),
       position = 'bottomleft')
     
-  if (!is.null(geoms)) out <- leafem::addFeatures(out, geoms)
-
+  if (!is.null(geoms)) {
+    out <- leafem::addFeatures(out, geoms) 
+  } else {
+    out <- leaflet::setView(out, lat = 45.6, lng = -63.6, zoom = 7)    
+  }
+  
   if (set_view) {
     out %>% leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7)
   } else out 
-
 }
 

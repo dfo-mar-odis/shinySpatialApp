@@ -54,17 +54,15 @@ ui <- fluidPage(
           "View map",
           icon = icon("map"),
           myhelptxt("Search and explore map."),
-          h5("Set view"),
-          actionButton("reset_view", "Reset view", icon = icon("rotate")),
-          actionButton('select_view', "View selected", icon = icon("check")),
-          br(),br(),
           div(style="display: inline-block;",
           textInput("location", label = "Explore by location", value = "Halifax")),
           actionButton("search_loc", "Search", icon = icon("search")),
+          actionButton("reset_view", "Reset view", icon = icon("arrow-right")),
           br(),
         
           myhelptxt("The following tabs allow you to select and validate the geometries used to generate the report. 1. Select geometries in `Geometries`. 2. Validate geometries in `Validate`."),  
           tabsetPanel(
+            id = "geometries",
             # LAYER CREATION
             tabPanel(
               "Geometries",
@@ -149,11 +147,16 @@ ui <- fluidPage(
                   myhelptxt("This tab allows you to validate geometries you wish to use to generate a report and. It also allows you to look up a specific location."),
                   checkboxGroupInput("check_input_areas", choiceNames = "Input placeholder1", choiceValues = 1, c("none")),
                   actionButton('add_geoms_to_map', 'Add to map', icon = icon("pencil-alt")),
-                  actionButton('valid_geoms', "Validate", icon = icon("check")),
+                  actionButton('select_view', "Set view on selection", icon = icon("check")),
                   actionButton('clear_map', "Clear map", icon = icon("trash-alt")),
+                  actionButton("reset_view_valid", "Reset view", icon = icon("arrow-right")),
                   br(),
                   br(),
-                  uiOutput("nb_geoms_selected")
+                  uiOutput("nb_geoms_selected"),
+                  br(),
+                  br(),
+                  actionButton('valid_geoms', "Validate", icon = icon("check")),
+                  
                 ),
           ),
         ),

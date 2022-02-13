@@ -1,7 +1,7 @@
 server <- function(input, output, session) {
 
   # INITIATE MAP
-  map <- selectionMap()
+  map <- selectionMap(set_view = TRUE)
   edits <- callModule(editMod, leafmap = map, id = "map")
 
   # SWITCH MAIN TAB FROM MAP TO REPORT WHEN SIDE TAB IS REPORT
@@ -170,15 +170,50 @@ server <- function(input, output, session) {
 
   }, ignoreNULL = FALSE)
 
-  observeEvent(input$clear_map, {
-    map <- selectionMap()
-    callModule(editMod, leafmap = map, id = "map")
+  # MAP VIEWS 
+  # Reset map when clicking on validate 
+  observeEvent(input$geometries, {
+    if(input$geometries == "Validate") {
+      map <- selectionMap(geoms$select[input$check_input_areas, ], FALSE) # Switch to TRUE to set it to default Halifax view
+      callModule(editMod, leafmap = map, id = "map")      
+    }
   })
 
+  # Clear all polygons
+  observeEvent(input$clear_map, {
+    leafletProxy("map-map") %>%
+    clearShapes() 
+  })
+
+  # Add selected polygons
   observeEvent(input$add_geoms_to_map, {
-    map <- selectionMap(geoms$select[input$check_input_areas, ])
-    callModule(editMod, leafmap = map, id = "map")
-  }, ignoreNULL = FALSE)
+    if (!is.null(geoms)) {
+      leafletProxy("map-map") %>%
+      clearShapes() %>%
+      leafem::addFeatures(geoms$select[input$check_input_areas, ])      
+    }
+  })
+  
+  # Reset map in explore
+  observeEvent(input$reset_view, {
+    leafletProxy("map-map") %>%
+    leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7)
+  })
+  
+  # Reset map in validate
+  observeEvent(input$reset_view_valid, {
+    leafletProxy("map-map") %>%
+    leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7)
+  })
+
+  # Set view on selected polygons
+  observeEvent(input$select_view, {
+    # print(st_bbox(geoms$select[input$check_input_areas, ]))
+    bbv <- st_bbox(geoms$select[input$check_input_areas, ])
+    leafletProxy("map-map") %>%
+    leaflet::fitBounds(lng1 = bbv[[1]], lat1 = bbv[[2]], lng2 = bbv[[3]], lat2 = bbv[[4]])
+  })  
+  
 
   observeEvent(input$valid_geoms, {
     n <- length(input$check_input_areas)
