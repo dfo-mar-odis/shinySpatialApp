@@ -103,7 +103,7 @@ ui <- fluidPage(
                   div(style="display: inline-block;vertical-align:top;",
                     numericInput("pt_y", label = "Latitude", value = "0", min = -180, max = 180)),
                   br(),
-                  numericInput("pt_buffer", label = "Optional buffer (m)", value = "100000", min = 0, max = 25000000),
+                  numericInput("pt_buffer", label = "Optional buffer (m)", value = "10000", min = 0, max = 25000000),
                   tags$details(
                       tags$summary("Advanced options", icon("cog")),
                       numericInput("pt_crs", label = HTML("Spatial projection (see EPSG code: <a href='https://epsg.io/' target='_blank'>https://epsg.io/</a>)"), value = "4326")

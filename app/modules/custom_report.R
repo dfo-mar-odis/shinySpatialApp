@@ -54,7 +54,7 @@ renderCustomReport <- function(id, preview, u_name, u_email, u_consent) {
                 fs::path_ext_remove(input$type), 
                 "_", tolower(input$lang), ".Rmd"
               ),
-              glue(input$filename, "_", tolower(input$lang), ".Rmd")
+              glue(gsub(" ", "-", input$filename), "_", tolower(input$lang), ".Rmd")
             )
           out <- glue_path("www", "reports", fln)
           # render template 

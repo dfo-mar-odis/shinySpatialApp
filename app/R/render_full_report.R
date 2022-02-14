@@ -20,8 +20,6 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
   if (is.null(geoms)) {
     msg <- "Please define areas of interest"
     return(list(msg = msg, ok = FALSE, html = "empty_report.html"))
-    # flge <- list()
-    # flge$relrmd <- NULL
   } else {
     flge <- save_geom(geoms, dir_out)
   }
@@ -30,7 +28,7 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
   fl <- ifelse(
     fl == "",
     glue("report_SMR_{lang}.Rmd"),
-    glue("{fl}_{lang}.Rmd")
+    glue("{gsub(' ', '-', fl)}_{lang}.Rmd")
   )
   
   #
