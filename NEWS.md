@@ -2,7 +2,6 @@
 
 * Render documents only in HTML (for preview) and print HTML to PDF if desired (see #11).
 * Introduce a new module `full_report` to render full reports and review how reports are generated (see 4159a29).
-* Add a new feature to look up location on a map (see #13).
 * Introduce a new module 'Custom report' that allows for the creation of new R Markdown reports (see #6).
 * Hide "spatial projection" option (see #8).
 * New section for the full report has been added (see #5).
@@ -12,6 +11,11 @@
 * Includes DFO functions to create map and extract data. 
 * Includes `app/data/` folder where data should be included. 
 * `report_pt1_generic_intro_EN.Rmd` includes a example of extraction and map.
+* Add region check and hide full report for gulf region (#10)
+* Combine 'Geometries' and 'Validate' into a single tab called 'View map'
+* Add a new feature to look up location on a map (see #13).
+* Set map view on created / imported geometries when opening 'Visualize and validate' tab (#12)
+* Add options to set view and zoom in to selected objects in 'Visualize and validate' tab (#7 & #13)
 
 
 # shinySpatialApp 1.0.0 
