@@ -60,12 +60,12 @@ ui <- fluidPage(
           actionButton("reset_view", "Reset view", icon = icon("arrow-right")),
           br(),
         
-          myhelptxt("The following tabs allow you to select and validate the geometries used to generate the report. 1. Select geometries in `Geometries`. 2. Validate geometries in `Validate`."),  
+          myhelptxt("The following tabs allow you to build, visualize, select, and validate the geometries used to generate the report. 1. Build and import geometries in `Build geometries`. 2. Visualize, select, and validate geometries in `Visualize & validate`."),  
           tabsetPanel(
             id = "geometries",
             # LAYER CREATION
             tabPanel(
-              "Geometries",
+              "Build geometries",
               icon = icon("pencil-alt"),
               myhelptxt("This tab allows you to create or import areas of interest using one of the three tabs below."),
 
@@ -142,7 +142,7 @@ ui <- fluidPage(
               
               # VALID GEOMS
               tabPanel(
-                  "Validate",
+                  "Visualize & validate",
                   icon = icon("check"),
                   myhelptxt("This tab allows you to validate geometries you wish to use to generate a report and. It also allows you to look up a specific location."),
                   checkboxGroupInput("check_input_areas", choiceNames = "Input placeholder1", choiceValues = 1, c("none")),
