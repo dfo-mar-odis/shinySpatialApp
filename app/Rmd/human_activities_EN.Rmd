@@ -1,7 +1,15 @@
 ---
-output: html_document
-editor_options:
-  chunk_output_type: console
+title: "Reproducible Report for Internal DFO Use Only - Protected B - Do Not Share"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: false
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 ## **Human Activities**
 
