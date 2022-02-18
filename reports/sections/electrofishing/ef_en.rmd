@@ -1,0 +1,130 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("reports/commonSections/commonIntro.Rmd")}
+if (FALSE) { # load in data:
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
+  intro_setup(studyArea, env = environment())
+}
+```
+
+### **Regional Electrofishing Surveys** {#ef-section}
+
+```{r ef-load, include=FALSE}
+load_rdata(c("ef_rr", "ws_rr", "rivers_rr"), regionStr, env = environment())
+```
+
+```{r ef-meta, results='asis'}
+write_meta(ef_rr, "EN")
+```
+
+The following is information summarized from Gibson et al. (2011) and Bowlby et al. (2013). Region wide electrofishing surveys in the Southern Upland region of Nova Scotian rivers were conducted in 2000 and in 2008/2009. Both surveys were and found to be similar in terms of total effort and coverage with a few differences. Marginally more sites were completed in 2008–2009 than in 2000 (151 versus 128), and two more rivers were visited (54 in 2008–2009; 52 in 2000). The majority of rivers in the latter survey were electrofished in 2008. However, as water conditions in 2008 prevented sampling in several rivers (predominantly north of the St. Mary’s River), the survey was continued in 2009 to fill in this gap. Electrofishing surveys have supported assessments of Atlantic salmon juvenile abundance, and information about other species including American eel, Brook Trout, Brown Trout, and White Sucker.
+
+This section provides information primarily on species presence during these surveys and was focused on detecting Atlantic Salmon. Sites were chosen to maximize the likelihood of encountering Atlantic Salmon and are not necessarily representative lotic habitat of the watersheds. Species identifications of non-salmonid species were not verified with voucher specimens, so species presence or abundance must be interpreted with caution. Variation of electrofishing methods and use of barrier nets between sites affects the efficiency of electrofishing.  The absence of a species in the following summary should be interpreted as an absence of reporting, not necessarily as an absence of the species in a given river. For additional information, please access the following technical reports: [@Bowlby2009EF], [@Bowlby2013EF], [@Jones2018EF].
+
+
+#### ***Area-specific electrofishing survey search results***
+```{r ef-results, include=FALSE, cache=FALSE}
+
+efOutputList <- master_intersect(ef_rr$data_sf, mapDataList)
+wsOutputList <- master_intersect(ws_rr$data_sf, mapDataList)
+riversOutputList <- master_intersect(rivers_rr$data_sf, mapDataList)
+
+tableList <- create_sar_tables(efOutputList$studyData, listed_species, uniqueCols = c("geometry", "Year"))
+efAllTable <- tableList$allSpecies
+efSarTable <- tableList$sarData
+
+wsCols <- c("yellow", "grey")
+names(wsCols) <- c("Present", "Absent")
+
+
+efCols <- c("red", "black", "purple", "orange")
+names(efCols) <- levels(as.factor(ef_rr$data_sf[[ef_rr$attribute]]))
+
+
+if (!is.null(wsOutputList$studyData)) {
+  row.names(wsOutputList$mapData) <- NULL
+  wsOutputList$mapData$label <- row.names(wsOutputList$mapData)
+  wsMapLabels <- filter(st_centroid(wsOutputList$mapData), label > 0) %>% dplyr::select(c("label"))
+  wsOutputList$mapData$hasSites <- "Absent"
+  wsOutputList$mapData$ptCounts <- 0
+}
+
+if (!is.null(efOutputList$studyData)) {
+  ptCounts <- lengths(st_intersects(wsOutputList$mapData, efOutputList$studyData))
+  wsOutputList$mapData$hasSites[ptCounts > 0] <- "Present"
+  wsOutputList$mapData$ptCounts <- ptCounts
+  ws_rr$attribute <- "hasSites"
+
+  summarySarTable <- add_col_to_sar_summary(
+    summarySarTable,
+    "[Electrofishing](#ef-section)",
+    efSarTable, "Common Name",
+    "Common Name"
+  )
+}
+
+if (!is.null(wsOutputList$studyData)) {
+  wsTable <- dplyr::select(wsOutputList$mapData, c("label", "WS_NAME", "ptCounts"))
+  wsTable <- st_drop_geometry(wsTable)
+  wsTable <- wsTable[order(-wsTable$ptCounts), ]
+  names(wsTable) <- c("Label", "Watershed Name", "Number of Sites")
+  row.names(wsTable) <- NULL
+}
+```
+
+```{r ef-check, echo=FALSE, results='asis',}
+efReport <- if (is.null(efOutputList$studyData)) {
+  "* There are no relevant electrofishing suvey records for this search area."
+} else {
+  "* There are relevant electrofishing suvey records for this search area."
+}
+writeLines(noquote(efReport))
+```
+
+```{r ef-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ef_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from electrofishing survey records. Some sites were surveyed in multiple years.')}
+if (!is.null(efOutputList$studyData)) {
+  efPlot <- plot_rr_sf(areaMap, riversOutputList$mapData,
+    outlines = FALSE,
+    attribute = rivers_rr$attribute
+  )
+
+  efPlot <- plot_rr_sf(efPlot, wsOutputList$mapData,
+    attribute = ws_rr$attribute,
+    legendName = "Sites in Watershed", labelAttribute = "label",
+    labelData = wsMapLabels, alpha = 0.5, colorMap = wsCols
+  )
+
+  plot_rr_sf(efPlot, efOutputList$mapData,
+    attribute = ef_rr$attribute, colorMap = efCols,
+    size = 3
+  )
+}
+```
+<br>
+```{r ef-ws-table}
+if (!is.null(efOutputList$studyData)) {
+  if (nrow(wsTable) > 0) {
+    knitr::kable(wsTable, align = "l", caption = paste("\\label{tab:ef_ws_table}", write_caption_blurb(ef_rr, "EN"), "Electrofishing survey records of sites contained within the search area and listed by watershed.</b>"), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  }
+}
+```
+<br>
+```{r ef-SAR-table}
+if (!is.null(efOutputList$studyData)) {
+  if (nrow(efSarTable) > 0) {
+    knitr::kable(efSarTable, align = "l", caption = paste("\\label{tab:ef_SAR_table}", write_caption_blurb(ef_rr, "EN"), "Electrofishing survey records of species contained within the search area and listed by the Species At Risk Act (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC).Frequency represents the subset of the sampling locations out of the total where each species is present. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>"), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  }
+}
+```
+<br>
+```{r ef-all-table}
+if (!is.null(efOutputList$studyData)) {
+  knitr::kable(efAllTable, align = "l", caption = paste("\\label{tab:ef_all_table}", write_caption_blurb(ef_rr, "EN"), "Electrofishing survey records of all species contained within the search area, summarized by species or species group. Frequency represents the subset of the sampling locations out of the total where each species is present. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>"), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```

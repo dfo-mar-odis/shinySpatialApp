@@ -1,0 +1,63 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+```{r child = here::here("sections/commonSections/commonCet.Rmd")}
+```
+
+
+### **Le laboratoire Whitehead, Université de Dalhousie** {#Whitehead-section}
+
+```{r whitehead-load, include=FALSE}
+load_rdata(c("whitehead_rr"), "MAR", env = environment())
+```
+
+```{r whitehead-meta, results='asis'}
+write_meta(whitehead_rr, "FR")
+```
+
+Les renseignements suivants sont résumés dans ce site Web (https://whiteheadlab.weebly.com/). Le Whitehead Lab est basé au département de biologie de l’Université Dalhousie (Halifax, Nouvelle-Écosse). Depuis sa création en 1987, le laboratoire Whitehead a accueilli plus de 75 étudiants au niveau postdoctoral, au doctorat, à la maîtrise et au premier cycle. Ces étudiants mènent principalement des recherches axées sur la conservation sur le comportement, l’écologie et la biologie des populations des espèces de cétacés (principalement, les cachalots, les baleines à bec commune et les globicéphales noirs), et de nombreuses études sont axées sur les espèces dans les eaux de l’est du Canada. 
+
+La description suivante des méthodes de collecte de données sur les observations de cétacés utilisées par le laboratoire de Whitehead est tirée de Whitehead (2013); les données sur les observations de cétacés comprennent les observations d’espèces ciblées par la recherche ainsi que les observations fortuites de cétacés pendant des études sur les baleines à bec commune du Nord et, dans une moindre mesure, les cachalots dans le nord-ouest de l’Atlantique, principalement dans la ZPM du Gully, et les canyons adjacents le long de la limite est du plateau néo-écossais (les canyons Shortland et Haldimand). La collecte des données a été effectuée de façon comparable, à partir de deux navires de recherche similaires, un voilier auxiliaire de 10 mètres (utilisé lors des efforts antérieurs) et un voilier auxiliaire de 13 mètres (utilisé plus tard). Tous les cétacés observés ont été consignés, ainsi que le moment de l’observation, l’espèce (quand il était possible de la déterminer) et la position. À mesure que les définitions de la taille du groupe changent au cours de l’étude, les estimations de la taille du groupe peuvent être inexactes et peuvent être biaisées par des facteurs comme le comportement des animaux et les conditions météorologiques. Par conséquent, les lieux d’observation représentent des observations de groupes, qui pourraient être formés d’un ou de plusieurs animaux, plutôt que le nombre d’individus observés. Le laboratoire Whitehead fournit des observations de cétacés à la BDOB. Toutefois, en raison de son niveau de qualité élevé, cette base de données est résumée de manière indépendante dans cette section du rapport.
+
+#### ***Résultats de la recherche du laboratoire Whitehead par zone***
+
+```{r whitehead, include=FALSE, cache=FALSE}
+whiteheadClipped <- master_intersect(whitehead_rr$data_sf, mapDataList)
+
+linkedSectionText <- "[Whitehead](#Whitehead-section)"
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, whitehead_rr$attribute)
+
+if (!is.null(whiteheadClipped$studyData)) {
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
+
+```
+*
+```{r whitehead-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_whitehead <-  if (is.null(whiteheadClipped$studyData)) {
+   "Il n’existe aucun registre pertinent dans la base de données du laboratoire Whitehead pour cette zone de recherche."
+ } else {
+   "Il existe des registres pertinents dans la base de données du laboratoire Whitehead pour cette zone de recherche."
+ }
+writeLines(Report_whitehead)
+```
+
+```{r whitehead-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(whitehead_rr, "FR"), 'Carte montrant la zone de recherche définie par l’utilisateur (entourée de rouge). La carte affiche des renseignements tirés du laboratoire Whitehead pour les espèces de cétacés dans la zone de recherche et inscrites en vertu de la Loi sur les espèces en péril (LEP) ou évaluées par le Comité sur la situation des espèces en péril au Canada (COSEPAC)s. Les efforts sur le terrain ont surtout été menés dans la zone de protection marine de Gully et les canyons adjacents le long de la limite est du plateau néo-écossais, par beau temps (par exemple, consulter Whitehead 2013 pour voir une carte des efforts entre 1988 et 2011), bien que certaines données des relevés le long de la limite du plateau au large de la Nouvelle-Écosse et de Terre-Neuve-et-Labrador soient incluses. <b>Si une espèce est absente de cette carte, cette absence devrait être interprétée comme une absence de déclaration de l’espèce, et pas nécessairement comme l’absence de l’espèce dans cette zone.</b> L’absence peut être liée à un effort d’enquête faible ou nul. Cette carte n’inclut pas non plus les détections acoustiques. L’information sur les observations sous-représente la présence de cétacés, en particulier les espèces qui vivent en eau profonde (p. ex., les baleines à bec) et qui passent peu de temps à la surface. Pour de plus amples renseignements, consultez le site :<https://whiteheadlab.weebly.com/contact.html>')}
+if (!is.null(whiteheadClipped$studyData)) {
+  plot_rr_sf(areaMap, whiteheadClipped$mapData, attribute=whitehead_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
+}
+```

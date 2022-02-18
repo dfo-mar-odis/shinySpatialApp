@@ -1,0 +1,66 @@
+
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("reports/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+### **Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf**  {#nbw-hab-section}
+
+```{r nbw-load, include=FALSE}
+load_rdata(c("nbw_rr"), regionStr, env = environment())
+```
+
+```{r nbw-meta, results='asis'}
+write_meta(nbw_rr, "EN")
+```
+
+Dataset description from the Open Data record [@DFO2020NBW_imphabitat]:
+```{r nbw-text, results='asis'}
+# trim extra sections off.  
+nbwText <- sub("References: .*", "", nbw_rr$text$en)
+writeLines(noquote(nbwText))
+
+```
+
+Please see a list of all sources of information at the Open Data record [@DFO2020NBW_imphabitat]: `r nbw_rr$metadata$url$en`.
+
+#### ***Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results***
+
+```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
+# intersect polyData with 3 polygons (region, map area, and study box)
+clipped <- master_intersect(nbw_rr$data_sf, mapDataList)
+if(!is.null(clipped$studyData)){
+  summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[NBW Habitat](#nbw-hab-section)", summaryNBWTable, "Species", "Species")
+}
+```
+*
+```{r nbw-result, echo=FALSE, results='asis'}
+polyText <- if(is.null(clipped$studyData)){"Search area does not overlap with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf."
+} else {"Search area overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf."}
+
+ polyText <- noquote(polyText)
+ writeLines(polyText)
+```
+
+```{r nbw-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.')}
+if (!is.null(nbw_rr$data_sf)){
+  plot_rr_sf(regionMap, nbw_rr$data_sf, nbw_rr$attribute)
+}
+```
+
+```{r nbw-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'This map summarizes areas where the search polygon overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf.')}
+if (!is.null(clipped$mapData)){
+  plot_rr_sf(areaMap, clipped$mapData, nbw_rr$attribute)
+}
+```

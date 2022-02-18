@@ -1,0 +1,63 @@
+
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+```{r child = here::here("sections/commonSections/commonCet.Rmd")}
+```
+
+### **The Whitehead Lab, Dalhousie University** {#Whitehead-section}
+
+```{r whitehead-load, include=FALSE}
+load_rdata(c("whitehead_rr"), "MAR", env = environment())
+```
+
+```{r whitehead-meta, results='asis'}
+write_meta(whitehead_rr, "EN")
+```
+
+The following information is summarized from the Whietehad Lab (<https://whiteheadlab.weebly.com/>). The Whitehead Lab is based out of the Dalhousie University Department of Biology (Halifax, Nova Scotia). Since its inception in 1987, the Whitehead Lab has been home to over 75 postdoctoral, Ph.D., M.Sc., and undergraduate students. These students primarily conduct conservation-based research on the behavior, ecology, and population biology of cetacean species (primarily, Sperm Whales, Northern Bottlenose Whales, and Long-Finned Pilot Whales), with many studies focused on species in eastern Canadian waters.
+
+The following description of cetacean sightings data collection methods used by the Whitehead Lab is summarized from @Whitehead2013: cetacean sightings data include sightings of species of research focus as well as incidental sightings of cetaceans during studies of Northern Bottlenose Whales and, to a lesser extent, Sperm Whales in the northwest Atlantic, primarily in the Gully MPA, and adjacent canyons along the edge of the eastern Scotian Shelf (the Shortland and Haldimand canyons). Data collection was carried out in a comparable manner, from two similar research vessels: a 10 m auxiliary sailing vessel (used in earlier efforts), and a 13 m auxiliary sailing vessel (used in later efforts). All cetaceans sighted were recorded, together with time of sighting, species (where ascertainable), and position. As definitions of group size changed over the course of the study, group size estimates may be inaccurate and can be biased by factors such as the behaviour of the animals and weather. Consequently, sighting locations represent groups sightings, which could be one or more animals, rather than numbers of individuals. The Whitehead Lab provides cetacean sightings to the Whale Sightings Database (WSDB). However, due to its High Quality tier, this database is summarized independently in this section of the report.
+
+#### ***Area-specific Whitehead Lab search results***
+
+```{r whitehead, include=FALSE, cache=FALSE}
+whiteheadClipped <- master_intersect(whitehead_rr$data_sf, mapDataList)
+
+linkedSectionText <- "[Whitehead](#Whitehead-section)"
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, whitehead_rr$attribute)
+
+if (!is.null(whiteheadClipped$studyData)) {
+  summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+} else {
+ summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, NULL, "specIndex", linkedSectionText)
+}
+
+
+```
+*
+```{r whitehead-result, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_whitehead <-  if (is.null(whiteheadClipped$studyData)) {
+   "There are no relevant records in the Whitehead Lab database for this search area."
+ } else {
+   "There are relevant records in the Whitehead Lab database for this search area."
+ }
+writeLines(Report_whitehead)
+```
+```{r whitehead-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(whitehead_rr, "EN"), 'Map showing the search area defined by the user (red outline). Map of cetacean species listed by the <i>Species At Risk Act</i> (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), from the Whitehead Lab located within the search area (red outline). Field efforts were primarily conducted in the Gully Marine Protected Area, and adjacent canyons along the edge of the eastern Scotian Shelf, during good weather conditions (for example, see Whitehead 2013 for a map of effort between 1988-2011), though some data from surveys along the shelf edge off Nova Scotia, Newfoundland and Labrador are included. <b>The absence of a species in this map should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b> Absence may be related to low or no survey effort. This map also does not include acoustic detections. Sightings information is known to underrepresent the presence of cetaceans, particularly deep diving species (e.g., beaked whales) that spend little time at the surface. For more information, please visit: <https://whiteheadlab.weebly.com/contact.html>')}
+if (!is.null(whiteheadClipped$studyData)) {
+  plot_rr_sf(areaMap, whiteheadClipped$mapData, attribute = whitehead_rr$attribute, colorMap = whaleCol, shapeMap = whaleShape)
+}
+```
