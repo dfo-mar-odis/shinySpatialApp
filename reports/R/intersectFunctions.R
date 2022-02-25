@@ -35,16 +35,16 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
   }
   
   # convert bbox to sf object representing the map
-  mapArea <- st_as_sfc(mapDataList$bboxMap)
+  mapArea <- sf::st_as_sfc(mapDataList$bboxMap)
   
   if (inherits(data_sf, "RasterLayer")) {
-    raster_sf <- st_as_sfc(st_bbox(data_sf))
-    if (getRegion & (length(st_intersection(raster_sf, mapDataList$region)) > 0)) {
+    raster_sf <- sf::st_as_sfc(st_bbox(data_sf))
+    if (getRegion & (length(sf::st_intersection(raster_sf, mapDataList$region)) > 0)) {
       regionData <- raster::crop(data_sf, mapDataList$region)  
     } else {
       regionData <- NULL
     }
-    if (length(st_intersection(raster_sf, st_as_sf(mapArea))) > 0) {
+    if (length(sf::st_intersection(raster_sf, sf::st_as_sf(mapArea))) > 0) {
       mapData <- raster::crop(data_sf, region_sf)
     } else {
       mapData <- NULL
@@ -52,7 +52,7 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
     studyData <- NULL
     mapPoints <- NULL
     
-  } else if (!inherits(st_geometry(data_sf), c("sfc_POINT", 
+  } else if (!inherits(sf::st_geometry(data_sf), c("sfc_POINT", 
                                                    "sfc_POLYGON", 
                                                    "sfc_LINESTRING",
                                                    "sfc_MULTIPOLYGON",
@@ -65,14 +65,14 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
   } else {
     # Crop data
     if (getRegion) {
-      regionData <- st_crop(data_sf, mapDataList$region)  
+      regionData <- sf::st_crop(data_sf, mapDataList$region)  
       if (nrow(regionData) == 0) {regionData <- NULL}
     } else {
       regionData <- NULL
     }
     
-    mapData <- st_crop(data_sf, mapArea)
-    studyData <- st_crop(mapData, mapDataList$studyArea)
+    mapData <- sf::st_crop(data_sf, mapArea)
+    studyData <- sf::st_crop(mapData, mapDataList$studyArea)
     
     # if there is no intersect with the box, set return to NULL
     if (nrow(mapData) == 0) {mapData <- NULL}
@@ -81,7 +81,7 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
       # if there is point data in the study area, drop uneeded columns and 
       # duplicate geometries
       # for RV the ELAT and ELONG fields are necessary as well
-      if (inherits(st_geometry(data_sf), "sfc_POINT")) {
+      if (inherits(sf::st_geometry(data_sf), "sfc_POINT")) {
         if ("ELAT" %in% colnames(mapData)) {
           mapPoints <- dplyr::select(mapData, ELAT, ELONG, geometry)
         } 
@@ -131,8 +131,8 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
 raster_intersect <- function(datafile, region, studyArea, mapBbox, ...) {
 
   # convert Bbox to sf object
-  tmpBbox <- st_as_sfc(mapBbox)
-  mapArea <- st_as_sf(tmpBbox)
+  tmpBbox <- sf::st_as_sfc(mapBbox)
+  mapArea <- sf::st_as_sf(tmpBbox)
   # Crop Data
   # with raster datasets it's necesssary to comnbine the
   # crop and mask functions

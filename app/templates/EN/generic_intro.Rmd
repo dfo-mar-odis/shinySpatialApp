@@ -16,26 +16,10 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 
 ```{r setup, include = FALSE, cache = FALSE}
 knitr::opts_chunk$set(
-#  echo = FALSE, 
-#  warning = FALSE,
-#  message = FALSE, 
+  echo = FALSE, 
+  warning = FALSE,
+  message = FALSE, 
   fig.path = "figs/")
-library(knitr)
-library(rgdal)
-library(maps)
-library(scales) # needed for polygon transparency in mapping
-library(rgdal) # read geospatial data files into report
-library(maps) # uncouple lat/lon coordinates in sf objects
-library(lubridate) # extract YEAR from columns containing dates
-library(kableExtra) # build and manipulate tables
-library(tidyverse) # a set of packages required for general data manipulation, including ggplot2 for plotting and dplyr
-library(raster) # needed for manipulation of raster files
-library(sf) # manipulation of simple features and to determine overlap of studyArea and databases
-library(stringr) # manipulation of individual characters within strings in character vectors.
-library(data.table) # manipulation of dataframes
-library(gridExtra) # plot a grid of plots (priority cetacean habitat)
-library(stars) # transform features and assign or modify coordinate reference systems in objects
-library(ggspatial) #required for mapping
 ```
 
 
@@ -72,12 +56,14 @@ Data summaries and products (e.g., plots and tables) are presented in the report
 
 Datasets with information in more than one of these listed modules may be listed more than once in the report. Also, not all sections may be available in each report created as users have the ability to interactively select the modules to be included.
 
+
 ```{r area-map-plot, fig.height=8, fig.width=11, fig.show="hold", out.width="50%", fig.cap="Map showing the search area defined by the user (red outline) to query information and automatically generate this report (left).  Map showing the study area's location relative to the DFO Maritimes Region (right).  Dashed grey line indicates international boundries."}
 graphics::par(mar = c(4, 4, .1, .1))
 mapDataList$areaMap
 mapDataList$regionMap
 
 ```
+
 
 ##### *System*
 
@@ -142,7 +128,7 @@ knitr::kable(table_tier,align="l",
 {{add_human_threats_parts}}
 
 <!-- EBSA -->
-{{add_ebsa_section}}
+{{add_context_parts}}
 
 <!-- GENERIC END -->
 

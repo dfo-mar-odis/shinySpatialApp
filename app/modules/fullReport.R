@@ -39,9 +39,13 @@ fullReportUI <- function(id) {
             "Habitat"
           ),
           choiceValues = c(
-            "report_pt6_EBSA.Rmd",
-            "report_pt8_Appendix.Rmd"
+            "spatial_planning.Rmd",
+            "habitat.Rmd"
           ),
+          selected = c(
+            "spatial_planning.Rmd",
+            "habitat.Rmd"
+          )
         ),
         checkboxGroupInput(
           ns("human_threats"),

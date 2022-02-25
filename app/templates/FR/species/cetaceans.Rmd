@@ -1,3 +1,53 @@
-# **Search Results for Species at Risk** (FR)
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+## **CÉTACÉS**
 
-## **Cetacean Section**
+La présente section résume l’information disponible par l’entremise de diverses sources, des observations visuelles signalées, des prévisions modélisées de l’habitat convenable et de l’habitat important pour identifier les espèces de cétacés susceptibles de se trouver dans la zone de recherche. Les extrants de chaque source de données sont décrits dans les sous-sections marquées selon la source de données. Bien que de nombreuses espèces aient été identifiées dans cette région, seules les espèces inscrites en vertu de la LEP ou évaluées par le COSEPAC sont résumées ici. Les extrants comprennent les données d’observation recueillies à partir de relevés systématiques de cétacés ainsi que les données recueillies de façon fortuite au cours des années précédentes dans les eaux canadiennes et parfois américaines de l’Atlantique Nord-Ouest. Cependant, la majorité des observations de cétacés dans la biorégion du plateau néo-écossais sont fortuites; les relevés systématiques complets sur la présence ou la répartition des cétacés dans toute la région sont limités. Les résultats de ce rapport fournissent certains renseignements sur la répartition, mais ne doivent pas être interprétés comme des indices complets de l’abondance de la population ou de la densité relative ou de l’abondance dans la zone d’étude, étant donné que l’effort connexe ne couvre pas la totalité de l’aire de répartition d’une espèce et que la couverture est inégale dans la zone d’étude. Une analyse exhaustive future de tout effort d’observation associé à ces données est nécessaire pour caractériser davantage la présence de cétacés dans la région à des échelles temporelles et spatiales. Pour les relevés comportant soit un placement aléatoire des transects dans la zone d’étude, soit des relevés comportant des estimations de la distance de l’observation, la densité et la répartition des espèces pourraient être estimées (bien que ces résultats d’étude ne soient pas présentés ici). Par conséquent, les extrants du présent rapport comprennent des données sur la présence seulement, et nous ne pouvons pas dire si la présence insuffisante d’une espèce est liée à une absence réelle, à un manque d’effort ou au fait que des sources de données supplémentaires n’ont pas été déclarées pour la région (p. ex., données d’observations provenant d’autres sources, détections acoustiques). Par conséquent, nous suggérons que si une espèce est absente de ce rapport, cette absence devrait être interprétée comme une absence de déclaration, et non nécessairement comme l’absence de l’espèce dans la zone visée.
+
+Les sources de données et les produits utilisés dans cette section comprennent ce qui suit : la Base de données des observations de baleines (BDOB), le laboratoire Whitehead (Université de Dalhousie), la Base de données des observations du North Atlantic Right Whale Consortium (NARWC), le Système d’information sur la biodiversité des océans (SIBO), les zones prioritaires pour améliorer la surveillance des cétacés, l’habitat important pour le rorqual bleu de l’ouest de l’Atlantique Nord et l’habitat important de la baleine à bec commune dans les zones situées entre les canyons de l’est du plateau néo-écossais. 
+
+Veuillez consulter le WHALEMAP (https://whalemap.ocean.dal.ca/; Johnson 2018) pour obtenir de plus amples renseignements sur les observations (observations et détections acoustiques) de baleines noires de l’Atlantique Nord. Le WHALEMAP reflète principalement les résultats pour les zones surveillées; par conséquent, l’absence de baleines noires de l’Atlantique Nord dans une zone devrait être interprétée comme une absence de déclaration, et pas nécessairement une absence de l’espèce dans la zone de recherche. De plus, les observations du WHALEMAP sont préliminaires et peuvent être modifiées une fois les vérifications de contrôle de la qualité terminées.
+
+Veuillez consulter le Passive Acoustic Cetacean Map (PACM) pour examiner quand et où les les espèces de cétacés ont été détectés acoustiquement dans l’océan Atlantique Nord, d’après les efforts de surveillance acoustique passive (https://apps-nefsc.fisheries.noaa.gov/pacm/#/). Les détections acoustiques sur le Passive Acoustic Cetacean Map (PACM) ne représentent que les appels des animaux ; elles ne saisissent pas les périodes de temps lorsque les animaux sont présents mais demeurent silencieux. Les détections proviennent d’enregistreurs acoustiques d’archives et ne montrent pas les enregistreurs dans l’eau présentement (ce n’est pas un outil en temps réel). Les différences dans les portées de détection des enregistreurs pour chaque espèce ne sont pas comptabilisées ; elles peuvent varier selon les différences au niveau des instruments (p. ex. le matériel d’enregistrement), des conditions environnementales (p. ex. le météo, le type de fond, les niveaux sonores ambiants), et des niveaux sonores anthropiques [@PACM2021]. Pour toute question relative au PACM, veuillez consulter nmfs.pacmdata@noaa.gov. 
+
+La présente section ne vise pas à décrire toutes les sources d’information disponibles; les données présentées ne représentent pas toutes les données disponibles sur les observations de cétacés dans la zone de recherche, et d’autres observations peuvent provenir d’autres sources ou de données plus récentes que celles présentées ici. En plus des données sur la présence seulement, certaines des données disponibles peuvent être utilisées pour appuyer les conclusions propres aux espèces au sujet des préférences en matière d’habitat et de la présence possible ou connue à proximité et à l’intérieur de la zone de recherche. Veuillez consulter les publications citées pour obtenir de plus amples renseignements et communiquer avec Angelia Vanderlaan (baleines noires de l’Atlantique Nord) et Hilary Moors-Murphy (autres espèces de cétacés) pour discuter d’autres sources d’information (p. ex., détections acoustiques). Les données et les sources qui ne sont pas explicitement incluses dans le présent rapport comprennent des renseignements tirés d’études ou de publications antérieures, des détections acoustiques, l’échantillonnage des proies et le marquage. Bien que la valeur de ces données dans la prévision et la description de la présence des cétacés soit vitale, ces types de données ne sont pas disponibles pour toutes les espèces et ne peuvent pas encore être interrogées. À l’avenir, à mesure que l’information provenant d’autres sources de données deviendra disponible, ces nouvelles données aideront à mieux comprendre l’utilisation de l’habitat des cétacés et la présence de ceux-ci dans les zones de recherche.
+
+
+```{r child = here::here("reports/sections/obis/obisCet_fr.Rmd")}
+```
+
+```{r child = here::here("reports/sections/wsdb/wsdb_fr.Rmd")}
+```
+
+```{r child = here::here("reports/sections/whitehead/whitehead_fr.Rmd")}
+```
+
+```{r child = here::here("reports/sections/narwc/narwc_fr.Rmd")}
+```
+
+```{r cetacean-summary-table, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+if (FALSE) {
+  whaleSummaryTable <- subset(whaleSummaryTable, select = -c(specIndex))
+
+  areaSums <- colSums(subset(whaleSummaryTable, select = -c(Species)))
+  areaSums$Species <- "Area Total"
+  whaleSummaryTable <- rbind(whaleSummaryTable, areaSums)
+
+  knitr::kable(whaleSummaryTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of records present in cetacean databases used in this report. ", booktabs = T, escape = F, linesep = "") %>%
+    kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+}
+```
+
+```{r child = here::here("reports/sections/sdm/sdm_fr.Rmd")}
+```
+
+```{r child = here::here("reports/sections/blueWhaleHab/bwhab_fr.Rmd")}
+```
+
+```{r child = here::here("reports/sections/nbw/nbw_fr.Rmd")}
+```
+
+

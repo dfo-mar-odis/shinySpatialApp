@@ -18,8 +18,8 @@ ISSPECIESCODES <- dplyr::select(ISSPECIESCODES,
                                 one_of(c("SPECCD_ID", "COMMON", "SCIENTIFIC")))
 
 ISSPECIESCODES <- mutate(ISSPECIESCODES, 
-                         SCIENTIFIC = str_to_sentence(SCIENTIFIC),
-                         COMMON=str_to_sentence(COMMON))
+                         SCIENTIFIC = stringr::str_to_sentence(SCIENTIFIC),
+                         COMMON=stringr::str_to_sentence(COMMON))
 ISSPECIESCODES <- ISSPECIESCODES %>% rename("Common Name" = COMMON,
                                             "Scientific Name" = SCIENTIFIC)
 MARFISSPECIESCODES <- SPECIES %>% rename("COMMONNAME" = SPECIES_NAME)

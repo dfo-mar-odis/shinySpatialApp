@@ -5,7 +5,10 @@ output:
     theme: paper
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
-```{r child = here::here("reports/commonSections/commonIntro.Rmd")}
+```{r child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+``` 
+
+```{r eval=FALSE}
 if (FALSE) { #load in data:
   lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
   studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
@@ -16,9 +19,14 @@ if (FALSE) { #load in data:
 
 ```{r obis-gbif-load, include=FALSE}
 load_rdata(c("obisFish_rr", "gbifFish_rr"), regionStr, env = environment())
+if(!exists("obisEnv")){
+  assign("obisEnv", new.env(), envir = knitr::knit_global())
+  obisEnv$commonObis <- TRUE
+}
+
 ```
 
-```{r child = here::here("reports/obis/obisCommon_en.Rmd"), eval=!exists('commonObis')}
+```{r child = here::here("reports/sections/obis/obisCommon_en.Rmd"), eval=obisEnv$commonObis}
 # chunk will only run if commonObis variable does not exist, set in common obis, removed in commonIntro.
 ```
 

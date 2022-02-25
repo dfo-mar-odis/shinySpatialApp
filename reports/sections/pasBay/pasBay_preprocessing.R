@@ -27,8 +27,8 @@ pasBay <- dplyr::mutate(pasBay,
                                     latitude_finish_latitude_d.arrivée, ")", sep = ""))
 pasBay$geometry <- st_as_sfc(pasBay$wkt, crs = 4326)
 pasBay <- dplyr::select(pasBay, c("scientific_name", "common_name", "time_start_heure_de_début", "geometry"))
-pasBay$common_name <- str_to_title(pasBay$common_name)
-pasBay$scientific_name <- str_to_sentence(pasBay$scientific_name)
+pasBay$common_name <- stringr::str_to_title(pasBay$common_name)
+pasBay$scientific_name <- stringr::str_to_sentence(pasBay$scientific_name)
 names(pasBay) <-  c("Scientific Name", "Common Name", "Start Time", "geometry")
 
 pasBay_sf <- st_as_sf(pasBay)

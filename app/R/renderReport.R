@@ -18,7 +18,7 @@
 #
 render_full_report <- function(geoms, lang, species, human_threats, context,
   u_name, u_email, u_text, u_comments, dir_out = "output", fl = "",
-  dir_tpl = "templates", keep.origin = FALSE) {
+  dir_tpl = here::here("app/templates"), keep.origin = FALSE) {
     
   # clear output
   clear_output()
@@ -42,8 +42,6 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
   #
   msgInfo(glue("Creating report ({fl})"))
   #
-  ebsa <- context[grepl("EBSA", context)]
-  apdx <- context[grepl("Appendix", context)]
   
   # fill out .Rmd file before rendering
   main <- "generic_intro.Rmd"
@@ -62,33 +60,33 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
     add_human_threats_parts = add_sections(
       human_threats, lang, dir_tpl, "human_threats"
     ),
-    add_ebsa_section = add_sections(ebsa, lang, dir_tpl, "context"),
-    add_appendix = add_sections(apdx, lang, dir_tpl, "context"),
+    add_context_parts = add_sections(context, lang, dir_tpl, "context"),
     u_name = u_name,
     u_email = u_email,
     u_text = u_text,
     u_comments = u_comments
   )  
-  readLines(template)
+  # What does this do?
+  #readLines(template)
   # creates .Rmd.origin
-  writeLines(whisker::whisker.render(readLines(template), data_all), origin)
+  # writeLines(whisker::whisker.render(readLines(template), data_all), origin)
+  writeLines(whisker::whisker.render(readLines(template), data_all), rmd_ready)
   # creates .Rmd
-  knitr::knit(origin, rmd_ready, quiet = TRUE)
+  #knitr::knit(origin, rmd_ready, quiet = FALSE)
   # remove .Rmd.origin
-  if (!keep.origin) unlink(origin)
+  #if (!keep.origin) unlink(origin)
   # move figure folder
-  if (fs::dir_exists("figs")) {
-    fs::dir_copy("figs", "output/figs", overwrite = TRUE)
-    fs::dir_delete("figs")
-  }
+  #if (fs::dir_exists("figs")) {
+  #  fs::dir_copy("figs", "output/figs", overwrite = TRUE)
+  #  fs::dir_delete("figs")
+  #}
   
   
   msgInfo("Creating HTML")  
   # Rendering to HTML 
   ok <- tryCatch({
       rmarkdown::render(rmd_ready, 
-        output_format = "html_document", 
-        quiet = TRUE)
+        quiet = FALSE)
         TRUE
       }, 
       error = function(x) FALSE

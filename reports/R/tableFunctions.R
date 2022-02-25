@@ -1,3 +1,6 @@
+library(sf)
+
+
 # --------------Rockweed Table-------------
 # Rockweed stats
 # Inputs:
@@ -221,7 +224,7 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
   allSpeciesData <- dplyr::select(allSpeciesData, 'Common Name', Records)
   allSpeciesData <- allSpeciesData %>% rename(CName = 'Common Name')
   allSpeciesData <- allSpeciesData %>% transmute(allSpeciesData,
-                                                 CName = str_to_sentence(CName))
+                                                 CName = stringr::str_to_sentence(CName))
   allSpeciesData <- allSpeciesData %>% rename('Common Name' = CName)
   
 

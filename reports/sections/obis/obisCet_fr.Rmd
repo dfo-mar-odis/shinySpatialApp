@@ -5,7 +5,10 @@ output:
     theme: paper
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
-```{r child = here::here("reports/commonSections/commonIntro.Rmd")}
+```{r child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```  
+
+```{r eval=FALSE}
 if (FALSE) { #load in data:
   lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
   studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
@@ -13,7 +16,7 @@ if (FALSE) { #load in data:
 }
 ```
 
-```{r child = here::here("reports/commonSections/commonCet.Rmd")}
+```{r child = here::here("reports/sections/commonSections/commonCet.Rmd")}
 ```
 
 ```{r obis-gbif-cet-load, include=FALSE}

@@ -38,9 +38,9 @@ write_meta <- function(rr, lang) {
 
 lang_check <- function(metadata_arg, lang){
   if (lang == "FR") {
-    return(ifelse(has_name(metadata_arg, "fr"), metadata_arg$fr, metadata_arg))
+    return(ifelse(rlang::has_name(metadata_arg, "fr"), metadata_arg$fr, metadata_arg))
   } else if (lang == "EN") {
-    return(ifelse(has_name(metadata_arg, "en"), metadata_arg$en, metadata_arg))
+    return(ifelse(rlang::has_name(metadata_arg, "en"), metadata_arg$en, metadata_arg))
   }
 }
 
