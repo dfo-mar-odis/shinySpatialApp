@@ -259,7 +259,7 @@ server <- function(input, output, session) {
 
 
   # CUSTOM REPORT
-  customReportServer("custom_report", preview, input$u_name, input$u_email,
+  customReportServer("custom_report", geoms, preview, input$u_name, input$u_email,
     input$u_consent)
 
   # CUSTOM REPORT PREVIEW

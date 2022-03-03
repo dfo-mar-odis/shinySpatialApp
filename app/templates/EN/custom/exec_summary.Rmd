@@ -22,15 +22,22 @@ a:visited {color: #008040;}
 a:hover {color: #006080;}
 </style>
 
-```{r setup-and-libraries, echo=FALSE, include=FALSE, cache=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, fig.align="left")
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, 
+  warning = FALSE,
+  message = FALSE, 
+  fig.path = "figs/")
 ```
 
-```{r load-data-and-functions, echo=FALSE, include=FALSE, cache=FALSE}
-minYear <- 2010
 
-lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source) # check helpers.R for a list of packages
-copy_rdata_files() # make sure data files are up to date.
+```{r child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```
+
+
+```{r load-data-and-functions, echo=FALSE, include=FALSE, cache=FALSE}
+
 filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherback_rr",
                             "rv_rr", "pasBay_rr", "ilts_rr", "isdb_rr", "marfis_rr",
                             "obisFish_rr", "sturg_rr", "ocearch_rr", 
@@ -39,24 +46,22 @@ filesLoaded <- load_rdata(c("CommonData", "sardist_rr", "crithab_rr", "leatherba
                             "conservationSites_rr", "finWhale_rr", "harbourPorpoise_rr",
                             "humpbackWhale_rr", "seiWhale_rr"), regionStr, env = environment())
 
-listed_species <- listed_species[!c(listed_species$`COSEWIC status` == "No Status" & listed_species$`SARA status` == "No Status"), ]
-row.names(listed_species) <- NULL
-
 ```
 
 ```{r  Load-Search-Area, echo=FALSE, include=FALSE, cache=FALSE}
 studyArea <- region_sf
-site <- sf::st_centroid(studyArea)
-```
-
-```{r parameters-for-area_map.r, echo=FALSE, include=FALSE, cache=FALSE}
-mapDataList <- maps_setup(studyArea, site, region_sf, land50k_sf, land10m_sf, bounds_sf)
-list2env(mapDataList, envir = environment())
+intro_setup(studyArea, env = environment())
 ```
 
 ```{r set up summary and gap tables, echo=FALSE, include=FALSE, cache=FALSE}
-summarySarTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`)
-summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`, "Obs" = NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA)
+summarySarTable <- data.frame("Species" = listed_species$`Common Name`,
+                              "COSEWIC" = listed_species$`COSEWIC status`,
+                              "SARA" = listed_species$`SARA status`)
+summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, 
+                              "COSEWIC" = listed_species$`COSEWIC status`,
+                              "SARA" = listed_species$`SARA status`, 
+                              "Obs" = NA, "range" = NA, "SDM" = NA, "IH" = NA, 
+                              "CH" = NA)
 
 ```
 
@@ -84,52 +89,72 @@ whaleCol <- c("Beluga Whale: Endangered (SARA & COSEWIC)" = "cyan3",
                "Sowerby's Beaked Whale: Special Concern (SARA & COSEWIC)" = "red")
 whaleShape <- rep_len(15:20, length(names(whaleCol)))
 names(whaleShape) <- names(whaleCol)
-whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)) ,"Species" = names(whaleShape))
+whaleSummaryTable <- data.frame("specIndex"= sub("\\:.*", "", names(whaleShape)), 
+                                "Species" = names(whaleShape))
 ```
 
 ```{r fill-summary-sar-table, include=FALSE, cache=FALSE}
 # wsdb
 linkedSectionText <- "WSDB"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdb_rr$data_sf, "Legend")
-summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText,
+                                              wsdb_rr$data_sf, "Legend")
+summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText,
+                                          whaleSummaryTable, "specIndex", linkedSectionText)
 
 # whitehead
 linkedSectionText <- "Whitehead"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whitehead_rr$data_sf, "Legend")
-summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText,
+                                              whitehead_rr$data_sf, "Legend")
+summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText,
+                                          whaleSummaryTable, "specIndex", linkedSectionText)
 
 # narwc
 linkedSectionText <- "NARWC"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwc_rr$data_sf, "Legend")
-summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText,
+                                              narwc_rr$data_sf, "Legend")
+summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText,
+                                          whaleSummaryTable, "specIndex",
+                                          linkedSectionText)
 
 # obis cetaceans
 linkedSectionText <- "OBIS-Cetaceans"
-whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, obisCet_rr$data_sf, "Legend")
-summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)
+whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText,
+                                              obisCet_rr$data_sf, "Legend")
+summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText,
+                                          whaleSummaryTable, "specIndex", 
+                                          linkedSectionText)
 
 # RV
 rvSarTable <- create_table_RV(rv_rr$data_sf, listed_species)$sarData
-summarySarTable <- add_col_to_sar_summary(summarySarTable, "RV", rvSarTable, "Common Name", "Individuals")
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "RV", rvSarTable,
+                                          "Common Name", "Individuals")
 
 # Pas bay
 pasBaySarTable <- create_sar_tables(pasBay_rr$data_sf, listed_species)$sarData
-summarySarTable <- add_col_to_sar_summary(summarySarTable, "PBBT", pasBaySarTable, "Common Name", "Common Name")
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "PBBT", pasBaySarTable,
+                                          "Common Name", "Common Name")
 
 # ILTS
 iltsSarTable <- create_sar_tables(ilts_rr$data_sf, listed_species)$sarData
-summarySarTable <- add_col_to_sar_summary(summarySarTable, "ILTS", iltsSarTable, "Common Name", "Common Name")
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "ILTS", iltsSarTable,
+                                          "Common Name", "Common Name")
 
 # Marfis/ISDB
-isdbSarTable <- create_table_ISDB(isdb_rr$data_sf, listed_species, speciesTable = ISSPECIESCODES)$sarData
-summarySarTable <- add_col_to_sar_summary(summarySarTable, "ISDB", isdbSarTable, "Common Name", "Records")
+isdbSarTable <- create_table_ISDB(isdb_rr$data_sf, listed_species,
+                                  speciesTable = ISSPECIESCODES)$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "ISDB", isdbSarTable,
+                                          "Common Name", "Records")
 
-marfisSarTable <- create_table_MARFIS(marfis_rr$data_sf, listed_species, speciesTable = MARFISSPECIESCODES)$sarData
-summarySarTable <- add_col_to_sar_summary(summarySarTable, "MARFIS", marfisSarTable, "Common Name", "Records")
+marfisSarTable <- create_table_MARFIS(marfis_rr$data_sf, listed_species,
+                                      speciesTable = MARFISSPECIESCODES)$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "MARFIS",
+                                          marfisSarTable, "Common Name", "Records")
 
 # OBIS
-obisTable <- create_sar_tables(obisFish_rr$data_sf, listed_species, extraCols = c())$sarData
-summarySarTable <- add_col_to_sar_summary(summarySarTable, "OBIS", obisTable, "Common Name", "Common Name")
+obisTable <- create_sar_tables(obisFish_rr$data_sf, listed_species,
+                               extraCols = c())$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "OBIS", obisTable,
+                                          "Common Name", "Common Name")
 
 # STURGEON
 if (!is.null(sturg_rr$data_sf)) {
@@ -155,14 +180,16 @@ summarySarTable <- add_col_to_sar_summary(summarySarTable, "OCEARCH",
 ```{r fill-summary-hab-table, include=FALSE, cache=FALSE}
 # crithab, sardist
 critHabCheck <- !is.null(crithab_rr$data_sf) | !is.null(leatherback_rr$data_sf)
-distTable <- table_dist(sardist_rr$data_sf, "EN")
-distTable <- create_sar_tables(sardist_rr$data_sf, listed_species, extraCols = c("Species_Link"))$sarData
+distTable <- create_sar_tables(sardist_rr$data_sf, listed_species,
+                               extraCols = c("Species_Link"))$sarData
 
-summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "SAR Distribution",  distTable, "Common Name", "Common Name")
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "SAR Distribution", 
+                                      distTable, "Common Name", "Common Name")
 
 if (critHabCheck) {
   critTable <- table_crit(crithab_rr$data_sf, leatherback_rr$data_sf, "EN")  
-  summaryHabTable <- add_to_hab_summary(summaryHabTable, "CH", "SAR Critical Habitat", critTable, "Common Name", "Common Name")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "CH", "SAR Critical Habitat",
+                                        critTable, "Common Name", "Common Name")
 }
 
 # sdm
@@ -171,20 +198,24 @@ tableSDM <- data.frame("Fin Whale" = !is.null(finWhale_rr$data_sf),
                         "Humpback Whale" = !is.null(humpbackWhale_rr$data_sf),
                         "Sei Whale" = !is.null(seiWhale_rr$data_sf),
                         check.names = FALSE)
-summarySDMTable <- data.frame("Species" = names(tableSDM), "present" = transpose(tableSDM)$V1)
-summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "SDM", summarySDMTable, "Species", "present")
+summarySDMTable <- data.frame("Species" = names(tableSDM), "present" = t(tableSDM),
+                              row.names = NULL)
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "SDM", summarySDMTable, 
+                                      "Species", "present")
 
 # bw
 attribute <- "Activity"
 if(!is.null(blueWhaleHab_rr$data_sf)){
   summaryBWTable <- data.frame("Species" = "Blue Whale")
-  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "BW Habitat", summaryBWTable, "Species", "Species")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "BW Habitat", 
+                                        summaryBWTable, "Species", "Species")
 }
 
 #nbw
 if(!is.null(nbw_rr$data_sf)){
   summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
-  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "NBW Habitat", summaryNBWTable, "Species", "Species")
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "NBW Habitat", 
+                                        summaryNBWTable, "Species", "Species")
 }
 
 ```
@@ -194,7 +225,10 @@ if(!is.null(nbw_rr$data_sf)){
 absentCode <- "&nbsp;-&nbsp;"
 presentCode <- "&#x2714;"
 summarySarTable[is.na(summarySarTable)] <- absentCode
-formatedSarTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+formatedSarTable <- mutate_all(summarySarTable, 
+                               ~ cell_spec(., color = ifelse(. == presentCode, "white", ""),
+                                           background = ifelse(. == presentCode, "green", ""), 
+                                           escape = FALSE))
 
 ```
 
@@ -203,12 +237,17 @@ formatedSarTable <- mutate_all(summarySarTable, ~ cell_spec(., color = ifelse(. 
 
   # add column for observations from sar table
   obsColumn <- apply(summarySarTable, 1, function(r) any(r %in% c(presentCode)))
+  
   summaryHabTable$Obs <- ifelse(obsColumn, presentCode, absentCode)
 
-  summaryHabTable <- mutate_all(summaryHabTable, ~ cell_spec(., color = ifelse(. == presentCode, "white", ""),
-                  background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+  summaryHabTable <- mutate_all(summaryHabTable, 
+                                ~ cell_spec(., color = ifelse(. == presentCode, "white", ""),
+                                            background = ifelse(. == presentCode, "green", ""),
+                                            escape = FALSE))
 
-  names(summaryHabTable) <- c("Species", "COSEWIC", "SARA", "Observations", "SAR Range", "SDM", "Important Habitat", "Critical Habitat")
+  names(summaryHabTable) <- c("Species", "COSEWIC", "SARA", "Observations", 
+                              "SAR Range", "SDM", "Important Habitat", 
+                              "Critical Habitat")
 
 
 ```

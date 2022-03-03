@@ -124,7 +124,7 @@ add_sections <- function(files, lang, dir_in, dir_part) {
 
 save_geom <- function(geoms, dir_out, flnm ="geoms_slc.geojson") {
   pth <- glue("{dir_out}/{flnm}")
-  st_write(geoms, pth, delete_dsn = TRUE, quiet = TRUE)
+  sf::st_write(geoms, pth, delete_dsn = TRUE, quiet = TRUE)
   list(relroot = pth, relrmd = pth)
 }
 

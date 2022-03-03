@@ -13,8 +13,8 @@ customReportUI <- function(id) {
     radioButtons(
       ns("type"), 
       label = "Select report type", 
-      choiceNames = c("Aquaculture Siting", "Coastal Monitoring", "Conservation Planning", "Environmental Response"),
-      choiceValues = c("aqua.Rmd", "coastal.Rmd", "conservation.Rmd", "envresponse.Rmd"),
+      choiceNames = c("Aquaculture Siting", "Coastal Monitoring", "Conservation Planning", "Environmental Response", "Full Summary"),
+      choiceValues = c("aqua.Rmd", "coastal.Rmd", "conservation.Rmd", "envresponse.Rmd", "exec_summary.Rmd"),
       selected = "aqua.Rmd"
     ),
     textInput(
@@ -29,7 +29,7 @@ customReportUI <- function(id) {
 }
 
 
-customReportServer <- function(id, preview, u_name, u_email, u_consent) {
+customReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -45,6 +45,14 @@ customReportServer <- function(id, preview, u_name, u_email, u_consent) {
             type = "error"
           )
         } else {
+          # Check and save geom 
+          msgInfo("Saving geoms")
+          if (is.null(geoms)) {
+            msg <- "Please define areas of interest"
+            return(list(msg = msg, ok = FALSE, html = "empty_report.html"))
+          } else {
+            flge <- save_geom(geoms$final, here::here("app/output/"))
+          }
           # template path
           tpl <- glue_path("templates", input$lang, "custom", input$type)
           # out path (add EN/FR)
