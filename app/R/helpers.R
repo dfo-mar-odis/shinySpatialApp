@@ -1,27 +1,3 @@
-library(shiny)
-library(shinyjs)
-library(leaflet)
-library(leafem)
-library(mapedit)
-library(glue)
-library(callr)
-library(scales) # needed for polygon transparency in mapping
-library(knitr) # reproducible reports from R Markdown 
-library(rgdal) # read geospatial data files into report
-library(maps) # uncouple lat/lon coordinates in sf objects
-library(lubridate) # extract YEAR from columns containing dates
-library(kableExtra) # build and manipulate tables
-library(tidyverse) # a set of packages required for general data manipulation, including ggplot2 for plotting and dplyr
-library(raster) # needed for manipulation of raster files
-library(sf) # manipulation of simple features and to determine overlap of studyArea and databases
-library(stringr) # manipulation of individual characters within strings in character vectors.
-library(data.table) # manipulation of dataframes
-library(gridExtra) # plot a grid of plots (priority cetacean habitat)
-library(stars) # transform features and assign or modify coordinate reference systems in objects
-library(ggspatial) #required for mapping
-#next lines are necessary for the generation of the water mark on plots
-#install.packages("remotes")
-
 ## R messages 
 msgInfo <- function(..., appendLF = TRUE) {
   txt <- paste(cli::symbol$info, ...)
@@ -53,11 +29,11 @@ msgWarning <- function(..., appendLF = TRUE) {
   invisible(txt)
 }
 
-# HTML helper 
+# HTML helper
 
-# Save formating for different help text 
+# Save formating for different help text
 myhelptxt <- function(x) {
-  helpText(HTML(glue('<i class="fas fa-info-circle" aria-hidden="true"></i> 
+  helpText(HTML(glue('<i class="fas fa-info-circle" aria-hidden="true"></i>
   {x}')))
 }
 
@@ -80,7 +56,7 @@ info_valid <- function(x, ok = TRUE, chk = FALSE) {
   if (!chk) {
     renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x}</span>")))
   } else {
-    renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x} 
+    renderUI(HTML(glue("<span class={cls}>{shiny::icon('info')} {x}
       {shiny::icon('check')}</span>")))
   }
 }
@@ -88,8 +64,8 @@ info_valid <- function(x, ok = TRUE, chk = FALSE) {
 
 # do not include dots in new extension as it is added
 switch_ext <- function(x, y) {
-  ext <- tools::file_ext(x)
-  sub(glue(".{ext}$"), glue(".{y}"), x) 
+  ext <- fs::path_ext(x)
+  sub(glue(".{ext}$"), glue(".{y}"), x)
 }
 
 # clear extra HTML in www
@@ -99,6 +75,9 @@ clear_www_html <- function() {
 }
 
 clear_output <- function() {
-  fls <- list.files("output", full.names = TRUE)
-  file.remove(fls[fls != "output/.gitkeep"])
+  fls <- c(
+    list.files("output", full.names = TRUE, recursive = TRUE),
+    list.files("www/reports", full.names = TRUE)
+  )
+  file.remove(fls[!grepl("gitkeep", fls)])
 }

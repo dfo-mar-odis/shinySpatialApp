@@ -1,24 +1,3 @@
-# Interactive map created with `leaflet` and called in `mapedit::callModule`.
-
-selectionMap <- function(geoms = NULL) {
-  
-  out <- leaflet::leaflet(height = 2000) %>% 
-    leaflet::addTiles() %>% 
-    leafem::addMouseCoordinates() %>%
-    leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7) %>%
-    leaflet::addProviderTiles('Esri.OceanBasemap', group = 'OceaBasemap') %>%
-    leaflet::addProviderTiles("OpenTopoMap", group = "OpenTopoMap") %>%
-    leaflet::addProviderTiles("OpenStreetMap", group = "OpenStreetMap") %>%
-    addLayersControl(
-      baseGroups = c('OpenStreetMap', 'Ocean Basemap', 'OpenTopoMap'),
-      position = 'bottomleft')
-  
-  if (!is.null(geoms)) out <- leafem::addFeatures(out, geoms)
-  
-  out
-}
-
-
 # The functions below ensure that input geometries are properly formatted.
 
 valid_bbox <- function(xmin, xmax, ymin, ymax, nm, crs_in = 4326) {
@@ -66,7 +45,7 @@ valid_import <- function(x, nm) {
 
 
 # use projection 3857 to add buffer
-add_buffer <- function(x, buffer) {
+add_buffer <- function(x, buffer = 0) {
   if (buffer > 0) {
     st_transform(
       st_buffer(st_transform(x, crs = 3857), dist = buffer),
@@ -76,7 +55,7 @@ add_buffer <- function(x, buffer) {
 }
 
 # function to append/stack sf object and add buffer
-append_geom <- function(geoms, x, buffer) {
+append_geom <- function(geoms, x, buffer = 0) {
   tmp <- add_buffer(x, buffer)
   if (is.null(geoms)) tmp else rbind(geoms, tmp)
 }

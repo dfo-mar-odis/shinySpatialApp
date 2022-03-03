@@ -1,4 +1,5 @@
 # Project-specific files
+RELEASE*.pdf
 app/data/*
 *.tiff
 *.html
@@ -7,11 +8,16 @@ app/data/*
 *.zip
 *.pdf
 *.png
+*.RData
 data.7z
 app/shinySpatialApp - Shortcut.lnk
 !app/data/.gitkeep
 app/www/*.html
+app/www/reports/*
+!app/www/reports/.gitkeep
 !app/www/empty_report.html
+
+
 *.log
 app/output/report_SMR_EN_files/
 app/output/report_SMR_FR_files/
@@ -24,6 +30,7 @@ app/output/*.rds
 app/output/*.Rmd
 tmp/
 renv/
+reports/temp/*
 tests/temp/*
 tests/*.RData
 !tests/temp/.gitkeep
