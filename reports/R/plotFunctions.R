@@ -16,19 +16,27 @@ library(graphics)
 
 plot_rr_sf <- function(baseMap, data_sf, ...) {
   
+  if (is.null(data_sf)) {
+    return(baseMap)
+  }
+  if (nrow(data_sf) == 0) {
+    return(baseMap)
+  }
+  
+  # only check first row of data_sf to avoid sfc_geometry for mixed poly/multiploys and lines/multilines
   if (inherits(data_sf, "RasterLayer")) {
     
     outPlot <- plot_raster(baseMap, data_sf, ...)
     
-  }else if (inherits(sf::st_geometry(data_sf), c("sfc_POINT"))) {
+  }else if (inherits(sf::st_geometry(data_sf[1, ]), c("sfc_POINT"))) {
     
     outPlot <- plot_points(baseMap, data_sf, ...)
     
-  } else if (inherits(sf::st_geometry(data_sf), c("sfc_POLYGON", "sfc_MULTIPOLYGON", "sfc_GEOMETRY"))) {
+  } else if (inherits(sf::st_geometry(data_sf[1, ]), c("sfc_POLYGON", "sfc_MULTIPOLYGON"))) {
     
     outPlot <- plot_polygons(baseMap, data_sf, ...)
     
-  } else if (inherits(sf::st_geometry(data_sf), "sfc_LINESTRING")) {
+  } else if (inherits(sf::st_geometry(data_sf[1, ]), c("sfc_LINESTRING", "sfc_MULTILINESTRING"))) {
     
     outPlot <- plot_lines(baseMap, data_sf, ...)
     
@@ -146,7 +154,8 @@ plot_raster <- function(baseMap, rasterData, legendName="", bgCutoff=0,
 # Created by Quentin Stoyel, September 2, 2021 for reproducible reporting project
 
 plot_points <- function(baseMap, data_sf, attribute="NONE", legendName="", 
-                        colorMap=NULL, shapeMap=NULL, size=2.5, shape=20, color="black") {
+                        colorMap=NULL, shapeMap=NULL, size=2.5, shape=20, color="black",
+                        continuousAttr=FALSE, minScale=NULL, maxScale=NULL) {
   
   # extract scaleBar layer to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
@@ -163,22 +172,28 @@ plot_points <- function(baseMap, data_sf, attribute="NONE", legendName="",
     dataLayer <- geom_sf(data = data_sf, size = size, shape = shape, color=color) 
     legendLayer <- NULL
   } else {
-    data_sf[[attribute]] = as.factor(data_sf[[attribute]])
+
+    if (continuousAttr) {
+      legendLayer <- scale_bar_layer(data_sf, attribute, continuousAttr, 
+                                     minScale, maxScale, legendName, fill=FALSE)
+    } else { 
+      data_sf[[attribute]] = as.factor(data_sf[[attribute]])
+      if (is.null(colorMap)){
+        colorMap <- get_rr_color_map(data_sf[[attribute]])
+      } else {
+        colorMap <- colorMap[names(colorMap) %in% data_sf[[attribute]]]
+        if (!is.null(shapeMap)){
+          shapeMap <- shapeMap[names(shapeMap) %in% data_sf[[attribute]]]
+          shapeLabels <- names(shapeMap)
+          shapeValues <- unname(shapeMap) 
+          dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute), shape=!!sym(attribute)), size = size)
+          shapeLayer <- scale_shape_manual(labels = shapeLabels, values = shapeValues, name=legendName)  
+        }
+      }
+      legendLayer <- scale_colour_manual(values=colorMap, name=legendName)  
+    }
     dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = size, shape = shape)  
     
-    if (is.null(colorMap)){
-      colorMap <- get_rr_color_map(data_sf[[attribute]])
-    } else {
-      colorMap <- colorMap[names(colorMap) %in% data_sf[[attribute]]]
-      if (!is.null(shapeMap)){
-        shapeMap <- shapeMap[names(shapeMap) %in% data_sf[[attribute]]]
-        shapeLabels <- names(shapeMap)
-        shapeValues <- unname(shapeMap) 
-        dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute), shape=!!sym(attribute)), size = size)
-        shapeLayer <- scale_shape_manual(labels = shapeLabels, values = shapeValues, name=legendName)  
-      }
-    }
-    legendLayer <- scale_colour_manual(values=colorMap, name=legendName)  
   }
     
   pointMap <- baseMap +
@@ -217,7 +232,8 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
                           outlines=TRUE, colorMap=NULL, getColorMap=FALSE,
                           labelData=NULL, labelAttribute=NULL, 
                           fillClr="#56B4E9", alpha=1, plotTitle=NULL, 
-                          tickNum = NULL) {
+                          tickNum = NULL, continuousAttr=FALSE, minScale=NULL,
+                          maxScale=NULL, lwd=1) {
   
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
@@ -245,23 +261,23 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     polyPlot <- geom_sf(data = polyData, fill = fillClr, col = clr, alpha=alpha)
     
   } else { # Case 2: plotting polygons in different colors based on "attribute" column in the data
-    polyData[[attribute]] = as.factor(polyData[[attribute]])
-    
     polyAes <- aes(fill = !!sym(attribute))
-
+    
     if (is.null(colorMap)){
       colorMap <- get_rr_color_map(polyData[[attribute]])
     } else {
       colorMap <- colorMap[names(colorMap) %in% polyData[[attribute]]]
     }
-    polyFill <- scale_fill_manual(values=colorMap, name=legendName)
+    
+    polyFill <- scale_bar_layer(polyData, attribute, continuousAttr, minScale,
+                                maxScale, legendName, colorMap)
     
     if (outlines) {
       polyPlot <- geom_sf(data=polyData, polyAes, colour=clr, alpha=alpha)
     }
     else {
       polyAes <- modifyList(polyAes, aes(col=!!sym(attribute)))
-      polyPlot <- geom_sf(data=polyData, polyAes, alpha = alpha)
+      polyPlot <- geom_sf(data=polyData, polyAes, alpha = alpha, lwd=lwd)
       polyOutline <- scale_color_manual(values=colorMap, guide="none")  
     }
   }
@@ -356,6 +372,38 @@ get_rr_color_map <- function(dataCol) {
   }
   return(colorMap)
 }
+
+scale_bar_layer <- function(data_sf, attribute, continuous, minValue, maxValue, legendName, colorMap, fill=TRUE){
+  if (continuous){
+    if (is.null(minValue)){
+      minScale = min(data_sf[[attribute]])
+    }
+    if (is.null(maxValue)){
+      maxScale = max(data_sf[[attribute]])
+    }
+    if (fill){
+      scaleBarLayer <- scale_fill_continuous(type="viridis", name=legendName, 
+                                             labels = comma, limits=c(minValue, maxValue))    
+    } else {
+      scaleBarLayer <- scale_color_continuous(type="viridis", name=legendName, 
+                                             labels = comma, limits=c(minValue, maxValue))  
+    }
+    
+  } else {
+    data_sf[[attribute]] = as.factor(data_sf[[attribute]])
+    if (fill) {
+      scaleBarLayer <- scale_fill_manual(values=colorMap, name=legendName)  
+    } else {
+      scaleBarLayer <- scale_color_manual(values=colorMap, name=legendName)
+    }
+    
+  }
+  return(scaleBarLayer)
+  
+  
+}
+
+
 
 
 # --------plot cetaceans 4 grid------------
