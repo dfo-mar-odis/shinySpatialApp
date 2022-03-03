@@ -1,0 +1,92 @@
+
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+``` 
+
+```{r eval=FALSE}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+#### ***Répartition des espèces en péril du MPO (aire de répartition)*** {-}    
+
+```{r sardist-load, include=FALSE}
+load_rdata(c("sardist_rr"), "MAR", env = environment())
+```
+
+```{r sardist-meta, results='asis'}
+write_meta(sardist_rr, "FR")
+```
+
+Description de l’ensemble de données (tirée du dossier des données ouvertes) : 
+```{r sardist-text, results='asis'}
+writeLines(noquote(sardist_rr$text$fr))
+```
+
+#### ***Résultats des recherches répartition des espèces en péril propres à une zone***
+
+```{r sardist-results, echo=FALSE, results='asis'}
+# not plotted
+outputListSardist <- master_intersect(sardist_rr$data_sf, mapDataList)
+distTable <- create_sar_tables(outputListSardist$studyData, listed_species, extraCols = c("Species_Link"))$sarData
+names(distTable)[names(distTable) == 'Species_Link'] <- 'Species Link'
+
+
+summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distribution](#sardist-section)",  distTable, "Common Name", "Common Name")
+
+
+plotHeight <- 7
+#generate plots:
+if (!is.null(outputListSardist$studyData)) {
+  plotList <- list(1:nrow(outputListSardist$studyData))
+  # auto set fig height based on plot number:
+  if (nrow(outputListSardist$studyData) > 8) {
+    plotHeight <- nrow(outputListSardist$studyData) %/% 3 * 4
+  }
+  # needs to be a for loop as apply functions don't work well on sf's
+  for (rowId in 1:nrow(outputListSardist$studyData)) {
+    studyDataRow <- outputListSardist$studyData[rowId, ]
+    mapDataRow <- dplyr::filter(outputListSardist$mapData, Species_Link == studyDataRow$Species_Link)
+    p <- plot_rr_sf(areaMap, mapDataRow, 
+                    attribute = sardist_rr$attribute, outlines = FALSE, 
+                    plotTitle = outputListSardist$mapData[rowId, ]$`Common Name`,
+                    tickNum = 3)
+    plotList[[rowId]] <- p
+  }
+}
+
+
+```
+
+```{r sardist-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Query_output_dist <- if(is.null(outputListSardist$studyData)){
+  "* La zone de recherche ne chevauche pas l’aire de répartition des espèces en péril."
+} else {
+  "* La zone de recherche chevauche l’aire de répartition des espèces en péril."
+}
+writeLines(Query_output_dist)
+```
+
+```{r sardist-plot, fig.height=plotHeight, fig.width=11, fig.cap=paste(write_caption_blurb(sardist_rr, "EN"), 'Maps showing the species distribution ranges overlapping with the search area defined by the user (red outline).')}
+if (FALSE) { # (!is.null(outputListSardist$studyData)) {
+  gridExtra::grid.arrange(grobs = plotList,
+                          bottom = "",
+                          left = "",
+                          ncol = 3)  
+}
+```
+
+```{r sardist-table, echo=FALSE, results='asis'}
+if(!is.null(outputListSardist$studyData)){
+  knitr::kable(distTable, align="l", caption= "Quality Tier: High. Security level: none. Species At Risk listed as Endangered, Threatened or Special Concern under the <i>Species At Risk Act</i> for which the search polygon overlaps with their distribution (range). This is not the authoritative source or advice for Species At Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create anthe authoritative SARA report.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+}
+```

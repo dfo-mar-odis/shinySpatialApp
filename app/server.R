@@ -1,24 +1,24 @@
 server <- function(input, output, session) {
 
   # INITIATE MAP
-  map <- selectionMap()
+  map <- selectionMap(set_view = TRUE)
   edits <- callModule(editMod, leafmap = map, id = "map")
-  
-  # EMPTY REPORT 
-  output$report_html <- renderUI(includeHTML("www/empty_report.html"))
 
   # SWITCH MAIN TAB FROM MAP TO REPORT WHEN SIDE TAB IS REPORT
   observeEvent(input$active_panel, {
-    if (input$active_panel == "Report") {
-      slc <- "Report"
+    if (input$active_panel == "Full report") {
+      slc <- "Full report"
+    } else if (input$active_panel == "Custom report") {
+      slc <- "Custom report"
     } else slc <- "Map"
     updateTabsetPanel(session, "map_or_report", selected = slc)
   })
 
   # VALID AND STORE USER INFO
   valid_details <- reactive({
-    
-    # 2Bimproved
+
+    # 2Bimproved with shinyvalidate
+    # improve consent
     output$valid_details <- renderText("")
     if (check_name(input$u_name)) {
       if (check_email(input$u_email)) {
@@ -43,7 +43,7 @@ server <- function(input, output, session) {
 
 
   # CREATE GEOMS
-  geoms <- reactiveValues(select = NULL, final = NULL)
+  geoms <- reactiveValues(select = NULL, final = NULL, locations = NULL)
 
   # GEOMS CREATED
   nb_geom <- reactive({
@@ -94,15 +94,15 @@ server <- function(input, output, session) {
   })
   observeEvent(input$save_import, {
     newnames <- paste0(
-      dirname(input$import_shapefile$datapath), "/", 
+      dirname(input$import_shapefile$datapath), "/",
       input$import_shapefile$name
     )
     # for shapefiles, more than 1 file is uploaded
-    # as we don't know the order of upload the following ensures `filename.shp` 
+    # as we don't know the order of upload the following ensures `filename.shp`
     # will be read by sf (NB only 1 file will be read)
     detect_shp <- which(grepl("\\.shp$", newnames))
     if (!length(detect_shp)) detect_shp <- 1
-    # file are renamed on upload so I renamed them cause sf need different file 
+    # file are renamed on upload so I renamed them cause sf need different file
     # component of a shapefile to have the same name
     file.rename(input$import_shapefile$datapath, newnames)
     geom <- valid_import(newnames[detect_shp[1]], glue("imported_{input$save_import}"))
@@ -128,6 +128,31 @@ server <- function(input, output, session) {
       selected = seq_along(x)
     )
   }, ignoreNULL = FALSE)
+  # Search location
+  observeEvent(input$search_loc, {
+    bb <- osmdata::getbb(input$location)
+    if (!is.na(bb[1, 1])) {
+      # https://github.com/r-spatial/sf/issues/572
+      sf_loc <- st_as_sf(
+          st_as_sfc(
+            st_bbox(
+              c(
+                xmin = bb[1, 1],
+                xmax = bb[1, 2],
+                ymin = bb[2, 1],
+                ymax = bb[2,2]
+              )
+            ),
+            crs = 4326
+          )
+        )
+      # review selection area so that default setup depends on selection
+      map <- selectionMap(sf_loc, FALSE)
+      callModule(editMod, leafmap = map, id = "map")
+    }
+
+  })
+
 
   observeEvent(input$check_input_areas, {
     n <- length(input$check_input_areas)
@@ -136,22 +161,59 @@ server <- function(input, output, session) {
     if (n) {
       shinyjs::show(id = "add_geoms_to_map")
       shinyjs::show(id = "valid_geoms")
+      shinyjs::show(id = "select_view")
     } else {
       shinyjs::hide(id = "add_geoms_to_map")
       shinyjs::hide(id = "valid_geoms")
+      shinyjs::hide(id = "select_view")
     }
 
   }, ignoreNULL = FALSE)
 
-  observeEvent(input$clear_map, {
-    map <- selectionMap()
-    callModule(editMod, leafmap = map, id = "map")
+  # MAP VIEWS
+  # Reset map when clicking on validate
+  observeEvent(input$geometries, {
+    if(input$geometries == "Validate") {
+      map <- selectionMap(geoms$select[input$check_input_areas, ], FALSE) # Switch to TRUE to set it to default Halifax view
+      callModule(editMod, leafmap = map, id = "map")
+    }
   })
 
+  # Clear all polygons
+  observeEvent(input$clear_map, {
+    leafletProxy("map-map") %>%
+    clearShapes()
+  })
+
+  # Add selected polygons
   observeEvent(input$add_geoms_to_map, {
-    map <- selectionMap(geoms$select[input$check_input_areas, ])
-    callModule(editMod, leafmap = map, id = "map")
-  }, ignoreNULL = FALSE)
+    if (!is.null(geoms)) {
+      leafletProxy("map-map") %>%
+      clearShapes() %>%
+      leafem::addFeatures(geoms$select[input$check_input_areas, ])
+    }
+  })
+
+  # Reset map in explore
+  observeEvent(input$reset_view, {
+    leafletProxy("map-map") %>%
+    leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7)
+  })
+
+  # Reset map in validate
+  observeEvent(input$reset_view_valid, {
+    leafletProxy("map-map") %>%
+    leaflet::setView(lat = 45.6, lng = -63.6, zoom = 7)
+  })
+
+  # Set view on selected polygons
+  observeEvent(input$select_view, {
+    # print(st_bbox(geoms$select[input$check_input_areas, ]))
+    bbv <- st_bbox(geoms$select[input$check_input_areas, ])
+    leafletProxy("map-map") %>%
+    leaflet::fitBounds(lng1 = bbv[[1]], lat1 = bbv[[2]], lng2 = bbv[[3]], lat2 = bbv[[4]])
+  })
+
 
   observeEvent(input$valid_geoms, {
     n <- length(input$check_input_areas)
@@ -159,46 +221,59 @@ server <- function(input, output, session) {
     geoms$final <- geoms$select[input$check_input_areas, ]
   })
 
-
-
+  # HIDE / SHOW FULL REPORT BASED ON REGION SELECTED IN USER TAB
+  observeEvent(input$u_region, {
+    if (input$u_region == "Gulf Region") {
+      hideTab(inputId = "active_panel", target = "Full report")
+      hideTab(inputId = "map_or_report", target = "Full report")
+    } else {
+      showTab(inputId = "active_panel", target = "Full report")
+      showTab(inputId = "map_or_report", target = "Full report")
+    }
+  })
 
   # GENERATE REPORT
-  shinyjs::hide(id = "dl_outputs")
-  
-  observeEvent(input$generate_rmd, {
+  preview <- reactiveValues(
+    full_html = "www/empty_report.html",
+    custom_html = "www/empty_report.html"
+  )
 
-    if (length(input$u_consent) != 3) {
-      output$render_success <- info_valid("Please abide by terms and conditions in the User tab.", FALSE)
-    } else {
-      showNotification("Rendering")
-      chk <- renderReport(
-          input = reactiveValuesToList(input),
-          geoms = geoms$final,
-          outFileName =  input$report_name,
-          dirIn = here::here("app/Rmd"),
-          dirOut = here::here("app/output")
-        )
-      if (chk$ok) {
-        output$render_success <- info_valid(chk$msg, chk$ok)
-        output$report_html <- renderUI({
+  # FULL REPORT
+  fullReportServer("tmp_full_report", geoms, preview, input$u_name,
+    input$u_email, input$u_consent)
+
+  # FULL REPORT PREVIEW
+  output$full_report_html <- renderUI({
+      if (preview$full_html == "www/empty_report.html") {
+        includeHTML(preview$full_html)
+      } else {
+        # remove www/ for inclusion in iframe
+        html <- strsplit(preview$full_html, "www/")[[1]][2]
+        print(html)
         # NB Use a iframe so that the css of the report does not affect
         # the css of the app
-          tags$iframe(id = "iframe_report", src = chk$html, width = '100%',
-            frameborder = 'no')
-        })
-        output$dl_outputs <- downloadHandler(
-          filename = "output.zip",
-          content = function(file) zip(file, "./output")
-          )
-        showNotification("Success", type = "message")
-        shinyjs::show(id = "dl_outputs")
-      } else {
-        showNotification("Abort rendering", type = "error")
-        output$render_success <- info_valid(chk$msg, FALSE)
-        shinyjs::hide(id = "dl_outputs")
+        tags$iframe(id = "iframe_report", src = html, width = '100%',
+          frameborder = 'no')
       }
-    }
+    })
 
+
+  # CUSTOM REPORT
+  customReportServer("custom_report", geoms, preview, input$u_name, input$u_email,
+    input$u_consent)
+
+  # CUSTOM REPORT PREVIEW
+  output$custom_report_html <- renderUI({
+    if (preview$custom_html == "www/empty_report.html") {
+      includeHTML(preview$custom_html)
+    } else {
+      # remove www/ for inclusion in iframe
+      html <- strsplit(preview$custom_html, "www/")[[1]][2]
+      # NB Use a iframe so that the css of the report does not affect
+      # the css of the app
+      tags$iframe(id = "iframe_report", src = html, width = '100%',
+        frameborder = 'no')
+    }
   })
 
 }

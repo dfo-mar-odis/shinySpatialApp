@@ -44,3 +44,53 @@
   text-align: center;
 }
 
+/* Warning page style */
+
+#msg_warning {
+  color: #e41848;
+  text-align: center;
+}
+
+#msg_warning h1 {
+  color: #e41848;
+  font-size: 6em;
+}
+
+#msg_warning h2 {
+  font-size: 2em;
+}
+
+
+/* custom details see  https://stackoverflow.com/questions/10813581/replace-the-expand-icon-of-html5-details-tag*/
+
+details > summary {
+    list-style-type: none;
+}
+
+details > summary::-webkit-details-marker {
+    display: none;
+}
+
+details > summary::before {
+  font-family: "Font Awesome 5 Free"; 
+  font-weight: 900; 
+  content: "\f35a";
+  padding-right: 1px;
+}
+
+details[open] > summary::before {
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900; 
+    content: "\f0ab";
+    padding-right: 1px;
+}
+
+details {
+    /* border: 1px solid gray;
+    border-radius: 0.2rem; */
+    padding: 0.5rem;
+}
+
+details[open] > summary {
+    margin-bottom: 0.5rem;
+}
