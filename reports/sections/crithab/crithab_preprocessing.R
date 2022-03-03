@@ -9,7 +9,7 @@ loadResult <- load_rdata(c("CommonData", "crithab_rr", "leatherback_rr"), region
 
 # -----------CritHab-------------- # check table cols.
 crithabPkgId <- "db177a8c-5d7d-49eb-8290-31e6a45d786c"
-crithabResId <- "d6ce91ff-694f-4549-87ec-43f1a1bf5dca"
+crithabResId <- "94284a7f-46b8-4304-99d5-c278e88b22a8"
 critHabLayer <- "DFO_SARA_CritHab_2021_FGP_EN"
 
 critHabCheckDate <-  get_check_date("crithab_rr")
@@ -18,6 +18,7 @@ openCrithab_rr <- get_opendata_rr(crithabPkgId, crithabResId,
                                   region_sf = region_sf,
                                   gdbLayer = critHabLayer, 
                                   checkDate = critHabCheckDate)
+
 if(!is.null(openCrithab_rr)) {
   crithab_rr <- openCrithab_rr
   crithab_rr$metadata$qualityTier <- highQuality
