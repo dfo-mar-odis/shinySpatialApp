@@ -3,6 +3,7 @@ library(ckanr)
 ckanr_setup(url="https://open.canada.ca/data")
 
 library(sf)
+library(httr)
 source(here::here("config.R"))
 source(here::here("reports/R/dataFunctions.R"))
 
@@ -294,6 +295,20 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
   out_sf <- out_sf %>% dplyr::select("YEAR", "CODE", "Scientific Name", "Common Name", "TOTNO", "ELAT", "ELONG")
 }
 
+
+get_esri_rest <- function(mapServerUrl, layer="1", where="OBJECTID>0") {
+  url <- parse_url(url)
+  url$path <- paste(url$path, layer, "query", sep = "/")
+  url$query <- list(where = where,
+                    outFields = "*",
+                    returnGeometry = "true",
+                    f = "geojson")
+  request <- build_url(url)
+  out_sf <- st_read(request)
+  return(out_sf)
+}
+
+
 # ---------------GIT ACTION FUNCTIONS----------------
 
 # create the open data data csv file
@@ -322,3 +337,5 @@ pkg_id_from_url <- function(rr) {
     return(pkgId)
   }
 }
+
+

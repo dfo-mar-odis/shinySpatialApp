@@ -7,8 +7,8 @@
 # Written by Philip Greyson for Reproducible Reporting project, May/2021
 
 ###### master_intersect function ##################################
-# This function clips input data to the two relevant areas needed 
-# in the reports: the extents of the Study Area (for analysis) and 
+# This function clips input data to the two relevant areas needed
+# in the reports: the extents of the Study Area (for analysis) and
 # the Map Area (for plotting).
 # The Map and Study Area geometries are contained in the mapDataList object.
 #
@@ -28,19 +28,19 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
   # check that data_sf is an accepted format:
   if (is.null(data_sf)) {
     outList <- list(regionData = NULL,
-                    studyData = NULL, 
-                    mapData = NULL, 
+                    studyData = NULL,
+                    mapData = NULL,
                     mapPoints = NULL)
     return(outList)
   }
-  
+
   # convert bbox to sf object representing the map
   mapArea <- sf::st_as_sfc(mapDataList$bboxMap)
-  
+
   if (inherits(data_sf, "RasterLayer")) {
     raster_sf <- sf::st_as_sfc(st_bbox(data_sf))
     if (getRegion & (length(sf::st_intersection(raster_sf, mapDataList$region)) > 0)) {
-      regionData <- raster::crop(data_sf, mapDataList$region)  
+      regionData <- raster::crop(data_sf, mapDataList$region)
     } else {
       regionData <- NULL
     }
@@ -51,40 +51,41 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
     }
     studyData <- NULL
     mapPoints <- NULL
-    
-  } else if (!inherits(sf::st_geometry(data_sf), c("sfc_POINT", 
-                                                   "sfc_POLYGON", 
+
+  } else if (!inherits(sf::st_geometry(data_sf), c("sfc_POINT",
+                                                   "sfc_POLYGON",
                                                    "sfc_LINESTRING",
+                                                   "sfc_MULTILINESTRING",
                                                    "sfc_MULTIPOLYGON",
                                                    "sfc_GEOMETRY"))) {
     regionData = NULL
     studyData = NULL
     mapData = NULL
     mapPoints = NULL
-    
+
   } else {
     # Crop data
     if (getRegion) {
-      regionData <- sf::st_crop(data_sf, mapDataList$region)  
+      regionData <- sf::st_crop(data_sf, mapDataList$region)
       if (nrow(regionData) == 0) {regionData <- NULL}
     } else {
       regionData <- NULL
     }
-    
+
     mapData <- sf::st_crop(data_sf, mapArea)
     studyData <- sf::st_crop(mapData, mapDataList$studyArea)
-    
+
     # if there is no intersect with the box, set return to NULL
     if (nrow(mapData) == 0) {mapData <- NULL}
-    
+
     if (nrow(studyData) > 0) {
-      # if there is point data in the study area, drop uneeded columns and 
+      # if there is point data in the study area, drop uneeded columns and
       # duplicate geometries
       # for RV the ELAT and ELONG fields are necessary as well
       if (inherits(sf::st_geometry(data_sf), "sfc_POINT")) {
         if ("ELAT" %in% colnames(mapData)) {
           mapPoints <- dplyr::select(mapData, ELAT, ELONG, geometry)
-        } 
+        }
         else {
           mapPoints <- dplyr::select(mapData, geometry)
         }
@@ -103,13 +104,13 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
   }
 
   outList <- list(regionData = regionData,
-                  studyData = studyData, 
-                  mapData = mapData, 
+                  studyData = studyData,
+                  mapData = mapData,
                   mapPoints = mapPoints)
   return(outList)
 }
 
-  
+
 ##### - END master_intersect function ##################################
 
 
