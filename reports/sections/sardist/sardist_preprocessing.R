@@ -1,4 +1,4 @@
-source(here::here("reports/R/openDataHelpers.R"))
+source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
 
 source(here::here("config.R"))
@@ -21,12 +21,12 @@ filter_and_union <- function(sciName, sfObj) {
 # it is useful to run in a clean rstudio session and if needed, to manually
 # step through the functions.
 sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
-sardistResId <- "3b9b1fbf-59c5-4d2f-9a5c-289530ae410f"
+sardistResId <- "57d72159-d35b-4a82-8228-fe9da520d41d"
 sardistCheckDate <-  get_check_date("sardist_rr")
 
 openSardist_rr <- get_opendata_rr(sardistPkgId, sardistResId,
                                   region_sf = region_sf,
-                                  gdbLayer = "DFO_SARA_Dist_2021_FGP_EN",
+                                  gdbLayer = "DFO_SARA_Dist_2022_FGP_EN",
                                   checkDate = sardistCheckDate)
 if(!is.null(openSardist_rr)) {
   sardist_rr <- openSardist_rr

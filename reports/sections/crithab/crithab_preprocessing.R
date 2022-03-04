@@ -1,4 +1,4 @@
-source(here::here("reports/R/openDataHelpers.R"))
+source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
 
 source(here::here("config.R"))
@@ -10,7 +10,7 @@ loadResult <- load_rdata(c("CommonData", "crithab_rr", "leatherback_rr"), region
 # -----------CritHab-------------- # check table cols.
 crithabPkgId <- "db177a8c-5d7d-49eb-8290-31e6a45d786c"
 crithabResId <- "94284a7f-46b8-4304-99d5-c278e88b22a8"
-critHabLayer <- "DFO_SARA_CritHab_2021_FGP_EN"
+critHabLayer <- "DFO_SARA_CritHab_2022_FGP_EN"
 
 critHabCheckDate <-  get_check_date("crithab_rr")
 
@@ -23,11 +23,9 @@ if(!is.null(openCrithab_rr)) {
   crithab_rr <- openCrithab_rr
   crithab_rr$metadata$qualityTier <- highQuality
   crithab_rr$metadata$contact <- email_format("info@dfo-mpo.gc.ca")
-  crithab_rr$attribute <- "Common_Nam"
-  crithab_rr$data_sf$Common_Nam <- crithab_rr$data_sf$Common_Name_EN
+  crithab_rr$attribute <- "Common_Name_EN"
   save(crithab_rr, file = file.path(localFileSavePath, "Open/crithab_rr.RData"))
 }
-
 
 
 # ------------LEATHERBACKS--------------------

@@ -1,4 +1,5 @@
 source(here::here("config.R"))
+source(here::here("reports/R/plotFunctions.R"))
 library(dplyr)
 
 # function to make sure that the data dir for this region is set up

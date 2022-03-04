@@ -1,5 +1,5 @@
 
-source(here::here("reports/R/openDataHelpers.R"))
+source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
 
 source(here::here("config.R"))

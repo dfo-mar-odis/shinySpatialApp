@@ -61,9 +61,9 @@ get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, ti
   accessedDate <- list("en" = NA, "fr" = NA)
   # date nonesense:
   Sys.setlocale(locale = "French")
-  accessedDate$fr <-paste(strftime(today(), "%B %d, %Y"), "sur le Portail de données ouvertes")
+  accessedDate$fr <-paste(strftime(lubridate::today(), "%B %d, %Y"), "sur le Portail de données ouvertes")
   Sys.setlocale(locale = "English")
-  accessedDate$en <- paste(strftime(today(), "%B %d, %Y"), "from Open Data")
+  accessedDate$en <- paste(strftime(lubridate::today(), "%B %d, %Y"), "from Open Data")
   # reset locale to default:
   Sys.setlocale(locale="")
   
@@ -74,7 +74,7 @@ get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, ti
                  "metadata" = list("contact" = contactInfo,
                                    "url" = url,
                                    "accessedOnStr" = accessedDate,
-                                   "accessedDate" = today(),
+                                   "accessedDate" = lubridate::today(),
                                    "constraints" = constraints,
                                    "securityLevel" = securityLevel
                    
@@ -142,17 +142,17 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
       }
       return(tifRaster)
     }
-    out_sf <- stars::st_as_stars(tifRaster) %>% sf::st_as_sf()
+    out_sf <- stars::st_as_stars(tifRaster) %>% st_as_sf()
   }
   
-  if  (inherits(sf::st_geometry(out_sf), "sfc_GEOMETRY")) {
+  if  (inherits(st_geometry(out_sf), "sfc_GEOMETRY")) {
     out_sf <- st_cast(out_sf, "MULTIPOLYGON")
   }
   out_sf <- st_make_valid(out_sf)
   
   if (!is.null(region_sf)) {
-    newRegion_sf <- st_transform(region_sf, crs = sf::st_crs(out_sf))
-    out_sf <- sf::st_crop(out_sf, newRegion_sf)
+    newRegion_sf <- st_transform(region_sf, crs = st_crs(out_sf))
+    out_sf <- st_crop(out_sf, newRegion_sf)
   }
   
   out_sf <- st_transform(out_sf, crs = 4326)
@@ -287,7 +287,7 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
   gsspec <- gsspec %>% transmute(gsspec, COMM = stringr::str_to_sentence(COMM))
   gsspec <- gsspec %>% rename("Common Name"= COMM, "Scientific Name" = SPEC)
   
-  out_sf <- sf::st_as_sf(gsinf, coords = c("SLONG", "SLAT"), crs = 4326)
+  out_sf <- st_as_sf(gsinf, coords = c("SLONG", "SLAT"), crs = 4326)
   
   out_sf <- left_join(out_sf, gscat, by = "MISSION_SET")
   out_sf <- left_join(out_sf, gsspec, by = "CODE")
@@ -296,13 +296,22 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
 }
 
 
-get_esri_rest <- function(mapServerUrl, layer="1", where="OBJECTID>0") {
+get_esri_rest <- function(mapServerUrl, layer="1", where="1=1", geometry=NULL) {
   url <- parse_url(url)
   url$path <- paste(url$path, layer, "query", sep = "/")
-  url$query <- list(where = where,
-                    outFields = "*",
-                    returnGeometry = "true",
-                    f = "geojson")
+  if (is.null(geometry)) {
+    url$query <- list(where = where,
+                      outFields = "*",
+                      returnGeometry = "true",
+                      f = "geojson")
+  } else {
+    url$query <- list(geometry = geometry,
+                      where = where,
+                      outFields = "*",
+                      returnGeometry = "true",
+                      f = "geojson")
+  }
+
   request <- build_url(url)
   out_sf <- st_read(request)
   return(out_sf)
