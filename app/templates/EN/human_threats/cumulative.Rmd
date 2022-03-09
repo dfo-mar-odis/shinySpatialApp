@@ -1,14 +1,1 @@
 ## Cumulative impact mapping 
-
-
-```{r child = here::here("sections/nitroLoad/nitroLoad_en.rmd")}
-```
-
-```{r child = here::here("sections/docks/docks_en.rmd")}
-```
-
-```{r child = here::here("sections/waste/waste_en.rmd")}
-```
-
-```{r child = here::here("sections/power/power_en.rmd")}
-```
