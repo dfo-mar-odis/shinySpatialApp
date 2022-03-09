@@ -1,7 +1,3 @@
 ## **HABITAT INFORMATION**
 
 This module describes outputs of habitat derived from a variety of sources. Area-specific outputs are provided in sub-sections labelled according to each data source. Data descriptions, references and contact information are provided at the beginning of each sub-section.
-
-
-```{r child = here::here("reports/sections/rockweed/rockweed_en.Rmd")}
-```

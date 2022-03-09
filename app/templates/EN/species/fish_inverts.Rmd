@@ -8,25 +8,4 @@ editor_options:
 
 This module describes outputs of fish and marine invertebrates derived from a variety of data sources, internal and external to DFO. Species that have been listed under the Species at Risk Act (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), are summarized in independent tables. Area-specific outputs are provided in sub-sections labelled according to each data source. Data descriptions, references and contact information are provided at the beginning of each sub-section.
 
-```{r child = here::here("reports/sections/rv/rv_en.Rmd")}
-```
-
-```{r child = here::here("reports/sections/pasBay/pasBay_en.Rmd")}
-```
-
-```{r child = here::here("reports/sections/ilts/ilts_en.Rmd")}
-```
-
-```{r child = here::here("reports/sections/isdb-marfis/isdbMarfis_en.Rmd")}
-```
-
-```{r child = here::here("reports/sections/sturg/sturg_en.Rmd")}
-```
-
-```{r child = here::here("reports/sections/ocearch/ocearch_en.Rmd")}
-```
-
-```{r child = here::here("reports/sections/obis/obisFish_en.Rmd")}
-```
-
 
