@@ -34,7 +34,7 @@ After adding a new package, commit the updated renv.lock file to source control.
 After making sure that you have the necessary permissions to access the data, run:
 
 ``` r
-source(here::here("app/R/dataFunctions.R"))
+source(here::here("reports/R/dataFunctions.R"))
 copy_rdata_files()
 ```
 
@@ -58,13 +58,17 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 -   `config.R` contains key configuration parameters, including the region, file paths, and the list of Open Data records checked by the github action;
 -   `app` includes all the files needed to run the application;
 -   `app/www` includes image (e.g. logos), the `.css` file, and report preview once generated;
--   `app/data` contains the local versions of all data used in running the application.
--   `app/R` includes the R files to be loaded (it loads packages and functions);
--   `app/Rmd` includes the base `.Rmd` files for each report section;
+-   `app/data` contains the local versions of all data used in running the application;
+-   `app/R` includes the R scripts used by the shiny app;
+-   `app/templates` includes the base `.Rmd` files for each report section, split by language;
 -   `app/output` includes all outputs once generated: selected geometries as a `.geojson` and the report in all format (the different section are also added);
--   `dataprocessing` contains the common preprocessing functions to prepare data for use in the application, as well as the scripts used in github actions;
--   `sections` includes the rmarkdown and preprocessing script for each subsection of the report;
--   `sections/template` contains a simple template with basic functionality;
+-   `app/modules` includes RShiny module files;
+
+-   `reports` includes all the files needed to render the rmd reports;
+-   `reports/dataprocessing` contains the common preprocessing scripts to prepare data for use in the application, as well as the scripts used in github actions;
+-   `reports/sections` includes the rmarkdown and preprocessing script for each subsection of the report;
+-   `reports/sections/template` contains a simple template with basic functionality;
+-   `reports/R/` contains the R functions needed in the rmd to generate the reports;
 -   `tests/testthat` contains the unit test scripts that are run when test_local() is called.
 
 # **Collaborative Workflow**
