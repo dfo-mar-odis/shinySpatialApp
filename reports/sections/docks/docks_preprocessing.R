@@ -6,7 +6,6 @@ source(here::here("app/R/dataFunctions.R"))
 
 #contains config parameters and paths
 source(here::here("config.R"))
-library(httr)
 
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "docks_rr"), regionStr)

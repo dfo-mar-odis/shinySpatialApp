@@ -35,5 +35,5 @@ jobs:
         
       - name: Run Script
         run: |
-          source(here::here("dataprocessing/openDataGitScript.R"))
+          source(here::here("reports/dataprocessing/openDataGitScript.R"))
         shell: Rscript {0}

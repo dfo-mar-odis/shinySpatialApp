@@ -1,5 +1,5 @@
 source(here::here("config.R"))
-source(here::here("reports/R/openDataHelpers.R"))
+source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
 
 loadResult <- load_rdata(c("CommonData"), regionStr)

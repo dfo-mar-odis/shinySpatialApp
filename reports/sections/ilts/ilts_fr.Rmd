@@ -6,7 +6,7 @@ output:
     theme: paper
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
-```{r child = here::here("reports/sections/commonSections/commonIntro.Rmd")} 
+```{r ilts-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")} 
 ``` 
 
 ```{r eval=FALSE}
