@@ -6,7 +6,13 @@ output:
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
-```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+```{r lobsterEffort-load-common, child = here::here("sections/commonSections/commonIntro.Rmd")}
+```
+
+```{r lobsterEffort-load-common-ha, child = here::here("sections/commonSections/commonHumanActivties.Rmd")}
+```
+
+```{r eval=False}
 if (FALSE) { 
   # load in generic data, e.g.functions, study area, and base maps into the 
   # environment, when knitting, these will be loaded through the child rmd.
@@ -41,6 +47,14 @@ writeLines(noquote(lobsterEffort_rr$text$en))
 # clip the data to the Study and Map areas:
 lobsterOutputList <- master_intersect(lobsterEffort_rr$data_sf, mapDataList, getRegion=TRUE)
 
+```
+
+```{r lobsterEffort-haTable, echo=FALSE, results='asis'}
+if (!is.null(lobsterOutputList$studyData)) {
+  rrEnv$haClassTable$Lobster.Effort <- list("Coastal" = TRUE, 
+                                            "Offshore" = FALSE, 
+                                            "Shoreline" = TRUE)
+}
 ```
 
 ```{r lobsterEffort-check, echo=FALSE, results='asis',}

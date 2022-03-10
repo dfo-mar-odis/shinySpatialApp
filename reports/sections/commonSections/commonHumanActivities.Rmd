@@ -1,0 +1,15 @@
+
+```{r echo=FALSE, include=FALSE, cache=FALSE}
+
+if(!exists("rrEnv")){
+  assign("rrEnv", new.env(), envir = knitr::knit_global())
+}
+
+if (is.null(rrEnv$haClassTable)) {
+  rrEnv$haClassTable <- data.frame(row.names=c("Coastal", "Shoreline", "Offshore"))
+}
+
+# sample adding code:
+# rrEnv$haClassTable$Lobster <- list("Coastal" = TRUE, "Offshore" = FALSE, "Shoreline" = FALSE)
+
+```
