@@ -120,16 +120,22 @@ fullReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
       shinyjs::hide(id = "report_dl")
 
       observeEvent(input$generate_rmd, {
-
+        
         if (length(u_consent) != 3) {
           output$render_success <- info_valid("Please abide by terms and conditions in 'User' tab.", FALSE)
         } else {
+          shinyjs::hide(id = "outputs_dl")
+          shinyjs::hide(id = "report_dl")
+          # Need to change the HTML to trigger the reactive expression.
+          # A simple way is to set it to nothing at the beginning of the process
+          # so the internet browser understands that the page is obsolete.
+          preview$full_html <- ""
           id <- showNotification(
             "Rendering HTML preview ...", 
             duration = NULL, 
             closeButton = FALSE
           )
-          # showNotification("")
+          # 
           chk <- render_full_report(
             geoms = geoms$final,
             lang = input$lang,
@@ -145,7 +151,6 @@ fullReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
           removeNotification(id)
 
           if (chk$ok) {
-            
             output$render_success <- info_valid(chk$msg, chk$ok)
             preview$full_html <- chk$html
             

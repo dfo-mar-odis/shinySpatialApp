@@ -37,8 +37,8 @@ customReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
       shinyjs::hide(id = "report_dl")
       
       observeEvent(input$report_gen, {
-        print(u_consent)
-        print(u_name)
+        # print(u_consent)
+        # print(u_name)
         if (length(u_consent) != 3) {
           showNotification(
             "Please abide by terms and conditions in 'User' tab.", 
@@ -47,9 +47,11 @@ customReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
         } else {
           # Check and save geom 
           msgInfo("Saving geoms")
-          if (is.null(geoms)) {
-            msg <- "Please define areas of interest"
-            return(list(msg = msg, ok = FALSE, html = "empty_report.html"))
+          if (is.null(geoms$final)) {
+            showNotification(
+              "Area of interest is missing", 
+              type = "warning"
+            )
           } else {
             flge <- save_geom(geoms$final, here::here("app/output/"))
           }
@@ -79,6 +81,7 @@ customReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
           )
           # render document
           showNotification("Rendering HTML", type = "message")
+          preview$custom_html <- ""
           preview$custom_html <- rmarkdown::render(out, "html_document")
           # unlink(out) # to remove rmd file
           shinyjs::show(id = "report_dl")

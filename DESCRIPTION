@@ -1,12 +1,13 @@
-Package: placeholder
+Package: ShinySptialApp
 Type: ShinyApp 
-Date: 2021-02-23
+Date: 2022-02-23
 Title: BIO's Shiny Spatial App
 Version: 1.0.0.9000
 Authors@R: c(
-  person("inSileco Inc.", role = c("aut", "cre"), email = "kevin.cazelles@gmail.com")
+  person("inSileco Inc.", role = c("aut", "cre"), email = "info@inSileco.io"),
   )
 Imports:
+  ckanr
   cli,
   crayon,
   fs,

@@ -249,9 +249,8 @@ server <- function(input, output, session) {
       } else {
         # remove www/ for inclusion in iframe
         html <- strsplit(preview$full_html, "www/")[[1]][2]
-        print(html)
-        # NB Use a iframe so that the css of the report does not affect
-        # the css of the app
+        # NB iframe is used so the css of the report does not affect the css of 
+        # the app
         tags$iframe(id = "iframe_report", src = html, width = '100%',
           frameborder = 'no')
       }
@@ -259,8 +258,8 @@ server <- function(input, output, session) {
 
 
   # CUSTOM REPORT
-  customReportServer("custom_report", geoms, preview, input$u_name, input$u_email,
-    input$u_consent)
+  customReportServer("custom_report", geoms, preview, input$u_name, 
+    input$u_email, input$u_consent)
 
   # CUSTOM REPORT PREVIEW
   output$custom_report_html <- renderUI({

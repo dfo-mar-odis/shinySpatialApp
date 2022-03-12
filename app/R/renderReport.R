@@ -9,11 +9,12 @@
 #' @param dir_tpl path to template directory.
 #'
 #'
+#' @return
 #' Returns list of values: 
-#'   msg: info message (Successfully rendered/ Issue Rendering)
-#'   ok: Boolean indicating sucess or not
-#'   html: html of report
-#'   dir_out: directory where report is saved
+#'   * `msg`: info message (Successfully rendered/ Issue Rendering)
+#'   `ok`: Boolean indicating success or not
+#'   `html`: html of report
+#'   `dir_out`: directory where report is saved
 #'
 #
 render_full_report <- function(geoms, lang, species, human_threats, context,
@@ -99,7 +100,8 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
     msgInfo("Copying HTML")
     jj <- file.copy(
       glue_path(dir_out, html), 
-      preview_html
+      preview_html,
+      overwrite = TRUE
     )
     msg <- "Successfully rendered."
   } else {
