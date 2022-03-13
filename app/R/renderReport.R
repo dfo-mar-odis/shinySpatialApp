@@ -97,7 +97,7 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
     # this is done to generate a html preview (see "report" tab)
     html <- switch_ext(basename(rmd_ready), "html")
     preview_html <- glue_path("www", "reports", html)
-    msgInfo("Copying HTML")
+    msgInfo("Copying HTML to www/")
     jj <- file.copy(
       glue_path(dir_out, html), 
       preview_html,

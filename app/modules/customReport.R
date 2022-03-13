@@ -29,7 +29,7 @@ customReportUI <- function(id) {
 }
 
 
-customReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
+customReportServer <- function(id, geoms, preview, u_details) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -37,14 +37,13 @@ customReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
       shinyjs::hide(id = "report_dl")
       
       observeEvent(input$report_gen, {
-        # print(u_consent)
-        # print(u_name)
-        if (length(u_consent) != 3) {
+        if (!u_details$consent) {
           showNotification(
             "Please abide by terms and conditions in 'User' tab.", 
             type = "error"
           )
         } else {
+          shinyjs::hide(id = "report_dl")
           # Check and save geom 
           msgInfo("Saving geoms")
           if (is.null(geoms$final)) {
@@ -72,8 +71,8 @@ customReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
             whisker::whisker.render(
               readLines(tpl, warn = FALSE), 
               list(
-                u_name = u_name,
-                u_email = u_email,
+                u_name = u_details$name,
+                u_email = u_details$email,
                 u_text = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors in Maritimes Region."
               )
             ),  

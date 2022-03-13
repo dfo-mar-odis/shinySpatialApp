@@ -110,7 +110,7 @@ fullReportUI <- function(id) {
 
 
 
-fullReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
+fullReportServer <- function(id, geoms, preview, u_details) {
 
   moduleServer(
     id,
@@ -121,7 +121,7 @@ fullReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
 
       observeEvent(input$generate_rmd, {
         
-        if (length(u_consent) != 3) {
+        if (!u_details$consent) {
           output$render_success <- info_valid("Please abide by terms and conditions in 'User' tab.", FALSE)
         } else {
           shinyjs::hide(id = "outputs_dl")
@@ -139,8 +139,8 @@ fullReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
           chk <- render_full_report(
             geoms = geoms$final,
             lang = input$lang,
-            u_name = u_name, 
-            u_email = u_email,
+            u_name = u_details$name, 
+            u_email = u_details$email,
             u_text = input$u_text,
             u_comments = input$u_comments,
             species = input$species,
@@ -177,11 +177,12 @@ fullReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
                 on.exit(removeNotification(id), add = TRUE)
                 fs::file_copy(pagedown::chrome_print(preview$full_html), file)
               })
-            
-            
+
           } else {
             showNotification("Abort rendering", type = "error")
+            preview$full_html <- "www/wrong.html"
             output$render_success <- info_valid(chk$msg, FALSE)
+            print(preview$full_html)
             shinyjs::hide(id = "outputs_dl")
             shinyjs::hide(id = "report_dl")
           }

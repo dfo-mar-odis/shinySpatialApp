@@ -71,7 +71,7 @@ switch_ext <- function(x, y) {
 # clear extra HTML in www
 clear_www_html <- function() {
   html_fl <- list.files("www", pattern = "*.html$", full.names = TRUE)
-  donotrm <- paste0("www/", c("empty_report"), ".html")
+  donotrm <- paste0("www/", c("empty_report", "wrong"), ".html")
   file.remove(html_fl[! html_fl %in% donotrm])
 }
 
