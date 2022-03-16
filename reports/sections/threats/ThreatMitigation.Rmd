@@ -10,6 +10,10 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ``` 
 
 
+```{r threats-load, include=FALSE}
+load_rdata(c("threats_rr"), regionStr, env = environment())
+```
+
 ### **Species at Risk: Threats and Mitigation**
 
 This section of the Report represents a literature review conducted by Stephen Finnis in December 2021 in an attempt to compile and summarize the available threat and mitigation information for aquatic species at risk within the DFO Maritimes region. Together, threats and threat mitigation are important for aiding species recovery, and are addressed at various stages in the SARA recovery planning process, the multi-step approach for providing legal protection for species at risk. This process is complex, and many challenges arise when attempting to compile this information in a standardized manner that is comparable for all species. This section therefore summarizes the recovery planning process and provides an overview of the various parties involved, steps, and documents created, with an emphasis on threats and threat mitigation. In addition, the documents created by DFO within this process are compiled in this section for each aquatic species at risk (i.e., those assessed by the Committee on the Status of Endangered Wildlife in Canada and/or listed within the Species at Risk Act) observed within the search area.  
