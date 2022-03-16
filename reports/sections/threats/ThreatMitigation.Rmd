@@ -34,7 +34,7 @@ Although the creation of certain documents is a requirement under SARA, delays i
 
 
 ```{r sara-chart, fig.cap = "Simplified overview of the recovery planning process under the Canadian Species at Risk Act (adapted from Newediuk et al. (2021) and McDevitte-Irwin et al. (2015)). The documents reviewed for threat information in this review are represented by the orange boxes. Orange boxes represent documents created, blue boxes represent government bodies, and green boxes represent actions taken. More detailed explanations of each box are included in the main text. Letters in white circles refer to SARA designations including EX: extirpated, T: threatened, E: endangered, and SC: special concern. The process reads from left to right, starting with the creation of the COSEWIC Status Report. Where applicable, mandated time frames are shown above the arrows, although the process may experience time delays at various steps [@mcdevitt2015_missing]. Recovery Potential Assessments (RPAs) are typically not created for species with a COSEWIC designation of special concern. Threat Assessments (not shown) are typically created as part the RPA process, and may be created as a separate document. Schedule 1 is the official federal list of wildlife species at risk.", echo=FALSE}
-knitr::include_graphics(here::here("reports/sections/SARAFlowchart.jpg"))
+knitr::include_graphics(here::here("reports/sections/Threats/SARAFlowchart.jpg"))
 ```
 
 ##### ***Committee on the Status of Endangered Wildlife in Canada (COSEWIC)   Status Reports***
