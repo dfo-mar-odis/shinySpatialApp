@@ -3,8 +3,12 @@ output:
   bookdown::html_document2:
     number_sections: FALSE
     theme: paper
-    bibliography: '`r here::here("app/data/mybiblio.bib")`'
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
+
+```{r threats-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+``` 
+
 
 ### **Species at Risk: Threats and Mitigation**
 
