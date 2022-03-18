@@ -43,7 +43,7 @@ server <- function(input, output, session) {
         FALSE)
       }
     } else {
-      output$valid_details <- info_valid("Please fill out all required fields",
+      output$valid_details <- info_valid("Please fill out all required fields.",
         FALSE)
     } 
   })

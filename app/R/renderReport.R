@@ -52,6 +52,7 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
   origin <- glue(add_lang_to_file(main, lang), ".origin")
   # full Rmd ready (txt within Rmd no longer in code chunks)
   rmd_ready <- glue_path(dir_out, add_lang_to_file(fl, lang))
+  on.exit(unlink(rmd_ready))
 
   data_all <- list(
     path_to_geoms = flge$relrmd,
@@ -67,20 +68,9 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
     u_text = u_text,
     u_comments = u_comments
   )  
-  # What does this do?
-  #readLines(template)
-  # creates .Rmd.origin
-  # writeLines(whisker::whisker.render(readLines(template), data_all), origin)
+  # See https://github.com/inSilecoInc/shinySpatialApp/issues/26
+  # for a discussion on the current rendering process
   writeLines(whisker::whisker.render(readLines(template), data_all), rmd_ready)
-  # creates .Rmd
-  #knitr::knit(origin, rmd_ready, quiet = FALSE)
-  # remove .Rmd.origin
-  #if (!keep.origin) unlink(origin)
-  # move figure folder
-  #if (fs::dir_exists("figs")) {
-  #  fs::dir_copy("figs", "output/figs", overwrite = TRUE)
-  #  fs::dir_delete("figs")
-  #}
   
   
   msgInfo("Creating HTML")  
