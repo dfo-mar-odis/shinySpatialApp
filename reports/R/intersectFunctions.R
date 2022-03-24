@@ -43,14 +43,12 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
   if (inherits(data_sf, "RasterLayer")) {
     raster_sf <- sf::st_as_sfc(sf::st_bbox(data_sf))
     if (getRegion & (length(sf::st_intersection(raster_sf, mapDataList$region)) > 0)) {
-      region_sp <- sf::as_Spatial(mapDataList$region)
-      regionData <- raster::crop(data_sf, region_sp)
+      regionData <- raster::crop(data_sf, sf::as_Spatial(mapDataList$region))
     } else {
       regionData <- NULL
     }
     if (length(sf::st_intersection(raster_sf, sf::st_as_sf(mapArea))) > 0) {
-      map_sp <- sf::as_Spatial(mapArea)
-      mapData <- raster::crop(data_sf, map_sp)
+      mapData <- raster::crop(data_sf, sf::as_Spatial(mapArea))
     } else {
       mapData <- NULL
     }

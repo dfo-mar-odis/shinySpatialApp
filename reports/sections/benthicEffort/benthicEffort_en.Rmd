@@ -37,11 +37,9 @@ writeLines(noquote(benthicEffort_rr$text$en))
 
 #### ***Area-specific fishing effort search results***
 
-```{r benthicEffort-results, echo=TRUE, error=TRUE, message=FALSE, results='asis'}
-
+```{r benthicEffort-results, echo=FALSE, results='asis'}
 outputListBenthicEffort <- master_intersect(benthicEffort_rr$data_sf, mapDataList,
                                            getRegion=TRUE)
-
 
 ```
 
