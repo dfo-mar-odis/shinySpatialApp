@@ -9,10 +9,10 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ```{r nitroLoad-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
 ```
 
-```{r nitroLoad-load-common-ha, child = here::here("reports/sections/commonSections/commonHumanActivties.Rmd")}
+```{r nitroLoad-load-common-ha, child = here::here("reports/sections/commonSections/commonHA.Rmd")}
 ```
 
-```{r eval=False}
+```{r eval=FALSE}
 if (FALSE) { 
   # load in generic data, e.g.functions, study area, and base maps into the 
   # environment, when knitting, these will be loaded through the child rmd.
@@ -54,7 +54,7 @@ deltaOutputList <- master_intersect(deltaNitroLoad_rr$data_sf, mapDataList, getR
 
 ```{r nitroLoad-haTable, echo=FALSE, results='asis'}
 if (!is.null(totalOutputList$studyData)) {
-  rrEnv$haClassTable$Nitrogen.Loading <- list("Coastal" = TRUE, 
+  rrEnv$haClassTable$`Nitrogen Loading` <- list("Coastal" = TRUE, 
                                             "Offshore" = TRUE, 
                                             "Shoreline" = TRUE)
 }

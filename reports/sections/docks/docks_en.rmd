@@ -9,10 +9,10 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ```{r docks-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
 ```
 
-```{r docks-load-common-ha, child = here::here("reports/sections/commonSections/commonHumanActivities.Rmd")} 
+```{r docks-load-common-ha, child = here::here("reports/sections/commonSections/commonHA.Rmd")} 
 ``` 
 
-```{r eval = False}
+```{r eval = FALSE}
 if (FALSE) { 
   # load in generic data, e.g.functions, study area, and base maps into the 
   # environment, when knitting, these will be loaded through the child rmd.
@@ -45,14 +45,15 @@ writeLines(noquote(docks_rr$text$en))
 #### ***Area-specific man-made solid results***
 ```{r docks-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
-docksOutputList <- master_intersect(docks_rr$data_sf, mapDataList, getRegion=TRUE)
+docksOutputList <- master_intersect(docks_rr$data_sf, mapDataList,
+                                    getRegion=TRUE)
 
 ```
 
 
 ```{r docks-haTable, echo=FALSE, results='asis'}
 if (!is.null(docksOutputList$studyData)) {
-  rrEnv$haClassTable$Manmade.Structures <- list("Coastal" = FALSE, 
+  rrEnv$haClassTable$`Manmade Structures` <- list("Coastal" = FALSE, 
                                                 "Offshore" = FALSE, 
                                                 "Shoreline" = TRUE)
 }

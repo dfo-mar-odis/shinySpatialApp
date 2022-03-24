@@ -1,3 +1,6 @@
+library(raster)
+library(sp)
+
 # The functions in this file are used to clip various data sources (e.g. MARFIS, ISDB, etc.)
 # with the studyArea selected and summarize the data for tables within the final document.
 #
@@ -38,14 +41,16 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
   mapArea <- sf::st_as_sfc(mapDataList$bboxMap)
 
   if (inherits(data_sf, "RasterLayer")) {
-    raster_sf <- sf::st_as_sfc(st_bbox(data_sf))
+    raster_sf <- sf::st_as_sfc(sf::st_bbox(data_sf))
     if (getRegion & (length(sf::st_intersection(raster_sf, mapDataList$region)) > 0)) {
-      regionData <- raster::crop(data_sf, mapDataList$region)
+      region_sp <- sf::as_Spatial(mapDataList$region)
+      regionData <- raster::crop(data_sf, region_sp)
     } else {
       regionData <- NULL
     }
     if (length(sf::st_intersection(raster_sf, sf::st_as_sf(mapArea))) > 0) {
-      mapData <- raster::crop(data_sf, region_sf)
+      map_sp <- sf::as_Spatial(mapArea)
+      mapData <- raster::crop(data_sf, map_sp)
     } else {
       mapData <- NULL
     }

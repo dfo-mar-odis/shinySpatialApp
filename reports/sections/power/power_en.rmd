@@ -9,7 +9,7 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ```{r power-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
 ```
 
-```{r power-load-common-ha, child = here::here("reports/sections/commonSections/commonHumanActivities.Rmd")}
+```{r power-load-common-ha, child = here::here("reports/sections/commonSections/commonHA.Rmd")}
 ```
 
 ```{r eval=FALSE}
