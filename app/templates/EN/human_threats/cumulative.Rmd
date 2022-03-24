@@ -1,24 +1,24 @@
 ## Cumulative impact mapping 
 
-```{r child = here::here("sections/nitroLoad/nitroLoad_en.rmd")}
+```{r child = here::here("reports/sections/nitroLoad/nitroLoad_en.rmd")}
 ```
 
-```{r child = here::here("sections/docks/docks_en.rmd")}
+```{r child = here::here("reports/sections/docks/docks_en.rmd")}
 ```
 
-```{r child = here::here("sections/waste/waste_en.rmd")}
+```{r child = here::here("reports/sections/waste/waste_en.rmd")}
 ```
 
-```{r child = here::here("sections/power/power_en.rmd")}
+```{r child = here::here("reports/sections/power/power_en.rmd")}
 ```
 
 
 ## Fishing
 
-```{r child = here::here("sections/benthicEffort/benthicEffort_en.rmd")}
+```{r child = here::here("reports/sections/benthicEffort/benthicEffort_en.rmd")}
 ```
 
-```{r child = here::here("sections/lobsterEffort/lobsterEffort_en.rmd")}
+```{r child = here::here("reports/sections/lobsterEffort/lobsterEffort_en.rmd")}
 ```
 
 

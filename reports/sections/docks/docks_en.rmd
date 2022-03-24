@@ -6,7 +6,7 @@ output:
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
-```{r docks-load-common, child = here::here("sections/commonSections/commonIntro.Rmd")}
+```{r docks-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
 ```
 
 ```{r docks-load-common-ha, child = here::here("reports/sections/commonSections/commonHumanActivities.Rmd")} 

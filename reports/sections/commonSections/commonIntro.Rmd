@@ -21,7 +21,8 @@ if (!exists("mapDataList")){
   studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) # last area from app.
   intro_setup(studyArea, env = environment())
   #  need to reset this variable here.
-  rrEnv <- new.env()
+  assign("rrEnv", new.env(), envir = knitr::knit_global())
   rrEnv$commonObis <- TRUE
+
 }
 ```
