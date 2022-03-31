@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.1.1",
+    "Version": "4.1.2",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -73,7 +73,7 @@
       "RemoteSha": "19f31cdfc11033dacad547fae958d553d93cec7d",
       "RemoteHost": "api.github.com",
       "Remotes": "Maritimes/Mar.utils, Maritimes/Mar.data",
-      "Hash": "0cbb522f3c795558d8c316bab4485da1",
+      "Hash": "93a8e96fedc04ff9bc721d84acaf001f",
       "Requirements": [
         "Mar.utils",
         "RColorBrewer",
@@ -98,7 +98,7 @@
       "RemoteSha": "e9b0f328aa84bef345a94aaedc9db7d61487ab33",
       "RemoteHost": "api.github.com",
       "Remotes": "Maritimes/Mar.data",
-      "Hash": "06afbaedb649f071a940d69b184ee907",
+      "Hash": "c646992b4363eb2bdb7d160e8b5e9935",
       "Requirements": [
         "Mar.data",
         "PBSmapping",
@@ -276,6 +276,17 @@
       "Requirements": [
         "R6",
         "processx"
+      ]
+    },
+    "cellranger": {
+      "Package": "cellranger",
+      "Version": "1.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f61dbaec772ccd2e17705c1e872e9e7c",
+      "Requirements": [
+        "rematch",
+        "tibble"
       ]
     },
     "ckanr": {
@@ -712,6 +723,20 @@
         "xfun"
       ]
     },
+    "hms": {
+      "Package": "hms",
+      "Version": "1.1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "5b8a2dd0fdbe2ab4f6081e6c7be6dfca",
+      "Requirements": [
+        "ellipsis",
+        "lifecycle",
+        "pkgconfig",
+        "rlang",
+        "vctrs"
+      ]
+    },
     "htmltools": {
       "Package": "htmltools",
       "Version": "0.5.2",
@@ -1058,14 +1083,6 @@
         "sp"
       ]
     },
-    "maps": {
-      "Package": "maps",
-      "Version": "3.4.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "b3d98a967ec17c80f795719529812fa0",
-      "Requirements": []
-    },
     "maptools": {
       "Package": "maptools",
       "Version": "1.1-2",
@@ -1306,6 +1323,14 @@
         "rjson"
       ]
     },
+    "prettyunits": {
+      "Package": "prettyunits",
+      "Version": "1.1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "95ef9167b75dde9d2ccc3c7528393e7e",
+      "Requirements": []
+    },
     "processx": {
       "Package": "processx",
       "Version": "3.5.2",
@@ -1315,6 +1340,19 @@
       "Requirements": [
         "R6",
         "ps"
+      ]
+    },
+    "progress": {
+      "Package": "progress",
+      "Version": "1.2.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "14dc9f7a3c91ebb14ec5bb9208a07061",
+      "Requirements": [
+        "R6",
+        "crayon",
+        "hms",
+        "prettyunits"
       ]
     },
     "proj4": {
@@ -1393,6 +1431,27 @@
         "sp",
         "terra"
       ]
+    },
+    "readxl": {
+      "Package": "readxl",
+      "Version": "1.4.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "170c35f745563bb307e963bde0197e4f",
+      "Requirements": [
+        "cellranger",
+        "cpp11",
+        "progress",
+        "tibble"
+      ]
+    },
+    "rematch": {
+      "Package": "rematch",
+      "Version": "1.0.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c66b930d20bb6d858cd18e1cebcfae5c",
+      "Requirements": []
     },
     "rematch2": {
       "Package": "rematch2",
