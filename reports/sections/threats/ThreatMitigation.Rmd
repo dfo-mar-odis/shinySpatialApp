@@ -25,9 +25,9 @@ Click [here](#threats-results) to skip to the search results with the applicable
 
 Threats therefore encompass both natural and anthropogenic activities, and are typically required to be discussed in relation to both the species and its habitat. Threats can be both indirect (e.g., altered fire regime, reduction in prey populations, introduced species) or direct (e.g., entanglement in fishing gear) [@DFO2014_Threat]. Naturally occurring processes (e.g., aging, disease, or predation) are only considered to be threats if they have been altered by human activities, or pose a threat to a critically small or isolated population [@DFO2014_Threat]. Identifying threats and determining how they may affect each species are crucial to prioritize recovery measures and inform management decisions [@DFO2014_Threat].
 
-Threats are mentioned in many of the documents mentioned in the SARA recovery planning process (Figure \@ref(fig:sara-chart). However, due to issues such as changes in the requirements of these documents over time, and limited species information, the level of detail for threats may be varied.
+Threats are mentioned in many of the documents mentioned in the SARA recovery planning process (Figure \@ref(fig:sara-chart)). However, due to issues such as changes in the requirements of these documents over time, and limited species information, the level of detail for threats may be varied.
 
-**Mitigation** refers to the measures used to avoid, minimize, eliminate, reduce, control or offset adverse effects of each threat (adapted from the [@IAA]). 
+**Mitigation** refers to the measures used to avoid, minimize, eliminate, reduce, control or offset adverse effects of each threat (adapted from the Impact Assessment @IAA). 
 
 Similar to threats, mitigation measures are not consistently included or characterized throughout each document created as part of the SARA recovery planning process, and may have different levels of detail for each species. Generally, the most detailed information for mitigation measures for each threat are found within a species’ Action Plan (for species designated extirpated, endangered or threatened), or Management Plan (for species of special concern). Associated information within each document may include descriptions such as timelines for completion, and suggested jurisdictions/organizations to undertake each mitigation measure (e.g., government bodies, universities, industry). Mitigation measures for each threat may not be explicitly stated as such, but may instead be referred to as other terms such as “conservation measures” or “recovery measures” when addressing the proposed action for each threat.
 
@@ -43,14 +43,14 @@ Although the creation of certain documents is a requirement under SARA, delays i
 knitr::include_graphics(here::here("reports/sections/Threats/SARAFlowchart.jpg"))
 ```
 
-##### ***Committee on the Status of Endangered Wildlife in Canada (COSEWIC)   Status Reports***
+##### ***Committee on the Status of Endangered Wildlife in Canada (COSEWIC) Status Reports***
 COSEWIC creates detailed technical reports that summarize information about the species, including threats that they face. COSEWIC compiles available data, knowledge and information about the species, and provides listing (i.e., status) recommendations to the competent minister. These reports are also intended to provide a baseline of biological information to assess a species’ status. More detailed information on the COSEWIC process can be found here: <https://www.cosewic.ca/index.php/en-ca/assessment-process/wildlife-species-assessment-process-categories-guidelines.html>
 
 The same definitions for each designations are used for species listed in Schedule 1. However, in some cases the COSEWIC and SARA designations may differ, based on factors such as the listing decision made by the Governor in Council. 
 
 COSEWIC reports are available for each species on the SAR Public Registry (Tables \@ref(tab:cosewic-table), \@ref(tab:sara-table) and <https://species-registry.canada.ca/index-en.html#/species?sortBy=commonNameSort&sortDirection=asc&pageSize=10>). 
 
-##### ***Recovery Potential Assessments:***
+##### ***Recovery Potential Assessments***
 Recovery Potential Assessments (RPAs) are documents of scientific information created by DFO Science. They are only a requirement for aquatic species and are therefore not created for non-aquatic species. DFO creates RPAs using the best available scientific information, data analyses, modelling, and expert opinion. These documents are also used to inform other processes within the SARA Recovery planning such as listing recommendations (i.e., which status to assign a species), and the creation of other documents such as Recovery Strategies and Action Plans. Specifically, RPAs consist of three main phases (sections) to assess: 
 
 1. The current/recent species status; 
@@ -73,7 +73,7 @@ RPAs are peer-reviewed by the Canadian Science Advisory Secretariat (CSAS) and c
 RPAs compiled in Tables \@ref(tab:cosewic-table) and \@ref(tab:sara-table) were obtained from the Federal Science Libraries Network by searching for “Recovery Potential Assessments” of each species (and its DU) in the Search tab: <https://science-libraries.canada.ca/eng/fisheries-oceans/>
 Alternatively, RPAs be searched for specifically by publication series type or region on the CSAS website: <http://www.dfo-mpo.gc.ca/csas-sccs/index-eng.htm>
 
-##### ***Threat Assessment:***
+##### ***Threat Assessment***
 The most detailed information regarding species threats are found within Threat Assessments. These are documents produced by DFO to characterize and prioritize threats in a nationally consistent and standardized manner. Guidelines for creating detailed information on producing Threat Assessments were developed in 2014 and can be found here [@DFO2014_Threat]: <https://waves-vagues.dfo-mpo.gc.ca/Library/363987.pdf>.  
 
 The document in the above URL provides a detailed schema for documenting threat information in a tabular format for categories such as the Likelihood of Occurrence, Level of Impact, Causal Certainty, Threat Risk, Threat Occurrence, Threat Frequency, and Threat Extent. These are then quantified and scored using standardized format (e.g., scored as extreme, high, medium, low, or unknown). Notably, Threat Assessments identify and describe threats at both the population level (also known as Designatable Unit, DU, by COSEWIC) and species level. Evaluating threats at the population level may help identify how threats can vary over a species range, which can therefore enable a better allocation of resources for threat mitigation [@DFO2014_Threat].
@@ -88,7 +88,7 @@ Because threat assessment information is standardized and comparable between spe
 ##### ***Competent Minister***
 The COSEWIC assessments for aquatic species are submitted to The Minister of Fisheries and Oceans (often referred to as “the competent Minister”). The Minister of Environment and Climate Change Canada is the competent Minister responsible for all other (i.e., non-aquatic) species. Within 90 days of receiving the COSEWIC assessment, the Minister must issue a Response Statement indicating timelines for action and how they intend to respond to the assessment. After the Response Statement is issued, the Minister goes through additional consultations with the public before sending the listing recommendation to the Governor in Council. There is no set timeline for how long these consultations may take [@mcdevitt2015_missing]. These recommendations from the Minister consider the ecological, social and economic costs and benefits of adding the species to SARA. COSEWIC assessments, RPAs and Threat Assessments help inform the ecological considerations of these recommendations. 
 
-##### ***Governor in Council:***
+##### ***Governor in Council***
 Within nine months of receiving the recommendations from the Minister, the Governor in Council must decide whether to:
 
 *	Accept the COSEWIC assessment and add the species to SARA
@@ -97,14 +97,14 @@ Within nine months of receiving the recommendations from the Minister, the Gover
 
 If a species is recommended to be added to SARA, various documents must be compiled based on its status. A Recovery Strategy must be created and posted on the SAR Public Registry within one year if the species is classified as endangered, or within two years if the species is listed as threatened or extirpated. After the Recovery Strategies are created, an Action Plan must be created for these species. There is no set timeline for completion for Action Plans, although typically an expected timeline for completion is provided in the Recovery Strategy. If a species is designated as special concern, Management Plans are created instead of Recovery Strategies and Action Plans. Management Plans must be created within three years of listing. 
 
-##### ***Recovery Strategy:***
+##### ***Recovery Strategy***
 Recovery Strategies are documents prepared by the competent minister that address threats to the species, identify critical habitat, and set the goals and objectives for species recovery. They also specify the actions taken to stop or reverse the decline of the species, although detailed planning is described in the species’ Action Plan. More information on Recovery Strategies and their goals and objectives can be found here: <https://wildlife-species.canada.ca/species-risk-registry/sar/recovery/recovery_e.cfm>
 
 A Recovery Strategy must be created and posted on the SAR Public Registry within one year for species with a SARA classification of endangered, or within two years if the species is listed as threatened or extirpated. Recovery Strategies are not created for species of special concern (Figure \@ref(fig:sara-chart)).
 
 Recovery Strategies included in Table \@ref(tab:sara-table) were obtained for each species from the SAR Public Registry: <https://species-registry.canada.ca/index-en.html#/species?sortBy=commonNameSort&sortDirection=asc&pageSize=10>
 
-##### ***Action Plan:***
+##### ***Action Plan***
 Action Plans are documents created by the competent Minister that outline how to implement the goals and objectives specified in the species’ Recovery Strategy. In particular, they identify ways to reduce threats to the species, how to protect its critical habitat, and identify which jurisdictions or organizations will implement these recovery/mitigation measures. In addition to ecological and biological considerations, Action Plans also address the socio-economic costs and benefits of these mitigation measures. Action Plans are created for species with a SARA listing of extirpated, endangered or threatened, but not for species of special concern. Under SARA, there is no set timeline for completion for Action Plans, although Recovery Strategies typically specify when an Action Plan will be completed. 
 
 Although these documents are typically only created for Schedule 1 species, the Parks Canada Agency has created multi-species Action Plans for species within National Parks or National Historic Sites. In these Action Plans, recovery measures for species that have been assessed by COSEWIC but are not in Schedule 1 may be mentioned (e.g., American Eel (*Anguilla rostrata*) with the Multi-species Action Plan for Kejimkujik National Park and National Historic Site of Canada: <https://wildlife-species.canada.ca/species-risk-registry/virtual_sara/files/plans/Ap-Kejimkujik-v00-2017Feb07-Eng.pdf>). Since these Actions Plans are available on the SAR Public Registry despite not being listed in Schedule 1, they have still been provided in Table \@ref(tab:cosewic-table) in order to have a comprehensive list of all SARA-related documents (Table \@ref(tab:cosewic-table)).
@@ -114,8 +114,8 @@ More information on Action Plans and their goals and objectives can be found her
 
 Action Plans included in Tables \@ref(tab:cosewic-table) and \@ref(tab:sara-table) were obtained for each species from the SAR Public Registry: <https://species-registry.canada.ca/index-en.html#/species?sortBy=commonNameSort&sortDirection=asc&pageSize=10>
 
-##### ***Management Plan:***
-Management Plans are created for species of special concern within 3 years of being listed. They are similar to Recovery Strategies, although they do not identify critical habitat.
+##### ***Management Plan***
+Management Plans are created for species of special concern within three years of being listed. They are similar to Recovery Strategies, although they do not identify critical habitat.
 Therefore, they address threats to the species, and set the goals and objectives for species recovery. Management Plans are not created for species listed as extirpated, endangered or threatened.
 
 More information on Management Plans and their goals and objectives can be found here:
@@ -135,6 +135,7 @@ Management Plans included in Table \@ref(tab:sara-table) were obtained for each 
 #### ***SARA Recovery Planning Process documents*** {#threats-results}
 
 ```{r cosewic-table, echo = FALSE, results = "asis"}
+options(knitr.kable.NA = "")
 knitr::kable(nonScheduleOne, align = "l", caption = "Documents containing threat and threat mitigation information for aquatic species that have been assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC) but are not currently listed in Schedule 1. Documents that are formally required by DFO as part of the SARA recovery planning process are provided, for species observed in any of the datasets within this Report  . The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Some species may have several COSEWIC populations, which may trigger the creation of a separate series of documents for each population. In many of the datasets in this Report, the COSEWIC population may not be known. Instead, documents have been compiled for all COSEWIC populations within the Maritimes region and surrounding area. Readers of the Report should use their best judgment to determine which set of documents may be the most applicable based on the search area. Blank entries in the table may be present for various reasons, for example, the document may still in progress but not yet published, or was not created due to a lack of resources. In addition, some documents may not be required based on the COSEWIC designation. RPAs are typically not created for species with a COSEWIC status of special concern. Typically, only species that have been included in Schedule 1 will have Action Plans. However, multi-species Action Plans have been created by Parks Canada Agency for several National Parks or National Historic Sites and are included in the table, if they are available on the species’ SAR Public Registry. RPA Research Documents may only be available in French for several species found within the Quebec region. The documents and species listed in this table are current as of December 2021. New documents or changes in listings may take place as the recovery planning process progresses.", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 
 ```
@@ -151,21 +152,21 @@ Please refer to the DFO (2014) guidelines for conducting Threat Assessments for 
 The Threat Assessment documents for each species are also provided in the Table captions. Users of the Report should refer to each species document for a full explanation of each table.
 
 ```{r mudpiddock-table, echo = FALSE, results = "asis"}
-knitr::kable(mudPiddockTable, align = "l", caption = "Threat assessment summary for Atlantic Mud-piddock in Canadian waters based on DFO 2014 guidance (obtained from p. 12 in https://waves-vagues.dfo-mpo.gc.ca/Library/40868308.pdf.", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+knitr::kable(mudPiddockTable, align = "l", caption = "Threat assessment summary for Atlantic Mud-piddock in Canadian waters based on DFO 2014 guidance (obtained from p. 12 in https://waves-vagues.dfo-mpo.gc.ca/Library/40868308.pdf", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 ```
 
 ```{r leatherback-table, echo = FALSE, results = "asis"}
-knitr::kable(leatherbackTable, align = "l", caption = "Threat assessment for Leatherback Sea Turtles in the Broader Northwest Atlantic Population and in Atlantic Canadian waters based on DFO (2014) guidance (obtained from pp. 10-11 in https://waves-vagues.dfo-mpo.gc.ca/Library/40949497.pdf).", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+knitr::kable(leatherbackTable, align = "l", caption = "Threat assessment for Leatherback Sea Turtles in the Broader Northwest Atlantic Population and in Atlantic Canadian waters based on DFO (2014) guidance (obtained from pp. 10-11 in https://waves-vagues.dfo-mpo.gc.ca/Library/40949497.pdf). Numbers in round brackets refer to Notes specified below the table.", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 ```
 Notes:
 
 1. Threat risk is unknown because there have been no records of interaction in these fisheries.
 2. Fishing might not be happening all the time, but these fisheries are open year-round so, as a precautionary approach, the frequency is considered continuous.
 3. Vertical lines from fixed pots/traps/barrels.
-
+</span>
 
 ```{r loggerhead-table, echo = FALSE, results = "asis"}
-knitr::kable(loggerheadTable, align = "l", caption = "Threat assessment for the Loggerhead Sea Turtle in the Broader Northwest Atlantic Population and in Atlantic Canadian waters based on DFO 2014a guidance (the last three rows represent threats that occur only outside of Canada. Obtained from p. 11 in https://waves-vagues.dfo-mpo.gc.ca/Library/40624201.pdf)", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+knitr::kable(loggerheadTable, align = "l", caption = "Threat assessment for the Loggerhead Sea Turtle in the Broader Northwest Atlantic Population and in Atlantic Canadian waters based on DFO 2014a guidance (the last three rows represent threats that occur only outside of Canada. Obtained from p. 11 in https://waves-vagues.dfo-mpo.gc.ca/Library/40624201.pdf) Numbers in round brackets refer to Notes specified below the table.", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 
 ```
 Notes:
