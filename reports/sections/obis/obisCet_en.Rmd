@@ -18,9 +18,9 @@ if (FALSE) { #load in data:
 
 ```{r obis-gbif-cet-load, include=FALSE}
 load_rdata(c("obisCet_rr", "gbifCet_rr"), regionStr, env = environment())
-if(!exists("obisEnv")){
-  assign("obisEnv", new.env(), envir = knitr::knit_global())
-  obisEnv$commonObis <- TRUE
+if(!exists("rrEnv")){
+  assign("rrEnv", new.env(), envir = knitr::knit_global())
+  rrEnv$commonObis <- TRUE
 }
 ```
 
@@ -28,12 +28,12 @@ if(!exists("obisEnv")){
 ```
 
 
-```{r cet-short-obis, results = 'asis', eval=!obisEnv$commonObis}
+```{r cet-short-obis, results = 'asis', eval=!rrEnv$commonObis}
 cat('### **Ocean Biodiversity Information System and Global Biodiversity Information Facility** \n\n To avoid duplication of text, please refer to the overview for OBIS and GBIF provided in the Fish and Invertebrates section: [OBIS section](#OBIS-section). ')
 ```
 
 
-```{r child = here::here("reports/sections/obis/obisCommon_en.Rmd"), eval=obisEnv$commonObis}
+```{r child = here::here("reports/sections/obis/obisCommon_en.Rmd"), eval=rrEnv$commonObis}
 # chunk will only run if commonObis variable does not exist, set in commonObis.rmd.
 ```
 
