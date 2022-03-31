@@ -7,9 +7,4 @@ leatherbackTable <- read_excel(file.path(fileLoadPath, "NaturalResources/Species
 loggerheadTable <- read_excel(file.path(fileLoadPath, "NaturalResources/Species/Threats/ThreatData.xlsx"), sheet="LoggerheadSeaTurtle")
 mudPiddockTable <- read_excel(file.path(fileLoadPath, "NaturalResources/Species/Threats/ThreatData.xlsx"), sheet="MudPiddock")
 
-
 save(scheduleOne, nonScheduleOne, leatherbackTable,loggerheadTable, mudPiddockTable, file = file.path(localFileSavePath, "Open/threats_rr.RData"))
-
-
-
-
