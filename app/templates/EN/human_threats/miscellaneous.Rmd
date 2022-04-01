@@ -1,1 +1,5 @@
 ## Miscellaneous
+
+# Threats Literature Review
+```{r child = here::here("reports/sections/threats/ThreatMitigation.Rmd")}
+```

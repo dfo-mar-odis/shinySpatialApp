@@ -1,0 +1,177 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+```{r threats-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+``` 
+
+```{r threats-load, include=FALSE}
+load_rdata(c("threats_rr"), regionStr, env = environment())
+``` 
+ 
+### **Species at Risk: Threats and Mitigation**
+This section of the Report represents a literature review conducted by Stephen Finnis in December 2021 in an attempt to compile and summarize the available threat and mitigation information for aquatic species at risk within the DFO Maritimes region. Together, threats and threat mitigation are important for aiding species recovery, and are addressed at various stages in the SARA recovery planning process, the multi-step approach for providing legal protection for species at risk. This process is complex, and many challenges arise when attempting to compile this information in a standardized manner that is comparable for all species. This section therefore summarizes the recovery planning process and provides an overview of the various parties involved, steps, and documents created, with an emphasis on threats and threat mitigation. In addition, the documents created by DFO within this process are compiled in this section for each aquatic species at risk (i.e., those assessed by the Committee on the Status of Endangered Wildlife in Canada and/or listed within the Species at Risk Act) observed within the search area.  
+
+The SARA recovery planning process is fundamental to the work of this Report. This section is intended to be expanded upon as the Reproducible Reporting initiative develops. 
+
+Click [here](#threats-results) to skip to the search results with the applicable threat documents for each species.
+
+#### ***Key terms and descriptions***
+**Threats** are defined as “any human activity or process that has caused, is causing, or may cause harm, death, or behavioral changes to a wildlife species at risk, or the destruction, degradation, and/or impairment of its habitat, to the extent that population-level effects occur. A human activity may exacerbate a natural process” [@DFO2014_Threat]. 
+
+Threats therefore encompass both natural and anthropogenic activities, and are typically required to be discussed in relation to both the species and its habitat. Threats can be both indirect (e.g., altered fire regime, reduction in prey populations, introduced species) or direct (e.g., entanglement in fishing gear) [@DFO2014_Threat]. Naturally occurring processes (e.g., aging, disease, or predation) are only considered to be threats if they have been altered by human activities, or pose a threat to a critically small or isolated population [@DFO2014_Threat]. Identifying threats and determining how they may affect each species are crucial to prioritize recovery measures and inform management decisions [@DFO2014_Threat].
+
+Threats are mentioned in many of the documents within the SARA recovery planning process (Figure \@ref(fig:sara-chart)). However, due to issues such as changes in the requirements of these documents over time, and limited species information, the level of detail for threats may be varied.
+
+**Mitigation** refers to the measures used to avoid, minimize, eliminate, reduce, control or offset adverse effects of each threat (adapted from the Impact Assessment @IAA). 
+
+Similar to threats, mitigation measures are not consistently included or characterized throughout each document created as part of the SARA recovery planning process, and may have different levels of detail for each species. Generally, the most detailed information of mitigation measures for each threat are found within a species’ Action Plan (for species designated extirpated, endangered or threatened), or Management Plan (for species of special concern). Associated information within each document may include descriptions such as timelines for completion, and suggested jurisdictions/organizations to undertake each mitigation measure (e.g., government bodies, universities, industry). Mitigation measures for each threat may not be explicitly stated as such, but may instead be referred to as other terms such as “conservation measures” or “recovery measures” when addressing the proposed action for each threat.
+
+**Recovery** is “the process by which the decline of an endangered, threatened, or extirpated species is arrested or reversed, and threats are removed or reduced to improve the likelihood of the species’ persistence in the wild. A species will be considered recovered when its long-term persistence in the wild has been secured” [@DFO2014_Whale]. 
+
+#### ***Overview of the SARA recovery planning process***
+SARA is carried out through the SARA recovery planning process, a multi-step approach aimed at addressing the goals listed above (Figure \@ref(fig:sara-chart)). This process involves various parties, actions, timelines, and documents created at each steps. Each box in the process in Figure \@ref(fig:sara-chart) is explained in more detail, and relevant documents produced by DFO are compiled for aquatic species that have been assessed by COSEWIC (Table \@ref(tab:cosewic-table)) or listed by SARA (Table \@ref(tab:sara-table)) within the search area. The entire Species at Risk Act is included online (<https://laws.justice.gc.ca/eng/acts/S-15.3/FullText.html>) and is summarized in various formats in the literature [@mcdevitt2015_missing, @montgomery2021_role, @newediuk2021_sociopolitical] and government websites (e.g., <https://www.canada.ca/en/environment-climate-change/services/species-risk-act-accord-funding/listing-process/act.html>). 
+
+Although the creation of certain documents is a requirement under SARA, delays in the process are known to occur [@mcdevitt2015_missing]. In addition, many species are still under review for the addition to SARA (the full list is included here: <https://www.canada.ca/en/environment-climate-change/services/species-risk-act-accord-funding/listing-process/wildlife-species-amendment-list-schedule-1.html>). Species assessed by COSEWIC but still under consideration for Schedule 1 will therefore likely have a COSEWIC status report and Recovery Potential Assessment, but will not have a Recovery Strategy, Action Plan, or Management Plan. As well, deviations in the process may occur for some species, factors such as the availability of resources at the time. Therefore, not all of the documents listed in Figure \@ref(fig:sara-chart) may be available for each species, despite its designation. Lastly, documents which do not address threats or threat mitigation are not included in this section of the Report (e.g., Response Statements created by the DFO minister). However, these are available on the Species at Risk Registry if required (URLs are provided in Tables \@ref(tab:cosewic-table) and \@ref(tab:sara-table)). 
+
+
+```{r sara-chart, out.width = "100%", fig.cap = "Simplified overview of the recovery planning process under the Canadian Species at Risk Act (adapted from Newediuk et al. (2021) and McDevitte-Irwin et al. (2015)). The documents reviewed for threat information in this review are represented as orange boxes. In addition, blue boxes represent government bodies, and green boxes represent actions taken. More detailed explanations of each box are included in the main text. Letters in white circles refer to SARA designations including EX: extirpated, T: threatened, E: endangered, and SC: special concern. The process reads from left to right, starting with the creation of the COSEWIC Status Report. Where applicable, mandated time frames are shown above the arrows, although the process may experience time delays at various steps [@mcdevitt2015_missing]. Recovery Potential Assessments (RPAs) are typically not created for species with a COSEWIC designation of special concern. Threat Assessments (not shown) are typically created as part the RPA process, and may be created as a separate document. Schedule 1 is the official federal list of wildlife species at risk.", echo=FALSE}
+knitr::include_graphics(here::here("reports/sections/Threats/SARAFlowchart.jpg"))
+```
+
+##### ***Committee on the Status of Endangered Wildlife in Canada (COSEWIC) Status Reports***
+COSEWIC creates detailed status reports that summarize information about the species, including threats that they face. COSEWIC compiles available data, knowledge and information about the species, and provides listing (i.e., status) recommendations to the competent minister. These reports are also intended to provide a baseline of biological information to assess a species’ status. More detailed information on the COSEWIC process can be found here: <https://www.cosewic.ca/index.php/en-ca/assessment-process/wildlife-species-assessment-process-categories-guidelines.html>
+
+The same definitions for each designations are used for species listed in Schedule 1. However, in some cases the COSEWIC and SARA designations may differ, based on factors such as the listing decision made by the Governor in Council. 
+
+COSEWIC reports are available for each species on the SAR Public Registry (Tables \@ref(tab:cosewic-table), \@ref(tab:sara-table) and <https://species-registry.canada.ca/index-en.html#/species?sortBy=commonNameSort&sortDirection=asc&pageSize=10>). 
+
+##### ***Recovery Potential Assessments***
+Recovery Potential Assessments (RPAs) are documents of scientific information created by DFO Science. They are only a requirement for aquatic species and are therefore not created for non-aquatic species. DFO creates RPAs using the best available scientific information, data analyses, modelling, and expert opinion. These documents are also used to inform other processes within the SARA recovery planning process such as listing recommendations (i.e., which status to assign a species), and the creation of other documents such as Recovery Strategies and Action Plans. Specifically, RPAs consist of three main phases (sections) to assess: 
+
+1. The current/recent species status; 
+2. The scope for management to facilitate recovery; and 
+3. Scenarios for mitigation and alternatives to activities. 
+
+Each phase contains multiple objectives to be addressed. More detailed information on the process and requirements for RPAs can be found here: <https://waves-vagues.dfo-mpo.gc.ca/Library/330905.pdf>.
+
+RPAs are created for species with a COSEWIC status of threatened, endangered, or extirpated, and are not created for species of special concern.
+
+###### ***RPA timeline***
+RPAs are typically provided to the DFO Minister after COSEWIC provides a species assessment and before the Minister provides listing recommendations to the Governor in Council (Figure \@ref(fig:sara-chart)).
+
+###### ***Change in RPA procedure over time***
+RPAs were first developed in 2004 and new guidelines were developed in 2007 [@DFO2007_RPA]. Clarification to the process including how to document threat information was later provided [@DFO2010_Guidelines]. This lead to the creation of Threat Assessment guidelines [@DFO2014_Threat]. Due to these changes in procedure, the level of detail for RPAs may be different for each species, depending on when the information was compiled and published. Occasionally, RPAs are not created for certain species despite their COSEWIC designation (e.g., for leatherback sea turtles; @DFO2020_Turtles). Threat Assessments are also required to be conducted as part of the RPAs [@DFO2014_Threat]. However, Threat Assessments are sometimes created as standalone documents, and are therefore described in a separate section below.
+
+###### ***Types of RPAs***
+RPAs are peer-reviewed by the Canadian Science Advisory Secretariat (CSAS) and can consist of Science Advisory Reports, Research Documents and Proceedings Series. Research Documents contain the preliminary data or supplementary information which are summarized into a Science Advisory Report. Research Documents may not be created for all species. If Research Documents are created, Proceedings may also be available which describe the meetings where RPAs were discussed. For some species, there are RPA Research Documents that specifically address threats and mitigation measures, while other do not address these topics, but include other required information for the Science Advisory Report (e.g., population modelling). In this section of the Report, all types of RPAs for each species were compiled to have the most comprehensive suite of information possible. Note that Science Advisory Reports are considered the “final” version of the RPA within this process.
+
+RPAs compiled in Tables \@ref(tab:cosewic-table) and \@ref(tab:sara-table) were obtained from the Federal Science Libraries Network by searching for “Recovery Potential Assessments” of each species (and its DU) in the Search tab: <https://science-libraries.canada.ca/eng/fisheries-oceans/>
+Alternatively, RPAs be searched for specifically by publication series type or region on the CSAS website: <http://www.dfo-mpo.gc.ca/csas-sccs/index-eng.htm>
+
+##### ***Threat Assessment***
+The most detailed information regarding species threats are found within Threat Assessments. These are documents produced by DFO to characterize and prioritize threats in a nationally consistent and standardized manner. Guidelines for creating detailed information on producing Threat Assessments were developed in 2014 and can be found here [@DFO2014_Threat]: <https://waves-vagues.dfo-mpo.gc.ca/Library/363987.pdf>.  
+
+The document in the above URL provides a detailed schema for documenting threat information in a tabular format for categories such as the Likelihood of Occurrence, Level of Impact, Causal Certainty, Threat Risk, Threat Occurrence, Threat Frequency, and Threat Extent. These are then quantified and scored using standardized format (e.g., scored as extreme, high, medium, low, or unknown). Notably, Threat Assessments identify and describe threats at both the population level (also known as Designatable Unit, DU, by COSEWIC) and species level. Evaluating threats at the population level may help identify how threats can vary over a species range, which can therefore enable a better allocation of resources for threat mitigation [@DFO2014_Threat].
+
+Threat Assessments for each species are typically conducted as part of the RPA process, but may exist as standalone documents. Threat Assessments are not a formal requirement within the recovery planning process of SARA (Figure \@ref(fig:sara-chart)) but are required by DFO Science, and are therefore only available for aquatic species. Threat Assessments are also used to inform other documents and actions such as Recovery Potential Assessments (RPAs), Recovery Strategies, Action Plans, and listing recommendations.
+
+Threat Assessments included in Table \@ref(tab:sara-table) were obtained for each species from the Federal Science Libraries Network: <https://science-libraries.canada.ca/eng/fisheries-oceans/> 
+Alternatively, Threat Assessments be searched for specifically by publication series type or region on the CSAS website: <https://www.dfo-mpo.gc.ca/csas-sccs/index-eng.htm>
+
+Because Threat Assessment information is standardized and comparable between species, when available, the tables containing the Threat Assessments were extracted and displayed in the Search Results section (Tables \@ref(tab:mudpiddock-table)-\@ref(tab:loggerhead-table)).
+
+##### ***Competent Minister***
+The COSEWIC assessments for aquatic species are submitted to The Minister of Fisheries and Oceans (often referred to as “the competent Minister”). The Minister of Environment and Climate Change Canada is the competent Minister responsible for all other (i.e., non-aquatic) species. Within 90 days of receiving the COSEWIC assessment, the Minister must issue a Response Statement indicating timelines for action and how they intend to respond to the assessment. After the Response Statement is issued, the Minister goes through additional consultations with the public before sending the listing recommendation to the Governor in Council. There is no set timeline for how long these consultations may take [@mcdevitt2015_missing]. These recommendations from the Minister consider the ecological, social and economic costs and benefits of adding the species to SARA. COSEWIC assessments, RPAs and Threat Assessments help inform the ecological considerations of these recommendations. 
+
+##### ***Governor in Council***
+Within nine months of receiving the recommendations from the Minister, the Governor in Council must decide whether to:
+
+*	Accept the COSEWIC assessment and add the species to SARA;
+*	Not add to the list; or
+*	Refer back to COSEWIC for further information and consideration.
+
+If a species is recommended to be added to SARA, various documents must be compiled based on its status. A Recovery Strategy must be created and posted on the SAR Public Registry within one year if the species is classified as endangered, or within two years if the species is listed as threatened or extirpated. After the Recovery Strategies are created, an Action Plan must be created for these species. There is no set timeline for completion for Action Plans, although typically an expected timeline for completion is provided in the Recovery Strategy. If a species is designated as special concern, Management Plans are created instead of Recovery Strategies and Action Plans. Management Plans must be created within three years of listing. 
+
+##### ***Recovery Strategy***
+Recovery Strategies are documents prepared by the competent Minister that address threats to the species, identify critical habitat, and set the goals and objectives for species recovery. They also specify the actions taken to stop or reverse the decline of the species, although detailed planning is described in the species’ Action Plan. More information on Recovery Strategies and their goals and objectives can be found here: <https://wildlife-species.canada.ca/species-risk-registry/sar/recovery/recovery_e.cfm>
+
+A Recovery Strategy must be created and posted on the SAR Public Registry within one year for species with a SARA classification of endangered, or within two years if the species is listed as threatened or extirpated. Recovery Strategies are not created for species of special concern (Figure \@ref(fig:sara-chart)).
+
+Recovery Strategies included in Table \@ref(tab:sara-table) were obtained for each species from the SAR Public Registry: <https://species-registry.canada.ca/index-en.html#/species?sortBy=commonNameSort&sortDirection=asc&pageSize=10>
+
+##### ***Action Plan***
+Action Plans are documents created by the competent Minister that outline how to implement the goals and objectives specified in the species’ Recovery Strategy. In particular, they identify ways to reduce threats to the species, how to protect its critical habitat, and identify which jurisdictions or organizations will implement these recovery/mitigation measures. In addition to ecological and biological considerations, Action Plans also address the socio-economic costs and benefits of these mitigation measures. Action Plans are created for species with a SARA listing of extirpated, endangered or threatened, but not for species of special concern. Under SARA, there is no set timeline for completion for Action Plans, although Recovery Strategies typically specify when an Action Plan will be completed. 
+
+Although these documents are typically only created for Schedule 1 species, the Parks Canada Agency has created multi-species Action Plans for species within National Parks or National Historic Sites. In these Action Plans, recovery measures for species that have been assessed by COSEWIC but are not in Schedule 1 may be mentioned (e.g., American Eel (*Anguilla rostrata*) with the Multi-species Action Plan for Kejimkujik National Park and National Historic Site of Canada: <https://wildlife-species.canada.ca/species-risk-registry/virtual_sara/files/plans/Ap-Kejimkujik-v00-2017Feb07-Eng.pdf>). Since these Actions Plans are available on the SAR Public Registry despite not being listed in Schedule 1, they have still been provided in Table \@ref(tab:cosewic-table) in order to have a comprehensive list of all SARA-related documents (Table \@ref(tab:cosewic-table)).
+
+More information on Action Plans and their goals and objectives can be found here:
+<https://www.canada.ca/en/environment-climate-change/services/species-risk-public-registry/action-plans.html>
+
+Action Plans included in Tables \@ref(tab:cosewic-table) and \@ref(tab:sara-table) were obtained for each species from the SAR Public Registry: <https://species-registry.canada.ca/index-en.html#/species?sortBy=commonNameSort&sortDirection=asc&pageSize=10>
+
+##### ***Management Plan***
+Management Plans are created for species of special concern within three years of being listed. They are similar to Recovery Strategies, although they do not identify critical habitat.
+Therefore, they address threats to the species, and set the goals and objectives for species recovery. Management Plans are not created for species listed as extirpated, endangered or threatened.
+
+More information on Management Plans and their goals and objectives can be found here:
+<https://www.canada.ca/en/environment-climate-change/services/species-risk-public-registry/management-plans.html>
+
+Management Plans included in Table \@ref(tab:sara-table) were obtained for each species from the SAR Public Registry: <https://species-registry.canada.ca/index-en.html#/species?sortBy=commonNameSort&sortDirection=asc&pageSize=10>
+
+#### ***Disclaimers***
+
+* Although all documents included in this section are required to address threats to species at risk, the level of detail may be variable for each species. This may be due to several different reasons. For instance, these documents were created using the best available information at the time, and some biological data may not be known. In addition, the requirements of several documents have changed over time. As a result, threat and mitigation information are often provided in various forms (e.g., point form, listed in a single sentence or paragraph, or described in a table). Users should refer to each document to understand how threats and mitigation measures were characterized for each species of interest. 
+*	This section focuses on species for which DFO is the responsible authority (i.e., aquatic species), which includes marine reptiles, mammals, mollusks, and fish. Non-aquatic species are under the authority of the Parks Canada Agency if the species are located on federal lands, or Environment and Climate Change Canada for all others. The contents of this Report therefore reflect the recovery planning process for aquatic species. The recovery planning process for non-aquatic species at risk may have slightly different requirements and procedures.
+*	The literature review summarized in this section was developed in December 2021, and some information may change over time. For example, new species may get assessed by COSEWIC or listed in Schedule 1, thereby triggering the creation of new documents to fulfill the requirements of the recovery planning process. Our group is currently looking into mechanisms to ensure this information is updated on an annual basis.
+*	Each species may have distinct populations (referred to as Designatable Units, or DUs, under COSEWIC), and each population may have different COSEWIC and/or SARA statuses. As a result, a different series of documents may be created for each population. However, in many of the datasets within this Report, the population of each species may not be specified. Therefore, the documents for all populations of each species within the Maritimes and surrounded area are provided. Readers of this Report should use their best judgement to determine which set of documents may be the most applicable in their search area. 
+*	This section of the Report focuses on documents created as part of the SARA recovery planning process. There may be other documents created by DFO that address threats and mitigation measures for the species of interest. Those were not included as they are considered outside the scope of this section of the Report.
+*	This section of the Report focuses on the ecological and biological significance of threats and mitigation measures for species at risk. However, these topics operate within the Species at Risk Act (2002) and the terms and procedures may therefore be subject to legal or judicial interpretation. Users should refer to the Act for precise definitions and descriptions of processes, if required.
+
+#### ***SARA Recovery Planning Process documents*** {#threats-results}
+
+```{r cosewic-table, echo = FALSE, results = "asis"}
+options(knitr.kable.NA = "")
+knitr::kable(nonScheduleOne, align = "l", caption = "Documents containing threat and threat mitigation information for aquatic species within the DFO Maritimes region and surrounding area that have been assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC) but are not currently listed in Schedule 1. Some species may have several COSEWIC populations, which may trigger the creation of a separate series of documents for each population. In many of the datasets in this Report, the COSEWIC population may not be known. Instead, documents have been compiled for all COSEWIC populations within the Maritimes region and surrounding area. Readers of the Report should use their best judgment to determine which set of documents may be the most applicable based on the search area. Blank entries in the Table may be present for various reasons. For example, the document may still in progress but not yet published, or was not created due to a lack of resources. In addition, some documents may not be required based on the COSEWIC designation. RPAs are typically not created for species with a COSEWIC status of special concern. In general, only species that have been included in Schedule 1 will have Action Plans. However, multi-species Action Plans have been created by Parks Canada Agency for several National Parks or National Historic Sites and are included in the Table, if they are available on the species’ SAR Public Registry. RPA Research Documents may only be available in French for several species found within the Quebec region. The documents and species listed in this table are current as of December 2021. New documents or changes in listings may take place as the recovery planning process progresses.", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+
+```
+
+```{r sara-table, echo = FALSE, results = "asis"}
+knitr::kable(scheduleOne, align = "l", caption = "Documents containing threat and threat mitigation information for aquatic species within the DFO Maritimes region and surrounding area that are listed in Schedule 1. Documents included are those formally required by DFO as part of the SARA recovery planning process are provided. Threat Assessment documents are provided in separate tables. Some species may have several COSEWIC populations, which may trigger the creation of a separate series of documents for each population. In many of the datasets in this Report, the COSEWIC population may not be known. Instead, documents have been compiled for all COSEWIC populations within the Maritimes region and surrounding area. Readers of the Report should use their best judgment to determine which set of documents may be the most applicable based on the search area. Blank entries in the table may be present for various reasons, for example, the document may still in progress but not yet published, or was not created due to a lack of resources. In addition, some documents may not be required based on the COSEWIC designation. RPAs are typically not created for species with a COSEWIC status of special concern. Recovery Strategies and Action Plans are created for species with a SARA designation of threatened, extirpated or endangered, while Management Plans are instead created for species with a SARA designation of special concern. RPA Research Documents may only be available in French for several species found within the Quebec region. The documents and species listed in this table are current as of December 2021. New documents or changes in listings may take place as the recovery planning process progresses.", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+There are three available Threat assessment documents for Schedule 1 species in the Maritimes region. 
+
+Please refer to the DFO (2014) guidelines for conducting Threat Assessments for detailed descriptions and explanations of each column and the classification scheme for possible entries in each cell: <https://waves-vagues.dfo-mpo.gc.ca/Library/363987.pdf>
+
+The Threat Assessment documents for each species are also provided in the Table captions. Users of the Report should refer to each species document for a full explanation of each table.
+
+```{r mudpiddock-table, echo = FALSE, results = "asis"}
+knitr::kable(mudPiddockTable, align = "l", caption = "Threat assessment summary for Atlantic Mud-piddock (*Barnea truncata*) in Canadian waters based on DFO 2014 guidance (obtained from p. 12 in https://waves-vagues.dfo-mpo.gc.ca/Library/40868308.pdf", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+```{r leatherback-table, echo = FALSE, results = "asis"}
+knitr::kable(leatherbackTable, align = "l", caption = "Threat assessment for Leatherback Sea Turtles (*Dermochlys coriacea*) in the Broader Northwest Atlantic Population and in Atlantic Canadian waters based on DFO (2014) guidance (obtained from pp. 10-11 in https://waves-vagues.dfo-mpo.gc.ca/Library/40949497.pdf). Numbers in round brackets refer to Notes specified below the Table.", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+Notes:
+
+1. Threat risk is unknown because there have been no records of interaction in these fisheries.
+2. Fishing might not be happening all the time, but these fisheries are open year-round so, as a precautionary approach, the frequency is considered continuous.
+3. Vertical lines from fixed pots/traps/barrels.
+</span>
+
+```{r loggerhead-table, echo = FALSE, results = "asis"}
+knitr::kable(loggerheadTable, align = "l", caption = "Threat assessment for the Loggerhead Sea Turtle (*Caretta caretta*) in the Broader Northwest Atlantic Population and in Atlantic Canadian waters based on DFO 2014a guidance (the last three rows represent threats that occur only outside of Canada. Obtained from p. 11 in https://waves-vagues.dfo-mpo.gc.ca/Library/40624201.pdf) Numbers in round brackets refer to Notes specified below the Table.", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+
+```
+Notes:
+
+1. In Atlantic Canada, the only recorded incidental mortalities of Loggerhead Sea Turtle are attributed to the pelagic longline fishery targeting swordfish and tropical tunas (DFO 2010a). Comparatively in the US, gear types targeting a variety of species are known to cause incidental mortality to Loggerhead Sea Turtles including: bottom trawls, dredges, pelagic longlines, demersal longlines, gillnets and other gear types (NMFS-USFWS 2008a). 
+2. Entanglement caused by ghost fishing or marine debris is included here. Entanglement in active fishing gear is included in “bycatch”. 
+3. Marine pollution includes contaminants that Loggerhead Sea Turtles may be exposed to (including from oil pollution) and debris ingestion. 
+4. Coastal development also includes beach use (e.g., driving on beaches, human presence on beaches in general). 
+5. Annual mortality at all life stages determined by NMFS-USFWS (2008a) and equated to annual mortalities of nesting females. The NMFS-USFWS (2008a) Relative Reproductive Value (RRV) for oceanic juveniles was used to determine the equivalency of juvenile mortalities bycaught in Atlantic Canada to nesting females. RRVs for each life stage are presented in Table A1-5 in NMFS-USFWS (2008a). For example, a nesting female has an RRV of 1.0 and an oceanic juvenile has an RRV of 0.02 (i.e., one nesting female equates to 34.5 oceanic juveniles).
