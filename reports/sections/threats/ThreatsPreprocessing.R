@@ -1,5 +1,5 @@
 source(here::here("config.R"))
-library(readxl) # ask Quentin: where else do I need to add this?
+library(readxl)
 
 scheduleOne <- read_excel(file.path(fileLoadPath, "NaturalResources/Species/Threats/ThreatData.xlsx"), sheet="Schedule1Documents")
 nonScheduleOne <- read_excel(file.path(fileLoadPath, "NaturalResources/Species/Threats/ThreatData.xlsx"), sheet="NonSchedule1Documents")
