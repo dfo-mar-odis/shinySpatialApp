@@ -6,7 +6,13 @@ output:
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
-```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+```{r waste-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```
+
+```{r waste-load-common-ha, child = here::here("reports/sections/commonSections/commonHA.Rmd")}
+```
+
+```{r eval=FALSE}
 if (FALSE) { 
   # load in generic data, e.g.functions, study area, and base maps into the 
   # environment, when knitting, these will be loaded through the child rmd.
@@ -42,6 +48,14 @@ writeLines(noquote(waste_rr$text$en))
 # clip the data to the Study and Map areas:
 wasteOutputList <- master_intersect(waste_rr$data_sf, mapDataList)
 
+```
+
+```{r waste-haTable, echo=FALSE, results='asis'}
+if (!is.null(wasteOutputList$studyData)) {
+  rrEnv$haClassTable$Waste <- list("Coastal" = TRUE, 
+                                   "Offshore" = TRUE, 
+                                   "Shoreline" = TRUE)
+}
 ```
 
 ```{r waste-check, echo=FALSE, results='asis',}

@@ -218,6 +218,8 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
     sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
                              "SARA status","COSEWIC status", Records)
     sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
+    sarData <- sarData[with(sarData, order(-Records)), ]
+    row.names(sarData) <- NULL
   }
   
 
@@ -232,9 +234,8 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
 
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
-  sarData <- sarData[with(sarData, order(-Records)), ]
+  
   row.names(allSpeciesData) <- NULL
-  row.names(sarData) <- NULL
   outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }

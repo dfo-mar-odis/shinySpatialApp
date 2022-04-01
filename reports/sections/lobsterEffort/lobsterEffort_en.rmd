@@ -6,13 +6,21 @@ output:
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
-```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+```{r lobsterEffort-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```
+
+```{r lobsterEffort-load-common-ha, child = here::here("reports/sections/commonSections/commonHA.Rmd")}
+```
+
+```{r eval=FALSE}
 if (FALSE) { 
   # load in generic data, e.g.functions, study area, and base maps into the 
   # environment, when knitting, these will be loaded through the child rmd.
   lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
   studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
   intro_setup(studyArea, env = environment())
+  assign("rrEnv", new.env(), envir=globalenv())
+  rrEnv$haClassTable <- data.frame(row.names=c("Coastal", "Shoreline", "Offshore"))
 }
 ```
 
@@ -43,6 +51,14 @@ lobsterOutputList <- master_intersect(lobsterEffort_rr$data_sf, mapDataList, get
 
 ```
 
+```{r lobsterEffort-haTable, echo=FALSE, results='asis'}
+if (!is.null(lobsterOutputList$studyData)) {
+  rrEnv$haClassTable$`Lobster Effort` <- list("Coastal" = TRUE, 
+                                            "Offshore" = FALSE, 
+                                            "Shoreline" = TRUE)
+}
+```
+
 ```{r lobsterEffort-check, echo=FALSE, results='asis',}
 # Check if there is any data in the study area
 lobsterEffortReport <- if (is.null(lobsterOutputList$studyData)) {
@@ -58,7 +74,8 @@ if (!is.null(lobsterOutputList$studyData)) {
     plot(plot_rr_sf(regionMap, lobsterOutputList$regionData, 
                     attribute=lobsterEffort_rr$attribute, 
                     legendName="Catch weight (kg/yr)", 
-                    continuousAttr=TRUE))}
+                    continuousAttr=TRUE))
+  }
 ```
 
 ```{r lobsterEffort-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(lobsterEffort_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query lobster fishing effort records.')}

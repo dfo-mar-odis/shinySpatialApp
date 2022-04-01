@@ -6,7 +6,7 @@ output:
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
-```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+```{r child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
 if (FALSE) { # load in generic data, e.g.functions, study area, and base maps:
   lapply(list.files(here::here("app/R"), pattern = ".[Rr]$", full.names = TRUE), source)
   

@@ -383,10 +383,10 @@ scale_bar_layer <- function(data_sf, attribute, continuous, minValue, maxValue, 
     }
     if (fill){
       scaleBarLayer <- scale_fill_continuous(type="viridis", name=legendName, 
-                                             labels = comma, limits=c(minValue, maxValue))    
+                                             labels = scales::comma, limits=c(minValue, maxValue))    
     } else {
       scaleBarLayer <- scale_color_continuous(type="viridis", name=legendName, 
-                                             labels = comma, limits=c(minValue, maxValue))  
+                                             labels = scales::comma, limits=c(minValue, maxValue))  
     }
     
   } else {
