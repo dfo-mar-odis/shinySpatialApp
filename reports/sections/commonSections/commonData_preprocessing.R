@@ -5,9 +5,9 @@ source(here::here("reports/R/dataFunctions.R"))
 loadResult <- load_rdata(c("CommonData"), regionStr)
 
 # ----------------COMMON DATA-------------
-region_sf <- st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBound/geoms_slc_MarBioRegion.geojson"))
+region_sf <- sf::st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBound/geoms_slc_MarBioRegion.geojson"))
 if (regionStr == "QC") {
-  region_sf <- st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBound/geoms_slc_MarBioRegion.geojson"))
+  region_sf <- sf::st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBound/geoms_slc_MarBioRegion.geojson"))
 }
 land10m_sf <- st_read(file.path(fileLoadPath, "Boundaries/Landmass/ne_10m_land_Clip.shp"), stringsAsFactors = FALSE)
 #remove State and Province column from land10m

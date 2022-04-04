@@ -25,13 +25,13 @@ pasBay <- dplyr::mutate(pasBay,
                         wkt = paste("LINESTRING (", longitude_start_début_de_longitude, " ", 
                                     latitude_start_début_de_latitude, ", ", longitude_finish_longitude.d.arrivée, " ",
                                     latitude_finish_latitude_d.arrivée, ")", sep = ""))
-pasBay$geometry <- st_as_sfc(pasBay$wkt, crs = 4326)
+pasBay$geometry <- sf::st_as_sfc(pasBay$wkt, crs = 4326)
 pasBay <- dplyr::select(pasBay, c("scientific_name", "common_name", "time_start_heure_de_début", "geometry"))
 pasBay$common_name <- stringr::str_to_title(pasBay$common_name)
 pasBay$scientific_name <- stringr::str_to_sentence(pasBay$scientific_name)
 names(pasBay) <-  c("Scientific Name", "Common Name", "Start Time", "geometry")
 
-pasBay_sf <- st_as_sf(pasBay)
+pasBay_sf <- sf::st_as_sf(pasBay)
 pasBay_sf <- sf::st_crop(pasBay_sf, region_sf)
 pasBay_rr$data_sf <- pasBay_sf
 save(pasBay_rr, file = file.path(localFileSavePath, "Open/pasBay_rr.RData"))

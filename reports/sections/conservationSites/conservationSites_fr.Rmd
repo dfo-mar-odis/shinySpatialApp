@@ -66,7 +66,7 @@ if (!is.null(mpaClipped$regionData)){
 
 ```{r mpa-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(conservationSites_rr, "EN"), 'Map of the Draft Conservation Network Design in the search area defined by the user (red outline). Please see table below for names of each specific area. Boundaries of the proposed new sites are preliminary and subject to change following engagement and consultation.')}
 if(!is.null(mpaClipped$studyData)){
-  mpaStudyLabels <- filter(st_centroid(mpaClipped$mapData), Id > 0) %>% dplyr::select(c("Id"))
+  mpaStudyLabels <- filter(sf::st_centroid(mpaClipped$mapData), Id > 0) %>% dplyr::select(c("Id"))
 
   plot_rr_sf(areaMap, mpaClipped$mapData, conservationSites_rr$attribute, colorMap = mpaCols,
              labelData = mpaStudyLabels, labelAttribute = "Id", alpha = mpaAlpha)

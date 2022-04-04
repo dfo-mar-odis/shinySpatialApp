@@ -44,11 +44,11 @@ efSurvey_to_sf <- function(surveyData, efSpecList, region_sf){
   surveyLong <- dplyr::filter(surveyLong, Year_ > 2008)
   surveyLong <- dplyr::select(surveyLong, all_of(c(extraCols, "Shape", "colNames")))
   surveyLong <- left_join(surveyLong, efSpecList, by = "colNames")
-  survey_sf <- st_transform(st_as_sf(surveyLong), crs=4326)
-  survey_sf <- st_crop(survey_sf, region_sf)
+  survey_sf <- sf::st_transform(sf::st_as_sf(surveyLong), crs=4326)
+  survey_sf <- sf::st_crop(survey_sf, region_sf)
   survey_sf <- dplyr::select(survey_sf, !colNames)
   names(survey_sf ) <- c("Year", "DataSource", "Document", "Common Name", "Scientific Name", "geometry")
-  st_geometry(survey_sf) <- "geometry"
+  sf::st_geometry(survey_sf) <- "geometry"
   return(survey_sf)
 }
 

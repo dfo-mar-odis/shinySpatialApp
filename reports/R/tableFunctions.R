@@ -386,13 +386,13 @@ table_crit <- function(CCH_sf, LB_sf, lang) {
 EBSA_report <- function(EBSA_sf, lang="EN") {
   EBSATable <- NULL
   if (lang=="EN" & !is.null(EBSA_sf)) {
-    EBSATable <- st_drop_geometry(dplyr::select(EBSA_sf, c(Report, Report_URL,
+    EBSATable <- sf::st_drop_geometry(dplyr::select(EBSA_sf, c(Report, Report_URL,
                                                            Name, Bioregion)))
     EBSATable <- unique(EBSATable)
     row.names(EBSATable) <- NULL
     names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
   } else if (lang=="FR" & !is.null(EBSA_sf)) {
-    EBSATable <- st_drop_geometry(dplyr::select(EBSA_sf, c(Rapport, RapportURL,
+    EBSATable <- sf::st_drop_geometry(dplyr::select(EBSA_sf, c(Rapport, RapportURL,
                                                            Nom, Bioregion)))
     EBSATable <- unique(EBSATable)
     names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
@@ -445,7 +445,7 @@ mpa_table <- function(mpa_sf, lang="EN") {
 add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
   if (!is.null(data_sf)){
     data_sf$summaryCol <- data_sf[[attribute]]
-    data_sf <- st_drop_geometry(data_sf)
+    data_sf <- sf::st_drop_geometry(data_sf)
     data_sf <-data_sf %>% dplyr::select(summaryCol) %>%
       group_by(summaryCol) %>%
       summarise(noRecords = length(summaryCol))
