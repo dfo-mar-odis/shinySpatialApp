@@ -81,7 +81,7 @@ create_table_RV <- function(data_sf, sarTable) {
                                   Individuals, Frequency)
 
   # filter allSpeciesData for only SAR species, add status values
-  sarData <- filter(allSpeciesData, `Scientific Name` %in%
+  sarData <- dplyr::filter(allSpeciesData, `Scientific Name` %in%
                       sarTable$`Scientific Name`)
   # need this select to avoid duplicate "common name" col.
   sarData <- dplyr::select(sarData, "Scientific Name", Individuals, Frequency)
@@ -151,7 +151,7 @@ create_sar_tables <- function(data_sf, sarTable, uniqueCols = c("geometry"), ext
 
   allSpeciesData <- dplyr::select(allSpeciesData, c("Scientific Name", "Common Name", all_of(extraCols)))
 
-  skateRow <- filter(sarTable, COMMONNAME == "WINTER SKATE")
+  skateRow <- dplyr::filter(sarTable, COMMONNAME == "WINTER SKATE")
   skateRow$`Scientific Name` <- "Leucoraja ocellata	(Uncertain)"
   skateRow$`Common Name` <- "Winter Skate (possible Little Skate)"
   sarTable <- rbind(sarTable, skateRow)
@@ -484,7 +484,7 @@ add_col_to_sar_summary <- function(sarSummary, dbName, dataTable, indexCol, attr
     }
     dataTable$summaryCol <-ifelse(dataTable[[attributeCol]] > 0, presentCode, absentCode)
     dataTable$speciesCol <- dataTable[[indexCol]]
-    dataTable <- filter(dataTable, speciesCol %in% sarSummary$Species)
+    dataTable <- dplyr::filter(dataTable, speciesCol %in% sarSummary$Species)
   } else {
     # dataTable was null:
     dataTable <- sarSummary
@@ -513,8 +513,8 @@ add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCo
     }
     dataTable$summaryCol <-ifelse(dataTable[[attributeCol]] > 0, dbName, NA)
     dataTable$speciesCol <- dataTable[[indexCol]]
-    dataTable <- filter(dataTable, speciesCol %in% summaryTable$Species)
-    dataTable <- filter(dataTable, lengths(summaryCol) > 0)
+    dataTable <- dplyr::filter(dataTable, speciesCol %in% summaryTable$Species)
+    dataTable <- dplyr::filter(dataTable, lengths(summaryCol) > 0)
     tempCol <- dplyr::left_join(summaryTable, dataTable, by=c("Species"="speciesCol"))$summaryCol
 
     # nested ifelse to set column value to either new value if not NA, or
