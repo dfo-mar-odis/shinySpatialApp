@@ -15,7 +15,7 @@ lines <- readLines(ocearchDatafile)
 lines <- gsub('(^"|"$)', "", lines)
 ocearch <- read.csv(textConnection(lines), quote = '""')
 ocearch <- dplyr::select(ocearch, c("Date", "long", "lat", "ID"))
-ocearch_sf <- st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
+ocearch_sf <- sf::st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
 ocearch_sf <- sf::st_crop(ocearch_sf, region_sf)
 
 ocearch_rr <- list("title" = "OCEARCH Shark Tracker",

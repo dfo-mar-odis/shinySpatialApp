@@ -65,10 +65,8 @@ names(obis_df)[names(obis_df) == 'url'] <- 'URL'
 names(obis_df)[names(obis_df) == 'citation'] <- 'Citation'
 
 
-# Things I still need to do:
-# Separate fish/invertebrates from cetaceans (this should also remove sea turtle records)
 # Once that is done, exclude cetacean data that are >300m from shore i.e. "shoredistance < -300"
-obis_sf <- st_as_sf(obis_df, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
+obis_sf <- sf::st_as_sf(obis_df, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
 
 # split off the cetaceans, cetLegend and rr_otherspecies are from common data
 obis_sf <- dplyr::rename(obis_sf, "Scientific Name"="scientificName")

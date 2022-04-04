@@ -19,7 +19,7 @@ lobsterEffort_rr <- get_opendata_rr(lobsterEffortPkgId)
 
 url <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Maritimes_Inshore_Lobster_Landings_Effort_2012_2014_EN/MapServer"
 lobsterEffort_sf <- get_esri_rest(url, layer="1")
-lobsterEffort_rr$data_sf <- st_make_valid(lobsterEffort_sf)
+lobsterEffort_rr$data_sf <- sf::st_make_valid(lobsterEffort_sf)
 # already in 4326 and cropped.
 
 lobsterEffort_rr$attribute <- "weight_kg" 

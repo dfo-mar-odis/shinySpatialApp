@@ -19,9 +19,9 @@ docks_rr <- get_opendata_rr(docksPkgId)
 url <- "https://ec.gc.ca/arcgis/rest/services/EPB_EPO/ShorelineSegmentationWithSCATClassification/MapServer"
 where <- "SCAT_Class_EN = 'Man-Made Solid'"
 docks_sf <- get_esri_rest(url, layer="4", where=where)
-docks_rr$data_sf <- st_crop(docks_sf, region_sf) %>% 
-  st_cast("MULTILINESTRING") %>% 
-  st_make_valid()
+docks_rr$data_sf <- sf::st_crop(docks_sf, region_sf) %>% 
+  sf::st_cast("MULTILINESTRING") %>% 
+  sf::st_make_valid()
 # already in 4326 and cropped.
 
 docks_rr$attribute <- "NONE"

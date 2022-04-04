@@ -429,7 +429,7 @@ plot_cetaceans_4grid<-function(finWhale_sf, harbourPorpoise_sf,
   bufLong <- buf * 2
   
   # bounding box
-  bbox <- st_bbox(studyArea)
+  bbox <- sf::st_bbox(studyArea)
   
   bboxBuf <- bbox
   

@@ -50,7 +50,7 @@ powerOutputList <- master_intersect(power_rr$data_sf, mapDataList, getRegion = T
 
 powerTable <- NULL
 if (!is.null(powerOutputList$studyData)){
-  powerTable <- dplyr::select(powerOutputList$studyData, c("STATION", "STATION_OW", "MEGAWATTS", "CLEAN_TYPE")) %>% st_drop_geometry()
+  powerTable <- dplyr::select(powerOutputList$studyData, c("STATION", "STATION_OW", "MEGAWATTS", "CLEAN_TYPE")) %>% sf::st_drop_geometry()
   names(powerTable) <- c("Station", "Station Owner", "Megawatts", "Type")
   rownames(powerTable) <- NULL
 }

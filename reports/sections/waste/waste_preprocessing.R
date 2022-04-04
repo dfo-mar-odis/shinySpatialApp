@@ -19,8 +19,8 @@ waste_rr <- get_opendata_rr(wastePkgId)
 url <- "https://maps-cartes.ec.gc.ca/arcgis/rest/services/Active_Inactive_Disposal_at_Sea_Sites/MapServer"
 #where <- "SCAT_Class_EN = 'Man-Made Solid'"
 waste_sf <- get_esri_rest(url, layer="0")
-waste_rr$data_sf <- st_crop(waste_sf, region_sf) %>% 
-  st_make_valid()
+waste_rr$data_sf <- sf::st_crop(waste_sf, region_sf) %>% 
+  sf::st_make_valid()
 # already in 4326.
 
 waste_rr$attribute <- "Status"

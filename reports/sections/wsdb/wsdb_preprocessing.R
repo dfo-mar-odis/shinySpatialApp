@@ -16,7 +16,7 @@ wsdb <- dplyr::rename(wsdb,c("Scientific Name" = "SCIENTIFICNAME",
                              "CNAME"= COMMONNAME))
 wsdb <- merge(wsdb, cetLegend, by='Scientific Name')
 wsdb <- dplyr::select(wsdb, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
-wsdb_sf <- st_as_sf(wsdb, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+wsdb_sf <- sf::st_as_sf(wsdb, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 wsdb_sf <- sf::st_crop(wsdb_sf, region_sf)
 
 wsdb_rr <- list("title" = "Whale Sightings Database",
