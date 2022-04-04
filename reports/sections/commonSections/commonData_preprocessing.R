@@ -9,17 +9,17 @@ region_sf <- sf::st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBoun
 if (regionStr == "QC") {
   region_sf <- sf::st_read(file.path(fileLoadPath, "Boundaries/MaritimesRegionBound/geoms_slc_MarBioRegion.geojson"))
 }
-land10m_sf <- st_read(file.path(fileLoadPath, "Boundaries/Landmass/ne_10m_land_Clip.shp"), stringsAsFactors = FALSE)
+land10m_sf <- sf::st_read(file.path(fileLoadPath, "Boundaries/Landmass/ne_10m_land_Clip.shp"), stringsAsFactors = FALSE)
 #remove State and Province column from land10m
 land10m_sf <- land10m_sf[-c(2)]
 
-land50k_sf <- st_read(file.path(fileLoadPath, "Boundaries/Coast50k/Coastline50k_SHP/Land_AtlCanada_ESeaboardUS.shp"),
+land50k_sf <- sf::st_read(file.path(fileLoadPath, "Boundaries/Coast50k/Coastline50k_SHP/Land_AtlCanada_ESeaboardUS.shp"),
                       stringsAsFactors = FALSE)
 
 # National boundaries (terrestrial and marine)
-bounds_sf <- st_read(file.path(fileLoadPath, "Boundaries/AdminBoundaries/AdminBounds_SHP/Boundaries_Line.shp"), stringsAsFactors = FALSE)
+bounds_sf <- sf::st_read(file.path(fileLoadPath, "Boundaries/AdminBoundaries/AdminBounds_SHP/Boundaries_Line.shp"), stringsAsFactors = FALSE)
 bounds_sf <- dplyr::select(bounds_sf,SRC_DESC, geometry)
-bounds_sf <- st_transform(bounds_sf, 4326) # Project to WGS84
+bounds_sf <- sf::st_transform(bounds_sf, 4326) # Project to WGS84
 
 # Table of SARA listed species
 listed_species <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/MAR_listed_species.csv"),
