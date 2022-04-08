@@ -3,7 +3,7 @@
 #' @param geoms sf object selected.
 #' @param lang target language, "EN"/"FR"
 #' @param fl file name (optional).
-#' @param species human_threats, context different parts to be added.
+#' @param parts subsections to include in the report
 #' @param u_name, u_email, u_text, u_comments User details.
 #' @param dir_out output directory.
 #' @param dir_tpl path to template directory.
@@ -17,7 +17,7 @@
 #'   `dir_out`: directory where report is saved
 #'
 #
-render_full_report <- function(geoms, lang, species, human_threats, context,
+render_full_report <- function(geoms, lang, parts,
   u_name, u_email, u_text, u_comments, dir_out = "output", fl = "",
   dir_tpl = here::here("app/templates"), keep.origin = FALSE) {
     
@@ -56,13 +56,7 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
 
   data_all <- list(
     path_to_geoms = flge$relrmd,
-    add_species_parts = add_sections(
-      species, lang, dir_tpl, "species"
-    ),
-    add_human_threats_parts = add_sections(
-      human_threats, lang, dir_tpl, "human_threats"
-    ),
-    add_context_parts = add_sections(context, lang, dir_tpl, "context"),
+    add_parts = add_sections(parts, lang, dir_tpl),
     u_name = u_name,
     u_email = u_email,
     u_text = u_text,
@@ -103,10 +97,10 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
 }
 
 
-add_sections <- function(files, lang, dir_in, dir_part) {
+add_sections <- function(files, lang, dir_in) {
   if (length(files)) {
     # cannot use a vector of length > 1 so lapply() is called
-    fls <- lapply(files, function(x) glue_path(dir_in, lang, dir_part, x))
+    fls <- lapply(files, function(x) glue_path(dir_in, lang, x))
     fls <- paste0("'", unlist(fls), "'")
     glue("```{{r, child = c({glue_collapse(fls, sep = ', ')})}}\n```")
 

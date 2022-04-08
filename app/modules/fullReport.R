@@ -19,16 +19,16 @@ fullReportUI <- function(id) {
             "Aquatic Invasive Species"
           ),
           choiceValues = c(
-            "NSARP_dist_crithab.Rmd",
-            "fish_inverts.Rmd",
-            "cetaceans.Rmd",
-            "aquatic_invasive.Rmd"
+            "species/NSARP_dist_crithab.Rmd",
+            "species/fish_inverts.Rmd",
+            "species/cetaceans.Rmd",
+            "species/aquatic_invasive.Rmd"
           ),
           selected = c(
-            "NSARP_dist_crithab.Rmd",
-            "fish_inverts.Rmd",
-            "cetaceans.Rmd",
-            "aquatic_invasive.Rmd"
+            "species/NSARP_dist_crithab.Rmd",
+            "species/fish_inverts.Rmd",
+            "species/cetaceans.Rmd",
+            "species/aquatic_invasive.Rmd"
           )
         ),
         checkboxGroupInput(
@@ -39,12 +39,12 @@ fullReportUI <- function(id) {
             "Habitat"
           ),
           choiceValues = c(
-            "spatial_planning.Rmd",
-            "habitat.Rmd"
+            "context/spatial_planning.Rmd",
+            "context/habitat.Rmd"
           ),
           selected = c(
-            "spatial_planning.Rmd",
-            "habitat.Rmd"
+            "context/spatial_planning.Rmd",
+            "context/habitat.Rmd"
           )
         ),
         checkboxGroupInput(
@@ -57,10 +57,10 @@ fullReportUI <- function(id) {
             "Cumulative impact mapping"
           ),
           choiceValues = c(
-            "fishing.Rmd",
-            "shipping.Rmd",
-            "miscellaneous.Rmd",
-            "cumulative.Rmd"
+            "human_threats/fishing.Rmd",
+            "human_threats/shipping.Rmd",
+            "human_threats/miscellaneous.Rmd",
+            "human_threats/cumulative.Rmd"
           ),
         ),
       ),
@@ -143,9 +143,11 @@ fullReportServer <- function(id, geoms, preview, u_details) {
             u_email = u_details$email,
             u_text = input$u_text,
             u_comments = input$u_comments,
-            species = input$species,
-            human_threats = input$human_threats,
-            context = input$context, 
+            parts = c(
+              input$species, 
+              input$context, 
+              input$human_threats
+            ),
             fl = input$report_name
           )
           removeNotification(id)
