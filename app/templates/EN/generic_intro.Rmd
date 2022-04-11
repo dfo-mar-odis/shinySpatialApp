@@ -121,14 +121,7 @@ knitr::kable(table_tier,align="l",
 <!-- MAIN SECTIONS -->
 
 # **SEARCH RESULTS**  
-{{add_species_parts}}
-
-
-<!-- Human threats -->
-{{add_human_threats_parts}}
-
-<!-- EBSA -->
-{{add_context_parts}}
+{{add_parts}}
 
 <!-- GENERIC END -->
 
