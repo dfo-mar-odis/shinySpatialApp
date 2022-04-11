@@ -5,3 +5,6 @@ This module describes information relevant to spatial planning from a variety of
 ```{r child = here::here("reports/sections/ebsa/ebsa_en.Rmd")}
 ```
 
+```{r child = here::here("reports/sections/conservationSites/conservationSites_en.Rmd")}
+```
+
