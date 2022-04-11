@@ -81,7 +81,7 @@ fullReportUI <- function(id) {
           label = "Subtitle",
           value = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors in Maritimes Region."
         ),
-        textAreaInput("u_comments", label = "Comments", value = ""),
+        textAreaInput(ns("u_comments"), label = "Comments", value = ""),
         textInput(
           ns("report_name"),
           label = "Report filename (optional, do not specify the file extension)",

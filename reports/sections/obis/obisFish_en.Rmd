@@ -19,14 +19,14 @@ if (FALSE) { #load in data:
 
 ```{r obis-gbif-load, include=FALSE}
 load_rdata(c("obisFish_rr", "gbifFish_rr"), regionStr, env = environment())
-if(!exists("obisEnv")){
-  assign("obisEnv", new.env(), envir = knitr::knit_global())
-  obisEnv$commonObis <- TRUE
+if(!exists("rrEnv")){
+  assign("rrEnv", new.env(), envir = knitr::knit_global())
+  rrEnv$commonObis <- TRUE
 }
 
 ```
 
-```{r child = here::here("reports/sections/obis/obisCommon_en.Rmd"), eval=obisEnv$commonObis}
+```{r child = here::here("reports/sections/obis/obisCommon_en.Rmd"), eval=rrEnv$commonObis}
 # chunk will only run if commonObis variable does not exist, set in common obis, removed in commonIntro.
 ```
 

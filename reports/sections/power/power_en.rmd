@@ -6,7 +6,13 @@ output:
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
-```{r child = here::here("sections/commonSections/commonIntro.Rmd")}
+```{r power-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```
+
+```{r power-load-common-ha, child = here::here("reports/sections/commonSections/commonHA.Rmd")}
+```
+
+```{r eval=FALSE}
 if (FALSE) { 
   # load in generic data, e.g.functions, study area, and base maps into the 
   # environment, when knitting, these will be loaded through the child rmd.
@@ -44,12 +50,20 @@ powerOutputList <- master_intersect(power_rr$data_sf, mapDataList, getRegion = T
 
 powerTable <- NULL
 if (!is.null(powerOutputList$studyData)){
-  powerTable <- dplyr::select(powerOutputList$studyData, c("STATION", "STATION_OW", "MEGAWATTS", "CLEAN_TYPE")) %>% st_drop_geometry()
+  powerTable <- dplyr::select(powerOutputList$studyData, c("STATION", "STATION_OW", "MEGAWATTS", "CLEAN_TYPE")) %>% sf::st_drop_geometry()
   names(powerTable) <- c("Station", "Station Owner", "Megawatts", "Type")
   rownames(powerTable) <- NULL
 }
 
 
+```
+
+```{r power-haTable, echo=FALSE, results='asis'}
+if (!is.null(powerOutputList$studyData)) {
+  rrEnv$haClassTable$Power <- list("Coastal" = TRUE, 
+                                   "Offshore" = FALSE, 
+                                   "Shoreline" = FALSE)
+}
 ```
 
 ```{r power-check, echo=FALSE, results='asis',}

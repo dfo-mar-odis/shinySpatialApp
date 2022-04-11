@@ -62,7 +62,7 @@ if (!is.null(sturgOutputList$studyData)) {
 ```{r sturg-table, echo=FALSE, results='asis'}
 if (!is.null(sturgOutputList$studyData)) {
   sturgTable <- dplyr::select(sturgOutputList$mapData, c("siteId", "Site"))
-  st_geometry(sturgTable) <- NULL
+  sf::st_geometry(sturgTable) <- NULL
   row.names(sturgTable) <- NULL
   names(sturgTable) <- c("Site Id", "Site")
   knitr::kable(sturgTable, align="l", caption=paste(write_caption_blurb(sturg_rr, "EN"), "Names of Survey sites for Atlantic Sturgeon Foraging Areas sampled during 2020.</b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")

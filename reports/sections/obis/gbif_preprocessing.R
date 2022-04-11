@@ -89,7 +89,7 @@ machineobs = subset(gbif_df, basisOfRecord == "MACHINE_OBSERVATION")
 everythingelse = subset(gbif_df, title != "iNaturalist Research-grade Observations" & # exclude iNaturalist data
                           basisOfRecord != "MACHINE_OBSERVATION") # exclude machine observation records
 
-gbif_sf <- st_as_sf(gbif_df, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
+gbif_sf <- sf::st_as_sf(gbif_df, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
 
 # split off the cetaceans, cetLegend and rr_otherspecies are from common data
 gbifCet_sf <- subset(gbif_sf, gbif_sf$`Scientific Name` %in% cetLegend$`Scientific Name`)

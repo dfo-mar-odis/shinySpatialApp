@@ -10,9 +10,9 @@ loadResult <- load_rdata(c("CommonData", "rockweed_rr"), regionStr)
 
 # ---------------------ROCKWEED------------------------------
 # Rockweed
-rockweed_sf <- st_read(file.path(fileLoadPath, "NaturalResources/Species/Rockweed/MAR_rockweed_presence_validated.shp"), stringsAsFactors = FALSE)
-rockweed_sf <- st_transform(rockweed_sf, 4326) # Project to WGS84
-rockweed_sf <- st_make_valid(rockweed_sf)
+rockweed_sf <- sf::st_read(file.path(fileLoadPath, "NaturalResources/Species/Rockweed/MAR_rockweed_presence_validated.shp"), stringsAsFactors = FALSE)
+rockweed_sf <- sf::st_transform(rockweed_sf, 4326) # Project to WGS84
+rockweed_sf <- sf::st_make_valid(rockweed_sf)
 # set status column
 rockweed_sf$status = ""
 rockweed_sf$status[which(rockweed_sf$RWP==1)] = "Present"

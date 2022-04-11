@@ -81,7 +81,7 @@ create_table_RV <- function(data_sf, sarTable) {
                                   Individuals, Frequency)
 
   # filter allSpeciesData for only SAR species, add status values
-  sarData <- filter(allSpeciesData, `Scientific Name` %in%
+  sarData <- dplyr::filter(allSpeciesData, `Scientific Name` %in%
                       sarTable$`Scientific Name`)
   # need this select to avoid duplicate "common name" col.
   sarData <- dplyr::select(sarData, "Scientific Name", Individuals, Frequency)
@@ -151,7 +151,7 @@ create_sar_tables <- function(data_sf, sarTable, uniqueCols = c("geometry"), ext
 
   allSpeciesData <- dplyr::select(allSpeciesData, c("Scientific Name", "Common Name", all_of(extraCols)))
 
-  skateRow <- filter(sarTable, COMMONNAME == "WINTER SKATE")
+  skateRow <- dplyr::filter(sarTable, COMMONNAME == "WINTER SKATE")
   skateRow$`Scientific Name` <- "Leucoraja ocellata	(Uncertain)"
   skateRow$`Common Name` <- "Winter Skate (possible Little Skate)"
   sarTable <- rbind(sarTable, skateRow)
@@ -218,6 +218,8 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
     sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
                              "SARA status","COSEWIC status", Records)
     sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
+    sarData <- sarData[with(sarData, order(-Records)), ]
+    row.names(sarData) <- NULL
   }
   
 
@@ -232,9 +234,8 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
 
   # order the tables by number of Records (decreasing)
   allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
-  sarData <- sarData[with(sarData, order(-Records)), ]
+  
   row.names(allSpeciesData) <- NULL
-  row.names(sarData) <- NULL
   outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
   return(outList)
 }
@@ -385,13 +386,13 @@ table_crit <- function(CCH_sf, LB_sf, lang) {
 EBSA_report <- function(EBSA_sf, lang="EN") {
   EBSATable <- NULL
   if (lang=="EN" & !is.null(EBSA_sf)) {
-    EBSATable <- st_drop_geometry(dplyr::select(EBSA_sf, c(Report, Report_URL,
+    EBSATable <- sf::st_drop_geometry(dplyr::select(EBSA_sf, c(Report, Report_URL,
                                                            Name, Bioregion)))
     EBSATable <- unique(EBSATable)
     row.names(EBSATable) <- NULL
     names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
   } else if (lang=="FR" & !is.null(EBSA_sf)) {
-    EBSATable <- st_drop_geometry(dplyr::select(EBSA_sf, c(Rapport, RapportURL,
+    EBSATable <- sf::st_drop_geometry(dplyr::select(EBSA_sf, c(Rapport, RapportURL,
                                                            Nom, Bioregion)))
     EBSATable <- unique(EBSATable)
     names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
@@ -444,7 +445,7 @@ mpa_table <- function(mpa_sf, lang="EN") {
 add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
   if (!is.null(data_sf)){
     data_sf$summaryCol <- data_sf[[attribute]]
-    data_sf <- st_drop_geometry(data_sf)
+    data_sf <- sf::st_drop_geometry(data_sf)
     data_sf <-data_sf %>% dplyr::select(summaryCol) %>%
       group_by(summaryCol) %>%
       summarise(noRecords = length(summaryCol))
@@ -483,7 +484,7 @@ add_col_to_sar_summary <- function(sarSummary, dbName, dataTable, indexCol, attr
     }
     dataTable$summaryCol <-ifelse(dataTable[[attributeCol]] > 0, presentCode, absentCode)
     dataTable$speciesCol <- dataTable[[indexCol]]
-    dataTable <- filter(dataTable, speciesCol %in% sarSummary$Species)
+    dataTable <- dplyr::filter(dataTable, speciesCol %in% sarSummary$Species)
   } else {
     # dataTable was null:
     dataTable <- sarSummary
@@ -512,8 +513,8 @@ add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCo
     }
     dataTable$summaryCol <-ifelse(dataTable[[attributeCol]] > 0, dbName, NA)
     dataTable$speciesCol <- dataTable[[indexCol]]
-    dataTable <- filter(dataTable, speciesCol %in% summaryTable$Species)
-    dataTable <- filter(dataTable, lengths(summaryCol) > 0)
+    dataTable <- dplyr::filter(dataTable, speciesCol %in% summaryTable$Species)
+    dataTable <- dplyr::filter(dataTable, lengths(summaryCol) > 0)
     tempCol <- dplyr::left_join(summaryTable, dataTable, by=c("Species"="speciesCol"))$summaryCol
 
     # nested ifelse to set column value to either new value if not NA, or

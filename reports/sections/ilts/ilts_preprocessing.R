@@ -14,9 +14,9 @@ ilts <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/InshoreLobste
 iltsSpeciesCode <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/InshoreLobsterTrawlSurvey/SPECIESCODES.csv"), stringsAsFactors = FALSE)
 ilts <- dplyr::left_join(ilts, iltsSpeciesCode, by = "SPECIES_CODE")
 ilts <- dplyr::mutate(ilts, wkt = paste("LINESTRING (", SET_LONG, " ", SET_LAT, ", ", HAUL_LONG, " ", HAUL_LAT, ")", sep = ""))
-ilts$geometry <- st_as_sfc(ilts$wkt, crs = 4326)
+ilts$geometry <- sf::st_as_sfc(ilts$wkt, crs = 4326)
 ilts <- dplyr::select(ilts, c("HAUL_DATE", "COMMON.x", "SCIENTIFIC", "geometry"))
-ilts_sf <- st_as_sf(ilts)
+ilts_sf <- sf::st_as_sf(ilts)
 
 ilts_sf$COMMON.x <- str_to_title(ilts_sf$COMMON.x)
 ilts_sf$SCIENTIFIC <- str_to_sentence(ilts_sf$SCIENTIFIC)
