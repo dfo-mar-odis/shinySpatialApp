@@ -15,27 +15,37 @@ server <- function(input, output, session) {
   })
 
   # VALID AND STORE USER INFO
+  u_details <- reactiveValues(
+    name = NULL,
+    email = NULL,
+    notes = NULL,
+    consent = FALSE
+  )
   valid_details <- reactive({
+    # Create a validator (see shinyvalidate)
+    iv <- InputValidator$new()
+    iv$add_rule("u_name", sv_required())
+    iv$add_rule("u_email", sv_email())
+    # iv$add_rule("u_notes", sv_required())
+    iv$enable()
 
-    # 2Bimproved with shinyvalidate
-    # improve consent
     output$valid_details <- renderText("")
-    if (check_name(input$u_name)) {
-      if (check_email(input$u_email)) {
-        if (length(input$u_consent) == 3) {
-          output$valid_details <- info_valid("All good!")
-        } else {
-          output$valid_details <- info_valid("Please abide by terms and conditions in the User tab.",
-          FALSE)
-        }
+    u_details$consent <- FALSE
+    if (iv$is_valid()) {
+      if (length(input$u_consent) == 3) {
+        output$valid_details <- info_valid("All good!")
+        u_details$name <- input$u_name
+        u_details$email <- input$u_email
+        u_details$notes <- input$u_notes
+        u_details$consent <- TRUE
       } else {
-        output$valid_details <- info_valid("Please enter a valid email.",
-         FALSE)
-      }
-    } else {
-      output$valid_details <- info_valid("Please enter a valid name.",
+        output$valid_details <- info_valid("Please abide by terms and conditions in the User tab.",
         FALSE)
       }
+    } else {
+      output$valid_details <- info_valid("Please fill out all required fields.",
+        FALSE)
+    } 
   })
 
   observeEvent(input$get_u_details, { valid_details() })
@@ -239,28 +249,28 @@ server <- function(input, output, session) {
   )
 
   # FULL REPORT
-  fullReportServer("tmp_full_report", geoms, preview, input$u_name,
-    input$u_email, input$u_consent)
+  fullReportServer("tmp_full_report", geoms, preview, u_details)
 
   # FULL REPORT PREVIEW
   output$full_report_html <- renderUI({
-      if (preview$full_html == "www/empty_report.html") {
-        includeHTML(preview$full_html)
-      } else {
-        # remove www/ for inclusion in iframe
-        html <- strsplit(preview$full_html, "www/")[[1]][2]
-        print(html)
-        # NB Use a iframe so that the css of the report does not affect
-        # the css of the app
-        tags$iframe(id = "iframe_report", src = html, width = '100%',
-          frameborder = 'no')
-      }
+      switch(
+        preview$full_html,
+        "www/empty_report.html" = includeHTML(preview$full_html),
+        "www/wrong.html" = includeHTML(preview$full_html),
+        {
+          # not using include HTML here
+          # remove www/ for inclusion in iframe
+          html <- strsplit(preview$full_html, "www/")[[1]][2]
+          # iframe used to isolate the css of the report from the css of the app
+          tags$iframe(id = "iframe_report", src = html, width = '100%',
+            frameborder = 'no')
+        }
+      )
     })
 
 
   # CUSTOM REPORT
-  customReportServer("custom_report", geoms, preview, input$u_name, input$u_email,
-    input$u_consent)
+  customReportServer("custom_report", geoms, preview, u_details)
 
   # CUSTOM REPORT PREVIEW
   output$custom_report_html <- renderUI({

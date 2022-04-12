@@ -29,10 +29,10 @@ if (!is.null(rrEnv$haClassTable)) {
   absentCode <- "&nbsp;-&nbsp;"
   presentCode <- "&#x2714;"
   rrEnv$haClassTable[is.na(rrEnv$haClassTable)] <- FALSE
-  
+
   rrEnv$haClassTable[rrEnv$haClassTable == FALSE] <- absentCode
   rrEnv$haClassTable[rrEnv$haClassTable == TRUE] <- presentCode
-  
+
   haClassTable <-dplyr:: mutate_all(rrEnv$haClassTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
 
 }
