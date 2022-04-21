@@ -52,7 +52,7 @@ render_full_report <- function(geoms, lang, parts,
   origin <- glue(add_lang_to_file(main, lang), ".origin")
   # full Rmd ready (txt within Rmd no longer in code chunks)
   rmd_ready <- glue_path(dir_out, add_lang_to_file(fl, lang))
-  on.exit(unlink(rmd_ready))
+  # on.exit(unlink(rmd_ready))
 
   data_all <- list(
     path_to_geoms = flge$relrmd,

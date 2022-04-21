@@ -4,6 +4,7 @@ ckanr_setup(url="https://open.canada.ca/data")
 
 library(sf)
 library(httr)
+library(raster)
 source(here::here("config.R"))
 source(here::here("reports/R/dataFunctions.R"))
 
@@ -130,12 +131,12 @@ download_extract_validate_sf <- function(zipUrl, region_sf = NULL, gdbLayer = NU
     out_sf <- st_read(gdbDir, stringsAsFactors = FALSE, layer = gdbLayer)
     out_sf$geometry <- st_geometry(out_sf)
   } else if (length(tifRasterFile) > 0) {
-    tifRaster <- raster(tifRasterFile)
+    tifRaster <- raster::raster(tifRasterFile)
     if (returnRaster){
       if (!is.null(region_sf)) {
-        tifRaster <- projectRaster(tifRaster, crs=crs(region_sf))
-        if (length(st_intersection(st_as_sfc(st_bbox(tifRaster)), region_sf)) > 0) {
-          tifRaster <- crop(tifRaster, region_sf)
+        tifRaster <- raster::projectRaster(tifRaster, crs=crs(region_sf))
+        if (length(sf::st_intersection(st_as_sfc(st_bbox(tifRaster)), region_sf)) > 0) {
+          tifRaster <- raster::crop(tifRaster, region_sf)
         } else {
           tifRaster <- NULL
         }
