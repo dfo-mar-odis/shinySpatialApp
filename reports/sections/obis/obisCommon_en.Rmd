@@ -11,14 +11,12 @@ editor_options:
 
 ### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
 
-```{r obis-load, include=FALSE}
-# prevent future common obis sections from running
-rrEnv$commonObis <- FALSE
-load_rdata(c("obisFish_rr"), regionStr, env = environment())
+```{r obis-common-load, include=FALSE}
+load_rdata(c("obis_rr"), regionStr, env = environment())
 ```
 
 ```{r obis-meta, results='asis'}
-write_meta(obisFish_rr, "EN")
+write_meta(obis_rr, "EN")
 ```
 
 OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open-access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS accepts data from any organization, consortium, project or individual who wishes to contribute data (OBIS, 2021). As of December 2021, OBIS has over 80 million species occurrence records and over 4,300 datasets globally.
@@ -26,12 +24,12 @@ OBIS is a global, open-access data and information clearing-house on marine biod
 
 ### **Global Biodiversity Information Facility (GBIF)** {#gbif-section}
 
-```{r gbif-load, include=FALSE}
-load_rdata(c("gbifFish_rr"), regionStr, env = environment())
+```{r gbif-common-load, include=FALSE}
+load_rdata(c("gbif_rr"), regionStr, env = environment())
 ```
 
 ```{r gbif-meta, results='asis'}
-write_meta(gbifFish_rr, "EN")
+write_meta(gbif_rr, "EN")
 ```
 
 GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth (GBIF, 2021). Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of December 2021, GBIF has over 1.9 billion species occurrence records and over 63,000 datasets globally. 

@@ -14,20 +14,17 @@ fullReportUI <- function(id) {
           label = "Species",
           choiceNames = c(
             "National Aquatic Species at Risk Program",
-            "Fish and Invertebrates",
-            "Cetaceans", 
+            "Species",
             "Aquatic Invasive Species"
           ),
           choiceValues = c(
             "species/NSARP_dist_crithab.Rmd",
-            "species/fish_inverts.Rmd",
-            "species/cetaceans.Rmd",
+            "species/species.Rmd",
             "species/aquatic_invasive.Rmd"
           ),
           selected = c(
             "species/NSARP_dist_crithab.Rmd",
-            "species/fish_inverts.Rmd",
-            "species/cetaceans.Rmd",
+            "species/species.Rmd",
             "species/aquatic_invasive.Rmd"
           )
         ),

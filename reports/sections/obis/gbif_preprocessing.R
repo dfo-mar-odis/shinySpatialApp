@@ -5,7 +5,7 @@ source(here::here("config.R"))
 
 library(rgbif)
 
-loadResult <- load_rdata(c("CommonData", "gbifFish_rr", "gbifCet_rr"), regionStr)
+loadResult <- load_rdata(c("CommonData", "gbif_rr"), regionStr)
 
 #-------------------GBIF-------------------
 ##############################################################################################################################
@@ -56,8 +56,8 @@ dsInfo_df$title <- unlist(citationsOnly_df$title)
 # Get URLs for each dataset
 # Within the citation, extract https://doi.org and everything after until it gets to a space 
 dsInfo_df$url = dsInfo_df$citation %>% 
-  str_extract(., "https://doi.org/.*") %>% # extract the DOI and everything after it
-  str_split(" ") %>% # split string on whitespace 
+  stringr::str_extract(., "https://doi.org/.*") %>% # extract the DOI and everything after it
+  stringr::str_split(" ") %>% # split string on whitespace 
   sapply(.,"[[",1) # grab first element in the list, which will always be the doi
 
 
@@ -91,42 +91,23 @@ everythingelse = subset(gbif_df, title != "iNaturalist Research-grade Observatio
 
 gbif_sf <- sf::st_as_sf(gbif_df, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
 
-# split off the cetaceans, cetLegend and rr_otherspecies are from common data
-gbifCet_sf <- subset(gbif_sf, gbif_sf$`Scientific Name` %in% cetLegend$`Scientific Name`)
-gbifCet_sf <- merge(gbifCet_sf, cetLegend, by='Scientific Name')
-gbifFish_sf <- subset(gbif_sf, !(gbif_sf$`Scientific Name` %in% cetLegend$`Scientific Name`)
-                      & !(gbif_sf$`Scientific Name` %in% rr_otherSpecies$Scientific_Name))
+# split off rr_otherspecies are from common data
+gbif_sf <- subset(gbif_sf, !(gbif_sf$`Scientific Name` %in% rr_otherSpecies$Scientific_Name))
 
-gbifCet_rr <- list("title" = "Global Biodiversity Information Facility (GBIF), Cetaceans",
-                "data_sf" = gbifCet_sf,
-                "attribute" = "Legend",
-                "metadata" = list("contact" = email_format("info@gbif.org"), 
-                                   "url" = lang_list("<https://gbif.org/>"),
-                                      "accessedOnStr" = list("en" ="December 17 2021 using rgbif", 
-                                                             "fr" = "17 decmbre 2021 par rgbif") ,
-                                      "accessDate" = as.Date("2021-12-17"),
-                                      "searchYears" = "2010-2021",
-                                      "securityLevel" = noneList,
-                                      "qualityTier" = variableQuality,
-                                      "constraints" = noneList
-                    )
-)
-save(gbifCet_rr, file = file.path(localFileSavePath, "Open/gbifCet_rr.RData"))
-
-gbifFish_rr <- list("title" = "Global Biodiversity Information Facility (GBIF)",
-                "data_sf" = gbifFish_sf,
+gbif_rr <- list("title" = "Global Biodiversity Information Facility (GBIF)",
+                "data_sf" = gbif_sf,
                 "attribute" = "NONE",
                 "metadata" = list("contact" = email_format("info@gbif.org"), 
                                    "url" = lang_list("<https://gbif.org/>"),
-                                      "accessedOnStr" = list("en" ="December 17 2021 using rgbif", 
-                                                             "fr" = "17 decmbre 2021 par rgbif") ,
-                                      "accessDate" = as.Date("2021-12-17"),
-                                      "searchYears" = "2010-2021",
-                                      "securityLevel" = noneList,
-                                      "qualityTier" = variableQuality,
-                                      "constraints" = noneList
-                    )
+                                   "accessedOnStr" = list("en" ="April 28 2022 using robis", 
+                                                          "fr" = "28 avril 2022 par robis") ,
+                                   "accessDate" = as.Date("2022-04-28"),
+                                   "searchYears" = "2010-2021",
+                                   "securityLevel" = noneList,
+                                   "qualityTier" = variableQuality,
+                                   "constraints" = noneList
+                                  )
 )
-save(gbifFish_rr, file = file.path(localFileSavePath, "Open/gbifFish_rr.RData"))
+save(gbif_rr, file = file.path(localFileSavePath, "Open/gbif_rr.RData"))
 
 # Still need to Remove cetaceans that are >300m from shore (not for machine observation records)
