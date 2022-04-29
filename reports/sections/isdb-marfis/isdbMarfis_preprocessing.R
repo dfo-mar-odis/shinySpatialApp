@@ -5,7 +5,7 @@ source(here::here("config.R"))
 
 
 
-loadResult <- load_rdata(c("CommonData", "idb_rr", "marfis_rr"), regionStr)
+loadResult <- load_rdata(c("CommonData", "isdb_rr", "marfis_rr"), regionStr)
 
 
 # -------------------ISDB------------------------------
