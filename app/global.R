@@ -1,12 +1,12 @@
 # PACKAGES 
 library(shiny)
 library(shinyjs)
+library(shinyvalidate)
 library(leaflet)
 library(leafem)
 library(mapedit)
 library(sf)
 library(glue)
-library(shinyvalidate)
 
 
 # load R scripts (including packages)

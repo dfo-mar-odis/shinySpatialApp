@@ -19,16 +19,16 @@ fullReportUI <- function(id) {
             "Aquatic Invasive Species"
           ),
           choiceValues = c(
-            "NSARP_dist_crithab.Rmd",
-            "fish_inverts.Rmd",
-            "cetaceans.Rmd",
-            "aquatic_invasive.Rmd"
+            "species/NSARP_dist_crithab.Rmd",
+            "species/fish_inverts.Rmd",
+            "species/cetaceans.Rmd",
+            "species/aquatic_invasive.Rmd"
           ),
           selected = c(
-            "NSARP_dist_crithab.Rmd",
-            "fish_inverts.Rmd",
-            "cetaceans.Rmd",
-            "aquatic_invasive.Rmd"
+            "species/NSARP_dist_crithab.Rmd",
+            "species/fish_inverts.Rmd",
+            "species/cetaceans.Rmd",
+            "species/aquatic_invasive.Rmd"
           )
         ),
         checkboxGroupInput(
@@ -39,12 +39,12 @@ fullReportUI <- function(id) {
             "Habitat"
           ),
           choiceValues = c(
-            "spatial_planning.Rmd",
-            "habitat.Rmd"
+            "context/spatial_planning.Rmd",
+            "context/habitat.Rmd"
           ),
           selected = c(
-            "spatial_planning.Rmd",
-            "habitat.Rmd"
+            "context/spatial_planning.Rmd",
+            "context/habitat.Rmd"
           )
         ),
         checkboxGroupInput(
@@ -57,10 +57,10 @@ fullReportUI <- function(id) {
             "Cumulative impact mapping"
           ),
           choiceValues = c(
-            "fishing.Rmd",
-            "shipping.Rmd",
-            "miscellaneous.Rmd",
-            "cumulative.Rmd"
+            "human_threats/fishing.Rmd",
+            "human_threats/shipping.Rmd",
+            "human_threats/miscellaneous.Rmd",
+            "human_threats/cumulative.Rmd"
           ),
         ),
       ),
@@ -81,7 +81,7 @@ fullReportUI <- function(id) {
           label = "Subtitle",
           value = "Synthesis prepared by the Reproducible Reporting Team, steering committee and advisors in Maritimes Region."
         ),
-        textAreaInput("u_comments", label = "Comments", value = ""),
+        textAreaInput(ns("u_comments"), label = "Comments", value = ""),
         textInput(
           ns("report_name"),
           label = "Report filename (optional, do not specify the file extension)",
@@ -110,7 +110,7 @@ fullReportUI <- function(id) {
 
 
 
-fullReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
+fullReportServer <- function(id, geoms, preview, u_details) {
 
   moduleServer(
     id,
@@ -120,32 +120,39 @@ fullReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
       shinyjs::hide(id = "report_dl")
 
       observeEvent(input$generate_rmd, {
-
-        if (length(u_consent) != 3) {
+        
+        if (!u_details$consent) {
           output$render_success <- info_valid("Please abide by terms and conditions in 'User' tab.", FALSE)
         } else {
+          shinyjs::hide(id = "outputs_dl")
+          shinyjs::hide(id = "report_dl")
+          # Need to change the HTML to trigger the reactive expression.
+          # A simple way is to set it to nothing at the beginning of the process
+          # so the internet browser understands that the page is obsolete.
+          preview$full_html <- ""
           id <- showNotification(
             "Rendering HTML preview ...", 
             duration = NULL, 
             closeButton = FALSE
           )
-          # showNotification("")
+          # 
           chk <- render_full_report(
             geoms = geoms$final,
             lang = input$lang,
-            u_name = u_name, 
-            u_email = u_email,
+            u_name = u_details$name, 
+            u_email = u_details$email,
             u_text = input$u_text,
             u_comments = input$u_comments,
-            species = input$species,
-            human_threats = input$human_threats,
-            context = input$context, 
+            parts = c(
+              input$species, 
+              input$context, 
+              input$human_threats
+            ),
             fl = input$report_name
           )
           removeNotification(id)
 
           if (chk$ok) {
-            
             output$render_success <- info_valid(chk$msg, chk$ok)
             preview$full_html <- chk$html
             
@@ -172,11 +179,12 @@ fullReportServer <- function(id, geoms, preview, u_name, u_email, u_consent) {
                 on.exit(removeNotification(id), add = TRUE)
                 fs::file_copy(pagedown::chrome_print(preview$full_html), file)
               })
-            
-            
+
           } else {
             showNotification("Abort rendering", type = "error")
+            preview$full_html <- "www/wrong.html"
             output$render_success <- info_valid(chk$msg, FALSE)
+            print(preview$full_html)
             shinyjs::hide(id = "outputs_dl")
             shinyjs::hide(id = "report_dl")
           }

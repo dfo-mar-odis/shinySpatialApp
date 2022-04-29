@@ -1,8 +1,0 @@
-## Fishing
-
-
-```{r child = here::here("sections/benthicEffort/benthicEffort_en.rmd")}
-```
-
-```{r child = here::here("sections/lobsterEffort/lobsterEffort_en.rmd")}
-```

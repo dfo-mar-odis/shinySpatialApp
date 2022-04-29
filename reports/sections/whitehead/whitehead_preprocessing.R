@@ -17,7 +17,7 @@ whitehead <- merge(whitehead, cetLegend, by='Scientific Name')
 whitehead <- dplyr::select(whitehead, 'Scientific Name', YEAR, Legend, Lat, Long)
 # correct the longitude values to be negative
 whitehead$Long <- -1 * whitehead$Long
-whitehead_sf <- st_as_sf(whitehead, coords = c("Long", "Lat"), crs = 4326)
+whitehead_sf <- sf::st_as_sf(whitehead, coords = c("Long", "Lat"), crs = 4326)
 whitehead_sf <- sf::st_crop(whitehead_sf, region_sf)
 
 whitehead_rr <- list("title" = "Whitehead lab (Dalhousie University)",

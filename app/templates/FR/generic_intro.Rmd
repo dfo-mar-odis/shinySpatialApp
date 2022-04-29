@@ -45,7 +45,7 @@ Ce document résume les données régionales, y compris les renseignements sur l
 
 Le présent document est conçu comme un outil de rapport reproductible, appuyé par le langage de balisage R et généré par une interface d’application R-Shiny hébergée sur le réseau du MPO. Les résumés et les résultats des rapports sont basés sur des données extraites d’une zone de recherche fournie par l’utilisateur (un polygone d’intérêt focal) avec un tampon défini par l’utilisateur (Figure 1). Les instructions d’utilisation de l’interface R-Shiny sont fournies dans le manuel technique. En raison du caractère sensible potentiel de certaines données et informations, l’accès aux données de l’application doit être accordé, et le rapport est destiné à un usage interne uniquement.  
 
-````{r area-map-plot, fig.height=8, fig.width=11, fig.cap='Carte montrant la zone de recherche définie par l’utilisateur (entourée en rouge) pour rechercher des informations et générer automatiquement ce rapport. '}
+``{r area-map-plot, fig.height=8, fig.width=11, fig.cap='Carte montrant la zone de recherche définie par l’utilisateur (entourée en rouge) pour rechercher des informations et générer automatiquement ce rapport. '}
 
 par(mar = c(4, 4, .1, .1))
 mapDataList$areaMap
@@ -96,14 +96,7 @@ Définitions pertinentes pour les espèces inscrites en vertu de la _Loi sur les
 
 <!-- MAIN SECTIONS -->
 # **SEARCH RESULTS**  
-{{add_species_parts}}
-
-
-<!-- Human threats -->
-{{add_human_threats_parts}}
-
-<!-- EBSA -->
-{{add_context_parts}}
+{{add_parts}}
 
 <!-- GENERIC END -->
 

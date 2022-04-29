@@ -12,7 +12,7 @@ filter_and_union <- function(sciName, sfObj) {
   filter_sf <- dplyr::filter(sfObj, `Scientific Name`==sciName)
   out_sf <- filter_sf %>%
     group_by(`Scientific Name`, `Common Name`, Species_Link) %>%
-    summarize(geometry = st_union(geometry))
+    summarize(geometry = sf::st_union(geometry))
   return(out_sf)
 }
 

@@ -20,8 +20,8 @@ url <- "https://geoappext.nrcan.gc.ca/arcgis/rest/services/Energy/clean_energy_g
 # only take stations east of Thunder Bay, crop to region later
 where <- "Longitude > -90"
 power_sf <- get_esri_rest(url, layer="0", where=where)
-power_rr$data_sf <- st_crop(power_sf, region_sf) %>% 
-  st_make_valid()
+power_rr$data_sf <- sf::st_crop(power_sf, region_sf) %>% 
+  sf::st_make_valid()
 # already in 4326.
 
 power_rr$attribute <- "MEGAWATTS"

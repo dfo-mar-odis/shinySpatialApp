@@ -5,14 +5,18 @@ output:
     theme: paper
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
+
 ```{r benthic-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")} 
+```
+
+```{r benthic-load-common-ha, child = here::here("reports/sections/commonSections/commonHA.Rmd")} 
 ``` 
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 if (FALSE) { #load in data:
   lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
   studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
-  intro_setup(studyArea, env = environment())  
+  intro_setup(studyArea, env = environment())
 }
 ```
 
@@ -34,8 +38,17 @@ writeLines(noquote(benthicEffort_rr$text$en))
 #### ***Area-specific fishing effort search results***
 
 ```{r benthicEffort-results, echo=FALSE, results='asis'}
-outputListBenthicEffort <- master_intersect(benthicEffort_rr$data_sf, mapDataList, getRegion=TRUE)
+outputListBenthicEffort <- master_intersect(benthicEffort_rr$data_sf, mapDataList,
+                                           getRegion=TRUE)
 
+```
+
+```{r benthicEffort-haTable, echo=FALSE, results='asis'}
+if (!is.null(outputListBenthicEffort$studyData)) {
+  rrEnv$haClassTable$`Benthic Fishing Effort` <- list("Coastal" = FALSE, 
+                                                    "Offshore" = TRUE, 
+                                                    "Shoreline" = FALSE)
+}
 ```
 
 
