@@ -32,7 +32,7 @@ load_rdata(c("gbif_rr"), regionStr, env = environment())
 write_meta(gbif_rr, "EN")
 ```
 
-GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth [@GBIF2022]. Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of April 2022, GBIF has over 2.1 billion species occurrence records and over 68,000 datasets globally. 
+GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth [@GBIF]. Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of April 2022, GBIF has over 2.1 billion species occurrence records and over 68,000 datasets globally. 
 
 
 
@@ -169,7 +169,7 @@ Observations may also be listed as MachineObservation, which are derived from ma
 #### iNaturalist data
 
 iNaturalist is an open-source platform where naturalists, citizen
-scientists, and biologists can map species observations [iNaturalist2022]. As of April 2022, iNaturalist has over 95 million species
+scientists, and biologists can map species observations [@iNaturalist]. As of April 2022, iNaturalist has over 95 million species
 observations and over 2.1 million registered users/contributors
 globally. Every week, iNaturalist data that are considered "Research
 Grade" (i.e., the record contains a date, is georeferenced, has photos
