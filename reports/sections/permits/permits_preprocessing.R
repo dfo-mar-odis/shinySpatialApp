@@ -45,8 +45,7 @@ comboPermits = dplyr::select(comboPermits, Year, LatDD, LongDD, "Scientific Name
 # Select required columns
 permits = dplyr::select(permits, Year, LatDD, LongDD, Species)
 
-#permits = dplyr::rename(wsdb,c("Scientific Name" = "scientificName", 
-                               "COMMONNAME"))
+
 
 
 
