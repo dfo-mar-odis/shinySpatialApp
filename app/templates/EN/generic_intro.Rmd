@@ -137,10 +137,6 @@ This section summarizes available information of human activities and human thre
 
 This section summarizes available information of human activities in the search area, per each data source presented in this report. Please contact data providers if data outside of these ranges are required. Outputs are not suitable for real-time, dynamic spatial planning.
 
-#### *Literature Review*
-
-TBA!
-
 ### **Multi-Species Synthesis**
 
 This section summarizes available information of presence of species in the search area listed by SARA, and/or assessed by COSEWIC, per each data source presented in this report. The absence of a species in this report should be interpreted as an absence of observation or reporting of the species within the search area, not necessarily as a true absence of the species. Unless otherwise specified, data were queried from 2010 to present. Please contact data providers if data outside of these ranges are required. Outputs are not suitable for real-time, dynamic spatial planning.
