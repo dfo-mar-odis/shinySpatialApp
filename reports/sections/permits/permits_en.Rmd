@@ -9,11 +9,15 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ```{r threats-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
 ``` 
 
+### SARA Section 73 Permits
+
 ```{r threats-load, include=FALSE}
-load_rdata(c("threats_rr"), regionStr, env = environment())
+load_rdata(c("permits_rr"), regionStr, env = environment())
 ```
 
-### SARA Section 73 Permits
+```{r permits-meta, results='asis'}
+write_meta(permits_rr, "EN")
+```
 
 The Species at Risk Act [-@SARA2002] contains several prohibitions to protect Schedule 1 species. Under Sections 32 and 33 of SARA, it is an offence to:
 
