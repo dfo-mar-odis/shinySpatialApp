@@ -1,0 +1,17 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+```{r threats-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+``` 
+
+```{r threats-load, include=FALSE}
+load_rdata(c("threats_rr"), regionStr, env = environment())
+```
+
+### SARA Section 73 Permits
+
