@@ -14,18 +14,15 @@ fullReportUI <- function(id) {
           label = "Species",
           choiceNames = c(
             "National Aquatic Species at Risk Program",
-            "Species",
-            "Aquatic Invasive Species"
+            "Fish, Invertebrates, Cetaceans"
           ),
           choiceValues = c(
             "species/NSARP_dist_crithab.Rmd",
-            "species/species.Rmd",
-            "species/aquatic_invasive.Rmd"
+            "species/fish_invertebrates_ceteaceans.Rmd"
           ),
           selected = c(
             "species/NSARP_dist_crithab.Rmd",
-            "species/species.Rmd",
-            "species/aquatic_invasive.Rmd"
+            "species/fish_invertebrates_ceteaceans"
           )
         ),
         checkboxGroupInput(
@@ -46,18 +43,20 @@ fullReportUI <- function(id) {
         ),
         checkboxGroupInput(
           ns("human_threats"),
-          label = "Human threats",
+          label = "Threats",
           choiceNames = c(
             "Fishing",
             "Shipping",
-            "Miscellaneous",
-            "Cumulative impact mapping"
+            "Literature Review",
+            "Cumulative impact mapping",
+            "Aquatic Invasive Species"
           ),
           choiceValues = c(
             "human_threats/fishing.Rmd",
             "human_threats/shipping.Rmd",
             "human_threats/miscellaneous.Rmd",
-            "human_threats/cumulative.Rmd"
+            "human_threats/cumulative.Rmd",
+            "human_threats/aquatic_invasive.Rmd"
           ),
         ),
       ),
