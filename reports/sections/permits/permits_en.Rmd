@@ -15,7 +15,7 @@ load_rdata(c("threats_rr"), regionStr, env = environment())
 
 ### SARA Section 73 Permits
 
-The Species at Risk Act (2002) contains several prohibitions to protect Schedule 1 species. Under Sections 32 and 33 of SARA, it is an offence to:
+The Species at Risk Act [-@SARA2002] contains several prohibitions to protect Schedule 1 species. Under Sections 32 and 33 of SARA, it is an offence to:
 
 * Kill, harm, harass, capture or take an individual of a species listed as extirpated, endangered or threatened under SARA.
 * Possess, collect, buy, sell or trade an individual (or any part or derivative of such an individual) of a species listed as extirpated, endangered or threatened under SARA.
@@ -35,19 +35,20 @@ As well, the competent Minister must be of the opinion that all 3 of the followi
 * All feasible measures will be taken to minimize the impact of the activity on the species or its critical habitat or the residences of its individuals.
 * The activity will not jeopardize the survival or recovery of the species.
 
-Sample activities for which permits may be issued include: obtaining biological samples from the organism for research purposes, electrofishing to evaluate species populations, rescue activities to release entangled species, creating bypasses and traps for species, and conducting surveys/transects/photographing. Note that construction or development projects near water (e.g., constructions of bridges, maintenance of harbours, etc.) also require a SARA Permit. However, this is an additional process and requires other forms of authorization (see more information here <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>). 
+Sample activities for which permits may be issued include: obtaining biological samples from the organism for research purposes, electrofishing to evaluate species populations, rescue activities to release entangled species, creating bypasses and traps for species, and conducting surveys, transects, and/or photographing for research purposes. Note that construction or development projects near water (e.g., constructions of bridges, maintenance of harbours, etc.) also require a SARA Permit. However, this is an additional process and requires other forms of authorization (see more information here <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>). 
 
 In support of the expansion and integration of additional data sources, Species at Risk records from these DFO-issued Section 73 permits were mined and summarized in this section for internal DFO needs. Information extracted from the reports includes relevant details on Species at Risk interactions that occurred under specific permits. In the Excel file, the following information is being compiled: Year, Month, Day, Latitude, Longitude, Water Body, Species, Number of Individuals, Project Activity and Permit Report Number. The Report Number allows authorized DFO staff to review the permit files if required. 
 
 Please note the following caveats and disclaimers relevant to this section:
 
-*To prevent misinterpretation of any guidelines, all bulleted lists have been obtained directly from: https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html. To ensure consistency in formatting, minor grammar edits may have been made.
-*The SARA prohibitions (first paragraph) do not apply to species listed as special concern. The information regarding permits is therefore not applicable to species of special concern.
-*DFO is the regulatory authority for issuing permits for aquatic species (as defined by SARA) other than species in waters found on federal lands administered by the Parks Canada Agency. This section only contains information for DFO-issued permits.
-*Latitude and longitude formats differ between reports; therefore, all coordinates were converted to decimal degrees to promote consistency. 
-*Permits for projects occurring near water are not included (see here for more details).
-*Who to contact for permit information???
-*Protected information is not part of the data mining exercise CLARIFY
-*In the case that report records are inconclusive (species is unknown), they are omitted from the spreadsheet.
+To prevent misinterpretation of any guidelines, all bulleted lists have been obtained directly from: <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>. To ensure consistency in formatting, minor grammar edits may have been made.
+
+* The SARA prohibitions (first paragraph) do not apply to species listed as special concern. The information regarding permits is therefore not applicable to species of special concern.
+* DFO is the regulatory authority for issuing permits for aquatic species (as defined by SARA) other than species in waters found on federal lands administered by the Parks Canada Agency. This section only contains information for DFO-issued permits.
+* Latitude and longitude formats differ between reports; therefore, all coordinates were converted to decimal degrees to promote consistency. 
+* Permits for projects occurring near water are not included (see here for more details).
+* Who to contact for permit information???
+* Protected information is not part of the data mining exercise CLARIFY
+* In the case that report records are inconclusive (species is unknown), they are omitted from the spreadsheet.
 
 
