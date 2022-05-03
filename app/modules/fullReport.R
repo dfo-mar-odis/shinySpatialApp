@@ -22,7 +22,7 @@ fullReportUI <- function(id) {
           ),
           selected = c(
             "species/NSARP_dist_crithab.Rmd",
-            "species/fish_invertebrates_ceteaceans"
+            "species/fish_invertebrates_ceteaceans.Rmd"
           )
         ),
         checkboxGroupInput(
