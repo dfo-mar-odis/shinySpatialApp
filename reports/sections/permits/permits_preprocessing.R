@@ -1,12 +1,59 @@
 source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
 source(here::here("config.R"))
+library(readxl)
+library(plyr)
+library(tibble)
+library(stringr)
+library(dplyr)
 
-loadResult <- load_rdata(c("CommonData", "permits_rr"), regionStr)
+loadResult = load_rdata(c("CommonData", "permits_rr"), regionStr)
 
 #------------------permits--------------------
 # SARA Section 73 Permits (permits)
-# permits <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/WSDB/MarWSDB_20210407.csv"), stringsAsFactors = FALSE)
+
+# Determine file path for permit data
+xl_data = file.path(fileLoadPath, "NaturalResources/Species/Permits/SARAdata_withCoordinates.xlsx")
+
+# Get the sheet names from the spreadsheet (there is one sheet per year, from 2010 to 2020)
+sheets = excel_sheets(path = xl_data)
+
+# Read in the data from each sheet in the Excel file. Each sheet will be its own list
+list_all = lapply(sheets, function (x) read_excel (xl_data, sheet = x))
+
+# Combine each list into a single dataframe
+permits = rbind.fill(list_all)
+
+# Get scientific name. The name will be listed within brackets.
+species_brackets = str_extract_all(permits$Species, "\\([^()]+\\)")
+
+# Remove the brackets and add this as a new column to the permits data frame
+permits$scientificName = substring(species_brackets, 2, nchar(species_brackets)-1)
+
+# Remove sea turtle data (we aren't including this for now)
+permits = permits[!(permits$scientificName=="Dermochelys coriacea"),]
+
+# Then combine with the MAR species spreadsheet to get other relevant info (e.g., SARA/COSEWIC statuses)
+comboPermits = full_join(permits, listed_species, by=c("scientificName" = "Scientific Name"))
+
+comboPermits = dplyr::select(comboPermits, Year, LatDD, LongDD, "Scientific Name")
+
+
+
+
+
+# Select required columns
+permits = dplyr::select(permits, Year, LatDD, LongDD, Species)
+
+#permits = dplyr::rename(wsdb,c("Scientific Name" = "scientificName", 
+                               "COMMONNAME"))
+
+
+
+
+
+
+
 # permits <- dplyr::select(wsdb, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
 # permits <- wsdb %>% dplyr::filter(YEAR >= rrMinYear)
 # permits <- dplyr::rename(wsdb,c("Scientific Name" = "SCIENTIFICNAME",
@@ -23,7 +70,7 @@ permits_rr <- list("title" = "Section 73 Permits",
                                   "url" = lang_list("<https://www.canada.ca/en/environment-climate-change/services/species-risk-public-registry/policies-guidelines/permitting-under-section-73.html>"),
                                   "accessedOnStr" = list("en" ="April 26, 2022 by Charlotte Smith", "fr" = "26 avril 2022 par Charlotte Smith") ,
                                   "accessDate" = as.Date("2022-04-26"),
-                                  "searchYears" = paste(rrMinYear, "-2022", sep=""),
+                                  "searchYears" = paste(rrMinYear, "-2020", sep=""),
                                   "securityLevel" = noneList,
                                   "qualityTier" = mediumQuality,
                                   "constraints" = internalUse
