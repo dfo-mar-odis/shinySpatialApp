@@ -42,7 +42,7 @@ fullReportUI <- function(id) {
           )
         ),
         checkboxGroupInput(
-          ns("human_threats"),
+          ns("threats"),
           label = "Threats",
           choiceNames = c(
             "Fishing",
@@ -52,11 +52,11 @@ fullReportUI <- function(id) {
             "Aquatic Invasive Species"
           ),
           choiceValues = c(
-            "human_threats/fishing.Rmd",
-            "human_threats/shipping.Rmd",
-            "human_threats/miscellaneous.Rmd",
-            "human_threats/cumulative.Rmd",
-            "human_threats/aquatic_invasive.Rmd"
+            "threats/fishing.Rmd",
+            "threats/shipping.Rmd",
+            "threats/literature_review.Rmd",
+            "threats/cumulative.Rmd",
+            "threats/aquatic_invasive.Rmd"
           ),
         ),
       ),
@@ -142,7 +142,7 @@ fullReportServer <- function(id, geoms, preview, u_details) {
             parts = c(
               input$species, 
               input$context, 
-              input$human_threats
+              input$threats
             ),
             fl = input$report_name
           )
