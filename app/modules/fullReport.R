@@ -14,21 +14,15 @@ fullReportUI <- function(id) {
           label = "Species",
           choiceNames = c(
             "National Aquatic Species at Risk Program",
-            "Fish and Invertebrates",
-            "Cetaceans", 
-            "Aquatic Invasive Species"
+            "Fish, Invertebrates, Cetaceans"
           ),
           choiceValues = c(
             "species/NSARP_dist_crithab.Rmd",
-            "species/fish_inverts.Rmd",
-            "species/cetaceans.Rmd",
-            "species/aquatic_invasive.Rmd"
+            "species/fish_invertebrates_ceteaceans.Rmd"
           ),
           selected = c(
             "species/NSARP_dist_crithab.Rmd",
-            "species/fish_inverts.Rmd",
-            "species/cetaceans.Rmd",
-            "species/aquatic_invasive.Rmd"
+            "species/fish_invertebrates_ceteaceans.Rmd"
           )
         ),
         checkboxGroupInput(
@@ -48,19 +42,21 @@ fullReportUI <- function(id) {
           )
         ),
         checkboxGroupInput(
-          ns("human_threats"),
-          label = "Human threats",
+          ns("threats"),
+          label = "Threats",
           choiceNames = c(
             "Fishing",
             "Shipping",
-            "Miscellaneous",
-            "Cumulative impact mapping"
+            "Literature Review",
+            "Cumulative impact mapping",
+            "Aquatic Invasive Species"
           ),
           choiceValues = c(
-            "human_threats/fishing.Rmd",
-            "human_threats/shipping.Rmd",
-            "human_threats/miscellaneous.Rmd",
-            "human_threats/cumulative.Rmd"
+            "threats/fishing.Rmd",
+            "threats/shipping.Rmd",
+            "threats/literature_review.Rmd",
+            "threats/cumulative.Rmd",
+            "threats/aquatic_invasive.Rmd"
           ),
         ),
       ),
@@ -146,7 +142,7 @@ fullReportServer <- function(id, geoms, preview, u_details) {
             parts = c(
               input$species, 
               input$context, 
-              input$human_threats
+              input$threats
             ),
             fl = input$report_name
           )
