@@ -22,7 +22,6 @@ if (!exists("mapDataList")){
   intro_setup(studyArea, env = environment())
   #  need to reset this variable here.
   assign("rrEnv", new.env(), envir =environment())
-  rrEnv$commonObis <- TRUE
 
 }
 ```
