@@ -40,8 +40,7 @@ permits = permits[!(permits$scientificName=="Dermochelys coriacea"),]
 permits = permits[!(permits$scientificName=="haracter(0"),] 
 # Remove the ones that accidentally have an extra space at the end
 permits = permits[!(permits$scientificName=="Dermochelys coriacea "),] 
-
-# Remove common minke whale: not COSEWIC-listed or Schedule 1. Unsure why there are permits for these
+# Remove common minke whale: not COSEWIC-listed or Schedule 1. Unsure why there are permits for these.
 permits = permits[!(permits$scientificName=="Balaena rostrata"),] 
 # There's also one record with an accidental space that can be removed
 permits = permits[!(permits$scientificName==" Balaena rostrata"),] 
@@ -49,9 +48,13 @@ permits = permits[!(permits$scientificName==" Balaena rostrata"),]
 permits = permits[!(permits$scientificName=="Megaptera novaeangliae"),] 
 # There's also one record with an accidental space that can be removed
 permits["scientificName"][permits["scientificName"] == " Balaenoptera musculus"] = "Balaenoptera musculus"
-
-# Charlotte's spreadsheet had an extra 
+# Remove the "vomerina". That's the Pacific population. I think it's a mistake. 
 permits["scientificName"][permits["scientificName"] == "Phocoena phocoena vomerina"] = "Phocoena phocoena"
+
+
+length(which(listed_species$`Scientific Name`==as.character("Osmerus mordax")))
+unique(listed_species$`Scientific Name`)
+listed_species$`Scientific Name`[49]
 
 
 
