@@ -53,13 +53,13 @@ names(efCols) <- levels(as.factor(ef_rr$data_sf[[ef_rr$attribute]]))
 if (!is.null(wsOutputList$studyData)) {
   row.names(wsOutputList$mapData) <- NULL
   wsOutputList$mapData$label <- row.names(wsOutputList$mapData)
-  wsMapLabels <- filter(st_centroid(wsOutputList$mapData), label > 0) %>% dplyr::select(c("label"))
+  wsMapLabels <- dplyr::filter(sf::st_centroid(wsOutputList$mapData), label > 0) %>% dplyr::select(c("label"))
   wsOutputList$mapData$hasSites <- "Absent"
   wsOutputList$mapData$ptCounts <- 0
 }
 
 if (!is.null(efOutputList$studyData)) {
-  ptCounts <- lengths(st_intersects(wsOutputList$mapData, efOutputList$studyData))
+  ptCounts <- lengths(sf::st_intersects(wsOutputList$mapData, efOutputList$studyData))
   wsOutputList$mapData$hasSites[ptCounts > 0] <- "Present"
   wsOutputList$mapData$ptCounts <- ptCounts
   ws_rr$attribute <- "hasSites"
@@ -74,7 +74,7 @@ if (!is.null(efOutputList$studyData)) {
 
 if (!is.null(wsOutputList$studyData)) {
   wsTable <- dplyr::select(wsOutputList$mapData, c("label", "WS_NAME", "ptCounts"))
-  wsTable <- st_drop_geometry(wsTable)
+  wsTable <- sf::st_drop_geometry(wsTable)
   wsTable <- wsTable[order(-wsTable$ptCounts), ]
   names(wsTable) <- c("Label", "Watershed Name", "Number of Sites")
   row.names(wsTable) <- NULL

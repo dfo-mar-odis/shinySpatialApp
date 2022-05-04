@@ -31,8 +31,8 @@ if(!is.null(openCrithab_rr)) {
 # ------------LEATHERBACKS--------------------
 
 # Leatherback turtle habitat
-leatherback_sf <- st_read(file.path(fileLoadPath, "NaturalResources/Species/SpeciesAtRisk/LeatherBackTurtleCriticalHabitat/LBT_CH_2013.shp"), stringsAsFactors = FALSE)
-leatherback_sf <- st_make_valid(leatherback_sf)
+leatherback_sf <- sf::st_read(file.path(fileLoadPath, "NaturalResources/Species/SpeciesAtRisk/LeatherBackTurtleCriticalHabitat/LBT_CH_2013.shp"), stringsAsFactors = FALSE)
+leatherback_sf <- sf::st_make_valid(leatherback_sf)
 leatherback_sf <- sf::st_crop(leatherback_sf, region_sf)
 
 

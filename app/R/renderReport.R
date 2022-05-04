@@ -3,20 +3,21 @@
 #' @param geoms sf object selected.
 #' @param lang target language, "EN"/"FR"
 #' @param fl file name (optional).
-#' @param species human_threats, context different parts to be added.
+#' @param parts subsections to include in the report
 #' @param u_name, u_email, u_text, u_comments User details.
 #' @param dir_out output directory.
 #' @param dir_tpl path to template directory.
 #'
 #'
+#' @return
 #' Returns list of values: 
-#'   msg: info message (Successfully rendered/ Issue Rendering)
-#'   ok: Boolean indicating sucess or not
-#'   html: html of report
-#'   dir_out: directory where report is saved
+#'   * `msg`: info message (Successfully rendered/ Issue Rendering)
+#'   `ok`: Boolean indicating success or not
+#'   `html`: html of report
+#'   `dir_out`: directory where report is saved
 #'
 #
-render_full_report <- function(geoms, lang, species, human_threats, context,
+render_full_report <- function(geoms, lang, parts,
   u_name, u_email, u_text, u_comments, dir_out = "output", fl = "",
   dir_tpl = here::here("app/templates"), keep.origin = FALSE) {
     
@@ -51,35 +52,19 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
   origin <- glue(add_lang_to_file(main, lang), ".origin")
   # full Rmd ready (txt within Rmd no longer in code chunks)
   rmd_ready <- glue_path(dir_out, add_lang_to_file(fl, lang))
+  # on.exit(unlink(rmd_ready))
 
   data_all <- list(
     path_to_geoms = flge$relrmd,
-    add_species_parts = add_sections(
-      species, lang, dir_tpl, "species"
-    ),
-    add_human_threats_parts = add_sections(
-      human_threats, lang, dir_tpl, "human_threats"
-    ),
-    add_context_parts = add_sections(context, lang, dir_tpl, "context"),
+    add_parts = add_sections(parts, lang, dir_tpl),
     u_name = u_name,
     u_email = u_email,
     u_text = u_text,
     u_comments = u_comments
   )  
-  # What does this do?
-  #readLines(template)
-  # creates .Rmd.origin
-  # writeLines(whisker::whisker.render(readLines(template), data_all), origin)
+  # See https://github.com/inSilecoInc/shinySpatialApp/issues/26
+  # for a discussion on the current rendering process
   writeLines(whisker::whisker.render(readLines(template), data_all), rmd_ready)
-  # creates .Rmd
-  #knitr::knit(origin, rmd_ready, quiet = FALSE)
-  # remove .Rmd.origin
-  #if (!keep.origin) unlink(origin)
-  # move figure folder
-  #if (fs::dir_exists("figs")) {
-  #  fs::dir_copy("figs", "output/figs", overwrite = TRUE)
-  #  fs::dir_delete("figs")
-  #}
   
   
   msgInfo("Creating HTML")  
@@ -96,10 +81,11 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
     # this is done to generate a html preview (see "report" tab)
     html <- switch_ext(basename(rmd_ready), "html")
     preview_html <- glue_path("www", "reports", html)
-    msgInfo("Copying HTML")
+    msgInfo("Copying HTML to www/")
     jj <- file.copy(
       glue_path(dir_out, html), 
-      preview_html
+      preview_html,
+      overwrite = TRUE
     )
     msg <- "Successfully rendered."
   } else {
@@ -111,10 +97,10 @@ render_full_report <- function(geoms, lang, species, human_threats, context,
 }
 
 
-add_sections <- function(files, lang, dir_in, dir_part) {
+add_sections <- function(files, lang, dir_in) {
   if (length(files)) {
     # cannot use a vector of length > 1 so lapply() is called
-    fls <- lapply(files, function(x) glue_path(dir_in, lang, dir_part, x))
+    fls <- lapply(files, function(x) glue_path(dir_in, lang, x))
     fls <- paste0("'", unlist(fls), "'")
     glue("```{{r, child = c({glue_collapse(fls, sep = ', ')})}}\n```")
 

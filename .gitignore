@@ -16,6 +16,7 @@ app/www/*.html
 app/www/reports/*
 !app/www/reports/.gitkeep
 !app/www/empty_report.html
+!app/www/wrong.html
 
 
 *.log

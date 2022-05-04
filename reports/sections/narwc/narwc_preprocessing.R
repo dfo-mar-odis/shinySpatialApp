@@ -16,7 +16,7 @@ narwc <- merge(narwc, narwcspecies, by='SPECNAME')
 narwc <- narwc %>% dplyr::filter(YEAR >= rrMinYear)
 narwc <- merge(narwc, cetLegend, by = 'Scientific Name')
 narwc <- dplyr::select(narwc, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
-narwc_sf <- st_as_sf(narwc, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+narwc_sf <- sf::st_as_sf(narwc, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 narwc_sf <- sf::st_crop(narwc_sf, region_sf)
 
 narwc_rr <- list("title" = "North Atlantic Right Whale consortium",

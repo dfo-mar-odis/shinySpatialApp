@@ -32,7 +32,7 @@ trimmedData <- dplyr::filter(trimmedData, year > rrMinYear)
 
 # converting to an sf and processing
 whelk_sf <- sf::st_as_sf(trimmedData, coords=c("decimalLongitude", "decimalLatitude"), crs = 4326)
-whelk_sf <- st_make_valid(whelk_sf)
+whelk_sf <- sf::st_make_valid(whelk_sf)
 whelk_sf <- sf::st_crop(whelk_sf, region_sf)
 
 # adding sf to the rr object and saving

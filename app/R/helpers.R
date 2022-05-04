@@ -71,7 +71,8 @@ switch_ext <- function(x, y) {
 # clear extra HTML in www
 clear_www_html <- function() {
   html_fl <- list.files("www", pattern = "*.html$", full.names = TRUE)
-  file.remove(html_fl[html_fl != "www/empty_report.html"])
+  donotrm <- paste0("www/", c("empty_report", "wrong"), ".html")
+  file.remove(html_fl[! html_fl %in% donotrm])
 }
 
 clear_output <- function() {
@@ -79,5 +80,5 @@ clear_output <- function() {
     list.files("output", full.names = TRUE, recursive = TRUE),
     list.files("www/reports", full.names = TRUE)
   )
-  file.remove(fls[!grepl("gitkeep", fls)])
+  file.remove(fls[!grepl("\\.gitkeep$", fls)])
 }

@@ -1,25 +1,35 @@
-Package: placeholder
-Type: ShinyApp 
-Date: 2021-02-23
+Package: ShinySpatialApp
+Type: ShinyApp
+Date: 2022-02-23
 Title: BIO's Shiny Spatial App
 Version: 1.0.0.9000
 Authors@R: c(
-  person("inSileco Inc.", role = c("aut", "cre"), email = "kevin.cazelles@gmail.com")
+  person("inSileco Inc.", role = c("aut", "cre"), email = "info@inSileco.io")
   )
 Imports:
-  cli,
-  crayon,
-  fs,
-  glue,
-  leaflet,
-  leafem,
-  mapedit,
-  osmdata,
-  sf,
-  shiny,
-  shinyjs,
-  shinyvalidate,
-  raster,
-  rmarkdown,
-  whisker
+    ckanr,
+    cli,
+    crayon,
+    dplyr,
+    fs,
+    ggspatial,
+    glue,
+    here,
+    kableExtra,
+    leaflet,
+    leafem,
+    mapedit,
+    osmdata,
+    sf,
+    shiny (>= 1.7),
+    shinyjs,
+    shinyvalidate,
+    raster,
+    rmarkdown,
+    rgbif,
+    robis,
+    tidyverse,
+    whisker,
+    bookdown,
+    packageName
 RoxygenNote: 7.1.1

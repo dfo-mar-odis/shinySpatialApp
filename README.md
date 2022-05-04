@@ -8,26 +8,18 @@ R Shiny App to select search area(s) and generate reproducible reports (R Markdo
 
 ## Installation
 
-## Set up `renv`:
-
-Make sure that [RTools](https://cran.r-project.org/bin/windows/Rtools/) is installed.
-
 ``` r
-install.packages("devtools")
-install.packages("renv")
-renv::activate()
-renv::equip() # loads needed installation libs
-renv::restore() # loads all needed packages (may take 15+ mins the first time)
+install.packages("remotes")
+remotes::install_deps()
 ```
 
 Adding a package:
 
 ``` r
-install.packages("new_package")
-renv::snapshot()
+usethis::use_package("packageName")
 ```
 
-After adding a new package, commit the updated renv.lock file to source control.
+After adding a new package, commit the updated description file to source control.
 
 ## Download necessary data
 
@@ -38,15 +30,10 @@ source(here::here("reports/R/dataFunctions.R"))
 copy_rdata_files()
 ```
 
-## Unit Tests:
-
-Once Renv is setup and data has been loaded, running `testthat::test_local()` should pass all unit tests.
-
 ## Run the application
 
 ``` r
-library(shiny)
-runApp("app")
+shiny::runApp("app")
 ```
 
 ## Demo

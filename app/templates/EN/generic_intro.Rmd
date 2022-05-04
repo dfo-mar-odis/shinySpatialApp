@@ -87,6 +87,7 @@ This report is intended to provide a first-order view of the data available with
 - This report is not intended to provide the data itself, but to summarize what is available. Users are encouraged to:
   - Access the original data source if more information is required,
   - Circulate this document to all contacts outlined in the different sections of the report for each data source, to ensure the veracity of inference drawn from the report, and to provide any supplemental information that may support the provision of science advice.
+- Data and metadata summarized in this report may change frequently because different sources of information may change, or may get updated, without prior notice. Consequently, reports may summarize different outputs of the same polygon depending on their date of creation. 
 -	The focus of this report is on available observations of species presence and not on absences, quantities (e.g., species abundance or biomass), frequency, or catch information.
 -	The absence of a species in this report should be interpreted as an absence of observation or reporting of the species within the user-defined search area, not necessarily as a true absence of the species.
 -	Unless otherwise specified, data were queried from 2010 to present. This was selected as an arbitrary time range to present the most recent information. Please contact data providers if data outside of these ranges are required.
@@ -121,14 +122,7 @@ knitr::kable(table_tier,align="l",
 <!-- MAIN SECTIONS -->
 
 # **SEARCH RESULTS**  
-{{add_species_parts}}
-
-
-<!-- Human threats -->
-{{add_human_threats_parts}}
-
-<!-- EBSA -->
-{{add_context_parts}}
+{{add_parts}}
 
 <!-- GENERIC END -->
 

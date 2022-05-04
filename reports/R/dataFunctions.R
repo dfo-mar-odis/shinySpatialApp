@@ -42,8 +42,8 @@ copy_rdata_files <- function() {
   allInfo <- merge(remoteInfo, localInfo, by="filenames")
   updateList <- allInfo$mtime.x > allInfo$mtime.y
   if (any(updateList)) {
-    updateFileList <- filter(allInfo, updateList)$filenames
-    updateFilePath <- rownames(filter(remoteInfo, remoteInfo$filename %in% updateFileList))
+    updateFileList <- dplyr::filter(allInfo, updateList)$filenames
+    updateFilePath <- rownames(dplyr::filter(remoteInfo, remoteInfo$filename %in% updateFileList))
     destList <- file.path(localDataDir, updateFileList)
     copyResults <- file.copy(updateFilePath, destList, overwrite = TRUE)
   }

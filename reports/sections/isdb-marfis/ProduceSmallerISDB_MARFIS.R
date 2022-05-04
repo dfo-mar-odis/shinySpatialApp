@@ -31,7 +31,7 @@ db='marfis'
 
 # limit by year and remove all records with invalid coordinates
 PRO_SPC_INFO <- PRO_SPC_INFO[PRO_SPC_INFO$YEAR >= 2010,]
-PRO_SPC_INFO <- PRO_SPC_INFO %>% filter(!is.na(LONGITUDE))
+PRO_SPC_INFO <- PRO_SPC_INFO %>% dplyr::filter(!is.na(LONGITUDE))
 
 self_filter(db= 'marfis',keep_nullsets = FALSE,quiet = TRUE)
 # save database as a csv file.  This command produces a file with more 
@@ -80,8 +80,8 @@ get_data('isdb', data.dir=data.dir)
 # select only those records later than 2009
 # remove records with invalid coordinates
 ISSETPROFILE_WIDE <- ISSETPROFILE_WIDE[ISSETPROFILE_WIDE$YEAR >= 2010,]
-ISSETPROFILE_WIDE <- ISSETPROFILE_WIDE %>% filter(!is.na(LONGITUDE))
-ISSETPROFILE_WIDE <- ISSETPROFILE_WIDE %>% filter(LONGITUDE<0)
+ISSETPROFILE_WIDE <- ISSETPROFILE_WIDE %>% dplyr::filter(!is.na(LONGITUDE))
+ISSETPROFILE_WIDE <- ISSETPROFILE_WIDE %>% dplyr::filter(LONGITUDE<0)
 
 db='isdb'
 self_filter(keep_nullsets = FALSE,quiet = TRUE)
