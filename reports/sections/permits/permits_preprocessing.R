@@ -30,13 +30,36 @@ species_brackets = str_extract_all(permits$Species, "\\([^()]+\\)")
 # Remove the brackets and add this as a new column to the permits data frame
 permits$scientificName = substring(species_brackets, 2, nchar(species_brackets)-1)
 
-# Remove sea turtle data (we aren't including this for now)
-permits = permits[!(permits$scientificName=="Dermochelys coriacea"),]
+# There are some species that need to be removed/edited in the permit spreadsheets
+# I noticed these issues when joining with the MAR spreadsheet below
+# It is easier to fix them at this step though!
+
+# Remove leatherback sea turtles (we aren't including these for now)
+permits = permits[!(permits$scientificName=="Dermochelys coriacea"),] 
+# A few leatherback sea turtles were entered with scientific names between commas instead of brackets. Remove these too.
+permits = permits[!(permits$scientificName=="haracter(0"),] 
+# Remove the ones that accidentally have an extra space at the end
+permits = permits[!(permits$scientificName=="Dermochelys coriacea "),] 
+
+# Remove common minke whale: not COSEWIC-listed or Schedule 1. Unsure why there are permits for these
+permits = permits[!(permits$scientificName=="Balaena rostrata"),] 
+# There's also one record with an accidental space that can be removed
+permits = permits[!(permits$scientificName==" Balaena rostrata"),] 
+# Remove (NW Atlantic) humpback whales: not COSEWIC-listed or Schedule 1. Unsure why there are permits.
+permits = permits[!(permits$scientificName=="Megaptera novaeangliae"),] 
+# There's also one record with an accidental space that can be removed
+permits["scientificName"][permits["scientificName"] == " Balaenoptera musculus"] = "Balaenoptera musculus"
+
+# Charlotte's spreadsheet had an extra 
+permits["scientificName"][permits["scientificName"] == "Phocoena phocoena vomerina"] = "Phocoena phocoena"
+
+
+
 
 # Then combine with the MAR species spreadsheet to get other relevant info (e.g., SARA/COSEWIC statuses)
 comboPermits = full_join(permits, listed_species, by=c("scientificName" = "Scientific Name"))
 
-comboPermits = dplyr::select(comboPermits, Year, LatDD, LongDD, "Scientific Name")
+#comboPermits = dplyr::select(comboPermits, Year, LatDD, LongDD, "Scientific Name")
 
 
 
