@@ -27,7 +27,7 @@ library(sp)
 #                NULL unless getRegion is TRUE.
 # 4. mapPoints: Unique collection of points to be plotted on a map.
 master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
-
+  sf::sf_use_s2(FALSE)
   # check that data_sf is an accepted format:
   if (is.null(data_sf)) {
     outList <- list(regionData = NULL,
