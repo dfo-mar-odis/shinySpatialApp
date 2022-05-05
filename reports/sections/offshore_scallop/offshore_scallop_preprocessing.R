@@ -13,8 +13,8 @@ library(lubridate) # load it to use year/month/day as functions and headers
 loadResult <- load_rdata(c("CommonData", "offshoreScallop_rr"), regionStr)
 
 # ---------------------TEMPLATE-----------------------------------
-# FI ME!
-load("C:/Users/StoyelQ/Desktop/Work/Reproducible_reports/test/OSdat.RData")
+# FIX ME!
+load("C:/Users/GlassA/Desktop/Offshore Scallop/ShinySpatialApp/reports/sections/offshore_scallop/OSdat.RData")
 
 #format date and separate y m d
 dat$TOW_DATE = as.factor(as.Date(dat$TOW_DATE, format = "%Y-%m-%d"))
@@ -43,8 +43,6 @@ bankLabels <- dat_sf %>% dplyr::group_by(bank) %>%
   sf::st_centroid() %>%
   cbind(st_coordinates(.)) %>% 
   dplyr::left_join(banknames)
-
-sf::st_geometry(dat_sf) <- NULL
 
 
 # rr object structure:

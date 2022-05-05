@@ -101,7 +101,16 @@ if (!is.null(osOutputList$studyData)) {
 if (!is.null(osOutputList$studyData)) {
   if (nrow(osTable) > 0) {
      options(knitr.kable.NA = '--')
-    knitr::kable(osTable, align = "l", caption = paste("\\label{tab:offshoreScallop_table}", write_caption_blurb(offshoreScallop_rr, "EN"), "Number of tows per year by bank from Offshore Scallop surveys.The absence of a record in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>"), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+    knitr::kable(osTable, align = "l", caption = paste("\\label{tab:offshoreScallop_table}", write_caption_blurb(offshoreScallop_rr, "EN"), "Number of tows per year by bank from Offshore Scallop surveys. Icelandic scallop data was collected on Banquereau in 2006, 2012 and 2019 The absence of a record in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>"), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
   }
 }
 ```
+### Additional information: 
+
+[Stock Status Update of Georges Bank ‘a’ Scallops (Placopecten magellanicus) for the 2020 Fishing Season](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ScR-RS/2020/2020_043-eng.html)
+
+[Assessment of Georges Bank Scallops (Placopecten magellanicus)](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/SAR-AS/2013/2013_058-eng.html)
+
+[Stock Status Update of Browns Bank North Scallops (Placopecten magellanicus) for the 2020 Fishing Season](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ScR-RS/2020/2020_042-eng.html)
+
+[Assessment of Browns Bank North Scallops (Placopecten magellanicus)](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/SAR-AS/2013/2013_059-eng.html)
