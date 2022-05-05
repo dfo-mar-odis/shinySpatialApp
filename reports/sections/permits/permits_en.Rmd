@@ -43,15 +43,21 @@ Sample activities for which permits may be issued include: obtaining biological 
 
 In support of the expansion and integration of additional data sources, Species at Risk records from these DFO-issued Section 73 permits were mined and summarized in this section for internal DFO needs. Information extracted from the reports includes relevant details on Species at Risk interactions that occurred under specific permits. In the Excel file, the following information is being compiled: Year, Month, Day, Latitude, Longitude, Water Body, Species, Number of Individuals, Project Activity and Permit Report Number. The Report Number allows authorized DFO staff to review the permit files if required. 
 
+
+### Questions to ask Sean Butler during May 5 meeting:
+
+* Why are there are permits for humpback whales and common minke whales if they are not Schedule 1 species?
+* There are permits for *Phocoena phocoena vomerina* (harbour seals). *Vomerina* indicates the Pacific population. Is this a mistake?
+* "Projects near water" (e.g., constructions of bridges) also require a Permits, but require other forms of authorization. Were these included in the Permits Charlotte was looking at?
+
 Please note the following caveats and disclaimers relevant to this section:
 
-To prevent misinterpretation of any guidelines, all bulleted lists have been obtained directly from: <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>. To ensure consistency in formatting, minor grammar edits may have been made.
-
+* To prevent misinterpretation of any guidelines, all bulleted lists have been obtained directly from: <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>. To ensure consistency in formatting, minor grammar edits may have been made.
 * The SARA prohibitions (first paragraph) do not apply to species listed as special concern. The information regarding permits is therefore not applicable to species of special concern.
 * DFO is the regulatory authority for issuing permits for aquatic species (as defined by SARA) other than species in waters found on federal lands administered by the Parks Canada Agency. This section only contains information for DFO-issued permits.
 * Latitude and longitude formats differ between reports; therefore, all coordinates were converted to decimal degrees to promote consistency. 
 * Permits for projects occurring near water are not included (see here for more details).
-* Who to contact for permit information???
+* Something about Permit #!!!
 * Protected information is not part of the data mining exercise CLARIFY
 * In the case that report records are inconclusive (species is unknown), they are omitted from the spreadsheet.
 
