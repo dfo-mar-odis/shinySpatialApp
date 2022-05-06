@@ -79,3 +79,16 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 8.  Other developers will then respond to the request and test out the code in their dev branches to make sure there are no issues.
 
 9.  Once all lights are green, the pull request will be accepted and the new code merged into main branch.
+
+## **How to add content to the report**
+
+The following provides guidance on how to include titles and subtitles throughout the report to match the formatting. Main modules are presented, with dummty subtitles for data titles and search-area results.
+
+
+   # **SEARCH RESULTS: ECOLOGICAL DIMENSION**  --> Main title or module
+
+   ## **INFORMATION FROM THE NATIONAL AQUATIC SPECIES AT RISK GEODATABASE**  --> Primary section  
+   
+   ### **Name of the dataset, database, or record**  
+   
+   ##### *Area-specific search results*
