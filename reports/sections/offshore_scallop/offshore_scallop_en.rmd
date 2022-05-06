@@ -61,7 +61,6 @@ if (!is.null(osOutputList$studyData)) {
   
   names(osTable)[1]<-"Year"
   names(osTable)[2]<-"Month"
-  
 }
 
 

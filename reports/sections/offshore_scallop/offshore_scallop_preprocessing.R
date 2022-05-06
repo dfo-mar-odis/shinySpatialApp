@@ -7,14 +7,18 @@ source(here::here("reports/R/dataFunctions.R"))
 #contains config parameters and paths
 source(here::here("config.R"))
 
-library(lubridate) # load it to use year/month/day as functions and headers
+library(lubridate) # load library to use year/month/day as functions and headers
 
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "offshoreScallop_rr"), regionStr)
 
 # ---------------------TEMPLATE-----------------------------------
 # FIX ME!
+<<<<<<< HEAD
 load("C:/Users/GlassA/Desktop/Offshore Scallop/ShinySpatialApp/reports/sections/offshore_scallop/OSdat.RData")
+=======
+load("C:/Users/StoyelQ/Desktop/Work/Reproducible_reports/test/OSdat.RData")
+>>>>>>> 141270b953f6c19e4b5152d248d2e89be9719a07
 
 #format date and separate y m d
 dat$TOW_DATE = as.factor(as.Date(dat$TOW_DATE, format = "%Y-%m-%d"))

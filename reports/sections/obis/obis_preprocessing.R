@@ -5,7 +5,7 @@ source(here::here("config.R"))
 library(robis)
 library(rgbif)
 
-loadResult <- load_rdata(c("CommonData", "obisCet_rr", "obisFish_rr"), regionStr)
+loadResult <- load_rdata(c("CommonData", "obis_rr"), regionStr)
 
 #-------------------OBIS-------------------
 ##############################################################################################################################
@@ -64,46 +64,26 @@ obis_df = dplyr::select(comboDataNS.remove, scientificName, "Common Name",
 names(obis_df)[names(obis_df) == 'url'] <- 'URL'
 names(obis_df)[names(obis_df) == 'citation'] <- 'Citation'
 
-
-# Once that is done, exclude cetacean data that are >300m from shore i.e. "shoredistance < -300"
+# convert to sf
 obis_sf <- sf::st_as_sf(obis_df, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
 
-# split off the cetaceans, cetLegend and rr_otherspecies are from common data
+# split off rr_otherspecies are from common data:
 obis_sf <- dplyr::rename(obis_sf, "Scientific Name"="scientificName")
+obis_sf <- subset(obis_sf, !(obis_sf$`Scientific Name` %in% rr_otherSpecies$Scientific_Name))
 
-obisCet_sf <- subset(obis_sf, obis_sf$`Scientific Name` %in% cetLegend$`Scientific Name`)
-obisCet_sf <- merge(obisCet_sf, cetLegend, by='Scientific Name')
-obisFish_sf <- subset(obis_sf, !(obis_sf$`Scientific Name` %in% cetLegend$`Scientific Name`)
-                      & !(obis_sf$`Scientific Name` %in% rr_otherSpecies$Scientific_Name))
-
-obisCet_rr <- list("title" = "Ocean Biodiversity Information System (OBIS), Cetaceans",
-                   "data_sf" = obisCet_sf,
-                   "attribute" = "Legend",
-                   "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
-                                     "url" = lang_list("<https://obis.org/>"),
-                                     "accessedOnStr" = list("en" ="December 17 2021 using robis", 
-                                                            "fr" = "17 decmbre 2021 par robis") ,
-                                     "accessDate" = as.Date("2021-12-17"),
-                                     "searchYears" = "2010-2021",
-                                     "securityLevel" = noneList,
-                                     "qualityTier" = variableQuality,
-                                     "constraints" = noneList
-                   )
+obis_rr <- list("title" = "Ocean Biodiversity Information System (OBIS)",
+                "data_sf" = obis_sf,
+                "attribute" = "NONE",
+                "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
+                                  "url" = lang_list("<https://obis.org/>"),
+                                  "accessedOnStr" = list("en" ="April 28 2022 using robis", 
+                                                        "fr" = "28 avril 2022 par robis") ,
+                                  "accessDate" = as.Date("2022-04-28"),
+                                  "searchYears" = "2010-2021",
+                                  "securityLevel" = noneList,
+                                  "qualityTier" = variableQuality,
+                                  "constraints" = noneList
+                )
 )
-save(obisCet_rr, file = file.path(localFileSavePath, "Open/obisCet_rr.RData"))
+save(obis_rr, file = file.path(localFileSavePath, "Open/obis_rr.RData"))
 
-obisFish_rr <- list("title" = "Ocean Biodiversity Information System (OBIS)",
-                    "data_sf" = obisFish_sf,
-                    "attribute" = "NONE",
-                    "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
-                                      "url" = lang_list("<https://obis.org/>"),
-                                      "accessedOnStr" = list("en" ="December 17 2021 using robis", 
-                                                             "fr" = "17 decmbre 2021 par robis") ,
-                                      "accessDate" = as.Date("2021-12-17"),
-                                      "searchYears" = "2010-2021",
-                                      "securityLevel" = noneList,
-                                      "qualityTier" = variableQuality,
-                                      "constraints" = noneList
-                    )
-)
-save(obisFish_rr, file = file.path(localFileSavePath, "Open/obisFish_rr.RData"))
