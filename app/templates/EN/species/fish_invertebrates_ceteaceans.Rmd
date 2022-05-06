@@ -3,6 +3,33 @@ output: html_document
 editor_options:
   chunk_output_type: console
 ---
+
+## **Species**
+
+This module describes outputs of fish and marine invertebrates derived from a variety of data sources, internal and external to DFO. Species that have been listed under the Species at Risk Act (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC), are summarized in independent tables. Area-specific outputs are provided in sub-sections labelled according to each data source. Data descriptions, references and contact information are provided at the beginning of each sub-section.
+
+```{r child = here::here("reports/sections/rv/rv_en.Rmd")}
+```
+
+```{r child = here::here("reports/sections/pasBay/pasBay_en.Rmd")}
+```
+
+```{r child = here::here("reports/sections/ilts/ilts_en.Rmd")}
+```
+
+```{r child = here::here("reports/sections/isdb-marfis/isdbMarfis_en.Rmd")}
+```
+
+```{r child = here::here("reports/sections/sturg/sturg_en.Rmd")}
+```
+
+```{r child = here::here("reports/sections/ocearch/ocearch_en.Rmd")}
+```
+
+```{r child = here::here("reports/sections/obis/obis_en.Rmd")}
+```
+
+
 ## **CETACEANS**
 
 This module summarizes cetacean (whale and dolphins) information available from various DFO and non-DFO sources, including visual sightings, and modeled predictions. Outputs from each data source are described in subsections labelled according to the data source. While numerous cetacean species have been identified in this region, only those listed under SARA or assessed by COSEWIC are summarized in this module. The majority of cetacean sightings for the Scotian Shelf bioregion are opportunistic; comprehensive systematic surveys on the occurrence or distribution of cetaceans across the entire region are limited. Results in this report provide some information on distribution but should not be interpreted as comprehensive indices of population abundance or relative density or abundance within the study area, as the related effort does not cover the entirety of a species' range and is unequal in coverage across the study area. A future comprehensive analysis of any associated observational effort for these data is necessary to further characterize cetacean presence in the area over temporal and spatial scales. For surveys with either random placement of transects within the study area, or surveys with estimates of distance to sighting, density and distribution of species could be estimated (though such study results are not presented here). Consequently, outputs of this report include presence-only data, and we cannot say whether a lack of presence of a species relates to a real absence, a result of lack of effort, or because additional data sources were not reported for the area (e.g., sightings data from other sources, acoustic detections).
@@ -14,9 +41,6 @@ Please refer to the Passive Acoustic Cetacean Map (PACM) to explore when and whe
 This module does not endeavor to describe every source of information available; the data presented does not represent all available cetacean sightings data within the search area and additional sightings may be available from other sources, or more recent data may be available than what is presented here. In addition to the presence-only data, there may be data available that can be used to support species-specific conclusions about habitat preferences and possible or known occurrence near and within the search area. Please refer to the cited publications for additional information and contact Angelia.Vanderlaan@dfo-mpo.gc.ca (North Atlantic Right Whales) and Hilary.Moors-Murphy@dfo-mpo.gc.ca (other cetacean species) to discuss additional sources of information (e.g., acoustic detections). Data and sources not explicitly included in this report include information from past studies/publications, acoustic detections, prey sampling and tagging. While the value of these data in predicting and describing cetacean occurrences is vital, these types of data are not available for all species and are not yet available for data querying. In the future, as information from other data sources becomes available, these new data will help to provide a more comprehensive understanding of cetacean habitat use and occurrence in the search areas.
 
 
-```{r child = here::here("reports/sections/obis/obisCet_en.Rmd")}
-```
-
 ```{r child = here::here("reports/sections/wsdb/wsdb_en.Rmd")}
 ```
 
@@ -24,19 +48,6 @@ This module does not endeavor to describe every source of information available;
 ```
 
 ```{r child = here::here("reports/sections/narwc/narwc_en.Rmd")}
-```
-
-```{r cetacean-summary-table, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-if (FALSE) {
-  whaleSummaryTable <- subset(whaleSummaryTable, select = -c(specIndex))
-
-  areaSums <- colSums(subset(whaleSummaryTable, select = -c(Species)))
-  areaSums$Species <- "Area Total"
-  whaleSummaryTable <- rbind(whaleSummaryTable, areaSums)
-
-  knitr::kable(whaleSummaryTable, align="l", caption = "INITIAL TEXT FINALIZE BEFORE USING OFFICIALLY. Summary of records present in cetacean databases used in this report. ", booktabs = T, escape = F, linesep = "") %>%
-    kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
-}
 ```
 
 ```{r child = here::here("reports/sections/sdm/sdm_en.Rmd")}
@@ -47,4 +58,5 @@ if (FALSE) {
 
 ```{r child = here::here("reports/sections/nbw/nbw_en.Rmd")}
 ```
+
 

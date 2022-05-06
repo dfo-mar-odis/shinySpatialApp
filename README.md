@@ -62,7 +62,7 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 
 ## **How to contribute to the project**
 
-1.  Branch from master (e.g. from master create and checkout a new branch: `git checkout -b my_dev_branch` or in RStudio)
+1.  Branch from main (e.g. from main create and checkout a new branch: `git checkout -b my_dev_branch` or in RStudio)
 
 2.  Do work in branch, e.g. addressing some issue.
 
@@ -70,12 +70,12 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 
 4.  Routinely Push work to the remote version of `my_dev_branch`: `git push -u origin my_dev_branch`
 
-5.  Routinely Pull (i.e. git fetch + git merge) from origin/master to deal with any conflicts `git pull origin master`
+5.  Routinely Pull (i.e. git fetch + git merge) from origin/main to deal with any conflicts `git pull origin main`
 
 6.  Once the original issue is fixed, ensure the report can still be generated through the app and that the test suite passes: `testthat::test_local()`
 
-7.  If everything still runs correctly, make a pull request from github website to merge `my_dev_branch` into `master`.
+7.  If everything still runs correctly, make a pull request from github website to merge `my_dev_branch` into `main`.
 
 8.  Other developers will then respond to the request and test out the code in their dev branches to make sure there are no issues.
 
-9.  Once all lights are green, the pull request will be accepted and the new code merged into master branch.
+9.  Once all lights are green, the pull request will be accepted and the new code merged into main branch.
