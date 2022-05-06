@@ -82,13 +82,13 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 
 ## **How to add content to the report**
 
-The following provides guidance on how to include titles and subtitles throughout the report to match the formatting. Main modules are presented, with dummty subtitles for data titles and search-area results.
+The following provides guidance on how to include titles and subtitles throughout the report to match the formatting. Main modules are presented, with dummy subtitles for data titles and search-area results.
 
 
-   # **SEARCH RESULTS: ECOLOGICAL DIMENSION**  --> Main title or module
+   # **SEARCH RESULTS: ECOLOGICAL DIMENSION**  --> Main title or module, set in /app/templates/*.Rmd
 
-   ## **INFORMATION FROM THE NATIONAL AQUATIC SPECIES AT RISK GEODATABASE**  --> Primary section  
+   ## **INFORMATION FROM THE NATIONAL AQUATIC SPECIES AT RISK GEODATABASE**  --> Primary section, set in /app/templates/*.Rmd
    
-   ### **Name of the dataset, database, or record**  
+   ### **Name of the dataset, database, or record**  --> set in individual section Rmd: /reports/sections/sectionName/*.Rmd
    
-   ##### *Area-specific search results*
+   ##### *Area-specific search results* --> set in individual section Rmd: /reports/sections/sectionName/*.Rmd
