@@ -8,6 +8,8 @@ editor_options:
   markdown: 
     wrap: 72
 ---
+```{r obis-common-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+``` 
 
 ### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
 
