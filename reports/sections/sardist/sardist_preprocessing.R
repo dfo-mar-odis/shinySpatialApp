@@ -11,8 +11,8 @@ loadResult <- load_rdata(c("CommonData", "sardist_rr"), regionStr)
 filter_and_union <- function(sciName, sfObj) {
   filter_sf <- dplyr::filter(sfObj, `Scientific Name`==sciName)
   out_sf <- filter_sf %>%
-    group_by(`Scientific Name`, `Common Name`, Species_Link) %>%
-    summarize(geometry = sf::st_union(geometry))
+    dplyr::group_by(`Scientific Name`, `Common Name`, Species_Link) %>%
+    dplyr::summarize(geometry = sf::st_union(geometry))
   return(out_sf)
 }
 
@@ -21,7 +21,7 @@ filter_and_union <- function(sciName, sfObj) {
 # it is useful to run in a clean rstudio session and if needed, to manually
 # step through the functions.
 sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
-sardistResId <- "57d72159-d35b-4a82-8228-fe9da520d41d"
+sardistResId <- "50c03ed9-a99f-4dd4-8c4e-2ad9d81432ef"
 sardistCheckDate <-  get_check_date("sardist_rr")
 
 openSardist_rr <- get_opendata_rr(sardistPkgId, sardistResId,
@@ -41,20 +41,18 @@ if(!is.null(openSardist_rr)) {
   specNames <- names(table(sardist_rr$data_sf$`Scientific Name`))
   outList <- lapply(specNames, filter_and_union, sfObj=sardist_rr$data_sf)
   # !!! exapands the outlist in the argument, check ?"!!!"
-  sardist_rr$data_sf <- bind_rows(!!!outList)
+  sardist_rr$data_sf <- dplyr::bind_rows(!!!outList)
 
   save(sardist_rr, file = file.path(localFileSavePath, "Open/sardist_rr.RData"))
 }
 
 
 # ------------------GEODATABASE VERSION------------------------
-renv::deactivate()
 sf::sf_use_s2(FALSE) # because sf 1.0 is "broken" does not support treating spheres as flat
 
 
 library(arcgisbinding)
 arc.check_product()
-
 
 
 get_sde_sf <- function(sdeLayerPath, whereClause = "OBJECTID > 0", isGeo=TRUE, cropRegion=FALSE) {
@@ -72,6 +70,11 @@ get_sde_sf <- function(sdeLayerPath, whereClause = "OBJECTID > 0", isGeo=TRUE, c
   }
   return(outData)
 }
+
+
+sde_file <- system.file("C:/Users/stoyelq/Desktop/Work/Reproducible_reports/sara_database/VIEWER_SARA.sde/WEB.DFO_Regions",
+                        package="arcgisbinding")
+dataSDE <- arc.open(sde_file)
 
 regionsPath <- here::here("../../sara_database/VIEWER_SARA.sde/WEB.DFO_Regions")
 arc.open(regionsPath)
