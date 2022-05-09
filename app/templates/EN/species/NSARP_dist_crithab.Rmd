@@ -1,16 +1,14 @@
-## **INFORMATION FROM THE NATIONAL AQUATIC SPECIES AT RISK GEODATABASE**    
+## **SPECIES AT RISK DISTRIBUTION & CRITICAL HABITAT DATA: SARA GEODATABASE**    
 **Contact:** Carolyn.Bakelaar@dfo-mpo.gc.ca  
 **Internal GIS Tool URL:** <http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US#>  
 
-This section describes Species at Risk distribution/range, and critical habitat maps. The official source of information for Species at Risk is the Species at Risk Public Registry www.sararegistry.gc.ca.
+This section describes Species at Risk distribution/range, and critical habitat maps. The official source of information for Species at Risk is the Species at Risk Public Registry www.sararegistry.gc.ca, and the National Aquatic Species at Risk Geodatabase.
 
 DFO’s Species at Risk Program is responsible for carrying out DFO’s mandate under the _Species at Risk Act_ (SARA), and is an authoritative source of information for aquatic Species at Risk.
 
 DFO’s Species at Risk Program has published Species at Risk distribution/range and critical habitat maps on the Government of Canada Open Data portal, and it has also developed internal and public interactive National Species at Risk Mapping Tools. As described by the National Species at Risk Mapping Tool - Frequently Asked Questions (http://dfonl7swvgip001/NationalSARDemo/LinkDocs/Help/FAQsEN_FR.pdf), the Species at Risk Program in the National Headquarters (NHQ) initiated the tool to facilitate project assessment under the _Fisheries Act_ and SARA. It uses a Geographic Information System (GIS) and interactive display of reproducible, spatially-referenced data for aquatic SARA-listed species. The data contained in the tool are maintained by regional SARA program offices, coordinated by the NHQ Species at Risk Program (Steering Committee). Data are added in concert with the development of SARA recovery documents and SARA listing timelines.
 
 This report is *not* the authoritative advice on Species at Risk data. Please access the Species at Risk GIS tool mentioned above to create an authoritative report, particularly if any of the data sources are at, or near, the search area. Below, we provide a list and examination of data products that may overlap with the user-defined search area.
-
-### **Species at Risk distribution and Critical Habitat data**    
 
 ```{r child = here::here("reports/sections/sardist/sardist_en.Rmd")}
 ```
