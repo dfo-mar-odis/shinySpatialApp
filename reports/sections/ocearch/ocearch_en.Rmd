@@ -32,10 +32,7 @@ OCEARCH is a data-centric organization built to help scientists collect previous
 #### ***Area-specific OCEARCH Shark Tracker search results***
 ```{r ocearch-results, include=FALSE, cache=FALSE}
 
-timeStart <- Sys.time()
-sf::sf_use_s2(TRUE)
 ocearchOutputList <- master_intersect(ocearch_rr$data_sf, mapDataList)
-Sys.time() - timeStart
 
 
 if (!is.null(ocearchOutputList$studyData)) {
