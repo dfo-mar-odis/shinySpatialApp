@@ -31,5 +31,6 @@ Imports:
     tidyverse,
     whisker,
     bookdown,
-    packageName
+    packageName,
+    lwgeom
 RoxygenNote: 7.1.1
