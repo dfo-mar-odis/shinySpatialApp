@@ -36,7 +36,7 @@ writeLines(noquote(blueWhaleText))
 
 Please see a list of all sources of information used in @Lesage2018 and the Open Data record [@OpenData_blue_imphabitat]: <https://open.canada.ca/data/en/dataset/8fafd919-fcbe-43a3-a911-3d9461273441>.
 
-#### ***Area-specific Blue Whale Important Habitat search results***
+##### *Area-specific Blue Whale Important Habitat search results*
 
 ```{r overlap-bw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)

@@ -172,6 +172,8 @@ List of contributors (listed in alphabetical order) that have contributed with w
 
 # **SUPPLEMENTARY MATERIAL 1: Context about the Ocean Biodiversity Information System (OBIS), the Global Biodiversity Information Facility (GBIF), and iNaturalist**
 
+Note this section is only relevant if the species modules are rendered as part of the Reproducible Report.
+
 Both OBIS and GBIF are large online data portals, consisting of numerous datasets from multiple sources. Due to their many commonalities, the following descriptions and caveats are applicable to both and therefore written together.
 
 ### **Data structure**

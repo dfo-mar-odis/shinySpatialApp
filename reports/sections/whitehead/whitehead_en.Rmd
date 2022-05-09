@@ -34,7 +34,7 @@ The following information is summarized from the Whietehad Lab (<https://whitehe
 
 The following description of cetacean sightings data collection methods used by the Whitehead Lab is summarized from @Whitehead2013: cetacean sightings data include sightings of species of research focus as well as incidental sightings of cetaceans during studies of Northern Bottlenose Whales and, to a lesser extent, Sperm Whales in the northwest Atlantic, primarily in the Gully MPA, and adjacent canyons along the edge of the eastern Scotian Shelf (the Shortland and Haldimand canyons). Data collection was carried out in a comparable manner, from two similar research vessels: a 10 m auxiliary sailing vessel (used in earlier efforts), and a 13 m auxiliary sailing vessel (used in later efforts). All cetaceans sighted were recorded, together with time of sighting, species (where ascertainable), and position. As definitions of group size changed over the course of the study, group size estimates may be inaccurate and can be biased by factors such as the behaviour of the animals and weather. Consequently, sighting locations represent groups sightings, which could be one or more animals, rather than numbers of individuals. The Whitehead Lab provides cetacean sightings to the Whale Sightings Database (WSDB). However, due to its High Quality tier, this database is summarized independently in this section of the report.
 
-#### ***Area-specific Whitehead Lab search results***
+##### *Area-specific Whitehead Lab search results*
 
 ```{r whitehead, include=FALSE, cache=FALSE}
 whiteheadClipped <- master_intersect(whitehead_rr$data_sf, mapDataList)

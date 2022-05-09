@@ -47,7 +47,7 @@ Please note the following important disclaimers and caveats associated with sigh
 -   There is significant uncertainty in the number of animals included in each sighting due to the challenges associated with quantifying the number of individuals observed in a group.
 -   Sightings that could not be identified to species are listed to the lowest taxonomic group possible.
 
-#### ***Area-specific WSDB search results***
+##### *Area-specific Whale Sightings Database (WSDB) search results*
 
 ```{r wsdb, include=FALSE, cache=FALSE}
 wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)

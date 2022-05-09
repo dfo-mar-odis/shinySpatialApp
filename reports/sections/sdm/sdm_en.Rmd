@@ -37,7 +37,7 @@ writeLines(noquote(sdmText))
 
 Important usage considerations: model predictions in this section should not be used on their own for this report, marine spatial planning purposes, and/or to delineate important habitat for cetacean species. Rather, outputs should be used together with other sources of information such as prey distribution, tagging data, detections from acoustic monitoring, other data on cetacean occurrence, and other modeling efforts already available for the area. The data product summarized in the section below (Blue Whale important habitat in the western North Atlantic) represents an excellent framework in which to properly use the outputs of this section.
 
-#### ***Area-specific SDM cetacean search results***
+##### *Area-specific SDM cetacean search results*
 ```{r sdm, include=FALSE, cache=FALSE}
 
 clippedFin <- master_intersect(finWhale_rr$data_sf, mapDataList)
