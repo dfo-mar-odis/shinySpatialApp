@@ -41,7 +41,7 @@ knitr::kable(table_RV, align = "l",
       caption = "Summary of data collected during the 4 distinct Maritimes Research Vessel (RV) Surveys. See Chadwick et al. (2007) for more information on the timeline and periodic adjustment of the 4VSW surveys.", booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
-#### ***Area-specific Maritimes Research Vessel (RV) Survey search results***
+##### *Area-specific Maritimes Research Vessel (RV) Survey search results*
 
 ```{r RV-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(rv_rr$data_sf, mapDataList, Year = minYear)
