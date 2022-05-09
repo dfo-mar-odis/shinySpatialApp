@@ -63,10 +63,13 @@ if (!is.null(outputList$studyData)) {
 inaturalist_sf = subset(gbif_rr$data_sf, title == "iNaturalist Research-grade Observations")
 inaturalistClipped <- master_intersect(inaturalist_sf, mapDataList)
 inaturalistTable <- create_sar_tables(inaturalistClipped$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[iNaturalist](#gbif-section)", inaturalistTable, "Common Name", "Common Name")
+
 
 otherGbif_sf = subset(gbif_rr$data_sf, title != "iNaturalist Research-grade Observations")
 gbifClipped <- master_intersect(otherGbif_sf, mapDataList)
 gbifTable <- create_sar_tables(gbifClipped$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[GBIF](#gbif-section)", gbifTable, "Common Name", "Common Name")
 
 ```
 

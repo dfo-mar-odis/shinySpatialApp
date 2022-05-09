@@ -31,7 +31,9 @@ OCEARCH is a data-centric organization built to help scientists collect previous
 
 #### ***Area-specific OCEARCH Shark Tracker search results***
 ```{r ocearch-results, include=FALSE, cache=FALSE}
+
 ocearchOutputList <- master_intersect(ocearch_rr$data_sf, mapDataList)
+
 
 if (!is.null(ocearchOutputList$studyData)) {
    ocearchSummaryRow <- data.frame("CommonName" = c("White Shark"))
