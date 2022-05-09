@@ -70,7 +70,7 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 
 4.  Routinely Push work to the remote version of `my_dev_branch`: `git push -u origin my_dev_branch`
 
-5.  Routinely Pull (i.e. git fetch + git merge) from origin/main to deal with any conflicts `git pull origin main`
+5.  Routinely Pull (i.e. git fetch + git merge) from origin/main to deal with any conflicts `git pull origin main`. Optional: If someone else worked on the same branch as you, and had pushed a commit up, you could run `git pull origin my_dev_branch` to sync with those updates.
 
 6.  Once the original issue is fixed, ensure the report can still be generated through the app and that the test suite passes: `testthat::test_local()`
 
