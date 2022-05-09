@@ -1,5 +1,6 @@
-## Miscellaneous
+## **LITERATURE REVIEW: THREATS & MITIGATION FOR SPECIES AT RISK**
 
-# Threats Literature Review
+Note this section is only relevant if the literature review section is rendered as part of the Reproducible Report.
+
 ```{r child = here::here("reports/sections/threats/ThreatMitigation.Rmd")}
 ```

@@ -43,7 +43,7 @@ writeLines(noquote(waste_rr$text$en))
 ```
 
 
-#### ***Area-specific  Active and Inactive Disposal at Sea Sites***
+##### *Area-specific Active and Inactive Disposal at Sea Sites*
 ```{r waste-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 wasteOutputList <- master_intersect(waste_rr$data_sf, mapDataList)

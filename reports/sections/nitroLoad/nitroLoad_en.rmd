@@ -43,7 +43,7 @@ writeLines(noquote(totalNitroLoad_rr$text$en))
 ```
 
 
-#### ***Area-specific nitrogen load results***
+##### *Area-specific nitrogen load results*
 ```{r nitroLoad-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 totalOutputList <- master_intersect(totalNitroLoad_rr$data_sf, mapDataList, getRegion = TRUE)
