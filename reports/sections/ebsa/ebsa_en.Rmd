@@ -33,7 +33,7 @@ writeLines(noquote(ebsa_rr$text$en))
 
 ```
 
-#### ***Area-specific EBSA search results***
+##### *Area-specific EBSA search results*
 
 ```{r EBSA-results, echo=FALSE, results='asis'}
 #function for overlap

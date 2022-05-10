@@ -31,5 +31,6 @@ Imports:
     tidyverse,
     whisker,
     bookdown,
-    pagedown
+    pagedown,
+    lwgeom
 RoxygenNote: 7.1.1

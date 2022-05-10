@@ -43,7 +43,7 @@ writeLines(noquote(power_rr$text$en))
 ```
 
 
-#### ***Area-specific Clean Power Generating Stations***
+##### *Area-specific Clean Power Generating Stations*
 ```{r power-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 powerOutputList <- master_intersect(power_rr$data_sf, mapDataList, getRegion = TRUE)

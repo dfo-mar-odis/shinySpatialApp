@@ -44,7 +44,7 @@ writeLines(noquote(lobsterEffort_rr$text$en))
 ```
 
 
-#### ***Area-specific lobster fishing effort results***
+##### *Area-specific lobster fishing effort results*
 ```{r lobsterEffort-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 lobsterOutputList <- master_intersect(lobsterEffort_rr$data_sf, mapDataList, getRegion=TRUE)

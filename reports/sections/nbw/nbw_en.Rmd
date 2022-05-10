@@ -37,7 +37,7 @@ writeLines(noquote(nbwText))
 
 Please see a list of all sources of information at the Open Data record [@DFO2020NBW_imphabitat]: `r nbw_rr$metadata$url$en`.
 
-#### ***Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results***
+##### *Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results*
 
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)

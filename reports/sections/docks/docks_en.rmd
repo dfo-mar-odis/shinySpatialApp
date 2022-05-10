@@ -42,7 +42,7 @@ writeLines(noquote(docks_rr$text$en))
 ```
 
 
-#### ***Area-specific man-made solid results***
+##### *Area-specific man-made solid classification search results*
 ```{r docks-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 docksOutputList <- master_intersect(docks_rr$data_sf, mapDataList,

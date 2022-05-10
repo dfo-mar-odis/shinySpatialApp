@@ -17,7 +17,7 @@ if (FALSE) { #load in data:
 }
 ```
 
-#### ***DFO Species at Risk distribution (range)*** {#sardist-section}    
+### **DFO Species at Risk distribution (range)** {#sardist-section}    
 
 ```{r sardist-load, include=FALSE}
 load_rdata(c("sardist_rr"), "MAR", env = environment())
@@ -32,7 +32,7 @@ Dataset description from the Open Data record [@OpenData_SARrange]:
 writeLines(noquote(sardist_rr$text$en))
 ```
 
-#### ***Area-specific SAR distribution search results***
+##### *Area-specific SAR distribution (range) search results*
 
 ```{r sardist-results, echo=FALSE, results='asis'}
 outputListSardist <- master_intersect(sardist_rr$data_sf, mapDataList)

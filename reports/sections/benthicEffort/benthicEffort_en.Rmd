@@ -20,7 +20,7 @@ if (FALSE) { #load in data:
 }
 ```
 
-#### ***Fishing effort within Significant Benthic Areas in Canada's Atlantic and Eastern Arctic marine waters*** {#benthic-effort-section}    
+### **Fishing effort within Significant Benthic Areas in Canada's Atlantic and Eastern Arctic marine waters** {#benthic-effort-section}    
 
 ```{r benthicEffort-load, include=FALSE}
 load_rdata(c("benthicEffort_rr"), "MAR", env = environment())
@@ -35,7 +35,7 @@ Dataset description from the Open Data record [@OpenData_benthicEffort]:
 writeLines(noquote(benthicEffort_rr$text$en))
 ```
 
-#### ***Area-specific fishing effort search results***
+##### *Area-specific Fishing effort within Significant Benthic Areas search results*
 
 ```{r benthicEffort-results, echo=FALSE, results='asis'}
 outputListBenthicEffort <- master_intersect(benthicEffort_rr$data_sf, mapDataList,
