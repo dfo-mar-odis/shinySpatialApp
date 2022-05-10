@@ -35,7 +35,7 @@ write_meta(template_rr, "EN")
 ADD SECTION TEXT HERE.
 
 
-#### ***Area-specific Template results***
+#### *Area-specific Template results*
 ```{r template-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 templateOutputList <- master_intersect(template_rr$data_sf, mapDataList)
