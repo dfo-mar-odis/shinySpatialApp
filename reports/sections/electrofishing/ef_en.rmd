@@ -31,7 +31,7 @@ The following is information summarized from Gibson et al. (2011) and Bowlby et 
 This section provides information primarily on species presence during these surveys and was focused on detecting Atlantic Salmon. Sites were chosen to maximize the likelihood of encountering Atlantic Salmon and are not necessarily representative lotic habitat of the watersheds. Species identifications of non-salmonid species were not verified with voucher specimens, so species presence or abundance must be interpreted with caution. Variation of electrofishing methods and use of barrier nets between sites affects the efficiency of electrofishing.  The absence of a species in the following summary should be interpreted as an absence of reporting, not necessarily as an absence of the species in a given river. For additional information, please access the following technical reports: [@Bowlby2009EF], [@Bowlby2013EF], [@Jones2018EF].
 
 
-#### ***Area-specific electrofishing survey search results***
+#### *Area-specific electrofishing survey search results*
 ```{r ef-results, include=FALSE, cache=FALSE}
 
 efOutputList <- master_intersect(ef_rr$data_sf, mapDataList)
