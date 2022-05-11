@@ -65,8 +65,6 @@ permits = dplyr::select(comboPermits, LatDD, LongDD, scientificName, `Common Nam
 
 # Convert to sf object
 permits_sf = sf::st_as_sf(permits, coords = c("LatDD", "LongDD"), crs = 4326)
-# Crop data to the region
-permits_sf = sf::st_crop(permits_sf, region_sf)
 
 # Store data as RR object and set metadata
 permits_rr = list("title" = "Section 73 Permits", 
