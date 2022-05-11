@@ -12,7 +12,7 @@ loadResult = load_rdata(c("CommonData", "permits_rr"), regionStr)
 #------------------permits--------------------
 # SARA Section 73 Permits (permits)
 
-# Determine file path for permit data
+# Determine file path for permit data (created by Charlotte Smith)
 xl_data = file.path(fileLoadPath, "NaturalResources/Species/Permits/SARAdata_withCoordinates.xlsx")
 
 # Get the sheet names from the spreadsheet (there is one sheet per year, from 2010 to 2020)
@@ -22,83 +22,62 @@ sheets = excel_sheets(path = xl_data)
 list_all = lapply(sheets, function (x) read_excel (xl_data, sheet = x))
 
 # Combine each list into a single dataframe
-permits = rbind.fill(list_all)
+perm_df = rbind.fill(list_all)
 
-# Get scientific name. The name will be listed within brackets.
-species_brackets = str_extract_all(permits$Species, "\\([^()]+\\)")
+# Get scientific name. The name will be listed within brackets
+species_brackets = str_extract_all(perm_df$Species, "\\([^()]+\\)")
 
-# Remove the brackets and add this as a new column to the permits data frame
-permits$scientificName = substring(species_brackets, 2, nchar(species_brackets)-1)
+# Remove the brackets and add this as a new column to the perm_df data frame
+perm_df$scientificName = substring(species_brackets, 2, nchar(species_brackets)-1)
 
-# There are some species that need to be removed/edited in the permit spreadsheets
-# I noticed these issues when joining with the MAR spreadsheet below
-# It is easier to fix them at this step though!
-
-# Remove leatherback sea turtles (we aren't including these for now)
-permits = permits[!(permits$scientificName=="Dermochelys coriacea"),] 
-# A few leatherback sea turtles were entered with scientific names between commas instead of brackets. Remove these too.
-permits = permits[!(permits$scientificName=="haracter(0"),] 
-# Remove the ones that accidentally have an extra space at the end
-permits = permits[!(permits$scientificName=="Dermochelys coriacea "),] 
-# Remove common minke whale: not COSEWIC-listed or Schedule 1. Unsure why there are permits for these.
-permits = permits[!(permits$scientificName=="Balaena rostrata"),] 
-# There's also one record with an accidental space that can be removed
-permits = permits[!(permits$scientificName==" Balaena rostrata"),] 
-# Remove (NW Atlantic) humpback whales: not COSEWIC-listed or Schedule 1. Unsure why there are permits.
-permits = permits[!(permits$scientificName=="Megaptera novaeangliae"),] 
-# There's also one record with an accidental space that can be removed
-permits["scientificName"][permits["scientificName"] == " Balaenoptera musculus"] = "Balaenoptera musculus"
+# There are some species that need to be removed/edited in the permit spreadsheets.
+# I noticed these issues when joining with the MAR spreadsheet below.
+perm_df = subset(perm_df, 
+                 # Remove common minke whale: not COSEWIC-listed or Schedule 1
+                 scientificName != "Balaena rostrata" & 
+                   # Remove ones with an extra space in the name
+                   scientificName != " Balaena rostrata" &
+                   # Remove leatherback sea turtles (we aren't including these for now)
+                   scientificName != "Dermochelys coriacea" & 
+                   # Remove ones with an extra space in the name
+                   scientificName != "Dermochelys coriacea " & 
+                   # A few humpback whale entries had scientific names between commas instead of brackets. Remove these too
+                   scientificName != "haracter(0" &
+                   # Remove (NW Atlantic) humpback whales: not COSEWIC-listed or Schedule 1
+                   scientificName != "Megaptera novaeangliae")
+                   
+# Remove a space (typo) from a record for blue whales
+perm_df["scientificName"][perm_df["scientificName"] == " Balaenoptera musculus"] = "Balaenoptera musculus"
 # Remove the "vomerina". That's the Pacific population. I think it's a mistake. 
-permits["scientificName"][permits["scientificName"] == "Phocoena phocoena vomerina"] = "Phocoena phocoena"
+perm_df["scientificName"][perm_df["scientificName"] == "Phocoena phocoena vomerina"] = "Phocoena phocoena"
 
+# Then combine with the MAR species spreadsheet to get other relevant info based on a common field
+comboPermits = full_join(perm_df, listed_species, by=c("scientificName" = "Scientific Name"))
+# Remove species information that got added from the full_join above. These are species not observed in Charlotte's spreadsheet
+# Species not in Charlotte's spreadsheet will have NA values in a variety of fields.
+comboPermits = subset(comboPermits, 
+                      LongDD != "NA" &
+                      LatDD != "NA") # there were also some entries with  missing latitudes!! Remove these.
 
-length(which(listed_species$`Scientific Name`==as.character("Osmerus mordax")))
-unique(listed_species$`Scientific Name`)
-listed_species$`Scientific Name`[49]
+# Select the columns that will actually be used in the report. Plus a few other columns just in case.
+permits = dplyr::select(comboPermits, LatDD, LongDD, scientificName, `Common Name`, `COSEWIC status`,
+                             `SARA status`)
 
+# Convert to sf object. CRS 4326 is WGS84
+permits_sf = sf::st_as_sf(permits, coords = c("LatDD", "LongDD"), crs = 4326)
 
-
-
-# Then combine with the MAR species spreadsheet to get other relevant info (e.g., SARA/COSEWIC statuses)
-comboPermits = full_join(permits, listed_species, by=c("scientificName" = "Scientific Name"))
-
-#comboPermits = dplyr::select(comboPermits, Year, LatDD, LongDD, "Scientific Name")
-
-
-
-
-
-# Select required columns
-permits = dplyr::select(permits, Year, LatDD, LongDD, Species)
-
-
-
-
-
-
-
-
-
-# permits <- dplyr::select(wsdb, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
-# permits <- wsdb %>% dplyr::filter(YEAR >= rrMinYear)
-# permits <- dplyr::rename(wsdb,c("Scientific Name" = "SCIENTIFICNAME",
-#                              "CNAME"= COMMONNAME))
-# permits <- merge(wsdb, cetLegend, by='Scientific Name')
-# permits <- dplyr::select(wsdb, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
-# permits_sf <- sf::st_as_sf(wsdb, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
-# permits_sf <- sf::st_crop(wsdb_sf, region_sf)
-
-permits_rr <- list("title" = "Section 73 Permits",
-                #"data_sf" = permits_sf,
-                "attribute" = "Legend",
-                "metadata" = list("contact" = "<Sean.Butler@dfo-mpo.gc.ca>", 
+# Store data as RR object and set metadata
+permits_rr = list("title" = "Section 73 Permits", 
+                  "data_sf" = permits_sf,
+                  "attribute" = "Legend",
+                  "metadata" = list("contact" = "<Sean.Butler@dfo-mpo.gc.ca>",
                                   "url" = lang_list("<https://www.canada.ca/en/environment-climate-change/services/species-risk-public-registry/policies-guidelines/permitting-under-section-73.html>"),
                                   "accessedOnStr" = list("en" ="April 26, 2022 by Charlotte Smith", "fr" = "26 avril 2022 par Charlotte Smith") ,
                                   "accessDate" = as.Date("2022-04-26"),
                                   "searchYears" = paste(rrMinYear, "-2020", sep=""),
                                   "securityLevel" = noneList,
                                   "qualityTier" = mediumQuality,
-                                  "constraints" = internalUse
-                )
-)
+                                  "constraints" = internalUse))
+
+# Save the data. Do this locally and on the IN folder
 save(permits_rr, file = file.path(localFileSavePath, "Secure/permits_rr.RData"))

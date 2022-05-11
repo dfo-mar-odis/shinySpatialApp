@@ -21,6 +21,7 @@ render_full_report <- function(geoms, lang, parts,
   u_name, u_email, u_text, u_comments, dir_out = "output", fl = "",
   dir_tpl = here::here("app/templates"), keep.origin = FALSE) {
     
+  startTime <- Sys.time()
   # clear output
   clear_output()
  
@@ -92,6 +93,9 @@ render_full_report <- function(geoms, lang, parts,
     msg <- "Issue while rendering"
     preview_html <- glue_path("www", "empty_report.html")
   }
+  # log rendering time:
+  endTime <- Sys.time()
+  message(difftime(endTime, startTime, units='mins'))
   # 
   list(msg = msg, ok = ok, html = preview_html, dir_out = dir_out)
 }
