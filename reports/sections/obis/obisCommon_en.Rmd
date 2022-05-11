@@ -8,6 +8,8 @@ editor_options:
   markdown: 
     wrap: 72
 ---
+```{r obis-common-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+``` 
 
 ### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
 
@@ -19,7 +21,7 @@ load_rdata(c("obis_rr"), regionStr, env = environment())
 write_meta(obis_rr, "EN")
 ```
 
-OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open-access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS accepts data from any organization, consortium, project or individual who wishes to contribute data (OBIS, 2021). As of December 2021, OBIS has over 80 million species occurrence records and over 4,300 datasets globally.
+OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open-access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS accepts data from any organization, consortium, project or individual who wishes to contribute data [@OBIS]. As of April 2022, OBIS has over 100 million species occurrence records and over 4,400 datasets globally.
 
 
 ### **Global Biodiversity Information Facility (GBIF)** {#gbif-section}
@@ -32,16 +34,13 @@ load_rdata(c("gbif_rr"), regionStr, env = environment())
 write_meta(gbif_rr, "EN")
 ```
 
-GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth (GBIF, 2021). Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of December 2021, GBIF has over 1.9 billion species occurrence records and over 63,000 datasets globally. 
+GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth [@GBIF]. Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of April 2022, GBIF has over 2.1 billion species occurrence records and over 68,000 datasets globally. 
 
 
 
 ### Background descriptions for both OBIS and GBIF
 
-Both OBIS and GBIF are large online data portals, consisting of numerous
-datasets from multiple sources. Due to their many commonalities, the
-following descriptions and caveats are applicable to both and therefore
-written together.
+Both OBIS and GBIF are large online data portals, consisting of numerous datasets from multiple sources. Due to their many commonalities, the following descriptions and caveats are applicable to both and therefore written together.
 
 #### Data structure
 
@@ -62,8 +61,7 @@ included, but may be available for each dataset if required.
 
 OBIS and GBIF submissions also follow the Ecological Metadata Language
 format, a metadata standard for ecological data (more information here:
-<https://obis.org/manual/eml/>). This is created as an XML file for each
-dataset.
+<https://obis.org/manual/eml/>). This is created as an XML file for each dataset.
 
 For more detailed metadata including information such as the data
 collection date, survey methods, institution name, and license type,
@@ -72,12 +70,7 @@ refer to the provided URL for each dataset.
 #### Disclaimers
 
 There are various issues involved with using data extracted from OBIS
-and GBIF, which are described below in more detail. Future iterations of
-this reporting tool will aim at expanding our quality checks to address
-these concerns. Because these portals contain data from many different
-sources, this is not an exhaustive list of all of the potential caveats
-of each data source. Users should refer to each source separately to
-review these concerns.
+and GBIF, which are described below in more detail. Future iterations of this reporting tool will aim at expanding our quality checks to address these concerns. Because these portals contain data from many different sources, this is not an exhaustive list of all of the potential caveats of each data source. Users should refer to each source separately to review these concerns.
 
 #### Differing research objectives
 
@@ -107,8 +100,7 @@ errors are known to occur within these portals, users should
 double-check observations occurring on land to ensure they contain
 accurate information.
 
-OBIS performs multiple data quality checks, including flagging data over
-land. For a complete description of the QC procedures OBIS performs, see
+OBIS performs multiple data quality checks, including flagging data over land. For a complete description of the QC procedures OBIS performs, see
 <https://github.com/iobis/obis-qc> and Vandepitte et al. (2015). Data
 quality checks are less extensive in GBIF, various information is
 required (e.g., scientific name, event date) or the records will not be
@@ -179,9 +171,8 @@ Observations may also be listed as MachineObservation, which are derived from ma
 #### iNaturalist data
 
 iNaturalist is an open-source platform where naturalists, citizen
-scientists, and biologists can map species observations (iNaturalist,
-2021). As of December 2021, iNaturalist has over 86 million species
-observations and over 1.9 million registered users/contributors
+scientists, and biologists can map species observations [@iNaturalist]. As of April 2022, iNaturalist has over 95 million species
+observations and over 2.1 million registered users/contributors
 globally. Every week, iNaturalist data that are considered "Research
 Grade" (i.e., the record contains a date, is georeferenced, has photos
 or sounds, isn't a captive or cultivated organism, and two thirds of

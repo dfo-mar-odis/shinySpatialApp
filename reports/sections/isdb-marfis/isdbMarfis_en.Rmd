@@ -52,8 +52,9 @@ The Maritimes Fishery Information System (MARFIS) is a DFO database, managed by 
 #### ***Area-specific MARFIS & ISDB search results***
 
 ```{r marfis-isdb-results, include=FALSE, cache=FALSE}
-outputListI <- master_intersect(isdb_rr$data_sf, mapDataList, Year = minYear)
-outputListM <- master_intersect(marfis_rr$data_sf, mapDataList, Year = minYear)
+
+outputListI <- master_intersect(isdb_rr$data_sf, mapDataList)
+outputListM <- master_intersect(marfis_rr$data_sf, mapDataList)
 
 tableList <- create_table_ISDB(outputListI$studyData, listed_species,
                                speciesTable = ISSPECIESCODES)

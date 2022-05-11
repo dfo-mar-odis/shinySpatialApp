@@ -31,5 +31,5 @@ Imports:
     tidyverse,
     whisker,
     bookdown,
-    packageName
+    pagedown
 RoxygenNote: 7.1.1
