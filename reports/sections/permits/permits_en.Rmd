@@ -60,13 +60,12 @@ Please note the following caveats and disclaimers relevant to this section:
 * In some instances, coordinate information was not included in the permits. Data from these instances were not included in this section. 
 * In the case that report records are inconclusive (species is unknown), they are omitted from the spreadsheet.
 
-#### ***Area-specific Permits search results***
+#### ***Area-specific SARA Section 73 permits search results***
 
 ```{r permits-results, include=FALSE, cache=FALSE}
 outputList = master_intersect(permits_rr$data_sf, mapDataList, Year = minYear)
 
 permitTable = create_sar_tables(outputList$studyData, listed_species)$sarData
-summarySarTable = add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", permitTable, "Common Name", "Common Name")
 ```
 
 ```{r permits-check, echo=FALSE, results='asis',}
