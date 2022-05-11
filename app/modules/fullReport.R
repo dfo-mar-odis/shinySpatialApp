@@ -30,15 +30,18 @@ fullReportUI <- function(id) {
           label = "Context",
           choiceNames = c(
             "Areas designated for spatial planning",
-            "Habitat"
+            "Habitat",
+            "OTN Detection Extract"
           ),
           choiceValues = c(
             "context/spatial_planning.Rmd",
-            "context/habitat.Rmd"
+            "context/habitat.Rmd",
+            "context/otn.Rmd"
           ),
           selected = c(
             "context/spatial_planning.Rmd",
-            "context/habitat.Rmd"
+            "context/habitat.Rmd",
+            "context/otn.Rmd"
           )
         ),
         checkboxGroupInput(
