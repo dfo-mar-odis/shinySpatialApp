@@ -58,7 +58,7 @@ Please note the following caveats and disclaimers relevant to this section:
 * Only permits for which DFO is the regulatory authority were obtained. This includes aquatic species (as defined by SARA), except for those found on federal lands, which are administered by the Parks Canada Agency. 
 * Latitude and longitude formats differ between reports; therefore, all coordinates were converted to decimal degrees to promote consistency. 
 * In some instances, coordinate information was not included in the permits. Data from these instances were not included in this section. 
-* In the case that report records are inconclusive (species is unknown), they are omitted from the spreadsheet.
+* Cases where report records are inconclusive (species is unknown) were omitted from this section
 * Construction or development projects near water (e.g., constructions of bridges, maintenance of harbours, etc.) may also require a SARA permit. However, this is an additional process and requires other forms of authorization (see more information here <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>). Data from these projects are therefore not included in this section.
 * Each species may have distinct populations (referred to as Designatable Units, or DUs, under COSEWIC), and each population may have different COSEWIC and/or SARA statuses. However, the the populations may not be specified in the permits. Readers of this Report should use their best judgement to determine which population may be the most applicable based on their search area.  
 
