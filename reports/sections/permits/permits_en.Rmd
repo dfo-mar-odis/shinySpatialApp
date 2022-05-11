@@ -63,7 +63,7 @@ Please note the following caveats and disclaimers relevant to this section:
 #### ***Area-specific SARA Section 73 permits search results***
 
 ```{r permits-results, include=FALSE, cache=FALSE}
-outputList = master_intersect(permits_rr$data_sf, mapDataList, Year = minYear)
+outputList = master_intersect(permits_rr$data_sf, mapDataList, getRegion = TRUE)
 
 permitTable = create_sar_tables(outputList$studyData, listed_species)$sarData
 ```

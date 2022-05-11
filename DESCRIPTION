@@ -31,5 +31,9 @@ Imports:
     tidyverse,
     whisker,
     bookdown,
-    pagedown
+    pagedown,
+    readxl,
+    plyr,
+    tibble,
+    stringr
 RoxygenNote: 7.1.1

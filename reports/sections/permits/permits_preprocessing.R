@@ -64,7 +64,10 @@ permits = dplyr::select(comboPermits, LatDD, LongDD, scientificName, `Common Nam
                              `SARA status`)
 
 # Convert to sf object. CRS 4326 is WGS84
-permits_sf = sf::st_as_sf(permits, coords = c("LatDD", "LongDD"), crs = 4326)
+permits_sf = sf::st_as_sf(permits, coords = c("LongDD", "LatDD"), crs = 4326)
+
+# set scientific name column:
+names(permits_sf)[names(permits_sf) == 'scientificName'] <- 'Scientific Name'
 
 # Store data as RR object and set metadata
 permits_rr = list("title" = "Section 73 Permits", 
