@@ -78,7 +78,7 @@ permits_rr = list("title" = "Section 73 Permits",
                                   "accessedOnStr" = list("en" ="April 26, 2022 by Charlotte Smith", "fr" = "26 avril 2022 par Charlotte Smith") ,
                                   "accessDate" = as.Date("2022-04-26"),
                                   "searchYears" = paste(rrMinYear, "-2020", sep=""),
-                                  "securityLevel" = noneList,
+                                  "securityLevel" = internalUse,
                                   "qualityTier" = mediumQuality,
                                   "constraints" = internalUse))
 
