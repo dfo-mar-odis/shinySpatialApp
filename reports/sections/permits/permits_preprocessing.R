@@ -41,7 +41,7 @@ perm_df = subset(perm_df,
                    scientificName != "Dermochelys coriacea" & 
                    # Remove ones with an extra space in the name
                    scientificName != "Dermochelys coriacea " & 
-                   # A few entries had scientific names between commas instead of brackets. Remove these too
+                   # A few humpback whale entries had scientific names between commas instead of brackets. Remove these too
                    scientificName != "haracter(0" &
                    # Remove (NW Atlantic) humpback whales: not COSEWIC-listed or Schedule 1
                    scientificName != "Megaptera novaeangliae")
@@ -59,11 +59,11 @@ comboPermits = subset(comboPermits,
                       LongDD != "NA" &
                       LatDD != "NA") # there were also some entries with  missing latitudes!! Remove these.
 
-# Select the columns that will actually be used in the report
+# Select the columns that will actually be used in the report. Plus a few other columns just in case.
 permits = dplyr::select(comboPermits, LatDD, LongDD, scientificName, `Common Name`, `COSEWIC status`,
                              `SARA status`)
 
-# Convert to sf object
+# Convert to sf object. CRS 4326 is WGS84
 permits_sf = sf::st_as_sf(permits, coords = c("LatDD", "LongDD"), crs = 4326)
 
 # Store data as RR object and set metadata
