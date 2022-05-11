@@ -58,7 +58,7 @@ Please note the following caveats and disclaimers relevant to this section:
 * Only permits for which DFO is the regulatory authority were obtained. This includes aquatic species (as defined by SARA), except for those found on federal lands, which are administered by the Parks Canada Agency. 
 * Latitude and longitude formats differ between reports; therefore, all coordinates were converted to decimal degrees to promote consistency. 
 * In some instances, coordinate information was not included in the permits. Data from these instances were not included in this section. 
-* In the case that report records are inconclusive (species is unknown), they are omitted from the spreadsheet.
+* Cases where report records are inconclusive (species is unknown) were omitted from this section.
 
 #### ***Area-specific SARA Section 73 permits search results***
 
