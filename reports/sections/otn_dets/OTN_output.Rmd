@@ -1,0 +1,34 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+Here are a couple of plots. Have fun.
+
+```{r}
+qc_data <- read.csv("/Users/bruce/Downloads/nsbs_matched_detections_2021/nsbs_matched_detections_2021.csv")
+
+qc_data %>% 
+  #Changed the column names throughout, will need to have some sort of way to set these more    dynamically. 
+  group_by(catalognumber, station, detectedby, longitude, latitude) %>% 
+  summarise(num_det = n()) %>% 
+  ggplot() +
+  annotation_map_tile('cartolight') +
+  geom_spatial_point(aes(x = longitude, y = latitude, 
+                         size = num_det, color = detectedby)) +
+  #commented out to make the code run. facet_wrap(~catalognumber, ncol = 2) +
+  labs(x = "Longitude", y = "Latitude", color = "Installation Name" , size = "Number of\nDetections") +
+  theme_bw()
+
+qc_data %>% 
+  mutate(date = as.Date(datecollected)) %>% 
+  group_by(catalognumber, date, detectedby) %>% 
+  summarise(num_det = n()) %>% 
+  ggplot(aes(x = date, y = catalognumber, color = detectedby, size = num_det)) +
+  labs(x = "Date", y = NULL, color = "Installation Name", size = "Number of\nDetections") +
+  geom_point() +
+  theme_bw()
+```
