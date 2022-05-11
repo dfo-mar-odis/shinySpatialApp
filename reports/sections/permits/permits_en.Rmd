@@ -47,9 +47,9 @@ As well, the competent Minister must be of the opinion that all 3 of the followi
 * All feasible measures will be taken to minimize the impact of the activity on the species or its critical habitat or the residences of its individuals.
 * The activity will not jeopardize the survival or recovery of the species.
 
-Sample activities for which permits may be issued include: obtaining biological samples from the organism for research purposes, electrofishing to evaluate species populations, rescue activities to release entangled species, creating bypasses and traps for species, and conducting surveys, transects, and/or photographing for research purposes. Note that construction or development projects near water (e.g., constructions of bridges, maintenance of harbours, etc.) may also require a SARA permit. However, this is an additional process and requires other forms of authorization (see more information here <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>); therefore, data from these projects are therefore not included in this section. 
+Sample activities for which permits may be issued include: obtaining biological samples from the organism for research purposes, electrofishing to evaluate species populations, rescue activities to release entangled species, creating bypasses and traps for species, and conducting surveys, transects, and/or photographing for research purposes. Construction or development projects near water (e.g., constructions of bridges, maintenance of harbours, etc.) may also require a SARA permit. However, this is an additional process and requires other forms of authorization (see more information here <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>); therefore, data from these projects are therefore not included in this section. 
 
-In support of the expansion and integration of additional data sources, Species at Risk records from these DFO-issued Section 73 permits were mined and summarized in this section for internal DFO needs. Location and species information were obtained and summarized in this section. Due to issues surrounding Protected information, more specific information such as permit number or the project description are not included, but can be obtained from the SARA contact listed above, if needed. 
+In support of the expansion and integration of additional data sources, Species at Risk records from these DFO-issued Section 73 permits were mined and summarized in this section. Location and species information were extracted. Due to issues surrounding Protected information, more specific information such as permit number or the project description are not included, but can be obtained from the SARA contact listed above, if needed. 
 
 Please note the following caveats and disclaimers relevant to this section:
 
@@ -69,7 +69,6 @@ permitTable = create_sar_tables(outputList$studyData, listed_species)$sarData
 summarySarTable = add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", permitTable, "Common Name", "Common Name")
 ```
 
-
 ```{r permits-check, echo=FALSE, results='asis',}
 Report_permit = if (is.null(outputList$studyData)) {
   "* There are no relevant SARA Section 73 Permit records for this search area."
@@ -80,8 +79,7 @@ Report_permit = noquote(Report_permit)
 writeLines(Report_permit)
 ```
 
-
-```{r permit-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(permits_rr, "EN"), 'Map species records obtained from the Species at Risk Act (SARA) Section 73 permits (black circles) observed within the search area (red outline). Permits are not created for species of special concern. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
+```{r permit-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(permits_rr, "EN"), 'Map of species records obtained from the Species at Risk Act (SARA) Section 73 permits (black circles) observed within the search area (red outline). Permits are not created for species of special concern. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
 if (!is.null(outputList$studyData)) {
   plot_rr_sf(areaMap, outputList$mapData)
 }
