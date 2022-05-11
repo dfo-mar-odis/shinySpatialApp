@@ -1,8 +1,8 @@
 # contains functions for downloading open data records
-source(here::here("dataprocessing/openDataHelpers.R"))
+source(here::here("reports/dataprocessing/openDataHelpers.R"))
 
 #contains load_rdata function
-source(here::here("app/R/dataFunctions.R"))
+source(here::here("reports/R/dataFunctions.R"))
 
 #contains config parameters and paths
 source(here::here("config.R"))
