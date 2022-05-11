@@ -12,7 +12,7 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ```{r eval=FALSE}
 if (FALSE) { #load in data:
   lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
-  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  studyArea = sf::st_read(here::here("app/output/geoms_slc.geojson")) 
   intro_setup(studyArea, env = environment())  
 }
 ```
@@ -47,26 +47,17 @@ As well, the competent Minister must be of the opinion that all 3 of the followi
 * All feasible measures will be taken to minimize the impact of the activity on the species or its critical habitat or the residences of its individuals.
 * The activity will not jeopardize the survival or recovery of the species.
 
-Sample activities for which permits may be issued include: obtaining biological samples from the organism for research purposes, electrofishing to evaluate species populations, rescue activities to release entangled species, creating bypasses and traps for species, and conducting surveys, transects, and/or photographing for research purposes. Note that construction or development projects near water (e.g., constructions of bridges, maintenance of harbours, etc.) also require a SARA Permit. However, this is an additional process and requires other forms of authorization (see more information here <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>). 
+Sample activities for which permits may be issued include: obtaining biological samples from the organism for research purposes, electrofishing to evaluate species populations, rescue activities to release entangled species, creating bypasses and traps for species, and conducting surveys, transects, and/or photographing for research purposes. Note that construction or development projects near water (e.g., constructions of bridges, maintenance of harbours, etc.) may also require a SARA permit. However, this is an additional process and requires other forms of authorization (see more information here <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>); therefore, data from these projects are therefore not included in this section. 
 
-In support of the expansion and integration of additional data sources, Species at Risk records from these DFO-issued Section 73 permits were mined and summarized in this section for internal DFO needs. Information extracted from the reports includes relevant details on Species at Risk interactions that occurred under specific permits. In the Excel file, the following information is being compiled: Year, Month, Day, Latitude, Longitude, Water Body, Species, Number of Individuals, Project Activity and Permit Report Number. The Report Number allows authorized DFO staff to review the permit files if required. 
-
-
-### Questions to ask Sean Butler during May 5 meeting:
-
-* Why are there are permits for humpback whales and common minke whales if they are not Schedule 1 species?
-* There are permits for *Phocoena phocoena vomerina* (harbour seals). *Vomerina* indicates the Pacific population. Is this a mistake?
-* "Projects near water" (e.g., constructions of bridges) also require a Permits, but require other forms of authorization. Were these included in the Permits Charlotte was looking at?
+In support of the expansion and integration of additional data sources, Species at Risk records from these DFO-issued Section 73 permits were mined and summarized in this section for internal DFO needs. Location and species information were obtained and summarized in this section. Due to issues surrounding Protected information, more specific information such as permit number or the project description are not included, but can be obtained from the SARA contact listed above, if needed. 
 
 Please note the following caveats and disclaimers relevant to this section:
 
 * To prevent misinterpretation of any guidelines, all bulleted lists have been obtained directly from: <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>. To ensure consistency in formatting, minor grammar edits may have been made.
-* The SARA prohibitions (first paragraph) do not apply to species listed as special concern. The information regarding permits is therefore not applicable to species of special concern.
-* DFO is the regulatory authority for issuing permits for aquatic species (as defined by SARA) other than species in waters found on federal lands administered by the Parks Canada Agency. This section only contains information for DFO-issued permits.
+* The SARA prohibitions (first paragraph) do not apply to species listed as special concern. Permits are therefore not required for projects affecting species of special concern.
+* Only permits for which DFO is the regulatory authority were obtained. This includes aquatic species (as defined by SARA), except for those found on federal lands, which are administered by the Parks Canada Agency. 
 * Latitude and longitude formats differ between reports; therefore, all coordinates were converted to decimal degrees to promote consistency. 
-* Permits for projects occurring near water are not included (see here for more details).
-* Something about Permit #!!!
-* Protected information is not part of the data mining exercise CLARIFY
+* In some instances, coordinate information was not included in the permits. Data from these instances were not included in this section. 
 * In the case that report records are inconclusive (species is unknown), they are omitted from the spreadsheet.
 
 #### ***Area-specific Permits search results***
@@ -90,14 +81,14 @@ writeLines(Report_permit)
 ```
 
 
-```{r permit-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(permits_rr, "EN"), 'Map of Ocean Biodiversity Information System (OBIS) observation records (black circles) of species observed within the search area (red outline) and listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
+```{r permit-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(permits_rr, "EN"), 'Map species records obtained from the Species at Risk Act (SARA) Section 73 permits (black circles) observed within the search area (red outline). Permits are not created for species of special concern. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
 if (!is.null(outputList$studyData)) {
   plot_rr_sf(areaMap, outputList$mapData)
 }
 ```
 
-```{r obis-table, echo=FALSE, results='asis'}
+```{r permit-table, echo=FALSE, results='asis'}
 if (!is.null(outputList$studyData)) {
-  knitr::kable(permitTable, align="l", caption=paste(write_caption_blurb(permits_rr, "EN"), "Ocean Biodiversity Information System (OBIS) observation records of species observed within the search area, and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(permitTable, align="l", caption=paste(write_caption_blurb(permits_rr, "EN"), "SARA Section 73 permit observation records of species observed within the search area. Permits are not created for species of special concern. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
