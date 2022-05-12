@@ -29,7 +29,7 @@ This document takes inspiration from discussions, brainstorming sessions, [examp
 ## RAP Disclaimer
 
 -   Our intention is to share how we do our work and how we support each other. We love sharing our solutions to complex problems. This guide, however, is not intended as a prescriptive guide for other teams.
--   Many sections from this document are verbatim of other initiatives/sites, with minor edits to adjust it to our own context. All credit belongs to the original source (primarily, GitLab's documentation). If anybody believes this to be not fair use, we will take this down immediately.
+-   Many sections from this document are verbatim of other initiatives/sites, with minor edits to adjust it to our own context. All credit belongs to the original source (primarily, GitLab's documentation). If anybody believes this to not be fair use, we will take this down immediately.
 -   This guide draws inspiration from all-remote organizations; however, we are not advocating for all-remote structure (e.g., we want to participate in croquet tournaments at [BIO](https://www.bio.gc.ca/index-en.php)).
 
 ## Strategic RAP Champions: who are we?
@@ -40,14 +40,14 @@ Strategic RAP champions support the implementation of reproducible analytical pi
 
 -   Promoting reproducible analysis (i.e., analysis with a clear audit trail that explains how and why it was carried out),
 -   Actively using reproducible analytical pipelines (i.e., the software methods used to make analysis reproducible),
--   Sharing knowledge and providing advice and support to members of the analytical community who want to learn about, and implement, reproducible analysis and reproducible analytical pipelines.
+-   Sharing knowledge, and providing advice and support to members of the analytical community who want to learn about, and implement, reproducible analysis and reproducible analytical pipelines.
 -   Using platforms like GitHub or GitLab to share code so others can learn, use and/or adapt what has been done.
 
 As Strategic RAP Champions:
 
 -   We aim for progress, not perfection. Perfectionism is an impediment: iterative work requires most things to spend a lot of time in "draft".
 
--   We celebrate incremental improvements equally, if not more, than massive launches
+-   We celebrate incremental improvements equally, if not more, than massive launches.
 
 We welcome all that would like to be part of this initiative. It is open to anyone who is working on, or considering, reproducible analytical pipelines.
 
@@ -58,7 +58,7 @@ This section is a modified version of the [GitLab's manifesto](https://about.git
 -   Working and collaborating with a large network of partners from different places (instead of from a central location).
 -   Formal communication channels (over informal communication channels).
 -   Writing down and recording knowledge (over verbal explanations).
--   Written processes (to complement over on-the-job training).
+-   Written processes (to complement on-the-job training).
 -   Public sharing of information (over need-to-know access).
 -   Opening up documents for editing by anyone (over top-down control of documents).
 -   Asynchronous communication (over synchronous communication).
@@ -67,11 +67,11 @@ This section is a modified version of the [GitLab's manifesto](https://about.git
 
 ## How we work and how we communicate information
 
-Coordinating big programs and projects with a large network of collaborators require tools that can foster trust, communication, and shared goals. There are three key dimensions to successfully embrace collaboration, and to thrive in our roles: the organizational, the technical, and the social. Communication is KEY to all of this. With a common goal, strategic planning, and the right collaboration tools, working in a virtual environment can be incredible productive, fun and efficient. This will be increasingly more important as we move to a hybrid environment where it will be more difficult to get organized in a synchronous fashion with member of different organizations and teams.
+Coordinating big programs and projects with a large network of collaborators require tools that can foster trust, communication, and shared goals. There are three key dimensions to successfully embrace collaboration, and to thrive in our roles: the organizational, the technical, and the social. Communication is KEY to all of this. With a common goal, strategic planning, and the right collaboration tools, working in a virtual environment can be incredible productive, fun and efficient. This will become increasingly important as we move to a hybrid environment where it will be more difficult to get organized in a synchronous fashion with member of different organizations and teams.
 
 This section includes material from the course [How to Manage a Remote Team](https://www.coursera.org/learn/remote-team-management).
 
--   Self-service: It's not what you know. It's knowing **where to look**. We are committed to become more intentional about documenting processes, and in contrast to how typical work environments are structured. Learn more about the [importance of self-searching, self-learning, and self-service organization](/company/culture/all-remote/self-service/).
+-   Self-service: It's not what you know, it's knowing **where to look**. We are committed to becoming more intentional about documenting processes, and in contrast to how typical work environments are structured. Learn more about the [importance of self-searching, self-learning, and self-service organization](/company/culture/all-remote/self-service/).
 
 -   Informal communication: We are committed to creating an atmosphere where team members feel comfortable reaching out to anyone to converse about topics unrelated to work.
 
