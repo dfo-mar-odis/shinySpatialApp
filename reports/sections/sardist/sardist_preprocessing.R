@@ -47,8 +47,17 @@ if(!is.null(openSardist_rr)) {
 }
 
 
+# -------------------ESRI Rest Version------------------
+library(esri2sf)
+url <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/DFO_SARA_Distribution/MapServer/0"
+sardist_sf <- esri2sf(url)
+
+
+
+
+
+
 # ------------------GEODATABASE VERSION------------------------
-renv::deactivate()
 sf::sf_use_s2(FALSE) # because sf 1.0 is "broken" does not support treating spheres as flat
 
 
@@ -103,9 +112,8 @@ crithabsOut <- left_join(finalCrithabs_sf, specLists, by="SPECIES_ID")
 draftCH_sf <- dplyr::select(crithabsOut, c("CHSTATUS_E", "WATERBODY", "COMMON_E", 
                                            "POP_E", "SCIENTIFIC", "LEAD_REG_E", 
                                            "PROFILE_E"))
-
+# esri mucks up your working dir too, joy!
 setwd(here::here())
-renv::activate()
 
 
 
