@@ -8,7 +8,7 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 
 ## **LITERATURE REVIEW: THREATS & MITIGATION FOR SPECIES AT RISK**
 
-### **Key terms and descriptions**
+### **Key Terms and Descriptions**
 
 **Threats** are defined as “any human activity or process that has caused, is causing, or may cause harm, death, or behavioral changes to a wildlife species at risk, or the destruction, degradation, and/or impairment of its habitat, to the extent that population-level effects occur. A human activity may exacerbate a natural process” [@DFO2014_Threat]. 
 
@@ -22,7 +22,7 @@ Similar to threats, mitigation measures are not consistently included or charact
 
 **Recovery** is “the process by which the decline of an endangered, threatened, or extirpated species is arrested or reversed, and threats are removed or reduced to improve the likelihood of the species’ persistence in the wild. A species will be considered recovered when its long-term persistence in the wild has been secured” [@DFO2014_Whale]. 
 
-### **Overview of the SARA recovery planning process**
+### **Overview of the SARA Recovery Planning Process**
 
 SARA is carried out through the SARA recovery planning process, a multi-step approach aimed at addressing the goals listed above (Figure \@ref(fig:sara-chart)). This process involves various parties, actions, timelines, and documents created at each steps. Each box in the process in Figure \@ref(fig:sara-chart) is explained in more detail, and relevant documents produced by DFO are compiled for aquatic species that have been assessed by COSEWIC (Table \@ref(tab:cosewic-table)) or listed by SARA (Table \@ref(tab:sara-table)) within the search area. The entire Species at Risk Act is included online (<https://laws.justice.gc.ca/eng/acts/S-15.3/FullText.html>) and is summarized in various formats in the literature [@mcdevitt2015_missing, @montgomery2021_role, @newediuk2021_sociopolitical] and government websites (e.g., <https://www.canada.ca/en/environment-climate-change/services/species-risk-act-accord-funding/listing-process/act.html>). 
 
@@ -53,11 +53,11 @@ Each phase contains multiple objectives to be addressed. More detailed informati
 
 RPAs are created for species with a COSEWIC status of threatened, endangered, or extirpated, and are not created for species of special concern.
 
-###### *RPA timeline*
+###### *RPA Timeline*
 
 RPAs are typically provided to the DFO Minister after COSEWIC provides a species assessment and before the Minister provides listing recommendations to the Governor in Council (Figure \@ref(fig:sara-chart)).
 
-###### *Change in RPA procedure over time*
+###### *Change in RPA Procedure Over Time*
 
 RPAs were first developed in 2004 and new guidelines were developed in 2007 [@DFO2007_RPA]. Clarification to the process including how to document threat information was later provided [@DFO2010_Guidelines]. This lead to the creation of Threat Assessment guidelines [@DFO2014_Threat]. Due to these changes in procedure, the level of detail for RPAs may be different for each species, depending on when the information was compiled and published. Occasionally, RPAs are not created for certain species despite their COSEWIC designation (e.g., for leatherback sea turtles; @DFO2020_Turtles). Threat Assessments are also required to be conducted as part of the RPAs [@DFO2014_Threat]. However, Threat Assessments are sometimes created as standalone documents, and are therefore described in a separate section below.
 
