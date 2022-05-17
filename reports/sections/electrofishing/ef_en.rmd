@@ -90,7 +90,7 @@ efReport <- if (is.null(efOutputList$studyData)) {
 writeLines(noquote(efReport))
 ```
 
-```{r ef-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ef_rr, "EN"), 'Electrofishing survey records observed within the search area defined by the user (red outline). Numbers refer to the Watershed Labels mentioned in the Table below. Some sites were surveyed in multiple years.')}
+```{r ef-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ef_rr, "EN"), 'Electrofishing survey records observed within the search area (red outline). Numbers refer to the Watershed Labels mentioned in the Table below. Electrofishing records observed outside of the search area are shown for context, but are not included in the search results. Some sites were surveyed in multiple years.')}
 if (!is.null(efOutputList$studyData)) {
   efPlot <- plot_rr_sf(areaMap, riversOutputList$mapData,
     outlines = FALSE,
