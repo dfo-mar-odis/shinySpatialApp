@@ -114,7 +114,7 @@ if (!is.null(gbifClipped$studyData)) {
 
 ```{r gbif-table, echo=FALSE, results='asis'}
 if (!is.null(gbifClipped$studyData)) {
-  knitr::kable(gbifTable, align="l", caption=paste(write_caption_blurb(gbif_rr, "EN"), "Global Biodiversity Information Facility (GBIF) observation records of species observed within the search area, and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. "), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(gbifTable, align="l", caption=paste(write_caption_blurb(gbif_rr, "EN"), "Global Biodiversity Information Facility (GBIF) observation records of species observed within the search area, and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 
