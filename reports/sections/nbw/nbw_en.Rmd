@@ -37,7 +37,7 @@ writeLines(noquote(nbwText))
 
 Please see a list of all sources of information at the Open Data record [@DFO2020NBW_imphabitat]: `r nbw_rr$metadata$url$en`.
 
-##### *Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results*
+##### *Area-Specific Northern Bottlenose Whale Important Habitat in Inter-Canyon Areas on the Eastern Scotian Shelf Search Results*
 
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
@@ -62,7 +62,7 @@ if (!is.null(nbw_rr$data_sf)){
 }
 ```
 
-```{r nbw-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'This map summarizes areas where the search polygon overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf.')}
+```{r nbw-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf observed within the search area (red outline).')}
 if (!is.null(clipped$mapData)){
   plot_rr_sf(areaMap, clipped$mapData, nbw_rr$attribute)
 }
