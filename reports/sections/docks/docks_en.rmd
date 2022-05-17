@@ -69,7 +69,7 @@ docksReport <- if (is.null(docksOutputList$studyData)) {
 writeLines(noquote(docksReport))
 ```
 
-```{r docks-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(docks_rr, "EN"), 'Records of man-made solids within the search area defined by the user (red outline). Records were obtained from the Atlantic Shoreline Classification dataset in Open Data [@OpenData_docks]')}
+```{r docks-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(docks_rr, "EN"), 'Records of man-made solids within the Nova Scotia region defined by the user (red outline). Records were obtained from the Atlantic Shoreline Classification dataset in Open Data [@OpenData_docks]')}
 if (!is.null(docksOutputList$studyData)) {
     plot(plot_rr_sf(regionMap, docksOutputList$regionData, lwd = 2, color=rrBlue)) 
 }
