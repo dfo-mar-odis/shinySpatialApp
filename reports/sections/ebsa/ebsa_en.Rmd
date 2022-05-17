@@ -16,7 +16,7 @@ if (FALSE) { #load in data:
 }
 ```
 
-### **Ecologically and Biologically Significant Areas (EBSA)**
+### **Ecologically and Biologically Significant Areas (EBSAs)**
 
 ```{r EBSA-load, include=FALSE}
 load_rdata(c("ebsa_rr"), regionStr, env = environment())
@@ -25,7 +25,7 @@ load_rdata(c("ebsa_rr"), regionStr, env = environment())
 ```{r EBSA-meta, results='asis'}
 write_meta(ebsa_rr, "EN")
 ```
-A Story Map summarizing work that has been done to identify EBSA in the Maritimes Region is available here: https://gisp.dfo-mpo.gc.ca/portal/apps/MapJournal/index.html?appid=b91f85de60f44a7b90633e4b43e3916a
+A Story Map summarizing work that has been done to identify EBSAs in the Maritimes Region is available here: https://gisp.dfo-mpo.gc.ca/portal/apps/MapJournal/index.html?appid=b91f85de60f44a7b90633e4b43e3916a
 
 Dataset description from the Open Data record [@OpenData_ebsa]:
 ```{r EBSA-text, results='asis'}
@@ -33,7 +33,7 @@ writeLines(noquote(ebsa_rr$text$en))
 
 ```
 
-##### *Area-specific EBSA search results*
+##### *Area-Specific EBSA Search Results*
 
 ```{r EBSA-results, echo=FALSE, results='asis'}
 #function for overlap
@@ -41,9 +41,9 @@ EBSAoutput <- master_intersect(ebsa_rr$data_sf, mapDataList, getRegion=TRUE)
 
 #function for overlap
 Query_output_EBSA <- if(is.null(EBSAoutput$studyData)){
-    "* The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSA)."
+    "* The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSAs)."
   } else {
-    "* The search area overlaps with identified Ecologically and Biologically Significant Areas (EBSA)."
+    "* The search area overlaps with identified Ecologically and Biologically Significant Areas (EBSAs)."
   }
 writeLines(Query_output_EBSA)
 
@@ -52,17 +52,17 @@ writeLines(Query_output_EBSA)
 ```{r EBSA-table,  echo=FALSE, results='asis'}
 EBSATable <- EBSA_report(EBSAoutput$studyData, lang="EN")
 if (!is.null(EBSATable)){
-   knitr::kable(EBSATable, align="l", caption="Details for EBSA's overlapping the study area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+   knitr::kable(EBSATable, align="l", caption="Details for Ecologically and Biologically Significant Areas (EBSAs) overlapping the study area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 
-```{r EBSA-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSA) relative to the search area defined by the user (red outline).')}
+```{r EBSA-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSAs) relative to the search area defined by the user (red outline).')}
 if (!is.null(EBSAoutput$regionData)){
   plot_rr_sf(regionMap, EBSAoutput$regionData, ebsa_rr$attribute)
 }
 ```
 
-```{r EBSA-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSA) in the search area (red outline).')}
+```{r EBSA-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSAs) in the search area (red outline).')}
 if(!is.null(EBSAoutput$studyData)){
   plot_rr_sf(areaMap, EBSAoutput$mapData, ebsa_rr$attribute)
 }
