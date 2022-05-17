@@ -89,9 +89,9 @@ The COSEWIC assessments for aquatic species are submitted to The Minister of Fis
 
 Within nine months of receiving the recommendations from the Minister, the Governor in Council must decide whether to:
 
-*	Accept the COSEWIC assessment and add the species to SARA;
-*	Not add to the list; or
-*	Refer back to COSEWIC for further information and consideration.
+-	Accept the COSEWIC assessment and add the species to SARA;
+-	Not add to the list; or
+-	Refer back to COSEWIC for further information and consideration.
 
 If a species is recommended to be added to SARA, various documents must be compiled based on its status. A Recovery Strategy must be created and posted on the SAR Public Registry within one year if the species is classified as endangered, or within two years if the species is listed as threatened or extirpated. After the Recovery Strategies are created, an Action Plan must be created for these species. There is no set timeline for completion for Action Plans, although typically an expected timeline for completion is provided in the Recovery Strategy. If a species is designated as special concern, Management Plans are created instead of Recovery Strategies and Action Plans. Management Plans must be created within three years of listing. 
 
