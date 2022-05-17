@@ -14,11 +14,9 @@ Both OBIS and GBIF are large online data portals, consisting of numerous dataset
 
 ### **Data Structure**
 
-Data submitted to GBIF and OBIS must be formatted according to the Darwin Core, a body of standards outlining how to format biological data (<https://obis.org/manual/darwincore/> and <https://www.gbif.org/darwin-core>). These standards define which attributes (i.e., column names) are included when structuring the datasets, and describe how other supplemental information such as study design, associated environmental conditions (e.g., sea surface temperature), or biological characteristics (e.g., abundance, biomass, etc.) can be formatted and included. Due to these requirements, OBIS and GBIF are generally best suited for point data, although other vector formats (e.g., lines, polygons) can be uploaded. Because this report focuses on species presence, detailed information outlining the study design, environmental conditions, or biological characteristics are not included, but may be available for each dataset if required.
+Data submitted to GBIF [-@GBIF] and OBIS [-@OBIS] are formatted according to the Darwin Core, a body of standards for compiling biodiversity data (see <https://obis.org/manual/darwincore/> and <https://www.gbif.org/darwin-core> for more information). These standards define which attributes (i.e., column names) are included when structuring the datasets, and how information such as study design, associated environmental conditions (e.g., sea surface temperature), or biological characteristics (e.g., abundance, biomass, etc.) can be formatted and included. Due to these requirements, OBIS and GBIF are generally primarily suited for point data, although other vector formats (e.g., lines, polygons) are also uploaded. Because this report focuses on species presence, detailed information outlining the study design, environmental conditions, or biological characteristics are not included, but may be available for each dataset if required.
 
-OBIS and GBIF submissions also follow the Ecological Metadata Language format, a metadata standard for ecological data (more information here: <https://obis.org/manual/eml/>). This is created as an XML file for each dataset.
-
-For more detailed metadata including information such as the data collection date, survey methods, institution name, and license type, refer to the provided URL for each dataset.
+OBIS and GBIF submissions also follow the Ecological Metadata Language format, a metadata standard for ecological data (more information here: <https://obis.org/manual/eml/>). This is created as an XML file for each dataset. For more detailed metadata including information such as the data collection date, survey methods, institution name, and license type, refer to the provided URL for each dataset.
 
 ### **Disclaimers**
 
@@ -41,7 +39,6 @@ OBIS performs multiple data quality checks, including flagging data over land. F
 Several of the datasets uploaded to OBIS and GBIF are also listed as separate data sources/sections within this report. These have been removed from this section of the report and include:
 
 -   Maritimes Research Vessel Surveys
-
 -   Whale Sightings Database (named "DFO Maritimes Region Cetacean
     Sightings" in OBIS and GBIF)
 
@@ -62,18 +59,15 @@ are various options the data submitter can select from. The following cases were
 The following cases provide relevant information and were combined within the report:
 
 - MaterialSample: A physical sample from the sampling event has been retained. The recorded location is the in situ sampling location.
-
 - PreservedSpecimen: organism is collected at the recorded location but then preserved (e.g., in ethanol at a location such as museum, university, or research institute).
-
 - HumanObservation: includes visual sightings of the organism, or observations where specimens were collected and then discarded after counting (e.g., a benthic grab sample).
-
 - Unknown: includes records without a defined basis of record or with an unrecognized value for this field
 
 Observations may also be listed as MachineObservation, which are derived from machine or computer-based detections such as automated sensors (e.g., DNA sequencers), acoustic tagging, or image recognition. Currently, there are no MachineObservation records for fish or invertebrate species in this region.
 
 ### **iNaturalist Data**
 
-iNaturalist is an open-source platform where naturalists, citizen scientists, and biologists can map species observations [@iNaturalist]. As of April 2022, iNaturalist has over 95 million species observations and over 2.1 million registered users/contributors globally. Every week, iNaturalist data that are considered "Research Grade" (i.e., the record contains a date, is georeferenced, has photos or sounds, isn't a captive or cultivated organism, and two thirds of identifiers agree on the species identification) are added to GBIF (more information here:
+iNaturalist [-@iNaturalist] is an open-source platform where naturalists, citizen scientists, and biologists can map species observations. As of April 2022, iNaturalist has over 95 million species observations and over 2.1 million registered users/contributors globally. Every week, iNaturalist data that are considered "Research Grade" (i.e., the record contains a date, is georeferenced, has photos or sounds, isn't a captive or cultivated organism, and two thirds of identifiers agree on the species identification) are added to GBIF (more information here:
 <https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7>).
 iNaturalist records are not added to OBIS.
 
