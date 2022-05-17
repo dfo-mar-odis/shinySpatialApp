@@ -27,10 +27,10 @@ load_rdata(c("ilts_rr"), regionStr, env = environment())
 write_meta(ilts_rr, "EN")
 ```
 
-From [@ILTS]: “An annual trawl survey is conducted in Southwestern Nova Scotia and the Bay of Fundy to assess the lobster stocks in Lobster Fishing Areas (LFA) 34. The survey is conducted with the Northeast Fisheries Science Center Ecosystem Survey Trawl (NEST), a small mesh trawl with a cod end liner, which ensures the capture of various sizes of lobster. The dimensions and location of the trawl are monitored and recorded throughout the tow using an electronic trawl mensuration system. In addition, water temperature and depth are also recorded. The target tow length is 1 kilometer which is tracked using an Olex marine charting system. Vessel crew, DFO science staff and a contracted at sea observer work together to perform required tasks and collect all relevant data. Catch from each tow is separated by species, weighed and counted. Length frequency data is collected on select groundfish and crab species, detailed morphometric data is collected on each lobster.”
+From @ILTS: “An annual trawl survey is conducted in Southwestern Nova Scotia and the Bay of Fundy to assess the lobster stocks in Lobster Fishing Areas (LFA) 34. The survey is conducted with the Northeast Fisheries Science Center Ecosystem Survey Trawl (NEST), a small mesh trawl with a cod end liner, which ensures the capture of various sizes of lobster. The dimensions and location of the trawl are monitored and recorded throughout the tow using an electronic trawl mensuration system. In addition, water temperature and depth are also recorded. The target tow length is 1 kilometer which is tracked using an Olex marine charting system. Vessel crew, DFO science staff and a contracted at sea observer work together to perform required tasks and collect all relevant data. Catch from each tow is separated by species, weighed and counted. Length frequency data is collected on select groundfish and crab species, detailed morphometric data is collected on each lobster.”
 
 
-##### *Area-specific search results for the Inshore Lobster Trawl Survey (ILTS)*
+##### *Area-Specific Search Results for the Inshore Lobster Trawl Survey (ILTS)*
 
 ```{r ilts-results, include=FALSE, cache=FALSE}
 iltsClipped <- master_intersect(ilts_rr$data_sf, mapDataList)
@@ -53,7 +53,7 @@ writeLines(noquote(iltsCheck))
 ```
 
 
-```{r ilts-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ilts_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from the Lobster Trawl Survey. Blue lines indicate the location of each NEST trawl sample.')}
+```{r ilts-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ilts_rr, "EN"), 'Map of Inshore Lobster Trawl Surveys (ITLS) within the search area. Blue lines indicate the location of each NEST trawl sample.')}
 
 if (!is.null(iltsClipped$studyData)) {
     plot_rr_sf(areaMap, iltsClipped$mapData, lwd = 1, colour = "blue")
