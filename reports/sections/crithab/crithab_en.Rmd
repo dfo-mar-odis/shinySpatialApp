@@ -36,7 +36,7 @@ writeLines(noquote(crithab_rr$text$en))
 Critical habitat presented in this section are available in the Government of Canada Open Data portal, with the exception of draft critical habitat for Leatherback Sea Turtle, for which delineation of critical habitat is currently under review. Draft critical habitat for Leatherback Sea Turtle is available in the internal Species at Risk GIS tool and will be available in Open Data once it has been included in a proposed or final Recovery Strategy.
 
 
-##### *Area-specific critical habitat search results*
+##### *Area-specific Critical Habitat Search Results*
 
 ```{r crithab-results, echo=FALSE, results='asis'}
 # plotted with colour
@@ -74,7 +74,7 @@ if(critHabCheck){
 
 ```
 <br>
-```{r crithab-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "EN"), 'Critical habitat of Species at Risk listed as Endangered or Threatened under the <i>Species at Risk Act</i> (SARA) in the Scotian Shelf Bioregion. Please see table above for complementary information. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species.” Critical habitat is identified in a species’ Recovery Strategy or Action Plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.')}
+```{r crithab-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "EN"), 'Critical habitat of Species at Risk listed as Endangered or Threatened under the Species at Risk Act [@SARA2002] in the Scotian Shelf Bioregion. Please see table above for complementary information. Critical habitat is defined under section 2 of SARA as: “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the recovery strategy or in an action plan for the species.” Critical habitat is identified in a species’ Recovery Strategy or Action Plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report.')}
 if (!is.null(crithab_rr$data_sf)){
   critPlotList <- plot_rr_sf(regionMap, crithab_rr$data_sf,
                              crithab_rr$attribute, legendName = legendNameCrithab,
