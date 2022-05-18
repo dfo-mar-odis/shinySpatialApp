@@ -52,7 +52,7 @@ sturgCheck <- if (is.null(sturgOutputList$studyData)) {
 writeLines(noquote(sturgCheck))
 ```
 
-```{r sturg-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(sturg_rr, "EN"), 'Survey sites illustrating Atlantic Sturgeon foraging areas sampled during 2020 in the Upper Bay of Fundy. Note that this map mostly represents survey sites. This map should not be interpreted as a comprehensive list of Atlantic Sturgeon foraging areas as additional locations are available, although not yet sampled, in the upper Bay of Fundy.')}
+```{r sturg-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(sturg_rr, "EN"), 'Survey sites illustrating Atlantic Sturgeon foraging areas sampled during 2020 in the Upper Bay of Fundy. Note that this map mostly represents survey sites. This map should not be interpreted as a comprehensive list of Atlantic Sturgeon foraging areas as additional locations are available, although not yet sampled, in the upper Bay of Fundy. The red outline represents the search area.')}
 if (!is.null(sturgOutputList$studyData)) {
   plot_rr_sf(areaMap, sturgOutputList$mapData, sturg_rr$attribute, outlines=FALSE,
              labelData=sturgOutputList$mapData, labelAttribute = "siteId")
