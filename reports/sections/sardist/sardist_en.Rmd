@@ -72,7 +72,7 @@ Query_output_dist <- if(is.null(outputListSardist$studyData)){
 writeLines(Query_output_dist)
 ```
 <br>
-```{r sardist-plot, fig.height=plotHeight, fig.width=11, fig.cap=paste(write_caption_blurb(sardist_rr, "EN"), 'Maps showing the species distribution ranges overlapping with the search area defined by the user (red outline).')}
+```{r sardist-plot, fig.height=plotHeight, fig.width=11, fig.cap=paste(write_caption_blurb(sardist_rr, "EN"), 'Species distribution ranges overlapping with the search area (red outline).')}
 if (FALSE) {# (!is.null(outputListSardist$studyData)) {
   gridExtra::grid.arrange(grobs = plotList,
                           bottom = "",
