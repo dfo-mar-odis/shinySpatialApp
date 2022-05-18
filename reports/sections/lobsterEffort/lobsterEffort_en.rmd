@@ -69,7 +69,7 @@ lobsterEffortReport <- if (is.null(lobsterOutputList$studyData)) {
 writeLines(noquote(lobsterEffortReport))
 ```
 
-```{r lobsterEffort-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(lobsterEffort_rr, "EN"), 'Grid map of lobster fishing effort (annual catch weight per number of trap hauls) within the Maritimes region. Dashed grey lines indicate international boundaries. Data were obtained from @OpenData_lobsterEffort.')}
+```{r lobsterEffort-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(lobsterEffort_rr, "EN"), 'Grid map of lobster fishing effort (annual catch weight per number of trap hauls) within the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries. Data were obtained from @OpenData_lobsterEffort.')}
 if (!is.null(lobsterOutputList$studyData)) {
     plot(plot_rr_sf(regionMap, lobsterOutputList$regionData, 
                     attribute=lobsterEffort_rr$attribute, 
