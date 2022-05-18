@@ -56,7 +56,7 @@ polyText <- if(is.null(clipped$studyData)){"Search area does not overlap with No
  writeLines(polyText)
 ```
 
-```{r nbw-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.')}
+```{r nbw-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries.')}
 if (!is.null(nbw_rr$data_sf)){
   plot_rr_sf(regionMap, nbw_rr$data_sf, nbw_rr$attribute)
 }
