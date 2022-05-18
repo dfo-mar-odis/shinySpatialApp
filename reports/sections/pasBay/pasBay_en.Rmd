@@ -63,7 +63,7 @@ if (!is.null(pasBayClipped$studyData)) {
 ```{r pasBay-SAR-table}
 if (!is.null(pasBayClipped$studyData)) {
   if (nrow(pasBaySarTable) > 0) {
-    knitr::kable(pasBaySarTable, align="l", caption=paste("\\label{tab:pasBay_SAR_table}", write_caption_blurb(pasBay_rr, "EN"), "Passamaquoddy Bay Biodiversity Trawl observation records of species contained within the search area (red outline) and/or listed by the Species At Risk Act (SARA) and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+    knitr::kable(pasBaySarTable, align="l", caption=paste("\\label{tab:pasBay_SAR_table}", write_caption_blurb(pasBay_rr, "EN"), "Passamaquoddy Bay Biodiversity Trawl observation records of species contained within the search area (red outline) and/or listed by the Species At Risk Act (SARA) and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b> The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
   }
 }
 ```
