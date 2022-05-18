@@ -37,7 +37,7 @@ writeLines(noquote(sdmText))
 
 Important usage considerations: model predictions in this section should not be used on their own for this report, marine spatial planning purposes, and/or to delineate important habitat for cetacean species. Rather, outputs should be used together with other sources of information such as prey distribution, tagging data, detections from acoustic monitoring, other data on cetacean occurrence, and other modeling efforts already available for the area. The data product summarized in the section below (Blue Whale important habitat in the western North Atlantic) represents an excellent framework in which to properly use the outputs of this section.
 
-##### *Area-specific SDM cetacean search results*
+##### *Area-Specific SDM Cetacean Search Results*
 ```{r sdm, include=FALSE, cache=FALSE}
 
 clippedFin <- master_intersect(finWhale_rr$data_sf, mapDataList)
@@ -61,7 +61,7 @@ summaryHabTable <- add_to_hab_summary(summaryHabTable, "SDM", "[SDM](#sdm-sectio
  knitr::kable(tableSDM, align="cccc", caption=paste(write_caption_blurb(finWhale_rr, "EN"), "Search results identifying if the search area overlaps (i.e., TRUE) or does not overlap (i.e., FALSE) with the Priority Area to Enhance Monitoring of several species of cetaceans (Fin Whale, Harbour Porpoise, Humpback Whale and Sei Whale)."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 ```
 
-```{r sdm-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(finWhale_rr, "EN"), 'Maps of consolidated Species Distribution Modelling outputs (60-100% relative predicted occurrence rate). Yellow polygons (habitats with high suitability) represent areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Due to the many reasons listed in the discussion section in Gomez et al. (2020), these cetacean modelling outputs do not represent a complete and current distribution of cetaceans in the region. Their use in marine spatial planning processes should be accompanied by complementary approaches such as the process summarized in the section below. The data product summarized in the section below (Blue Whale Important Habitat in the western North Atlantic) represents an excellent framework in which to properly use the outputs of this figure.')}
+```{r sdm-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(finWhale_rr, "EN"), 'Maps of consolidated Species Distribution Modelling outputs (60-100% relative predicted occurrence rate) for Fin Whales, Harbour Porpoises, Humpback Whales and Sei Whales. Yellow polygons (habitats with high suitability) represent areas where cetacean monitoring efforts may be prioritized, and results can help direct future survey efforts. Due to the many reasons listed in the discussion section in @Gomez2020SDM, these cetacean modelling outputs do not represent a complete and current distribution of cetaceans in the region. Their use in marine spatial planning processes should be accompanied by complementary approaches such as the process summarized in the section below. The data product summarized in the section below (Blue Whale Important Habitat in the western North Atlantic) represents an excellent framework in which to properly use the outputs of this figure.')}
 plot_cetaceans_4grid(finWhale_rr$data_sf, harbourPorpoise_rr$data_sf, humpbackWhale_rr$data_sf, seiWhale_rr$data_sf, studyArea, land10m_sf, 50, bounds_sf)
 
 ```
