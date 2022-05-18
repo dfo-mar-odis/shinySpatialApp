@@ -26,9 +26,9 @@ load_rdata(c("sturg_rr"), "MAR", env = environment())
 write_meta(sturg_rr, "EN")
 ```
 
-Areas in the Minas Basin were selected for spatial analysis to examine foraging grounds for Atlantic Sturgeon, through a combination of using UAV’s, a novel approach to geoscience, with bottom sediment grain-size collection. Temporal studies will be carried out in the southern bight of Minas Basin at the Kingsport tidal-channel-flat complex to understand and document temporal morphodynamics. The Kingsport area will be studied as these tidal flats are used extensively by Atlantic Sturgeon for foraging from June to September and a large data set of grain size exists that can be used to help validate morphodynamic models. Ultimately this project will be used to predict future change to the tidal flats of the Minas Basin if a large scale tidal project such as the one proposed for Minas Channel is approved and to help understand Atlantic Sturgeons use of muddy tidal flats. This summary provides updates of validated foraging grounds for Atlantic Sturgeon identified though this project.
+Areas in the Minas Basin were selected for spatial analysis to examine foraging grounds for Atlantic Sturgeon, through a combination of using unmanned aerial vehicles (UAVs), a novel approach to geoscience, with bottom sediment grain size collection. Temporal studies will be carried out in the southern bight of the Minas Basin at the Kingsport tidal-channel-flat complex to understand and document temporal morphodynamics. The Kingsport area will be studied as these tidal flats are used extensively by Atlantic Sturgeon for foraging from June to September, and a large dataset of grain size exists that can be used to help validate morphodynamic models. Ultimately, this project will be used to predict future change to the tidal flats of the Minas Basin if a large-scale tidal project such as the one proposed for Minas Channel is approved, and to help understand Atlantic Sturgeons use of muddy tidal flats. This summary provides updates of validated foraging grounds for Atlantic Sturgeon identified though this project.
 
-##### *Area-specific search results of Atlantic Sturgeon Foraging Areas in the Upper Bay of Fundy*
+##### *Area-Specific Search Results of Atlantic Sturgeon Foraging Areas in the Upper Bay of Fundy*
 ```{r sturg-results, include=FALSE, cache=FALSE}
 sturgOutputList <- master_intersect(sturg_rr$data_sf, mapDataList)
 
@@ -52,7 +52,7 @@ sturgCheck <- if (is.null(sturgOutputList$studyData)) {
 writeLines(noquote(sturgCheck))
 ```
 
-```{r sturg-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(sturg_rr, "EN"), 'Survey sites illustrating Atlantic Sturgeon Foraging Areas sampled during 2020 in the Upper Bay of Fundy. Note that this map mostly represents survey sites. This map should not be interpreted as a comprehensive list of Atlantic Sturgeon foraging areas as additional locations are available, although not yet sampled, in the upper Bay of Fundy.')}
+```{r sturg-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(sturg_rr, "EN"), 'Survey sites illustrating Atlantic Sturgeon foraging areas sampled during 2020 in the Upper Bay of Fundy. Note that this map mostly represents survey sites. This map should not be interpreted as a comprehensive list of Atlantic Sturgeon foraging areas as additional locations are available, although not yet sampled, in the upper Bay of Fundy.')}
 if (!is.null(sturgOutputList$studyData)) {
   plot_rr_sf(areaMap, sturgOutputList$mapData, sturg_rr$attribute, outlines=FALSE,
              labelData=sturgOutputList$mapData, labelAttribute = "siteId")
