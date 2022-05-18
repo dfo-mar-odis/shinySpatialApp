@@ -22,7 +22,7 @@ if (FALSE) {
 }
 ```
 
-### **Man-made solid classification from the Atlantic Shoreline Classification dataset ** {#docks-section}
+### **Man-Made Solid Classification From the Atlantic Shoreline Classification Dataset ** {#docks-section}
 
 ```{r docks-load, include=FALSE}
 # load in section specific data
