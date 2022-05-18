@@ -32,7 +32,7 @@ Marine Planning and Conservation at DFO has initiated a two-phased engagement pr
 
 It is important to note that Marine Conservation Network Plan will be aligned with a future Marine Spatial Plan for the Scotian Shelf-Bay of Fundy bioregion. The overall intent is to ensure an effective balance among ecological, socioeconomic and cultural objectives in the use, management and conservation of our marine environment and spaces. DFO and its partners will be providing further information on the bioregional Marine Spatial Planning (MSP) process in the near future.
 
-##### *Area-specific Draft Conservation Network Design Search Results*
+##### *Area-Specific Draft Conservation Network Design Search Results*
 
 ```{r MPA-load-data, results='asis'}
 mpaCols <- c("dodgerblue3", "red", "darkorchid", "lawngreen",  "cyan3")
@@ -57,7 +57,7 @@ mpaCheckOuput <- if(!is.null(mpaClipped$studyData)){
 writeLines(mpaCheckOuput)
 ```
 
-```{r mpa-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(conservationSites_rr, "EN"), 'Map of the Draft Conservation Network Design for the Scotian Shelf-Bay of Fundy Bioregion. Boundaries of the proposed new sites are preliminary and subject to change following engagement and consultation.')}
+```{r mpa-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(conservationSites_rr, "EN"), 'Map of the Draft Conservation Network Design for the Scotian Shelf-Bay of Fundy Bioregion. Boundaries of the proposed new sites are preliminary and subject to change following engagement and consultation. The search area is shown as a red outline, and a more detailed view if shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries.')}
 if (!is.null(mpaClipped$regionData)){
   plot_rr_sf(regionMap, mpaClipped$regionData, conservationSites_rr$attribute, 
              outlines=FALSE, colorMap = mpaCols, alpha = mpaAlpha)
