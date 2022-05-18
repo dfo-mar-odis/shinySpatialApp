@@ -43,7 +43,7 @@ writeLines(noquote(waste_rr$text$en))
 ```
 
 
-##### *Area-specific Active and Inactive Disposal at Sea Sites*
+##### *Area-Specific Active and Inactive Disposal at Sea Sites*
 ```{r waste-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 wasteOutputList <- master_intersect(waste_rr$data_sf, mapDataList)
@@ -68,7 +68,7 @@ wasteReport <- if (is.null(wasteOutputList$studyData)) {
 writeLines(noquote(wasteReport))
 ```
 
-```{r waste-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(waste_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query disposal site records.')}
+```{r waste-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(waste_rr, "EN"), 'Map of disposal sites within the search area (red outline), obtained from @OpenData_waste.')}
 if (!is.null(wasteOutputList$studyData)) {
     plot(plot_rr_sf(areaMap, wasteOutputList$mapData, 
                     attribute=waste_rr$attribute, outlines=FALSE,
