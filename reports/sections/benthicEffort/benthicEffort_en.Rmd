@@ -62,7 +62,7 @@ benthicEffortReport <- if (is.null(outputListBenthicEffort$mapData)) {
 writeLines(noquote(benthicEffortReport))
 ```
 <br>
-```{r benthicEffort-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(benthicEffort_rr, "EN"), 'Maps showing the benthic fishing effort (%) within the Scotian Shelf bioregion from @OpenData_benthicEffort. For a full description of how benthic fishing effort was calculated, refer to @DFO2017_Del and @Koen-Alonso2021. The the search area is shown as a red outline, and a more detailed view if shown in the figure below. Dashed grey lines indicate international boundaries.')}
+```{r benthicEffort-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(benthicEffort_rr, "EN"), 'Maps showing the benthic fishing effort (%) within the Scotian Shelf bioregion from @OpenData_benthicEffort. For a full description of how benthic fishing effort was calculated, refer to @DFO2017_Del and @Koen-Alonso2021. The search area is shown as a red outline, and a more detailed view if shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries.')}
 if (!is.null(outputListBenthicEffort$mapData)) {
   plot_rr_sf(mapDataList$regionMap, outputListBenthicEffort$regionData, bgCutoff=15)
 }
