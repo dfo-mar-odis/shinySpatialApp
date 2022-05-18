@@ -74,7 +74,7 @@ if(critHabCheck){
 
 ```
 <br>
-```{r crithab-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "EN"), 'Critical habitat of Species at Risk listed as Endangered or Threatened under the Species at Risk Act [@SARA2002] in the Scotian Shelf Bioregion. Please see table above for complementary information. Critical habitat is defined under section 2 of SARA as, “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the Recovery Strategy or in an Action Plan for the species.” Critical habitat is identified in a species’ Recovery Strategy or Action Plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries.')}
+```{r crithab-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "EN"), 'Critical habitat of Species at Risk listed as Endangered or Threatened under the Species at Risk Act [@SARA2002] in the Scotian Shelf Bioregion. Please see table above for complementary information. Critical habitat is defined under section 2 of SARA as, “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the Recovery Strategy or in an Action Plan for the species.” Critical habitat is identified in a species’ Recovery Strategy or Action Plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries. Data were obtained from @OpenData_SARcriticalhabitat.')}
 if (!is.null(crithab_rr$data_sf)){
   critPlotList <- plot_rr_sf(regionMap, crithab_rr$data_sf,
                              crithab_rr$attribute, legendName = legendNameCrithab,
@@ -83,7 +83,7 @@ if (!is.null(crithab_rr$data_sf)){
 }  
 ```
 <br>
-```{r crithab-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "EN"), 'Critical habitat of Species at Risk, listed as Endangered or Threatened under the Species at Risk Act (SARA), located within the search area (red outline).')}
+```{r crithab-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "EN"), 'Critical habitat of Species at Risk, listed as Endangered or Threatened under the Species at Risk Act (SARA), located within the search area (red outline). Data were obtained from @OpenData_SARcriticalhabitat.')}
 if (!is.null(outputListCrithab$mapData)){
   plot_rr_sf(areaMap, outputListCrithab$mapData, crithab_rr$attribute,
              legendName = legendNameCrithab, outlines=FALSE, colorMap = critPlotList$colorMap)
