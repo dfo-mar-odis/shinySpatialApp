@@ -17,7 +17,7 @@ if (FALSE) { #load in data:
 }
 ```
 
-### **DFO Species at Risk distribution (range)** {#sardist-section}    
+### **DFO Species at Risk Distribution (Range)** {#sardist-section}    
 
 ```{r sardist-load, include=FALSE}
 load_rdata(c("sardist_rr"), "MAR", env = environment())
@@ -32,7 +32,7 @@ Dataset description from the Open Data record [@OpenData_SARrange]:
 writeLines(noquote(sardist_rr$text$en))
 ```
 
-##### *Area-specific SAR distribution (range) search results*
+##### *Area-Specific SAR Distribution (Range) Search Results*
 
 ```{r sardist-results, echo=FALSE, results='asis'}
 outputListSardist <- master_intersect(sardist_rr$data_sf, mapDataList)
@@ -83,6 +83,6 @@ if (FALSE) {# (!is.null(outputListSardist$studyData)) {
 
 ```{r sardist-table, echo=FALSE, results='asis'}
 if(!is.null(outputListSardist$studyData)){
-  knitr::kable(distTable, align="l", caption= paste(write_caption_blurb(sardist_rr, "EN"), "Species At Risk listed as Endangered, Threatened, or Special Concern under the <i>Species at Risk Act</i> with a documented distribution (range) located within the search area. This is not the authoritative source or advice for Species at Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create the authoritative SARA report."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+  knitr::kable(distTable, align="l", caption= paste(write_caption_blurb(sardist_rr, "EN"), "Species At Risk listed as Endangered, Threatened, or Special Concern under the Species at Risk Act with a documented distribution (range) located within the search area. This is not the authoritative source or advice for Species at Risk data. Please access the Species At Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create the authoritative SARA report."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
 }
 ```
