@@ -52,17 +52,17 @@ writeLines(Query_output_EBSA)
 ```{r EBSA-table,  echo=FALSE, results='asis'}
 EBSATable <- EBSA_report(EBSAoutput$studyData, lang="EN")
 if (!is.null(EBSATable)){
-   knitr::kable(EBSATable, align="l", caption="Details for Ecologically and Biologically Significant Areas (EBSAs) overlapping the study area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+   knitr::kable(EBSATable, align="l", caption="Details for Ecologically and Biologically Significant Areas (EBSAs) overlapping the study area.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 
-```{r EBSA-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSAs) relative to the search area defined by the user (red outline).')}
+```{r EBSA-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSAs) within the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Data were obtained from @OpenData_ebsa.')}
 if (!is.null(EBSAoutput$regionData)){
   plot_rr_sf(regionMap, EBSAoutput$regionData, ebsa_rr$attribute)
 }
 ```
 
-```{r EBSA-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSAs) in the search area (red outline).')}
+```{r EBSA-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSAs) within the search area (red outline). Data were obtained from @OpenData_ebsa.')}
 if(!is.null(EBSAoutput$studyData)){
   plot_rr_sf(areaMap, EBSAoutput$mapData, ebsa_rr$attribute)
 }
