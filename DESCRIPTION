@@ -32,5 +32,6 @@ Imports:
     whisker,
     bookdown,
     pagedown,
-    lwgeom
+    lwgeom,
+    gridExtra
 RoxygenNote: 7.1.1

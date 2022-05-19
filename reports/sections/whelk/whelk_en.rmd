@@ -15,7 +15,7 @@ if (FALSE) {
   # environment, when knitting, these will be loaded through the child rmd.
   lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
   studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
-  intro_setup(studyArea, env = environment(), regionStr = regionStr)
+  intro_setup(studyArea, env = environment())
 }
 ```
 
