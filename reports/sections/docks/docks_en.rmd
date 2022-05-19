@@ -22,7 +22,7 @@ if (FALSE) {
 }
 ```
 
-### **Man-made solid classification from the Atlantic Shoreline Classification dataset ** {#docks-section}
+### **Man-Made Solid Classification From the Atlantic Shoreline Classification Dataset ** {#docks-section}
 
 ```{r docks-load, include=FALSE}
 # load in section specific data
@@ -42,7 +42,7 @@ writeLines(noquote(docks_rr$text$en))
 ```
 
 
-#### ***Area-specific man-made solid results***
+##### *Area-Specific Man-Made Solid Classification Search Results*
 ```{r docks-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 docksOutputList <- master_intersect(docks_rr$data_sf, mapDataList,
@@ -69,13 +69,13 @@ docksReport <- if (is.null(docksOutputList$studyData)) {
 writeLines(noquote(docksReport))
 ```
 
-```{r docks-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(docks_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query man-made solid record.')}
+```{r docks-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(docks_rr, "EN"), 'Records of man-made solids within the Scotian Shelf bioregion. Records were obtained from the Atlantic Shoreline Classification dataset in Open Data [@OpenData_docks]. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries.')}
 if (!is.null(docksOutputList$studyData)) {
     plot(plot_rr_sf(regionMap, docksOutputList$regionData, lwd = 2, color=rrBlue)) 
 }
 ```
 
-```{r docks-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(docks_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query man-made solid records.')}
+```{r docks-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(docks_rr, "EN"), 'Records of man-made solids within the search area (red outline). Records were obtained from the Atlantic Shoreline Classification dataset in Open Data [@OpenData_docks]')}
 if (!is.null(docksOutputList$studyData)) {
     plot(plot_rr_sf(areaMap, docksOutputList$mapData, lwd = 2, color=rrBlue)) 
 }
