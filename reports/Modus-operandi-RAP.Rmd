@@ -3,7 +3,7 @@ title: "Modus operandi for Strategic RAP Champions"
 date: "`r Sys.Date()`"
 author: Strategic RAP Champions
 output:
-  rmdformats::material:
+  rmdformats::robobook:
     self_contained: true
     thumbnails: true
     lightbox: true
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # requires R package `rmdformats`
 ```
 
-## The Strategic Reproducible Analytical Pipeline (RAP) Initiative
+# The Strategic Reproducible Analytical Pipeline (RAP) Initiative
 
 The Strategic Science Planning and Program Integrity (SSPPI) division in DFO Maritimes supports various projects and presents many opportunities to modernize data management and reporting practices. In 2018, requests to the division to identify and summarize the available DFO and non-DFO datasets within the Maritimes Region were becoming increasingly frequent. Born out of frustration and a need for swift and effective approaches, a team of self-proclaimed Strategic Reproducible Analytical Pipeline (RAP) Champions was formed to automate the creation of these Reports. The primary objective of this initiative has been to develop a web-based tool to generate Reproducible Reports to identify and describe DFO and non-DFO datasets within a user-defined geographic area. Specifically, this project address internal requests that support processes that provide frequent and standardized advice, such as CSAS, Marine Spatial Planning, Aquaculture Siting Responses, and Environmental Response, which have an emphasis on Species at Risk.
 
@@ -89,6 +89,8 @@ The above mentioned components are mostly extracted from GitLab's training mater
 Currently, our key collaborations tools include:
 
 -   Microsoft Teams
+-   DM apps
+-   Open Data 
 -   [Virtual communities of practice](https://sites.google.com/view/science-collaboration-hubs/home)
 -   [Our own Strategic RAP board linked to our code repository](https://github.com/orgs/dfo-mar-odis/projects/2)
 -   [Jamboards](https://jamboard.google.com/)

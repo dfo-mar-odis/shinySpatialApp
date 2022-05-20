@@ -421,11 +421,11 @@ mpa_table <- function(mpa_sf, lang="EN") {
 
 
   if (lang=="EN" & !is.null(mpa_sf)) {
-    names(mpaTable) <- c("Site #", "Site Name", "Satus", "Size (km2)")
+    names(mpaTable) <- c("Site #", "Site Name", "Status", "Size (km2)")
   } else if (lang=="FR" & !is.null(mpa_sf)) {
-    names(mpaTable) <- c("Site #", "Site Name", "Satus", "Size (km2)")
+    names(mpaTable) <- c("Site #", "Site Name", "Status", "Size (km2)")
   } else {
-    names(mpaTable) <- c("Site #", "Site Name", "Satus", "Size (km2)")
+    names(mpaTable) <- c("Site #", "Site Name", "Status", "Size (km2)")
   }
   mpaTable <- distinct(mpaTable)
   return(mpaTable)

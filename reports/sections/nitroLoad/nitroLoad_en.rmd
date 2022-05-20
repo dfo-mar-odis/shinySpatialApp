@@ -36,14 +36,14 @@ write_meta(totalNitroLoad_rr, "EN")
 ```
 
 
-Dataset description from the Open Data record [@OpenData_nitroLoad] [@nitroLoad_pub]:
+Dataset description from the Open Data record [@OpenData_nitroLoad; For the full methods see @nitroLoad_pub]:
 ```{r nitroLoad-text, results='asis'}
 writeLines(noquote(totalNitroLoad_rr$text$en))
 
 ```
 
 
-#### ***Area-specific nitrogen load results***
+##### *Area-specific nitrogen load results*
 ```{r nitroLoad-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 totalOutputList <- master_intersect(totalNitroLoad_rr$data_sf, mapDataList, getRegion = TRUE)
@@ -70,7 +70,7 @@ nitroLoadReport <- if (is.null(totalOutputList$studyData) & is.null(deltaOutputL
 writeLines(noquote(nitroLoadReport))
 ```
 
-```{r totalNitroLoad-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(totalNitroLoad_rr, "EN"), 'Map showing Total Nitrogen load (kg N/yr). Calculated in: [@nitroLoad_pub].')}
+```{r totalNitroLoad-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(totalNitroLoad_rr, "EN"), 'Map of total nitrogen load (kg N/yr) from point and non-point source inputs (wastewater, atmospheric deposition, land use, fertilizer applications, and regional industries) within coastal watersheds (outlined in black) in the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries. Data were obtained from @OpenData_nitroLoad. For a full description of the methods see @nitroLoad_pub.')}
 if (!is.null(totalOutputList$studyData)) {
     plot(plot_rr_sf(regionMap, totalOutputList$regionData, 
                     attribute=totalNitroLoad_rr$attribute, 
@@ -78,8 +78,8 @@ if (!is.null(totalOutputList$studyData)) {
                     continuousAttr=TRUE))
 }
 ```
-
-```{r totalNitroLoad-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(totalNitroLoad_rr, "EN"), 'Map showing Total Nitrogen load (kg N/yr). Calculated in: [@nitroLoad_pub].')}
+ 
+```{r totalNitroLoad-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(totalNitroLoad_rr, "EN"), 'Map of total nitrogen load (kg N/yr) from point and non-point source inputs (wastewater, atmospheric deposition, land use, fertilizer applications, and regional industries) within coastal watersheds (outlined in black) in the search area (red outline). Data were obtained from @OpenData_nitroLoad. For a full description of the methods see @nitroLoad_pub.')}
 if (!is.null(totalOutputList$studyData)) {
     totalRegionMax <- max(totalOutputList$regionData[[totalNitroLoad_rr$attribute]])
     totalRegionMin <- min(totalOutputList$regionData[[totalNitroLoad_rr$attribute]])
@@ -92,7 +92,7 @@ if (!is.null(totalOutputList$studyData)) {
     }
 ```
 
-```{r deltaNitroLoad-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(deltaNitroLoad_rr, "EN"), 'Map showing the Mean ratio between the total nitrogen embayment loading rate and the sum of the rates of tidal exchange and freshwater recharge. Calculated in: [@nitroLoad_pub].')}
+```{r deltaNitroLoad-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(deltaNitroLoad_rr, "EN"), 'Map of the mean ratio between the total nitrogen embayment loading rate and the sum of the rates of tidal exchange and freshwater recharge, observed within the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries. Data were obtained from @OpenData_nitroLoad. For a full description of the methods see @nitroLoad_pub.')}
 if (!is.null(deltaOutputList$studyData)) {
     plot(plot_rr_sf(regionMap, deltaOutputList$regionData, 
                     attribute=deltaNitroLoad_rr$attribute, 
@@ -102,7 +102,7 @@ if (!is.null(deltaOutputList$studyData)) {
 ```
 
 
-```{r deltaNitroLoad-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(deltaNitroLoad_rr, "EN"), 'Map showing the Mean ratio between the total nitrogen embayment loading rate and the sum of the rates of tidal exchange and freshwater recharge. Calculated in: [@nitroLoad_pub].')}
+```{r deltaNitroLoad-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(deltaNitroLoad_rr, "EN"), 'Map of the mean ratio between the total nitrogen embayment loading rate and the sum of the rates of tidal exchange and freshwater recharge, observed in the search area (red outline). Data were obtained from @OpenData_nitroLoad. For a full description of the methods see @nitroLoad_pub.')}
 if (!is.null(deltaOutputList$studyData)) {
     deltaRegionMax <- max(deltaOutputList$regionData[[deltaNitroLoad_rr$attribute]])
     deltaRegionMin <- min(deltaOutputList$regionData[[deltaNitroLoad_rr$attribute]])
