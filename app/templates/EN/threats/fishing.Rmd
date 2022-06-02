@@ -1,0 +1,9 @@
+# **SEARCH RESULTS: HUMAN DIMENSION**  
+
+## **FISHING**
+
+```{r child = here::here("reports/sections/benthicEffort/benthicEffort_en.rmd")}
+```
+
+```{r child = here::here("reports/sections/lobsterEffort/lobsterEffort_en.rmd")}
+```

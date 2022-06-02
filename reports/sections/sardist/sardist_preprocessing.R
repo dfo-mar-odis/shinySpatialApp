@@ -52,8 +52,7 @@ sf::sf_use_s2(FALSE) # because sf 1.0 is "broken" does not support treating sphe
 
 
 library(arcgisbinding)
-arc.check_product()
-
+arc.check_product() # you must have access to an ESRI arc license. Yuck :(
 
 get_sde_sf <- function(sdeLayerPath, whereClause = "OBJECTID > 0", isGeo=TRUE, cropRegion=FALSE) {
   sdeDataset <- arc.open(sdeLayerPath)
