@@ -3,8 +3,6 @@ source(here::here("reports/R/dataFunctions.R"))
 
 source(here::here("config.R"))
 
-
-
 loadResult <- load_rdata(c("CommonData", "sardist_rr"), regionStr)
 
 
@@ -48,11 +46,16 @@ if(!is.null(openSardist_rr)) {
 
 
 # ------------------GEODATABASE VERSION------------------------
-sf::sf_use_s2(FALSE) # because sf 1.0 is "broken" does not support treating spheres as flat
-
 
 library(arcgisbinding)
 arc.check_product() # you must have access to an ESRI arc license. Yuck :(
+
+# sanity check the bridge:
+filename <- system.file("extdata", "ca_ozone_pts.shp",
+                        package = "arcgisbinding")
+d <- arc.open(filename)
+cat('all fields:', names(d@fields), fill = TRUE) # print all fields
+
 
 get_sde_sf <- function(sdeLayerPath, whereClause = "OBJECTID > 0", isGeo=TRUE, cropRegion=FALSE) {
   sdeDataset <- arc.open(sdeLayerPath)
@@ -70,6 +73,9 @@ get_sde_sf <- function(sdeLayerPath, whereClause = "OBJECTID > 0", isGeo=TRUE, c
   return(outData)
 }
 
+somePath <- "C:\\Users\\stoyelq\\Desktop\\Work\\Reproducible_reports\\sara_database\\WEB.DFO_Regions"
+arc.open(somePath)
+
 
 sde_file <- system.file("C:/Users/stoyelq/Desktop/Work/Reproducible_reports/sara_database/VIEWER_SARA.sde/WEB.DFO_Regions",
                         package="arcgisbinding")
@@ -77,6 +83,7 @@ dataSDE <- arc.open(sde_file)
 
 regionsPath <- here::here("../../sara_database/VIEWER_SARA.sde/WEB.DFO_Regions")
 arc.open(regionsPath)
+
 regions_sf <- get_sde_sf(regionsPath)
 
 plot(dplyr::filter(regions_sf, DFO_REGION=="Maritimes")$geom)
