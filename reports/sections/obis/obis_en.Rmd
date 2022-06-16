@@ -79,7 +79,7 @@ if (!is.null(outputList$studyData)) {
 }
 ```
 
-##### *Area-Specific GBIF Search Results*
+##### *Area-Specific GBIF and/or iNaturalist Search Results*
 
 ```{r gbif-results, cache=FALSE, include=FALSE}
 inaturalist_sf = subset(gbif_rr$data_sf, title == "iNaturalist Research-grade Observations")
@@ -97,16 +97,16 @@ summarySarTable <- add_col_to_sar_summary(summarySarTable, "[GBIF](#gbif-section
 
 ```{r gbif-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 reportGbif <-  if (is.null(gbifClipped$studyData)) {
-  "*	There are no relevant records in the Global Biodiversity Information Facility (GBIF) for this search area."
+  "*	There are no relevant records in the Global Biodiversity Information Facility (GBIF) and iNaturalist for this search area."
 } else if (is.null(inaturalistClipped$studyData)){
   "*	There are relevant records in the Global Biodiversity Information Facility (GBIF) for this search area."
 } else {
-  "*	There are relevant records in the Global Biodiversity Information Facility (GBIF) including iNaturalist entries for this search area."  
+  "*	There are relevant records in the Global Biodiversity Information Facility (GBIF), including iNaturalist entries for this search area."  
 }
 writeLines(reportGbif)
 ```
 
-```{r gbif-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbif_rr, "EN"), 'Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
+```{r gbif-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbif_rr, "EN"), 'Map of Global Biodiversity Information Facility (GBIF) observation records (black circles) of species observed within the search area (red outline) and listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
 if (!is.null(gbifClipped$studyData)) {
   plot_rr_sf(areaMap, gbifClipped$mapData, attribute=gbif_rr$attribute)
 }
@@ -117,8 +117,6 @@ if (!is.null(gbifClipped$studyData)) {
   knitr::kable(gbifTable, align="l", caption=paste(write_caption_blurb(gbif_rr, "EN"), "Global Biodiversity Information Facility (GBIF) observation records of species observed within the search area, and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
-
-##### *Area-Specific iNaturalist Search Results*
 
 ```{r inaturalist-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbif_rr, "EN"), 'Research-grade iNaturalist observations within the search area (red outline) of species that have been added to the Global Biodiversity Information Facility (GBIF). Species included have been listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. Observations are coloured to show coordinate uncertainties of the data, where observations with coordinate uncertainties >20 km represent locations that have been obscured due to geoprivacy concerns (e.g., hunting). NAs refer to observations with no provided coordinate uncertainty. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
 if (!is.null(inaturalistClipped$studyData)) {
@@ -132,3 +130,4 @@ if (!is.null(inaturalistClipped$studyData)) {
 }
 ```
 
+And see \@ref(#gbif-section)
