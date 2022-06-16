@@ -130,4 +130,3 @@ if (!is.null(inaturalistClipped$studyData)) {
 }
 ```
 
-And see \@ref(#gbif-section)
