@@ -1,4 +1,4 @@
-## **AREAS DESIGNATED FOR SPATIAL PLANNING**
+# **SEARCH RESULTS: AREAS DESIGNATED FOR SPATIAL PLANNING**
 
 This module describes information relevant to spatial planning from a variety of sources. Area-specific outputs are provided in sub-sections labelled according to each data source. Data descriptions, references and contact information are provided at the beginning of each sub-section.
 

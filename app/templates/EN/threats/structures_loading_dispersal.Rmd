@@ -1,0 +1,15 @@
+## **STRUCTURES, LOADING & DISPOSAL**
+
+```{r child = here::here("reports/sections/nitroLoad/nitroLoad_en.rmd")}
+```
+
+```{r child = here::here("reports/sections/docks/docks_en.rmd")}
+```
+
+```{r child = here::here("reports/sections/waste/waste_en.rmd")}
+```
+
+```{r child = here::here("reports/sections/power/power_en.rmd")}
+```
+
+

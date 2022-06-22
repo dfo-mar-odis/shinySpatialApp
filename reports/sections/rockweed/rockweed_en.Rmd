@@ -39,7 +39,7 @@ Data notes:
 - Regional maps represent a mosaic of daily images collected at different time of year from 2016 to 2019. These maps do not represent a long-term average, although intertidal vegetation patches tend to be stationary and persistent.
 - Due to the 10 m spatial resolution of the satellite data, NDVI values for each pixel represent a spatial average within an area of 10 m^2^, so sparse vegetation might not be captured in the map.
 
-#### ***Area-specific Intertidal Vegetation and Rockweed search results***  
+##### *Area-specific Intertidal Vegetation and Rockweed search results* 
 
 ```{r overlap-rockweed, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
