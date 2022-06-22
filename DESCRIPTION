@@ -36,4 +36,6 @@ Imports:
     plyr,
     tibble,
     stringr
+    lwgeom,
+    gridExtra
 RoxygenNote: 7.1.1

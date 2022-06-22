@@ -32,7 +32,7 @@ Dataset description from the Open Data record [@OpenData_pasBay]:
 writeLines(noquote(pasBay_rr$text$en))
 ```
 
-#### ***Area-specific search results for the Passamaquoddy Bay Biodiversity Trawls***
+##### *Area-Specific Search Results for the Passamaquoddy Bay Biodiversity Trawls*
 
 ```{r pasBay-results, include=FALSE, cache=FALSE}
 pasBayClipped <- master_intersect(pasBay_rr$data_sf, mapDataList)
@@ -53,7 +53,7 @@ pasBayCheck <- if (!is.null(pasBayClipped$studyData)) {
 writeLines(noquote(pasBayCheck))
 ```
 
-```{r pasBay-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(pasBay_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from the Passamaquoddy Bay Biodiversity Trawls.  Blue lines indicate the location of each trawl sample.')}
+```{r pasBay-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(pasBay_rr, "EN"), 'Map of Passamaquoddy Bay Biodiversity Trawls within the search area (red outline). Blue lines indicate the location of each trawl sample. Data were obtained from @OpenData_pasBay')}
 
 if (!is.null(pasBayClipped$studyData)) {
     plot_rr_sf(areaMap, pasBayClipped$mapData, lwd = 0.7, colour = "blue")
@@ -63,7 +63,7 @@ if (!is.null(pasBayClipped$studyData)) {
 ```{r pasBay-SAR-table}
 if (!is.null(pasBayClipped$studyData)) {
   if (nrow(pasBaySarTable) > 0) {
-    knitr::kable(pasBaySarTable, align="l", caption=paste("\\label{tab:pasBay_SAR_table}", write_caption_blurb(pasBay_rr, "EN"), "Passamaquoddy Bay Biodiversity Trawl observation records of species contained within the search area and listed by the Species At Risk Act (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+    knitr::kable(pasBaySarTable, align="l", caption=paste("\\label{tab:pasBay_SAR_table}", write_caption_blurb(pasBay_rr, "EN"), "Passamaquoddy Bay Biodiversity Trawl observation records of species contained within the search area (red outline) and/or listed by the Species At Risk Act (SARA) and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). <b> The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
   }
 }
 ```
