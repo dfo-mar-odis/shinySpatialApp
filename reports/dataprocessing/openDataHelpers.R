@@ -297,21 +297,15 @@ RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
 }
 
 
-get_esri_rest <- function(mapServerUrl, layer="1", where="1=1", geometry=NULL) {
+get_esri_rest <- function(mapServerUrl, layer="1", where="1=1", geometry="") {
   url <- parse_url(url)
   url$path <- paste(url$path, layer, "query", sep = "/")
-  if (is.null(geometry)) {
-    url$query <- list(where = where,
-                      outFields = "*",
-                      returnGeometry = "true",
-                      f = "geojson")
-  } else {
-    url$query <- list(geometry = geometry,
-                      where = where,
-                      outFields = "*",
-                      returnGeometry = "true",
-                      f = "geojson")
-  }
+  url$query <- list(geometry = geometry,
+                    where = where,
+                    outFields = "*",
+                    returnGeometry = "true",
+                    f = "geojson")
+  
 
   request <- build_url(url)
   out_sf <- st_read(request)
