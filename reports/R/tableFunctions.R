@@ -533,3 +533,22 @@ add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCo
 get_cetacean_common_name <- function(dataCol) {
  return(sub("\\:.*", "", dataCol))
 }
+
+
+tuna_table <- function(tuna_sf){
+  if (is.null(tuna_sf)) {
+    return(NULL)
+  }
+  
+  tuna_sf$geometry <- NULL
+  tuna_df <- sf::st_drop_geometry(tuna_sf)
+  tuna_df <- dplyr::select(tuna_df, c("Overall Presence", 
+                                      "LIFE_STAGE", 
+                                      "RELATIVE_DISTRIBUTION",
+                                      "RELATIVE_ABUNDANCE")) %>%
+    unique() 
+  names(tuna_df) <- c("Overal Presence", "Lifestage", "Relative distribution", "Relative Abundance")
+  rownames(tuna_df) <- NULL
+  return(tuna_df)
+}
+
