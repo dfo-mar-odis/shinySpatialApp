@@ -535,20 +535,20 @@ get_cetacean_common_name <- function(dataCol) {
 }
 
 
-tuna_table <- function(tuna_sf){
-  if (is.null(tuna_sf)) {
+isle_madame_table <- function(data_sf){
+  if (is.null(data_sf)) {
     return(NULL)
   }
   
-  tuna_sf$geometry <- NULL
-  tuna_df <- sf::st_drop_geometry(tuna_sf)
-  tuna_df <- dplyr::select(tuna_df, c("Overall Presence", 
+  data_sf$geometry <- NULL
+  data_df <- sf::st_drop_geometry(data_sf)
+  data_df <- dplyr::select(data_df, c("OVERALL_PRESENCE", 
                                       "LIFE_STAGE", 
                                       "RELATIVE_DISTRIBUTION",
                                       "RELATIVE_ABUNDANCE")) %>%
     unique() 
-  names(tuna_df) <- c("Overal Presence", "Lifestage", "Relative distribution", "Relative Abundance")
-  rownames(tuna_df) <- NULL
-  return(tuna_df)
+  names(data_df) <- c("Overall Presence", "Lifestage", "Relative distribution", "Relative Abundance")
+  rownames(data_df) <- NULL
+  return(data_df)
 }
 

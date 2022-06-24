@@ -21,7 +21,6 @@ tuna_sf <- dplyr::select(tuna_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_
                                     "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA"))
 tuna_sf$OVERALL_PRESENCE[tuna_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Present June-November, likely present May, December"
 
-names(tuna_sf)[names(tuna_sf) == 'OVERALL_PRESENCE'] <- 'Overall Presence'
 
 
 tuna_rr$data_sf <- sf::st_transform(tuna_sf, crs = 4326) %>%
@@ -30,6 +29,7 @@ tuna_rr$data_sf <- sf::st_transform(tuna_sf, crs = 4326) %>%
 
 
 tuna_rr$attribute <- "None"
-
+tuna_rr$metadata$qualityTier <- highQuality
+tuna_rr$datasetName <- "Bluefin Tuna Presence"
 save(tuna_rr, file = file.path(localFileSavePath, "Open/tuna_rr.RData"))
 
