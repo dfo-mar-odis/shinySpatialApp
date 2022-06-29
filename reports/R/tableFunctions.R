@@ -535,19 +535,16 @@ get_cetacean_common_name <- function(dataCol) {
 }
 
 
-isle_madame_table <- function(data_sf){
+isle_madame_table <- function(data_sf, cols, colnames){
   if (is.null(data_sf)) {
     return(NULL)
   }
   
   data_sf$geometry <- NULL
   data_df <- sf::st_drop_geometry(data_sf)
-  data_df <- dplyr::select(data_df, c("OVERALL_PRESENCE", 
-                                      "LIFE_STAGE", 
-                                      "RELATIVE_DISTRIBUTION",
-                                      "RELATIVE_ABUNDANCE")) %>%
+  data_df <- dplyr::select(data_df, cols) %>%
     unique() 
-  names(data_df) <- c("Overall Presence", "Lifestage", "Relative distribution", "Relative Abundance")
+  names(data_df) <- colnames
   rownames(data_df) <- NULL
   return(data_df)
 }

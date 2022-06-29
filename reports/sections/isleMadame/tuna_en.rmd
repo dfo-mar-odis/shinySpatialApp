@@ -15,7 +15,7 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 # Generate a section for each dataset
 ###
 childRmd <- here::here("reports/sections/isleMadame/isleMadame_en.rmd")
-out <-  knitr::knit_expand(childRmd, imSection = "tuna")
+out <-  knitr::knit_expand(childRmd, imSection = "tuna", cols =  'c("OVERALL_PRESENCE","LIFE_STAGE", "RELATIVE_DISTRIBUTION", "RELATIVE_ABUNDANCE")', colnames = 'c("Overall Presence", "Lifestage", "Relative distribution", "Relative Abundance")')
 
 res = knitr::knit_child(text = unlist(out), quiet = TRUE)
 cat(res, sep = "\n")
