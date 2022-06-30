@@ -20,7 +20,7 @@ snowCrab_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"), progress = TRUE)
 snowCrab_sf <- dplyr::select(snowCrab_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
                                     "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "IMPORTANCE_RATIONALE"))
 snowCrab_sf$OVERALL_PRESENCE[snowCrab_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
-
+snowCrab_sf["Overall Presence"] <- snowCrab_sf$OVERALL_PRESENCE
 
 
 

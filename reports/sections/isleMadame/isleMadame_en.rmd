@@ -26,9 +26,7 @@ imSection_rr <- get("{{imSection}}_rr")
 
 ```
 
-### **`r imSection_rr$datasetName` ** {#{{imSection}}-section}
-
-
+#### *`r imSection_rr$datasetName` * {#{{imSection}}-section}
 
 ```{r {{imSection}}-meta, results='asis'}
 # metadata blurb at start of each section
@@ -40,7 +38,6 @@ write_meta(imSection_rr, "EN")
   writeLines(imSection_rr$text$en, sep="  \n")
 ```
 
-#### *Area-specific `r imSection_rr$datasetName` results*
 ```{r {{imSection}}-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 outputList <- master_intersect(imSection_rr$data_sf, mapDataList, getRegion = TRUE)
@@ -59,19 +56,17 @@ outputReport <- if (is.null(outputList$studyData)) {
 writeLines(noquote(outputReport))
 ```
 
-```{r {{imSection}}-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(imSection_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from', imSection_rr$datasetName, 'records .')}
-if (!is.null(outputList$regionData)) {
-  # common plotting function:
-  plot_rr_sf(regionMap, outputList$regionData, attribute = 
-               imSection_rr$attribute)
-}
-```
-
 ```{r {{imSection}}-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(imSection_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from', imSection_rr$datasetName, 'records .')}
+
 if (!is.null(outputList$studyData)) {
   # common plotting function:
-  plot_rr_sf(areaMap, outputList$mapData, attribute = 
-               imSection_rr$attribute)
+  if (imSection_rr$attribute %in% names(outputList$mapData)){
+     plotData <- outputList$mapData %>% dplyr::filter(sf::st_drop_geometry(outputList$mapData[imSection_rr$attribute]) != "Verify with original record")
+    if (nrow(plotData) > 0) {
+      plot_rr_sf(areaMap, plotData, attribute = 
+               imSection_rr$attribute)    
+    }
+  }
 }
 ```
 
