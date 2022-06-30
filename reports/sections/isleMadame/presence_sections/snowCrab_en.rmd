@@ -1,0 +1,22 @@
+
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+```{r snowCrab-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```
+
+```{r snowCrab-parent-section, echo=FALSE, results = "asis"}
+###
+# Generate a section for each dataset
+###
+childRmd <- here::here("reports/sections/isleMadame/isleMadame_en.rmd")
+out <-  knitr::knit_expand(childRmd, imSection = "snowCrab", cols =  'c("OVERALL_PRESENCE","LIFE_STAGE", "RELATIVE_DISTRIBUTION", "RELATIVE_ABUNDANCE", "IMPORTANCE_RATIONALE")', colnames = 'c("Overall Presence", "Lifestage", "Relative distribution", "Relative Abundance", "Importance Rationale")')
+
+res = knitr::knit_child(text = unlist(out), quiet = TRUE)
+cat(res, sep = "\n")
+```

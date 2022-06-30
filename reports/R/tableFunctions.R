@@ -540,8 +540,8 @@ isle_madame_table <- function(data_sf, cols, colnames){
     return(NULL)
   }
   
-  data_sf$geometry <- NULL
   data_df <- sf::st_drop_geometry(data_sf)
+  data_sf$geometry <- NULL
   data_df <- dplyr::select(data_df, cols) %>%
     unique() 
   names(data_df) <- colnames
