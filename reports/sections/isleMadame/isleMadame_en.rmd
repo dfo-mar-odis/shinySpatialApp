@@ -46,16 +46,6 @@ outputTable <- isle_madame_table(outputList$studyData, cols={{ cols }}, colnames
 
 ```
 
-```{r {{imSection}}-check, echo=FALSE, results='asis',}
-# Check if there is any data in the study area
-outputReport <- if (is.null(outputList$studyData)) {
-  paste("* There are no relevant", imSection_rr$datasetName, "records for this search area.")
-} else {
-  paste("* There are relevant", imSection_rr$datasetName, "records for this search area.")
-}
-writeLines(noquote(outputReport))
-```
-
 ```{r {{imSection}}-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(imSection_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from', imSection_rr$datasetName, 'records .')}
 
 if (!is.null(outputList$studyData)) {
