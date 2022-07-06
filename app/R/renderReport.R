@@ -72,6 +72,8 @@ render_full_report <- function(geoms, lang, parts,
   # Rendering to HTML 
   ok <- tryCatch({
       rmarkdown::render(rmd_ready, 
+        quiet = FALSE, run_pandoc=FALSE)
+      rmarkdown::render(rmd_ready, 
         quiet = FALSE)
         TRUE
       }, 

@@ -533,3 +533,15 @@ add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCo
 get_cetacean_common_name <- function(dataCol) {
  return(sub("\\:.*", "", dataCol))
 }
+
+add_row_to_intro_summary <- function(introSummary, name, result) {
+  absentCode <- "&nbsp;-&nbsp;"
+  presentCode <- "&#x2714;"
+  
+  introSummary <- rbind(introSummary, 
+                        data.frame(Datasource=name,
+                                   Results=ifelse(result, presentCode,
+                                                  absentCode )))
+  return(introSummary)
+  
+}
