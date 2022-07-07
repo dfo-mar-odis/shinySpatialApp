@@ -28,6 +28,7 @@ opprrpe_rr$data_sf <- sf::st_transform(opprrpe_sf, crs = 4326) %>%
 
 
 opprrpe_rr$attribute <- "Response Area"
+opprrpe_rr$metadata$qualityTier <- highQuality
 
 save(opprrpe_rr, file = file.path(localFileSavePath, "Open/opprrpe_rr.RData"))
 

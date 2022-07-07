@@ -29,7 +29,7 @@ narWhale_rr$data_sf <- sf::st_transform(narWhale_sf, crs = 4326) %>%
 
 
 narWhale_rr$attribute <- "None"
-narWhale_rr$metadata$qualityTier <- highQuality
+narWhale_rr$metadata$qualityTier <- mediumQuality
 narWhale_rr$datasetName <- "North Atlantic Right Whale Presence"
 save(narWhale_rr, file = file.path(localFileSavePath, "Open/narWhale_rr.RData"))
 

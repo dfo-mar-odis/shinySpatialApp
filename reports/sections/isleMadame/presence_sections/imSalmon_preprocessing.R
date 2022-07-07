@@ -29,7 +29,7 @@ imSalmon_rr$data_sf <- sf::st_transform(imSalmon_sf, crs = 4326) %>%
 
 
 imSalmon_rr$attribute <- "None"
-imSalmon_rr$metadata$qualityTier <- highQuality
+imSalmon_rr$metadata$qualityTier <- mediumQuality
 imSalmon_rr$datasetName <- "Atlantic Salmon Presence"
 save(imSalmon_rr, file = file.path(localFileSavePath, "Open/imSalmon_rr.RData"))
 

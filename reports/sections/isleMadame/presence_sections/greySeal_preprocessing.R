@@ -29,7 +29,7 @@ greySeal_rr$data_sf <- sf::st_transform(greySeal_sf, crs = 4326) %>%
 
 
 greySeal_rr$attribute <- "None"
-greySeal_rr$metadata$qualityTier <- highQuality
+greySeal_rr$metadata$qualityTier <- mediumQuality
 greySeal_rr$datasetName <- "Grey Seal Presence"
 save(greySeal_rr, file = file.path(localFileSavePath, "Open/greySeal_rr.RData"))
 

@@ -14,6 +14,12 @@ fileLoadPath <- file.path("//ent.dfo-mpo.ca","ATLShares", "Science", "BIODataSvc
 
 rr_openDataList <- data.frame("rrStr" = c("ebsa_rr", "crithab_rr", "sardist_rr", 
                                           "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
-                                          "rv_rr", "pasBay_rr", "benthicEffort_rr"))
+                                          "rv_rr", "pasBay_rr", "benthicEffort_rr",
+                                          "fbWhale_rr", "bnWhale_rr", "greySeal_rr",
+                                          "harbourPorpoise_rr", "harbourSeal_rr", 
+                                          "imsalmon_rr", "imSalmonRivers_rr",
+                                          "imLobster_rr", "narWhale_rr", "snowCrab_rr",
+                                          "ssClam_rr", "tuna_rr", "imAcoustic_rr",
+                                          "opprrpe_rr"))
 
 

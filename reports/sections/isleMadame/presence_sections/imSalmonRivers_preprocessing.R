@@ -26,7 +26,7 @@ imSalmonRivers_rr$data_sf <- sf::st_transform(imSalmonRivers_sf, crs = 4326) %>%
 
 
 imSalmonRivers_rr$attribute <- "DU"
-imSalmonRivers_rr$metadata$qualityTier <- highQuality
+imSalmonRivers_rr$metadata$qualityTier <- mediumQuality
 imSalmonRivers_rr$datasetName <- "Salmon Rivers Presence"
 save(imSalmonRivers_rr, file = file.path(localFileSavePath, "Open/imSalmonRivers_rr.RData"))
 

@@ -29,7 +29,7 @@ bnWhale_rr$data_sf <- sf::st_transform(bnWhale_sf, crs = 4326) %>%
 
 
 bnWhale_rr$attribute <- "None"
-bnWhale_rr$metadata$qualityTier <- highQuality
+bnWhale_rr$metadata$qualityTier <- mediumQuality
 bnWhale_rr$datasetName <- "Bottlenose Whale Presence"
 save(bnWhale_rr, file = file.path(localFileSavePath, "Open/bnWhale_rr.RData"))
 

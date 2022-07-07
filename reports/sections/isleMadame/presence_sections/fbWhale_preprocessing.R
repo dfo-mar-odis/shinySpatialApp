@@ -29,7 +29,7 @@ fbWhale_rr$data_sf <- sf::st_transform(fbWhale_sf, crs = 4326) %>%
 
 
 fbWhale_rr$attribute <- "None"
-fbWhale_rr$metadata$qualityTier <- highQuality
+fbWhale_rr$metadata$qualityTier <- mediumQuality
 fbWhale_rr$datasetName <- "Finback Whale Presence"
 save(fbWhale_rr, file = file.path(localFileSavePath, "Open/fbWhale_rr.RData"))
 

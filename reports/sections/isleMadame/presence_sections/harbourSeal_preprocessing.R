@@ -29,7 +29,7 @@ harbourSeal_rr$data_sf <- sf::st_transform(harbourSeal_sf, crs = 4326) %>%
 
 
 harbourSeal_rr$attribute <- "None"
-harbourSeal_rr$metadata$qualityTier <- highQuality
+harbourSeal_rr$metadata$qualityTier <- mediumQuality
 harbourSeal_rr$datasetName <- "Harbour Seal Presence"
 save(harbourSeal_rr, file = file.path(localFileSavePath, "Open/harbourSeal_rr.RData"))
 

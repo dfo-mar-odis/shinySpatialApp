@@ -28,7 +28,7 @@ ssClam_rr$data_sf <- sf::st_transform(ssClam_sf, crs = 4326) %>%
   sf::st_crop(region_sf)
 
 ssClam_rr$attribute <- "OVERALL_PRESENCE"
-ssClam_rr$metadata$qualityTier <- highQuality
+ssClam_rr$metadata$qualityTier <- mediumQuality
 ssClam_rr$datasetName <- "Soft Shelled Clams Presence"
 save(ssClam_rr, file = file.path(localFileSavePath, "Open/ssClam_rr.RData"))
 

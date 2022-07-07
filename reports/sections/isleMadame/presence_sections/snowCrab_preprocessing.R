@@ -30,7 +30,7 @@ snowCrab_rr$data_sf <- sf::st_transform(snowCrab_sf, crs = 4326) %>%
 
 
 snowCrab_rr$attribute <- "Overall Presence"
-snowCrab_rr$metadata$qualityTier <- highQuality
+snowCrab_rr$metadata$qualityTier <- mediumQuality
 snowCrab_rr$datasetName <- "Snow Crab Presence"
 save(snowCrab_rr, file = file.path(localFileSavePath, "Open/snowCrab_rr.RData"))
 

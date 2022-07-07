@@ -29,7 +29,7 @@ tuna_rr$data_sf <- sf::st_transform(tuna_sf, crs = 4326) %>%
 
 
 tuna_rr$attribute <- "None"
-tuna_rr$metadata$qualityTier <- highQuality
+tuna_rr$metadata$qualityTier <- mediumQuality
 tuna_rr$datasetName <- "Bluefin Tuna Presence"
 save(tuna_rr, file = file.path(localFileSavePath, "Open/tuna_rr.RData"))
 

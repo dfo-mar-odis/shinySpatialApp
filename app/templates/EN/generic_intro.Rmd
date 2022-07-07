@@ -111,6 +111,12 @@ if (file.exists(introTableFilePath)){
   load(introTableFilePath)
   if (is.data.frame(finalSummaryIntroTable)){
     if (nrow(finalSummaryIntroTable) > 0){
+      
+      absentCode <- "&nbsp;-&nbsp;"
+      presentCode <- "&#x2714;"
+
+      finalSummaryIntroTable <-dplyr:: mutate_all(finalSummaryIntroTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+      
       knitr::kable(finalSummaryIntroTable, align="l",
         caption = "Overview of which data sources queried have results within the study area", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
     }

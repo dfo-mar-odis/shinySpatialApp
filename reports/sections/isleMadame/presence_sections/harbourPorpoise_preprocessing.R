@@ -29,7 +29,7 @@ harbourPorpoise_rr$data_sf <- sf::st_transform(harbourPorpoise_sf, crs = 4326) %
 
 
 harbourPorpoise_rr$attribute <- "None"
-harbourPorpoise_rr$metadata$qualityTier <- highQuality
+harbourPorpoise_rr$metadata$qualityTier <- mediumQuality
 harbourPorpoise_rr$datasetName <- "Harbour Porpoise Presence"
 save(harbourPorpoise_rr, file = file.path(localFileSavePath, "Open/harbourPorpoise_rr.RData"))
 
