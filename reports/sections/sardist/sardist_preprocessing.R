@@ -18,7 +18,6 @@ filter_and_union <- function(sciName, sfObj) {
 # get opendata metadata and set missing fields:
 sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
 sardist_rr <- get_opendata_rr(sardistPkgId)
-sardist_rr <- openSardist_rr
 
 sardist_rr$metadata$qualityTier <- highQuality
 sardist_rr$metadata$contact <- email_format("info\\@dfo-mpo.gc.ca")

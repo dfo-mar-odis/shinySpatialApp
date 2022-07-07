@@ -48,6 +48,9 @@ writeLines(noquote(waste_rr$text$en))
 # clip the data to the Study and Map areas:
 wasteOutputList <- master_intersect(waste_rr$data_sf, mapDataList)
 
+# summary intro table
+introResult <- !is.null(wasteOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Active and Inactive Disposal at Sea Sites](#waste-section)", result=introResult)
 ```
 
 ```{r waste-haTable, echo=FALSE, results='asis'}

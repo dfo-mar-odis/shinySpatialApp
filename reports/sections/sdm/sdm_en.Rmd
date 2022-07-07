@@ -45,6 +45,13 @@ clippedHp <- master_intersect(harbourPorpoise_rr$data_sf, mapDataList)
 clippedHump <- master_intersect(humpbackWhale_rr$data_sf , mapDataList)
 clippedSei <- master_intersect(seiWhale_rr$data_sf, mapDataList)
 
+
+
+# summary intro table
+introResult <- !is.null(clippedFin$studyData) | !is.null(clippedHp$studyData) | !is.null(clippedHump$studyData) | !is.null(clippedSei$studyData) 
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[SDM](#sdm-section)", result=introResult)
+
+
 tableSDM <- data.frame("Fin Whale" = !is.null(clippedFin$studyData),
                         "Harbour Porpoise" = !is.null(clippedHp$studyData),
                         "Humpback Whale" = !is.null(clippedHump$studyData),

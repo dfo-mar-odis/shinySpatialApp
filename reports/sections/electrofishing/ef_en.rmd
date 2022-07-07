@@ -38,6 +38,11 @@ efOutputList <- master_intersect(ef_rr$data_sf, mapDataList)
 wsOutputList <- master_intersect(ws_rr$data_sf, mapDataList)
 riversOutputList <- master_intersect(rivers_rr$data_sf, mapDataList)
 
+# summary intro table
+introResult <- !is.null(efOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[electrofishing](#ef-section)", result=introResult)
+
+
 tableList <- create_sar_tables(efOutputList$studyData, listed_species, uniqueCols = c("geometry", "Year"))
 efAllTable <- tableList$allSpecies
 efSarTable <- tableList$sarData

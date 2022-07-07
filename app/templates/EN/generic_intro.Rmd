@@ -28,6 +28,23 @@ knitr::opts_chunk$set(
 
 For more information about this report, please contact Quentin.Stoyel@dfo-mpo.gc.ca. Please circulate this report to all relevant contacts provided in each section to verify and supplement information.
 
+
+# **RESULTS SUMMARY**
+
+```{r intro-table}
+introTableFilePath <-here::here("app/output/introTable.rdata")
+if (file.exists(introTableFilePath)){
+  load(introTableFilePath)
+  if (is.data.frame(finalSummaryIntroTable)){
+    if (nrow(finalSummaryIntroTable) > 0){
+      knitr::kable(finalSummaryIntroTable, align="l",
+        caption = "Overview of which datasources queried have results within the study area", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+    }
+  }
+}
+```
+
+
 # **REPRODUCIBLE REPORTING: ABOUT THIS DATA DISCOVERY TOOL** 
 
 ``` {r user-comments, results = 'asis'}
@@ -100,28 +117,15 @@ knitr::kable(table_tier,align="l",
 ```
 
 
-# **RESULTS SUMMARY**
-
-```{r intro-table}
-finalSummaryIntroTable <- knitr::load_cache('summary-intro-gen', 'finalSummaryIntroTable')
-
-if (is.data.frame(finalSummaryIntroTable)){
-  if (nrow(finalSummaryIntroTable) > 0){
-    knitr::kable(finalSummaryIntroTable, align="l",
-      caption = "Overview of which datasources queried have results within the study area", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
-  }
-}
-```
-
-
-
 <!-- MAIN SECTIONS -->
 
 # **DATA DISCOVERY OUTPUTS**  
 {{add_parts}}
 
-```{r summary-intro-gen, cache=TRUE}
+```{r summary-intro-gen}
 finalSummaryIntroTable <- summaryIntroTable
+save(finalSummaryIntroTable, file = introTableFilePath)
+
 ```
 
 

@@ -17,7 +17,7 @@ if (FALSE) { #load in data:
 }
 ```
 
-### SARA Section 73 Permits
+### SARA Section 73 Permits {#permits-section}
 
 ```{r permits-load, include=FALSE}
 load_rdata(c("permits_rr"), regionStr, env = environment())
@@ -66,6 +66,12 @@ Please note the following caveats and disclaimers relevant to this section:
 
 ```{r permits-results, include=FALSE, cache=FALSE}
 outputList = master_intersect(permits_rr$data_sf, mapDataList, getRegion = TRUE)
+
+
+# summary intro table
+introResult <- !is.null(outputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[SARA Section 73 Permits](#permits-section)", result=introResult)
+
 
 permitTable = create_sar_tables(outputList$studyData, extraCols = NULL, listed_species)$sarData
 ```

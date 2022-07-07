@@ -40,10 +40,7 @@ writeLines(noquote(ebsa_rr$text$en))
 EBSAoutput <- master_intersect(ebsa_rr$data_sf, mapDataList, getRegion=TRUE)
 
 # summary intro table
-ebsaResult = TRUE
-if(is.null(EBSAoutput$studyData)){
-  ebsaResult = FALSE
-}
+ebsaResult <- !is.null(EBSAoutput$studyData)
 summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[EBSA](#ebsa-section)", result=ebsaResult)
 
 

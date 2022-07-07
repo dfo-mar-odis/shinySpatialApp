@@ -40,6 +40,10 @@ ADD SECTION TEXT HERE.
 # clip the data to the Study and Map areas:
 templateOutputList <- master_intersect(template_rr$data_sf, mapDataList)
 
+# summary intro table
+introResult <- !is.null(templateOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Template](#teplate-section)", result=introResult)
+
 # Create tables based off of the Scientific Name column, one with all species found,
 # and one with only the Species at Risk found.
 tableList <- create_sar_tables(templateOutputList$studyData, listed_species)

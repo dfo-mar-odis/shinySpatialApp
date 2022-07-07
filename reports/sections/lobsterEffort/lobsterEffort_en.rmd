@@ -49,6 +49,12 @@ writeLines(noquote(lobsterEffort_rr$text$en))
 # clip the data to the Study and Map areas:
 lobsterOutputList <- master_intersect(lobsterEffort_rr$data_sf, mapDataList, getRegion=TRUE)
 
+# summary intro table
+introResult <- !is.null(lobsterOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Lobster Fishing Effort](#lobsterEffort-section)", result=introResult)
+
+
+
 ```
 
 ```{r lobsterEffort-haTable, echo=FALSE, results='asis'}
