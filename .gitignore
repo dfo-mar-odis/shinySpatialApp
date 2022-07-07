@@ -9,6 +9,7 @@ app/data/*
 *.pdf
 *.png
 *.RData
+*.RDataTmp
 data.7z
 app/shinySpatialApp - Shortcut.lnk
 !app/data/.gitkeep

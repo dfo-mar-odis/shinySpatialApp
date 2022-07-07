@@ -1,5 +1,5 @@
 ---
-title: "Modus operandi for Strategic RAP Champions"
+title: "*Modus operandi* for Strategic RAP Champions"
 date: "`r Sys.Date()`"
 author: Strategic RAP Champions
 output:
@@ -9,6 +9,7 @@ output:
     lightbox: true
     gallery: false
     highlight: tango
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
 
 ```{r setup, include=FALSE}
@@ -21,15 +22,15 @@ knitr::opts_chunk$set(echo = TRUE)
 The Strategic Science Planning and Program Integrity (SSPPI) division in DFO Maritimes supports various projects and presents many opportunities to modernize data management and reporting practices. In 2018, requests to the division to identify and summarize the available DFO and non-DFO datasets within the Maritimes Region were becoming increasingly frequent. Born out of frustration and a need for swift and effective approaches, a team of self-proclaimed Strategic Reproducible Analytical Pipeline (RAP) Champions was formed to automate the creation of these Reports. The primary objective of this initiative has been to develop a web-based tool to generate Reproducible Reports to identify and describe DFO and non-DFO datasets within a user-defined geographic area. Specifically, this project address internal requests that support processes that provide frequent and standardized advice, such as CSAS, Marine Spatial Planning, Aquaculture Siting Responses, and Environmental Response, which have an emphasis on Species at Risk.
 
 
-As Strategic RAP Champions, we strive for an open and understanding culture within our group. How we implement this is constantly evolving and changing. However, we believe that digital tools can enhance the work we do to effectively collaborate with a growing network of internal and external partners (including organizations outside of Canada). Our focus on co-creation remains key for prioritization and accountability, to ensure that our work is truly helpful to DFO. We also value the continued advancement of new skills, intrinsic curiosity, and the pursuit of new opportunities, and this has been a major factor in our success in overcoming various frustrating obstacles. We acknowledge that there is no perfect balance for managing these competing and conflicting tasks and interests, but this can be at least partially remedied by continuous scope prioritization and close cooperation within our team (Bjarnason et al., 2012). Although we are highly ambitious, we consider it especially important to have reasonable expectations for ourselves and team members, given the backdrop of the COVID-19 pandemic, and other challenging personal and global events that can hinder workplace productivity and wellbeing (Cleary et al., 2020; Sigahi et al., 2021).
+As Strategic RAP Champions, we strive for an open and understanding culture within our group. How we implement this is constantly evolving and changing. However, we believe that digital tools can enhance the work we do to effectively collaborate with a growing network of internal and external partners (including organizations outside of Canada). Our focus on co-creation remains key for prioritization and accountability, to ensure that our work is truly helpful to DFO. We also value the continued advancement of new skills, intrinsic curiosity, and the pursuit of new opportunities, and this has been a major factor in our success in overcoming various frustrating obstacles. We acknowledge that there is no perfect balance for managing these competing and conflicting tasks and interests, but this can be at least partially remedied by continuous scope prioritization and close cooperation within our team [@Bjarnason2012]. Although we are highly ambitious, we consider it especially important to have reasonable expectations for ourselves and team members, given the backdrop of the COVID-19 pandemic, and other challenging personal and global events that can hinder workplace productivity and well-being [@Cleary2020; @Sigahi2021].
 
-This document takes inspiration from discussions, brainstorming sessions, [examples from successful companies](/company/culture/all-remote/remote-work-report/), as well as learning and development opportunities. We have adopted lots of ideas from the [GitLab's Guide to All-Remote](https://about.gitlab.com/company/culture/all-remote/guide/) to craft our own guide to keep improving the way we work and support each other.
+This document takes inspiration from discussions, brainstorming sessions, [examples from successful companies](/company/culture/all-remote/remote-work-report/), as well as learning and development opportunities. We have adopted lots of ideas from [GitLab's Guide to All-Remote](https://about.gitlab.com/company/culture/all-remote/guide/) to craft our own guide to keep improving the way we work and support each other.
 
 ## RAP Disclaimer
 
 -   Our intention is to share how we do our work and how we support each other. We love sharing our solutions to complex problems. This guide, however, is not intended as a prescriptive guide for other teams.
--   Many sections from this document are verbatim of other initiatives/sites, with minor edits to adjust it to our own context. All credit belongs to the original source (primarily, GitLab's documentation). If anybody believes this to be not fair use, we will take this down immediately.
--   This guide draws inspiration from all-remote organizations; however, we are not advocating for all-remote structure (e.g. we want to participate in croquet tournaments at [BIO](https://www.bio.gc.ca/index-en.php)).
+-   Many sections from this document are verbatim of other initiatives/sites, with minor edits to adjust it to our own context. All credit belongs to the original source (primarily, GitLab's documentation). If anybody believes this to not be fair use, we will take this down immediately.
+-   This guide draws inspiration from all-remote organizations; however, we are not advocating for all-remote structure (e.g., we want to participate in croquet tournaments at [BIO](https://www.bio.gc.ca/index-en.php)).
 
 ## Strategic RAP Champions: who are we?
 
@@ -37,54 +38,48 @@ This section is a modified version of the [RAP champions network in the UK](http
 
 Strategic RAP champions support the implementation of reproducible analytical pipelines at DFO. This includes:
 
--   Promoting reproducible analysis (i.e. analysis with a clear audit trail that explains how and why it was carried out),
--   Actively using reproducible analytical pipelines (i.e. the software methods used to make analysis reproducible),
--   Sharing knowledge and providing advice and support to members of the analytical community who want to learn about, and implement, reproducible analysis and reproducible analytical pipelines.
--   Using platforms like GitHub or GItLab to share code so others can learn, use and/or adapt what has been done.
+-   Promoting reproducible analysis (i.e., analysis with a clear audit trail that explains how and why it was carried out),
+-   Actively using reproducible analytical pipelines (i.e., the software methods used to make analysis reproducible),
+-   Sharing knowledge, and providing advice and support to members of the analytical community who want to learn about, and implement, reproducible analysis and reproducible analytical pipelines.
+-   Using platforms like GitHub or GitLab to share code so others can learn, use, and/or adapt what has been done.
 
 As Strategic RAP Champions:
 
 -   We aim for progress, not perfection. Perfectionism is an impediment: iterative work requires most things to spend a lot of time in "draft".
+-   We celebrate incremental improvements equally, if not more, than massive launches.
 
--   We celebrate incremental improvements equally, if not more, than massive launches
-
-We welcome all that would like to be part of this initiative. It is open to anyone who is working on, or considering, reproducible analytical pipelines.
+We welcome all who would like to be part of this initiative. It is open to anyone who is working on, or considering, reproducible analytical pipelines.
 
 ## The Strategic RAP Manifesto
 
-This section is a modified version of the [GitLab's manifesto](https://about.gitlab.com/company/culture/all-remote/guide/).
+This section is a modified version of [GitLab's manifesto](https://about.gitlab.com/company/culture/all-remote/guide/).
 
 -   Working and collaborating with a large network of partners from different places (instead of from a central location).
--   Formal communication channels (over informal communication channels).
+-   Valuing formal communication channels (over informal communication channels).
 -   Writing down and recording knowledge (over verbal explanations).
--   Written processes (to compliment over on-the-job training).
--   Public sharing of information (over need-to-know access).
+-   Emphasizing written processes (to complement on-the-job training).
+-   Encouraging public sharing of information (over need-to-know access).
 -   Opening up documents for editing by anyone (over top-down control of documents).
--   Asynchronous communication (over synchronous communication).
--   Flexible working hours (over set working hours, within the scope of our job description).
--   The results of work (over micro-management of the hours put in).
+-   Adopting asynchronous communication (over synchronous communication).
+-   Allowing flexible working hours (over set working hours, within the scope of our job description).
+-   Acknowledging the results of work (over micromanagement of the hours put in).
 
 ## How we work and how we communicate information
 
-Coordinating big programs and projects with a large network of collaborators require tools that can foster trust, communication, and shared goals. There are three key dimensions to successfully embrace collaboration, and to thrive in our roles: the organizational, the technical, and the social. Communication is KEY to all of this. With a common goal, strategic planning, and the right collaboration tools, working in a virtual environment can be incredible productive, fun and efficient. This will be increasingly more important as we move to a hybrid environment where it will be more difficult to get organized in a synchronous fashion with member of different organizations and teams.
+Coordinating big programs and projects with a large network of collaborators requires tools that can foster trust, communication, and shared goals. There are three key dimensions to successfully embrace collaboration, and to thrive in our roles: the organizational, the technical, and the social. Communication is KEY to all of this. With a common goal, strategic planning, and the right collaboration tools, working in a virtual environment can be incredibly productive, fun, and efficient. This will become increasingly important as we move to a hybrid environment where it will be more difficult to coordinate in a synchronous fashion with members of different organizations and teams.
 
 This section includes material from the course [How to Manage a Remote Team](https://www.coursera.org/learn/remote-team-management).
 
--   Self-service: It's not what you know. It's knowing **where to look**. We are committed to become more intentional about documenting processes, and in contrast to how typical work environments are structured. Learn more about the [importance of self-searching, self-learning, and self-service organization](/company/culture/all-remote/self-service/).
-
+-   Self-service: It's not what you know, it's knowing **where to look**. We are committed to becoming more intentional about documenting processes, and in contrast to how typical work environments are structured. Learn more about the [importance of self-searching, self-learning, and self-service organization](/company/culture/all-remote/self-service/).
 -   Informal communication: We are committed to creating an atmosphere where team members feel comfortable reaching out to anyone to converse about topics unrelated to work.
-
--   Asynchronous communication: Asynchronous communication is the art of communicating and moving projects forward without the need for collaborators or stakeholders to be available at the same time your message is sent. Mastering asynchronous workflows is vital to avoiding dysfunction and enjoying outsized efficiencies. The benefits include enabling many collaborators to work effectively, reducing meetings, and enabling team members to work on a flexible schedule --- all of which raise morale and productivity. However, shifting to this way of working requires a lot of large and small adjustments.Learn more about [implementing asynchronous workflows at GitLab](/company/culture/all-remote/asynchronous/). Asynchronous workflows are more easily adopted when you foster a culture of progress over perfection. Practicing iteration means sharing work that is in draft; working on multiple projects at once, and having a low level of shame. Perfectionism is an impediment: iterative work requires most things to spend a lot of time in "draft," while they wait for another party to unblock progress. Achieving asynchronous workflows requires intention and effort. If you're only working on a single project, asynchronous can feel taxing and inefficient, as you're perpetually waiting for another party to unblock you. This creates idle time and makes synchronicity seem alluring. If you're working on five ongoing projects, for example, it's much easier to make iterative progress on one, tag a person or team for desired input or action, and switch to another ongoing project while you wait. If you cycle through your assigned projects, making iterative improvements on each before handing off, you're able to create minimum viable change for many more projects, while being less concerned over the immediate response to any one of the projects in particular. Asynchronous works well when you manage multiple concurrent projects, though this does require discipline and an ability to context switch and compartmentalize. Aim for progress, not perfection. If leadership casts shame on unfinished or unpolished work, workers will be reluctant to work asynchronously. Rather, they will optimize for delaying work until a satisfactory amount of consensus gathering can occur. Consensus feels good, but can easily mask inefficiency, progress, and innovation.
-
--   Documentation: Good project management practices keep everything flowing, especially in a remote, asynchronous environment. If you've got good communication and documentation strategies, it becomes much easier to implement strong project and task management. But there are still some considerations to take into account. Project management is largely similar whether you're in a colocated or remote environment. The main difference is the preference for asynchronous work. Standup meetings can be much more rare, because they are often more difficult to execute. Many of GitLab's projects use an asynchronous, written check-in for standups, posted in a shared channel, instead of a synchronous meeting. Without the reliance on synchronous check-ins, there's increased need for good documentation. People will always have questions and need information. To make this function across time zones, it's important to create a single source of truth for any initiative. Without strong documentation, projects and teams quickly become chaotic and inefficient. As Strategic RAP Champions we love these principles and we are exploring how to transition to a model like this.
-
--   Meetings: We continue to challenge ideas to decide when a meeting is necessary and when other tools are more suitable to support our projects, our team, and our individual work. Communicating effectively and responsibly through text often required more energy and efforts comapred with in-person meetings.
-
+-   Asynchronous communication: Asynchronous communication is the art of communicating and moving projects forward without the need for collaborators or stakeholders to be available at the same time your message is sent. The benefits include enabling many collaborators to work effectively, reducing meetings, and enabling team members to work on a flexible schedule --- all of which raise morale and productivity. However, shifting to this way of working requires a lot of large and small adjustments. Learn more about [implementing asynchronous workflows at GitLab](/company/culture/all-remote/asynchronous/). Asynchronous workflows are more easily adopted when you foster a culture of progress over perfection. Practicing iteration means sharing work that is in draft, working on multiple projects at once, and having a low level of shame. Perfectionism is an impediment: iterative work requires most things to spend a lot of time in "draft", while they wait for another party to unblock progress. Achieving asynchronous workflows requires intention and effort. If you're only working on a single project, asynchronous can feel taxing and inefficient, as you're perpetually waiting for another party to unblock you. This creates idle time and makes synchronicity seem alluring. If you're working on five ongoing projects, for example, it's much easier to make iterative progress on one, tag a person or team for desired input or action, and switch to another ongoing project while you wait. If you cycle through your assigned projects, making iterative improvements on each before handing off, you're able to create minimum viable change for many more projects, while being less concerned over the immediate response to any one of the projects in particular. Asynchronous workflows function well when you manage multiple concurrent projects, though this does require discipline and an ability to context switch and compartmentalize. If leadership casts shame on unfinished or unpolished work, workers will be reluctant to work asynchronously. Rather, they will optimize for delaying work until a satisfactory amount of consensus gathering can occur. Consensus feels good, but can easily mask inefficiency, progress, and innovation.
+-   Documentation: Good project management practices keep everything flowing, especially in a remote, asynchronous environment. If you have good communication and documentation strategies, it becomes much easier to implement strong project and task management. However, there are still some considerations to take into account. Project management is largely similar whether you're in a colocated or remote environment. The main difference is the preference for asynchronous work. Stand-up meetings can be much more rare, because they are often more difficult to execute. Many of GitLab's projects use an asynchronous, written check-in for stand-ups, posted in a shared channel, instead of a synchronous meeting. Without the reliance on synchronous check-ins, there's increased need for good documentation. People will always have questions and need information. To make this function across time zones, it is important to create a single source of truth for any initiative. Without strong documentation, projects and teams quickly become chaotic and inefficient. As Strategic RAP Champions we love these principles and we are exploring how to transition to a model like this.
+-   Meetings: We continue to challenge ideas to decide when a meeting is necessary and when other tools are more suitable to support our projects, our team, and our individual work. Communicating effectively and responsibly through text may require more energy and effort compared with in-person meetings.
 -   In-person interactions: There are many advantages of having in-person interactions, and although this will never be possible with all the collaborators of projects, it is still an important component for our team.
 
 ## Our Tools
 
-The above mentioned components are mostly extracted from GitLab's training material. We are starting a pilot in our team to explore how to test and adopt many of these principles, with appropriate tools. We are concerned about tool overload ad their long-lasting usefulness. We will continue to adopt lessons learned, we are committed to re-think ideas, and we will continue to share our lessons learned.
+The components mentioned above are mostly extracted from GitLab's training material. We have started a pilot in our team to explore how to test and adopt many of these principles, with appropriate tools. We are concerned about tool overload and their long-lasting usefulness. We will continue to adopt lessons learned, we are committed to re-think ideas, and we will continue to share our lessons learned.
 
 Currently, our key collaborations tools include:
 

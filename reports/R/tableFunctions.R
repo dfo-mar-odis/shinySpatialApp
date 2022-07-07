@@ -534,7 +534,6 @@ get_cetacean_common_name <- function(dataCol) {
  return(sub("\\:.*", "", dataCol))
 }
 
-
 isle_madame_table <- function(data_sf, cols, colnames){
   if (is.null(data_sf)) {
     return(NULL)
@@ -549,3 +548,14 @@ isle_madame_table <- function(data_sf, cols, colnames){
   return(data_df)
 }
 
+add_row_to_intro_summary <- function(introSummary, name, result) {
+  absentCode <- "&nbsp;-&nbsp;"
+  presentCode <- "&#x2714;"
+  
+  introSummary <- rbind(introSummary, 
+                        data.frame(Datasource=name,
+                                   Results=ifelse(result, presentCode,
+                                                  absentCode )))
+  return(introSummary)
+  
+}

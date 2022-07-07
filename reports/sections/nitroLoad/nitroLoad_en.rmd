@@ -49,6 +49,11 @@ writeLines(noquote(totalNitroLoad_rr$text$en))
 totalOutputList <- master_intersect(totalNitroLoad_rr$data_sf, mapDataList, getRegion = TRUE)
 deltaOutputList <- master_intersect(deltaNitroLoad_rr$data_sf, mapDataList, getRegion = TRUE)
 
+# summary intro table
+introResult <- !is.null(totalOutputList$studyData) | !is.null(deltaOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Nitrogen Loading](#nitroLoad-section)", result=introResult)
+
+
 ```
 
 

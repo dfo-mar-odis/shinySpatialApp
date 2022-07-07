@@ -16,7 +16,7 @@ if (FALSE) {
 }
 ```
 
-### **Intertidal Vegetation and Rockweed**
+### **Intertidal Vegetation and Rockweed** {#rw-section}
 
 Satellite-based Maps of Intertidal Vegetation and Rockweed presence polygons
 
@@ -44,6 +44,12 @@ Data notes:
 ```{r overlap-rockweed, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
 clippedRW <- master_intersect(rockweed_rr$data_sf, mapDataList)
+
+
+# summary intro table
+introResult <- !is.null(clippedRW$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Rockweed](#rw-section)", result=introResult)
+
 ```
 *
 ```{r overlap-rockweed-output, echo=FALSE, results='asis'}

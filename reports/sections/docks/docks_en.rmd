@@ -48,6 +48,10 @@ writeLines(noquote(docks_rr$text$en))
 docksOutputList <- master_intersect(docks_rr$data_sf, mapDataList,
                                     getRegion=TRUE)
 
+# summary intro table
+introResult <- !is.null(docksOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Man-made Solids](#docks-section)", result=introResult)
+
 ```
 
 

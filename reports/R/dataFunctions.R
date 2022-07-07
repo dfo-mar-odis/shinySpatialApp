@@ -102,11 +102,14 @@ intro_setup <- function(studyArea, env=globalenv()) {
   
   summarySarTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`)
   summaryHabTable <- data.frame("Species" = listed_species$`Common Name`, "COSEWIC" = listed_species$`COSEWIC status`, "SARA" = listed_species$`SARA status`, "Obs" = NA, "range" = NA, "SDM" = NA, "IH" = NA, "CH" = NA)
+  summaryIntroTable <- data.frame(matrix(ncol = 2, nrow = 0))
+  names(summaryIntroTable) <- c("Datasource", "Results")
   
   otherDataList <- list("site" = site,
                         "minYear" = minYear,
                         "summarySarTable" = summarySarTable,
                         "summaryHabTable" = summaryHabTable,
+                        "summaryIntroTable" = summaryIntroTable,
                         "mapDataList" = mapDataList)
   
   list2env(otherDataList, envir = env)

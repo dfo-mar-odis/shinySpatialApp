@@ -43,6 +43,10 @@ writeLines(noquote(whelk_rr$text$en))
 # clip the data to the Study and Map areas:
 whelkOutputList <- master_intersect(whelk_rr$data_sf, mapDataList)
 
+# summary intro table
+introResult <- !is.null(whelkOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Whelk Survey](#whelk-section)", result=introResult)
+
 # Create tables based off of the Scientific Name column, one with all species found,
 # and one with only the Species at Risk found.
 whelkOutputList$studyData["Scientific Name"] <- whelkOutputList$studyData$scientificName

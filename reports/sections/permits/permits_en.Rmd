@@ -1,0 +1,99 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+```{r permits-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+``` 
+
+```{r eval=FALSE}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea = sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+### **Species presence from SARA Section 73 Permits** {#permits-section} 
+
+```{r permits-load, include=FALSE}
+load_rdata(c("permits_rr"), regionStr, env = environment())
+```
+
+```{r permits-meta, results='asis'}
+write_meta(permits_rr, "EN")
+```
+
+The Species at Risk Act [-@SARA2002] contains several prohibitions to protect Schedule 1 species. Under Sections 32 and 33 of SARA, it is an offence to:
+
+* Kill, harm, harass, capture or take an individual of a species listed as extirpated, endangered or threatened under SARA.
+* Possess, collect, buy, sell or trade an individual (or any part or derivative of such an individual) of a species listed as extirpated, endangered or threatened under SARA.
+* Damage or destroy the residence of one or more individuals of a listed endangered, threatened or extirpated species if a recovery strategy has recommended its reintroduction into the wild in Canada.
+
+SARA also contains provisions that prohibit the destruction of any part of the critical habitat of listed aquatic species (section 58(1)).
+
+However, there may be instances which allow permits to be issued for activities that affect Schedule 1 species or their critical habitat. Under subsection 73(2) of SARA, permits may be issued if the proposed activity applies to one or more of the following:
+
+* Scientific research relates to the conservation of the species and being conducted by qualified persons.
+* Benefits the species or required to enhance the species’ chance of survival in the wild.
+* Incidentally affects the species (its purpose is not to affect the species).
+
+As well, the competent Minister must be of the opinion that all 3 of the following conditions are met:
+
+* All reasonable alternatives to the activity that would reduce the impact on the species have been considered and the best solution has been adopted.
+* All feasible measures will be taken to minimize the impact of the activity on the species or its critical habitat or the residences of its individuals.
+* The activity will not jeopardize the survival or recovery of the species.
+
+Sample activities for which permits may be issued include obtaining biological samples from the organism for research purposes; electrofishing to evaluate species populations; rescue activities to release entangled species; creating bypasses and traps for species; and conducting surveys, transects, and/or photographing for research purposes.  
+
+In support of the expansion and integration of additional data sources, Species at Risk records from these DFO-issued Section 73 permits were mined and summarized in this section. Location and species information were extracted. Due to issues surrounding Protected information, more specific information such as permit number or the project description are not included, but can be obtained from the SARA contact listed above, if needed. 
+
+Please note the following caveats and disclaimers relevant to this section:
+
+* To prevent misinterpretation of any guidelines, all bulleted lists have been obtained directly from: <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>. To ensure consistency in formatting, minor grammar edits may have been made.
+* The SARA prohibitions (first paragraph) do not apply to species listed as special concern. Permits are therefore not required for projects affecting species of special concern.
+* Only permits for which DFO is the regulatory authority were obtained. This includes aquatic species (as defined by SARA), except for those found on federal lands, which are administered by the Parks Canada Agency. 
+* Latitude and longitude formats differ between reports; therefore, all coordinates were converted to decimal degrees to promote consistency. 
+* In some instances, coordinate information was not included in the permits. Data from these instances were not included in this section. 
+* Cases where report records are inconclusive (species is unknown) were omitted from this section
+* Construction or development projects near water (e.g., constructions of bridges, maintenance of harbours, etc.) may also require a SARA permit. However, this is an additional process and requires other forms of authorization (see more information here <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>). Data from these projects are therefore not included in this section.
+* Each species may have distinct populations (referred to as Designatable Units, or DUs, under COSEWIC), and each population may have different COSEWIC and/or SARA statuses. However, the the populations may not be specified in the permits. Readers of this Report should use their best judgement to determine which population may be the most applicable based on their search area.  
+
+##### *Area-specific sepcies presence for SARA Section 73 permits search results*
+
+```{r permits-results, include=FALSE, cache=FALSE}
+outputList = master_intersect(permits_rr$data_sf, mapDataList, getRegion = TRUE)
+
+
+# summary intro table
+introResult <- !is.null(outputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[SARA Section 73 Permits](#permits-section)", result=introResult)
+
+
+permitTable = create_sar_tables(outputList$studyData, extraCols = NULL, listed_species)$sarData
+```
+
+```{r permits-check, echo=FALSE, results='asis',}
+Report_permit = if (is.null(outputList$studyData)) {
+  "* There are no relevant SARA Section 73 permit records for this search area."
+} else {
+  "* There are relevant SARA Section 73 permit records for this search area."
+}
+Report_permit = noquote(Report_permit)
+writeLines(Report_permit)
+```
+
+```{r permit-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(permits_rr, "EN"), 'Map of species records obtained from the Species at Risk Act (SARA) Section 73 permits (black circles) observed within the search area (red outline). Permits are not created for species of special concern. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
+if (!is.null(outputList$studyData)) {
+  plot_rr_sf(areaMap, outputList$mapData)
+}
+```
+
+```{r permit-table, echo=FALSE, results='asis'}
+if (!is.null(outputList$studyData)) {
+  knitr::kable(permitTable, align="l", caption=paste(write_caption_blurb(permits_rr, "EN"), "Species records obtained from the Species at Risk Act (SARA) Section 73 permits observed within the search area. Permits are not created for species of special concern. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```

@@ -36,6 +36,11 @@ The NARWC Sightings Database contains records of thousands of sightings of Right
 ```{r narwc, include=FALSE, cache=FALSE}
 narwcClipped <- master_intersect(narwc_rr$data_sf, mapDataList)
 
+# summary intro table
+introResult <- !is.null(narwcClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[NARWC](#NARWC-section)", result=introResult)
+
+
 linkedSectionText <- "[NARWC](#NARWC-section)"
 if (!is.null(narwcClipped$studyData)) {
   whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, narwcClipped$studyData, narwc_rr$attribute)

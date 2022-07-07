@@ -16,7 +16,7 @@ if (FALSE) { #load in data:
 }
 ```
 
-### **Ecologically and Biologically Significant Areas (EBSAs)**
+### **Ecologically and Biologically Significant Areas (EBSAs)** {#ebsa-section}   
 
 ```{r EBSA-load, include=FALSE}
 load_rdata(c("ebsa_rr"), regionStr, env = environment())
@@ -39,11 +39,16 @@ writeLines(noquote(ebsa_rr$text$en))
 #function for overlap
 EBSAoutput <- master_intersect(ebsa_rr$data_sf, mapDataList, getRegion=TRUE)
 
+# summary intro table
+ebsaResult <- !is.null(EBSAoutput$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[EBSA](#ebsa-section)", result=ebsaResult)
+
+
 #function for overlap
-Query_output_EBSA <- if(is.null(EBSAoutput$studyData)){
-    "* The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSAs)."
-  } else {
+Query_output_EBSA <- if(ebsaResult){
     "* The search area overlaps with identified Ecologically and Biologically Significant Areas (EBSAs)."
+  } else {
+    "* The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSAs)."
   }
 writeLines(Query_output_EBSA)
 

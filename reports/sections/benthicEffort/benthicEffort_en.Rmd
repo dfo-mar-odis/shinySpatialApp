@@ -41,10 +41,14 @@ writeLines(noquote(benthicEffort_rr$text$en))
 outputListBenthicEffort <- master_intersect(benthicEffort_rr$data_sf, mapDataList,
                                            getRegion=TRUE)
 
+# summary intro table
+introResult <- !is.null(outputListBenthicEffort$mapData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Benthic Fishing Effort](#benthic-effort-section)", result=introResult)
+
 ```
 
 ```{r benthicEffort-haTable, echo=FALSE, results='asis'}
-if (!is.null(outputListBenthicEffort$studyData)) {
+if (!is.null(outputListBenthicEffort$mapData)) {
   rrEnv$haClassTable$`Benthic Fishing Effort` <- list("Coastal" = FALSE, 
                                                     "Offshore" = TRUE, 
                                                     "Shoreline" = FALSE)
