@@ -42,6 +42,9 @@ write_meta(imSection_rr, "EN")
 # clip the data to the Study and Map areas:
 outputList <- master_intersect(imSection_rr$data_sf, mapDataList, getRegion = TRUE)
 
+if (!is.null(outputList$studyData)){
+  imCheck <- TRUE
+}
 outputTable <- isle_madame_table(outputList$studyData, cols={{ cols }}, colnames = {{ colnames }})
 
 ```

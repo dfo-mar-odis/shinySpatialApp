@@ -42,6 +42,11 @@ write_meta(opprrpe_rr, "EN")
 # clip the data to the Study and Map areas:
 opprrpeOutputList <- master_intersect(opprrpe_rr$data_sf, mapDataList, getRegion = TRUE)
 
+# summary intro table
+introResult <- !is.null(opprrpeOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[OPP Regional Response Planning](#opprrpe-section)", result=introResult)
+
+
 ```
 
 ```{r opprrpe-check, echo=FALSE, results='asis',}

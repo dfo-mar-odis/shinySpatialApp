@@ -25,9 +25,9 @@ load_rdata(c("narWhale_rr"), regionStr, env = environment())
 
 ```
 
-### **Species Presence Data** {#speciesPresence-section}
+### **Species presence polygons created by the Integrated Marine Response Planning (IMRP) team** {#speciesPresence-section}
 
-The following section contains data collected in response to CESD Data Requests.  
+Integrated Marine Response Planning (IMRP, previously Planning for Integrated Emergency Response (PIER)) collected the following datasets in response to CESD Data Requests?  
 
 BETTER ABSTRACT PLEASE.
 
@@ -55,6 +55,10 @@ if (!is.null(outputList$regionData)) {
 }
 ```
 
+
+```{r isleMadame-introcheck-setup,  include=FALSE}
+  imCheck <- FALSE
+```
 
 ```{r bnWhale-load-section, child = here::here("reports/sections/isleMadame/presence_sections/bnWhale_en.rmd")}
 ```
@@ -88,3 +92,9 @@ if (!is.null(outputList$regionData)) {
 
 ```{r tuna-load-section, child = here::here("reports/sections/isleMadame/presence_sections/tuna_en.rmd")}
 ```
+
+
+```{r isleMadame-intro-check,  include=FALSE}
+  summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[IMRP Species Presence](#speciesPresence-section)", result=imCheck)
+```
+

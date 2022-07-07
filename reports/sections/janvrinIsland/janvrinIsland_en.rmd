@@ -41,6 +41,11 @@ NEEDS AN ABSTRACT!
 # clip the data to the Study and Map areas:
 outputList <- master_intersect(janvrinIsland_rr$data_sf, mapDataList)
 
+# summary intro table
+introResult <- !is.null(outputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Janvrin Island Eelgrass](#janvrinIsland-section)", result=introResult)
+
+
 ```
 
 ```{r janvrinIsland-check, echo=FALSE, results='asis',}

@@ -44,6 +44,12 @@ write_meta(imAcoustic_rr, "EN")
 # clip the data to the Study and Map areas:
 outputList <- master_intersect(imAcoustic_rr$data_sf, mapDataList)
 
+# summary intro table
+introResult <- !is.null(outputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Video and Acoustic Survey](#imAcoustic-section)", result=introResult)
+
+
+
 ```
 
 ```{r imAcoustic-check, echo=FALSE, results='asis',}
