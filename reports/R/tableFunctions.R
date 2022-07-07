@@ -390,12 +390,12 @@ EBSA_report <- function(EBSA_sf, lang="EN") {
                                                            Name, Bioregion)))
     EBSATable <- unique(EBSATable)
     row.names(EBSATable) <- NULL
-    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
+    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioregion")
   } else if (lang=="FR" & !is.null(EBSA_sf)) {
     EBSATable <- sf::st_drop_geometry(dplyr::select(EBSA_sf, c(Rapport, RapportURL,
                                                            Nom, Bioregion)))
     EBSATable <- unique(EBSATable)
-    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
+    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioregion")
     row.names(EBSATable) <- NULL
 
   }
