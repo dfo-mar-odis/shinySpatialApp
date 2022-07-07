@@ -48,6 +48,11 @@ writeLines(noquote(power_rr$text$en))
 # clip the data to the Study and Map areas:
 powerOutputList <- master_intersect(power_rr$data_sf, mapDataList, getRegion = TRUE)
 
+# summary intro table
+introResult <- !is.null(powerOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Power Stations](#power-section)", result=introResult)
+
+
 powerTable <- NULL
 if (!is.null(powerOutputList$studyData)){
   powerTable <- dplyr::select(powerOutputList$studyData, c("STATION", "STATION_OW", "MEGAWATTS", "CLEAN_TYPE")) %>% sf::st_drop_geometry()

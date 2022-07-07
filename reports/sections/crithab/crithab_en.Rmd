@@ -48,6 +48,9 @@ outputListLB <- master_intersect(leatherback_rr$data_sf, mapDataList)
 
 critHabCheck <- !is.null(outputListCrithab$studyData) | !is.null(outputListLB$studyData)
 
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Critical Habitat](#crithab-section)", result=critHabCheck)
+
+
 ```
 
 ```{r crithab-table-gen, echo=FALSE, results='asis'}

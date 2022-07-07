@@ -41,14 +41,19 @@ names(mpaCols) <- levels(as.factor(conservationSites_rr$data_sf[[conservationSit
 
 mpaClipped <- master_intersect(conservationSites_rr$data_sf,  mapDataList, getRegion=TRUE)
 
-if(!is.null(mpaClipped$studyData)) {
+# summary intro table
+introResult <- !is.null(mpaClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Conservation Sites](#MPA-section)", result=introResult)
+
+
+if(introResult) {
   mpaTable <- mpa_table(mpaClipped$studyData)
 } else {
   mpaTable <- NULL
 }
 
 #function for overlap
-mpaCheckOuput <- if(!is.null(mpaClipped$studyData)){
+mpaCheckOuput <- if(introResult){
     "* There are relevant records of areas that are part of the Draft Conservation Network Design in the search area."
   } else {
     "* There are no relevant records of areas that are part of the Draft Conservation Network Design in the search area."

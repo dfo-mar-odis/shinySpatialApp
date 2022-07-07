@@ -28,6 +28,7 @@ knitr::opts_chunk$set(
 
 For more information about this report, please contact Quentin.Stoyel@dfo-mpo.gc.ca. Please circulate this report to all relevant contacts provided in each section to verify and supplement information.
 
+
 # **REPRODUCIBLE REPORTING: ABOUT THIS DATA DISCOVERY TOOL** 
 
 ``` {r user-comments, results = 'asis'}
@@ -100,10 +101,36 @@ knitr::kable(table_tier,align="l",
 ```
 
 
+# **EXECUTIVE SUMMARY**
+
+This section summarizes available information within the search area. Results are reported for each data source. The absence of information in this report should be interpreted as an absence of observation or reporting of the species within the search area, not necessarily as a true absence. Unless otherwise specified, data were queried from 2010 to present. Please contact data providers if data outside of these ranges are required. Outputs are not suitable for real-time, dynamic spatial planning.
+
+```{r intro-table}
+introTableFilePath <-here::here("app/output/introTable.rdata")
+if (file.exists(introTableFilePath)){
+  load(introTableFilePath)
+  if (is.data.frame(finalSummaryIntroTable)){
+    if (nrow(finalSummaryIntroTable) > 0){
+      knitr::kable(finalSummaryIntroTable, align="l",
+        caption = "Overview of which data sources queried have results within the study area", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+    }
+  }
+}
+```
+
+
 <!-- MAIN SECTIONS -->
 
 # **DATA DISCOVERY OUTPUTS**  
 {{add_parts}}
+
+```{r summary-intro-gen}
+finalSummaryIntroTable <- summaryIntroTable
+save(finalSummaryIntroTable, file = introTableFilePath)
+
+```
+
+
 
 <!-- GENERIC END -->
 

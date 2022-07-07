@@ -39,6 +39,10 @@ The following description of cetacean sightings data collection methods used by 
 ```{r whitehead, include=FALSE, cache=FALSE}
 whiteheadClipped <- master_intersect(whitehead_rr$data_sf, mapDataList)
 
+# summary intro table
+introResult <- !is.null(whiteheadClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Whitehead Lab](#whitehead-section)", result=introResult)
+
 linkedSectionText <- "[Whitehead](#Whitehead-section)"
 whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, whiteheadClipped$studyData, whitehead_rr$attribute)
 

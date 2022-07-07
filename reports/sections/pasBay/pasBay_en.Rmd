@@ -37,6 +37,12 @@ writeLines(noquote(pasBay_rr$text$en))
 ```{r pasBay-results, include=FALSE, cache=FALSE}
 pasBayClipped <- master_intersect(pasBay_rr$data_sf, mapDataList)
 
+
+# summary intro table
+introResult <- !is.null(pasBayClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Passamaquoddy Bay Trawls](#pasBay-section)", result=introResult)
+
+
 tableList <- create_sar_tables(pasBayClipped$studyData, listed_species)
 pasBayAllTable <- tableList$allSpecies
 pasBaySarTable <- tableList$sarData

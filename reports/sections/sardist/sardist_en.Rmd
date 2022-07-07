@@ -36,6 +36,14 @@ writeLines(noquote(sardist_rr$text$en))
 
 ```{r sardist-results, echo=FALSE, results='asis'}
 outputListSardist <- master_intersect(sardist_rr$data_sf, mapDataList)
+
+introCheck <- !is.null(outputListSardist$studyData)
+
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[SAR Distribution](#sardist-section)", result=introCheck)
+
+```
+
+```{r sardist-sum-tables, echo=FALSE, results='asis'}
 distTable <- create_sar_tables(outputListSardist$studyData, listed_species, extraCols = c("Population", "Species_Link"))$sarData
 names(distTable)[names(distTable) == 'Species_Link'] <- 'Species Link'
 

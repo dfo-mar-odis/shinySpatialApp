@@ -53,6 +53,10 @@ For more information about these sources, please see the supplementary material.
 ```{r obis-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(obis_rr$data_sf, mapDataList, Year = minYear)
 
+# summary intro table
+introResult <- !is.null(outputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[OBIS](#OBIS-section)", result=introResult)
+
 obisTable <- create_sar_tables(outputList$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", obisTable, "Common Name", "Common Name")
 ```
@@ -84,12 +88,22 @@ if (!is.null(outputList$studyData)) {
 ```{r gbif-results, cache=FALSE, include=FALSE}
 inaturalist_sf = subset(gbif_rr$data_sf, title == "iNaturalist Research-grade Observations")
 inaturalistClipped <- master_intersect(inaturalist_sf, mapDataList)
+
+# summary intro table
+introResult <- !is.null(inaturalistClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[iNaturalist](#gbif-section)", result=introResult)
+
 inaturalistTable <- create_sar_tables(inaturalistClipped$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[iNaturalist](#gbif-section)", inaturalistTable, "Common Name", "Common Name")
 
 
 otherGbif_sf = subset(gbif_rr$data_sf, title != "iNaturalist Research-grade Observations")
 gbifClipped <- master_intersect(otherGbif_sf, mapDataList)
+
+# summary intro table
+introResult <- !is.null(gbifClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[GBIF](#gbif-section)", result=introResult)
+
 gbifTable <- create_sar_tables(gbifClipped$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[GBIF](#gbif-section)", gbifTable, "Common Name", "Common Name")
 
