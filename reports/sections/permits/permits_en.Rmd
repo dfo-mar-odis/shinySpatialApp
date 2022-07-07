@@ -17,7 +17,7 @@ if (FALSE) { #load in data:
 }
 ```
 
-### SARA Section 73 Permits {#permits-section}
+### **Species presence from SARA Section 73 Permits** {#permits-section} 
 
 ```{r permits-load, include=FALSE}
 load_rdata(c("permits_rr"), regionStr, env = environment())
@@ -62,7 +62,7 @@ Please note the following caveats and disclaimers relevant to this section:
 * Construction or development projects near water (e.g., constructions of bridges, maintenance of harbours, etc.) may also require a SARA permit. However, this is an additional process and requires other forms of authorization (see more information here <https://www.dfo-mpo.gc.ca/pnw-ppe/index-eng.html>). Data from these projects are therefore not included in this section.
 * Each species may have distinct populations (referred to as Designatable Units, or DUs, under COSEWIC), and each population may have different COSEWIC and/or SARA statuses. However, the the populations may not be specified in the permits. Readers of this Report should use their best judgement to determine which population may be the most applicable based on their search area.  
 
-#### ***Area-specific SARA Section 73 permits search results***
+##### *Area-specific sepcies presence for SARA Section 73 permits search results*
 
 ```{r permits-results, include=FALSE, cache=FALSE}
 outputList = master_intersect(permits_rr$data_sf, mapDataList, getRegion = TRUE)
