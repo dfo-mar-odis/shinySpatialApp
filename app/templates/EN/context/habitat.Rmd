@@ -5,3 +5,6 @@ This module describes outputs of habitat derived from a variety of sources. Area
 
 ```{r child = here::here("reports/sections/rockweed/rockweed_en.Rmd")}
 ```
+
+```{r child = here::here("reports/sections/imAcostic/imAcoustic_en.Rmd")}
+```
