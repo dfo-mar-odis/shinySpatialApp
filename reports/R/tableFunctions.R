@@ -552,8 +552,11 @@ add_row_to_intro_summary <- function(introSummary, name, result) {
   absentCode <- "&nbsp;-&nbsp;"
   presentCode <- "&#x2714;"
   
+  rowNum <- nrow(introSummary) + 1
+  
   introSummary <- rbind(introSummary, 
-                        data.frame(Datasource=name,
+                        data.frame(No=rowNum,
+                                   Datasource=name,
                                    Results=ifelse(result, presentCode,
                                                   absentCode )))
   return(introSummary)
