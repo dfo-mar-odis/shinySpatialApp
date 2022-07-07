@@ -141,7 +141,7 @@ This section provides an overall synthesis of regional data, data products of hu
 This section is a work-in-progress. It summarizes available information of human activities in the search area. Please contact data providers if data outside of these ranges are required. Outputs are not suitable for real-time, dynamic spatial planning.
 
 ```{r threat-class-table}
-if (FALSE) {# (!is.null(rrEnv$haClassTable)) {
+if (!is.null(rrEnv$haClassTable)) {
   absentCode <- "&nbsp;-&nbsp;"
   presentCode <- "&#x2714;"
   rrEnv$haClassTable[is.na(rrEnv$haClassTable)] <- FALSE
