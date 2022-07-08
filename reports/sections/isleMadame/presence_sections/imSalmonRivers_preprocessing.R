@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "imSalmonRivers_rr"), regionStr)
 
-# ---------------------Bluefin Tuna Presence-----------------------------------
+# ---------------------Presence-----------------------------------
 pkgId <- "ded53eaa-bb98-4476-beea-3138372c740b"
 imSalmonRivers_rr <- get_opendata_rr(pkgId)
 
@@ -27,6 +27,6 @@ imSalmonRivers_rr$data_sf <- sf::st_transform(imSalmonRivers_sf, crs = 4326) %>%
 
 imSalmonRivers_rr$attribute <- "DU"
 imSalmonRivers_rr$metadata$qualityTier <- mediumQuality
-imSalmonRivers_rr$datasetName <- "Salmon Rivers Presence"
+imSalmonRivers_rr$datasetName <- "Salmon Rivers Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
 save(imSalmonRivers_rr, file = file.path(localFileSavePath, "Open/imSalmonRivers_rr.RData"))
 

@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "ssClam_rr"), regionStr)
 
-# ---------------------Bluefin Tuna Presence-----------------------------------
+# ---------------------Clam Presence-----------------------------------
 pkgId <- "59121e8f-0acc-411a-99cb-54980df10ba6"
 ssClam_rr <- get_opendata_rr(pkgId)
 
@@ -29,6 +29,6 @@ ssClam_rr$data_sf <- sf::st_transform(ssClam_sf, crs = 4326) %>%
 
 ssClam_rr$attribute <- "OVERALL_PRESENCE"
 ssClam_rr$metadata$qualityTier <- mediumQuality
-ssClam_rr$datasetName <- "Soft Shelled Clams Presence"
+ssClam_rr$datasetName <- "Soft Shelled Clams Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
 save(ssClam_rr, file = file.path(localFileSavePath, "Open/ssClam_rr.RData"))
 
