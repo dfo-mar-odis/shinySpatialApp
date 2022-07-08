@@ -27,9 +27,7 @@ load_rdata(c("narWhale_rr"), regionStr, env = environment())
 
 ### **Species presence polygons created by the Integrated Marine Response Planning (IMRP) team** {#speciesPresence-section}
 
-Integrated Marine Response Planning (IMRP, previously Planning for Integrated Emergency Response (PIER)) collected the following datasets in response to CESD Data Requests?  
-
-BETTER ABSTRACT PLEASE.
+The following section presents species presence polygons created by the Integrated Marine Response Planning (IMRP) team (formerly Planning for Integrated Environmental Response, PIER). For more information about how these polygons were created, please contact Adrian Hamer (<Adrian.Hamer@dfo-mpo.gc.ca>).
 
 #### *Area-specific Species Presence results*
 ```{r isleMadame-results, include=FALSE, cache=FALSE}
