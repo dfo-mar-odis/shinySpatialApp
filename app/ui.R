@@ -16,7 +16,8 @@ ui <- fluidPage(
     sidebarPanel(
       # Title
       img(src="img/canada_c.png", height = 40),
-      h3(tags$b("Spatial Reproducible Reporting")),
+      h3(tags$b("Spatial Reproducible Reporting for Data Discovery and Science Advice")),
+      h4(tags$a(href="https://waves-vagues.dfo-mpo.gc.ca/Library/41060702.pdf", "Click here to access the Technical Report")),
       # Panels
       tabsetPanel(
         id = "active_panel",
