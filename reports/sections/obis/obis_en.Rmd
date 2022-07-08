@@ -110,9 +110,9 @@ summarySarTable <- add_col_to_sar_summary(summarySarTable, "[GBIF](#gbif-section
 ```
 
 ```{r gbif-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-reportGbif <-  if (is.null(gbifClipped$studyData)) {
-  "*	There are no relevant records in the Global Biodiversity Information Facility (GBIF) and iNaturalist for this search area."
-} else if (is.null(inaturalistClipped$studyData)){
+reportGbif <-  if (is.null(gbifClipped$studyData) & is.null(inaturalistClipped$studyData)) {
+  "*	There are no relevant records in the Global Biodiversity Information Facility (GBIF) for this search area."
+} else if (!is.null(inaturalistClipped$studyData)){
   "*	There are relevant records in the Global Biodiversity Information Facility (GBIF) for this search area."
 } else {
   "*	There are relevant records in the Global Biodiversity Information Facility (GBIF), including iNaturalist entries for this search area."  

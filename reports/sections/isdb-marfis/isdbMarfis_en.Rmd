@@ -56,11 +56,11 @@ outputListM <- master_intersect(marfis_rr$data_sf, mapDataList)
 
 # summary intro table
 introResultI <- !is.null(outputListI$studyData)
-summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[ISDB](#isdb-section)", result=introResultI)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[ISDB](#ISDB-section)", result=introResultI)
 
 # summary intro table
 introResultM <- !is.null(outputListM$studyData)
-summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[MARFIS](#marfis-section)", result=introResultM)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[MARFIS](#MARFIS-section)", result=introResultM)
 
 
 
