@@ -103,7 +103,7 @@ knitr::kable(table_tier,align="l",
 
 # **EXECUTIVE SUMMARY**
 
-This section summarizes available information within the search area. Results are reported for each data source. The absence of information in this report should be interpreted as an absence of observation or reporting of the species within the search area, not necessarily as a true absence. Unless otherwise specified, data were queried from 2010 to present. Please contact data providers if data outside of these ranges are required. Outputs are not suitable for real-time, dynamic spatial planning.
+This section summarizes available information within the search area. Results are reported for each data source. This summary must be used in coordination with all the information presented throughout the report, including the descriptions, caveats, disclaimers, sources of uncertainty, references to the literature, and contacts who can provide further interpretation. This section is not intended to provide the data itself, but to summarize what is available. Users are encouraged to access the original data source if more information is required. The absence of information in this report should be interpreted as an absence of observation or reporting of the species within the search area, not necessarily as a true absence. Unless otherwise specified, data were queried from 2010 to present. Please contact data providers if data outside of these ranges are required. Outputs are not suitable for real-time, dynamic spatial planning.
 
 ```{r intro-table}
 introTableFilePath <-here::here("app/output/introTable.rdata")
