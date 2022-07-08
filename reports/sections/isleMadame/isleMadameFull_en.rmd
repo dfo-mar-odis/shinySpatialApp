@@ -27,7 +27,7 @@ load_rdata(c("narWhale_rr"), regionStr, env = environment())
 
 ### **Species presence polygons within the Bay of Fundy and Port Hawkesbury Response Plan areas** {#speciesPresence-section}
 
-Species presence polygons created by the Integrated Marine Response Planning (IMRP) team (formerly Planning for Integrated Environmental Response, PIER). Presence polygons in this section were derived from reviewed reported sightings and local knowledge sources to estimate areas where species are seasonally present within the Bay of Fundy and Port Hawkesbury Area Response Plan areas ({#opprrpe-section}). For more information about how these polygons were created, please contact Adrian Hamer (<Adrian.Hamer@dfo-mpo.gc.ca>).
+Species presence polygons created by the Integrated Marine Response Planning (IMRP) team (formerly Planning for Integrated Environmental Response, PIER). Presence polygons in this section were derived from reviewed reported sightings and local knowledge sources to estimate areas where species are seasonally present within the Bay of Fundy and Port Hawkesbury Area Response Plan areas. For more information about how these polygons were created, please contact Adrian Hamer (<Adrian.Hamer@dfo-mpo.gc.ca>).
 
 #### *Area-specific Species Presence results*
 ```{r isleMadame-results, include=FALSE, cache=FALSE}
