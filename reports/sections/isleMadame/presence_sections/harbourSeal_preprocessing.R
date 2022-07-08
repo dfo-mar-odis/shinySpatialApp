@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "harbourSeal_rr"), regionStr)
 
-# ---------------------Bluefin Tuna Presence-----------------------------------
+# ---------------------Presence-----------------------------------
 pkgId <- "5bbc1575-4267-44fa-ae35-ee08cc2af8fb"
 harbourSeal_rr <- get_opendata_rr(pkgId)
 
@@ -30,6 +30,6 @@ harbourSeal_rr$data_sf <- sf::st_transform(harbourSeal_sf, crs = 4326) %>%
 
 harbourSeal_rr$attribute <- "None"
 harbourSeal_rr$metadata$qualityTier <- mediumQuality
-harbourSeal_rr$datasetName <- "Harbour Seal Presence"
+harbourSeal_rr$datasetName <- "Harbour Seal Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
 save(harbourSeal_rr, file = file.path(localFileSavePath, "Open/harbourSeal_rr.RData"))
 

@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "imLobster_rr"), regionStr)
 
-# ---------------------Bluefin Tuna Presence-----------------------------------
+# ---------------------Lobster Presence-----------------------------------
 pkgId <- "47bf4555-ce3c-492f-a367-a6eab1862970"
 imLobster_rr <- get_opendata_rr(pkgId)
 
@@ -30,6 +30,6 @@ imLobster_rr$data_sf <- sf::st_transform(imLobster_sf, crs = 4326) %>%
 
 imLobster_rr$attribute <- "None"
 imLobster_rr$metadata$qualityTier <- mediumQuality
-imLobster_rr$datasetName <- "American Lobster Presence"
+imLobster_rr$datasetName <- "American Lobster Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
 save(imLobster_rr, file = file.path(localFileSavePath, "Open/imLobster_rr.RData"))
 

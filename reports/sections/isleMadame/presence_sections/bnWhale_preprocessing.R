@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "bnWhale_rr"), regionStr)
 
-# ---------------------Bluefin Tuna Presence-----------------------------------
+# ---------------------Bottlenose Whale Presence-----------------------------------
 pkgId <- "29dd835b-7c96-4c62-b558-275dfe13cbe9"
 bnWhale_rr <- get_opendata_rr(pkgId)
 
@@ -30,6 +30,6 @@ bnWhale_rr$data_sf <- sf::st_transform(bnWhale_sf, crs = 4326) %>%
 
 bnWhale_rr$attribute <- "None"
 bnWhale_rr$metadata$qualityTier <- mediumQuality
-bnWhale_rr$datasetName <- "Bottlenose Whale Presence"
+bnWhale_rr$datasetName <- "Northern Bottlenose Whale Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
 save(bnWhale_rr, file = file.path(localFileSavePath, "Open/bnWhale_rr.RData"))
 
