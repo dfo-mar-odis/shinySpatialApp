@@ -206,7 +206,10 @@ plot_points <- function(baseMap, data_sf, attribute="NONE", legendName="",
                                             xlim = baseMap$coordinates$limits$x * c(0.998, 1.002),
                                             ylim = baseMap$coordinates$limits$y * c(1.002, 0.998)
     )
+  } else {
+    labelLayer <- NULL
   }
+  
     
   pointMap <- baseMap +
     dataLayer +
