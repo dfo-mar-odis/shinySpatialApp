@@ -37,5 +37,6 @@ Imports:
     tibble,
     stringr
     lwgeom,
-    gridExtra
+    gridExtra,
+    lubridate
 RoxygenNote: 7.1.1

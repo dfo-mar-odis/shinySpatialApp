@@ -41,7 +41,7 @@ Under the Collaborative Agreement, survey responsibilities are shared by DFO and
 
 Data requests are subject to the terms of the Collaborative Agreement. Please contact Freya Keyser (DFO Offshore Scallop Biologist, freya.keyser@dfo-mpo.gc.ca) with details on your request, and you will be guided through the Offshore Scallop Survey data request process. 
 
-#### ***Area-specific Offshore Scallop results***
+#### *Area-specific Offshore Scallop results*
 ```{r offshoreScallop-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 osOutputList <- master_intersect(offshoreScallop_rr$data_sf, 
@@ -52,13 +52,13 @@ osOutputList <- master_intersect(offshoreScallop_rr$data_sf,
 if (!is.null(osOutputList$studyData)) {
   osStudyData <- sf::st_drop_geometry(osOutputList$studyData)
   osTable <- osStudyData %>%
-  left_join(bankLabels) %>%
-  dplyr::select(year, name, TOW_NO) %>%
-  dplyr::group_by(year, name) %>%
-  dplyr::summarize(number_of_tows=n()) %>%
-  tidyr::pivot_wider(names_from = name, values_from = number_of_tows)
+    left_join(bankLabels) %>%
+    dplyr::select(year, name, TOW_NO) %>%
+    dplyr::group_by(year, name) %>%
+    dplyr::summarize(number_of_tows = n()) %>%
+    tidyr::pivot_wider(names_from = name, values_from = number_of_tows)
   
-  names(osTable)[1]<-"Year"
+  names(osTable)[1] <- "Year"
  
 }
 
@@ -99,7 +99,7 @@ if (!is.null(osOutputList$studyData)) {
 if (!is.null(osOutputList$studyData)) {
   if (nrow(osTable) > 0) {
      options(knitr.kable.NA = '--')
-    knitr::kable(osTable, align = "l", caption = paste("\\label{tab:offshoreScallop_table}", write_caption_blurb(offshoreScallop_rr, "EN"), 'Spatial and temporal coverage of the Offshore Scallop survey, represented as number of tows per year by bank for the user-defined area (red outline). The absence of a record in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Icelandic scallop data were collected on Banquereau in 2006, 2012 and 2019.'), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "center")
+    knitr::kable(osTable, align = "l", caption = paste("\\label{tab:offshoreScallop_table}", write_caption_blurb(offshoreScallop_rr, "EN"), 'Spatial and temporal coverage of the Offshore Scallop survey, represented as number of tows per year by bank for the user-defined area (red outline). The absence of a record in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. Icelandic scallop data were collected on Banquereau in 2006, 2012 and 2019.'), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "center")
   }
 }
 ```
