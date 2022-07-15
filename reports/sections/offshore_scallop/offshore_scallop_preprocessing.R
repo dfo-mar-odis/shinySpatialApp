@@ -13,12 +13,10 @@ library(lubridate) # load library to use year/month/day as functions and headers
 loadResult <- load_rdata(c("CommonData", "offshoreScallop_rr"), regionStr)
 
 # ---------------------TEMPLATE-----------------------------------
-# FIX ME!
-<<<<<<< HEAD
-load("C:/Users/GlassA/Desktop/Offshore Scallop/ShinySpatialApp/reports/sections/offshore_scallop/OSdat.RData")
-=======
-load("C:/Users/StoyelQ/Desktop/Work/Reproducible_reports/test/OSdat.RData")
->>>>>>> 141270b953f6c19e4b5152d248d2e89be9719a07
+# FIX ME! This needs to be updated to where Quentin Stoyel directs us to save data for the app.  
+##Currently it is "Y:/Offshore/Assessment/Data/Survey_data/2022/OSdat.RData"  Year is updated with new annual data
+
+load("Y:/Offshore/Assessment/Data/Survey_data/2022/OSdat.RData")
 
 #format date and separate y m d
 dat$TOW_DATE = as.factor(as.Date(dat$TOW_DATE, format = "%Y-%m-%d"))
@@ -31,6 +29,7 @@ dat_sf <- dat1 %>%
   dplyr::filter(bank !="GBUSA") %>%
   dplyr::filter(bank != "LURCHER") %>% 
   dplyr::filter(bank != "SPB") %>% 
+  dplyr::filter(year != "2020") %>% 
   dplyr::select(year, month, bank, TOW_NO, sLon, sLat) %>% #select required columns
   distinct() %>%
   sf::st_as_sf(coords=c("sLon", "sLat"), crs=4326) %>% #set coordinate system
