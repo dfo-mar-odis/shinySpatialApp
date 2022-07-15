@@ -48,14 +48,14 @@ fullReportUI <- function(id) {
             "Fishing",
             "Shipping",
             "Literature Review",
-            "Cumulative impact mapping",
+            "Structures, loading, and disposal",
             "Aquatic Invasive Species"
           ),
           choiceValues = c(
             "threats/fishing.Rmd",
             "threats/shipping.Rmd",
             "threats/literature_review.Rmd",
-            "threats/cumulative.Rmd",
+            "threats/structures_loading_dispersal.Rmd",
             "threats/aquatic_invasive.Rmd"
           ),
         ),
@@ -132,6 +132,20 @@ fullReportServer <- function(id, geoms, preview, u_details) {
             closeButton = FALSE
           )
           # 
+          chk1 <- render_full_report(
+            geoms = geoms$final,
+            lang = input$lang,
+            u_name = u_details$name, 
+            u_email = u_details$email,
+            u_text = input$u_text,
+            u_comments = input$u_comments,
+            parts = c(
+              input$species, 
+              input$context, 
+              input$threats
+            ),
+            fl = input$report_name
+          )
           chk <- render_full_report(
             geoms = geoms$final,
             lang = input$lang,

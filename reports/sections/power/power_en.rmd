@@ -22,7 +22,7 @@ if (FALSE) {
 }
 ```
 
-### **Clean power generating stations by type in megawatts (MW)** {#power-section}
+### **Clean Power Generating Stations by Type in megawatts (MW)** {#power-section}
 
 ```{r power-load, include=FALSE}
 # load in section specific data
@@ -43,10 +43,15 @@ writeLines(noquote(power_rr$text$en))
 ```
 
 
-#### ***Area-specific Clean Power Generating Stations***
+##### *Area-Specific Clean Power Generating Stations*
 ```{r power-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 powerOutputList <- master_intersect(power_rr$data_sf, mapDataList, getRegion = TRUE)
+
+# summary intro table
+introResult <- !is.null(powerOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Power Stations](#power-section)", result=introResult)
+
 
 powerTable <- NULL
 if (!is.null(powerOutputList$studyData)){
@@ -76,7 +81,7 @@ powerReport <- if (is.null(powerOutputList$studyData)) {
 writeLines(noquote(powerReport))
 ```
 
-```{r power-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(power_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query disposal site records.')}
+```{r power-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(power_rr, "EN"), 'Map of clean power generation sites observed within the search area (red outline). Sites displayed outside of the search area are visualized for context, but not included in the results listed in the Table below. The absence of a power generation site should be interpreted as an absence of reporting, not necessarily as an absence of power generation sites in the area. Data were obtained from @OpenData_power.')}
 if (!is.null(powerOutputList$studyData)) {
     plot(plot_rr_sf(areaMap, powerOutputList$mapData, 
                     attribute=power_rr$attribute, size=6,
@@ -87,6 +92,6 @@ if (!is.null(powerOutputList$studyData)) {
 
 ```{r power-all-table}
 if (!is.null(powerOutputList$studyData)) {
-knitr::kable(powerTable, align="l", caption=paste("\\label{tab:power_table}", write_caption_blurb(power_rr, "EN"), "Clean power generation sites contained within the search area, The absence of a power generation site in this table should be interpreted as an absence of reporting, not necessarily as an absence of power generation sites in the area. </b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+knitr::kable(powerTable, align="l", caption=paste("\\label{tab:power_table}", write_caption_blurb(power_rr, "EN"), "Clean power generation sites contained within the search area. The absence of a power generation site in this table should be interpreted as an absence of reporting, not necessarily as an absence of power generation sites in the area. </b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```

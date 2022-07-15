@@ -80,5 +80,5 @@ clear_output <- function() {
     list.files("output", full.names = TRUE, recursive = TRUE),
     list.files("www/reports", full.names = TRUE)
   )
-  file.remove(fls[!grepl("\\.gitkeep$", fls)])
+  file.remove(fls[!grepl("\\.gitkeep$|*.rdata", fls)])
 }

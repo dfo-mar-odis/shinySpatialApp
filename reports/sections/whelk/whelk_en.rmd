@@ -11,11 +11,11 @@ bibliography: '`r here::here("app/data/mybiblio.bib")`'
 
 ```{r eval=FALSE}
 if (FALSE) { 
-  # load in generic data, e.g.functions, study area, and base maps into the 
+  # load in generic data, e.g., functions, study area, and base maps into the 
   # environment, when knitting, these will be loaded through the child rmd.
   lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
   studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
-  intro_setup(studyArea, env = environment(), regionStr = regionStr)
+  intro_setup(studyArea, env = environment())
 }
 ```
 
@@ -38,10 +38,14 @@ writeLines(noquote(whelk_rr$text$en))
 ```
 
 
-#### ***Area-specific Whelk Surveyresults***
+#### ***Area-Specific Whelk Survey Results***
 ```{r whelk-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 whelkOutputList <- master_intersect(whelk_rr$data_sf, mapDataList)
+
+# summary intro table
+introResult <- !is.null(whelkOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Whelk Survey](#whelk-section)", result=introResult)
 
 # Create tables based off of the Scientific Name column, one with all species found,
 # and one with only the Species at Risk found.
@@ -62,7 +66,7 @@ whelkReport <- if (is.null(whelkOutputList$studyData)) {
 writeLines(noquote(whelkReport))
 ```
 
-```{r whelk-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(whelk_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from whelk records.')}
+```{r whelk-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(whelk_rr, "EN"), 'Map of whelk records within the search area (red outline) from @OpenData_shelk.')}
 if (!is.null(whelkOutputList$studyData)) {
   # common plotting function:
   plot_rr_sf(areaMap, whelkOutputList$mapData, attribute = 
@@ -73,7 +77,7 @@ if (!is.null(whelkOutputList$studyData)) {
 ```{r whelk-table}
 if (!is.null(whelkOutputList$studyData)) {
   if (nrow(whelkSarTable) > 0) {
-    knitr::kable(whelkSarTable, align = "l", caption = paste("\\label{tab:whelk_table}", write_caption_blurb(whelk_rr, "EN"), "whelk records of species contained within the search area and listed by the Species At Risk Act (SARA), or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Frequency represents the subset of the sampling locations out of the total where each species is present. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>"), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+    knitr::kable(whelkSarTable, align = "l", caption = paste("\\label{tab:whelk_table}", write_caption_blurb(whelk_rr, "EN"), "whelk records of species contained within the search area and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Frequency represents the subset of the sampling locations out of the total where each species is present. <b> The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. </b>"), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
   }
 }
 ```

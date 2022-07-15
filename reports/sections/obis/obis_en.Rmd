@@ -17,18 +17,45 @@ if (FALSE) { #load in data:
 ```
 
 
-```{r obis-gbif-load, include=FALSE}
-load_rdata(c("obis_rr", "gbif_rr"), regionStr, env = environment())
+### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
 
+```{r obis-load, include=FALSE}
+load_rdata(c("obis_rr"), regionStr, env = environment())
 ```
 
-```{r child = here::here("reports/sections/obis/obisCommon_en.Rmd")}
+```{r obis-meta, results='asis'}
+write_meta(obis_rr, "EN")
 ```
 
-#### ***Area-specific OBIS search results***
+OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open-access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS accepts data from any organization, consortium, project or individual who wishes to contribute data [@OBIS]. As of May 2022, OBIS has over 100 million species occurrence records and over 4,400 datasets globally.
+
+
+### **Global Biodiversity Information Facility (GBIF) and iNaturalist** {#gbif-section}
+
+```{r gbif-load, include=FALSE}
+load_rdata(c("gbif_rr"), regionStr, env = environment())
+```
+
+```{r gbif-meta, results='asis'}
+write_meta(gbif_rr, "EN")
+```
+
+GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth [@GBIF]. Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of May 2022, GBIF has over 2.1 billion species occurrence records and over 69,000 datasets globally. 
+
+iNaturalist is an open-source platform where naturalists, citizen scientists, and biologists can map species observations [@iNaturalist]. As of May 2022, iNaturalist has over 99 million species observations and over 2.1 million registered users/contributors globally. Every week, iNaturalist data that are considered "Research Grade" (i.e., the record contains a date, is georeferenced, has photos or sounds, isn't a captive or cultivated organism, and two thirds of identifiers agree on the species identification) are added to GBIF (more information here:
+<https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7>). iNaturalist records are not added to OBIS.
+
+For more information about these sources, please see the supplementary material.
+
+
+##### *Area-Specific OBIS Search Results*
 
 ```{r obis-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(obis_rr$data_sf, mapDataList, Year = minYear)
+
+# summary intro table
+introResult <- !is.null(outputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[OBIS](#OBIS-section)", result=introResult)
 
 obisTable <- create_sar_tables(outputList$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[OBIS](#OBIS-section)", obisTable, "Common Name", "Common Name")
@@ -56,32 +83,44 @@ if (!is.null(outputList$studyData)) {
 }
 ```
 
-
-#### ***Area-specific GBIF  search results***
+##### *Area-Specific GBIF and/or iNaturalist Search Results*
 
 ```{r gbif-results, cache=FALSE, include=FALSE}
 inaturalist_sf = subset(gbif_rr$data_sf, title == "iNaturalist Research-grade Observations")
 inaturalistClipped <- master_intersect(inaturalist_sf, mapDataList)
+
+# summary intro table
+introResult <- !is.null(inaturalistClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[iNaturalist](#gbif-section)", result=introResult)
+
 inaturalistTable <- create_sar_tables(inaturalistClipped$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[iNaturalist](#gbif-section)", inaturalistTable, "Common Name", "Common Name")
+
 
 otherGbif_sf = subset(gbif_rr$data_sf, title != "iNaturalist Research-grade Observations")
 gbifClipped <- master_intersect(otherGbif_sf, mapDataList)
+
+# summary intro table
+introResult <- !is.null(gbifClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[GBIF](#gbif-section)", result=introResult)
+
 gbifTable <- create_sar_tables(gbifClipped$studyData, listed_species, extraCols = c("URL", "Citation"))$sarData
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[GBIF](#gbif-section)", gbifTable, "Common Name", "Common Name")
 
 ```
 
 ```{r gbif-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
-reportGbif <-  if (is.null(gbifClipped$studyData)) {
+reportGbif <-  if (is.null(gbifClipped$studyData) & is.null(inaturalistClipped$studyData)) {
   "*	There are no relevant records in the Global Biodiversity Information Facility (GBIF) for this search area."
-} else if (is.null(inaturalistClipped$studyData)){
+} else if (!is.null(inaturalistClipped$studyData)){
   "*	There are relevant records in the Global Biodiversity Information Facility (GBIF) for this search area."
 } else {
-  "*	There are relevant records in the Global Biodiversity Information Facility (GBIF) including iNaturalist entries for this search area."  
+  "*	There are relevant records in the Global Biodiversity Information Facility (GBIF), including iNaturalist entries for this search area."  
 }
 writeLines(reportGbif)
 ```
 
-```{r gbif-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbif_rr, "EN"), 'Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
+```{r gbif-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbif_rr, "EN"), 'Map of Global Biodiversity Information Facility (GBIF) observation records (black circles) of species observed within the search area (red outline) and listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
 if (!is.null(gbifClipped$studyData)) {
   plot_rr_sf(areaMap, gbifClipped$mapData, attribute=gbif_rr$attribute)
 }
@@ -89,11 +128,11 @@ if (!is.null(gbifClipped$studyData)) {
 
 ```{r gbif-table, echo=FALSE, results='asis'}
 if (!is.null(gbifClipped$studyData)) {
-  knitr::kable(gbifTable, align="l", caption=paste(write_caption_blurb(gbif_rr, "EN"), "Global Biodiversity Information Facility (GBIF) observation records of species observed within the search area, and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. "), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(gbifTable, align="l", caption=paste(write_caption_blurb(gbif_rr, "EN"), "Global Biodiversity Information Facility (GBIF) observation records of species observed within the search area, and listed by the Species At Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 
-```{r inaturalist-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbif_rr, "EN"), 'Research-grade iNaturalist observations within the search area (red outline) of species that have been added to the Global Biodiversity Information Facility (GBIF). Species included have been listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. Observations are coloured to show coordinate uncertainties of the data, where observations with coordinate uncertainties >20 km represent locations that have been obscured due to geoprivacy concerns (e.g., hunting). NAs refer to observations with no provided coordinate uncertainty. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area. ')}
+```{r inaturalist-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(gbif_rr, "EN"), 'Research-grade iNaturalist observations within the search area (red outline) of species that have been added to the Global Biodiversity Information Facility (GBIF). Species included have been listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. Observations are coloured to show coordinate uncertainties of the data, where observations with coordinate uncertainties >20 km represent locations that have been obscured due to geoprivacy concerns (e.g., hunting). NAs refer to observations with no provided coordinate uncertainty. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.')}
 if (!is.null(inaturalistClipped$studyData)) {
   plot_rr_sf(areaMap, inaturalistClipped$mapData, attribute=gbif_rr$attribute)
 }
@@ -101,7 +140,7 @@ if (!is.null(inaturalistClipped$studyData)) {
 
 ```{r inaturalist-table, echo=FALSE, results='asis'}
 if (!is.null(inaturalistClipped$studyData)) {
-  knitr::kable(inaturalistTable, align="l", caption=paste(write_caption_blurb(gbif_rr, "EN"), "Research-grade iNaturalist observations within the search area (red outline) of species that have been added to the Global Biodiversity Information Facility (GBIF). Species included have been listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. Observations displayed outside of the search area are visualized for context, but not included in the survey results listed below. Observations are coloured to show coordinate uncertainties of the data, where observations with coordinate uncertainties >20 km represent locations that have been obscured due to geoprivacy concerns (e.g., hunting). NAs refer to observations with no provided coordinate uncertainty. The absence of a species in this figure should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  knitr::kable(inaturalistTable, align="l", caption=paste(write_caption_blurb(gbif_rr, "EN"), "Research-grade iNaturalist observations of species observed within the search area that have been added to the Global Biodiversity Information Facility (GBIF). Species included have been listed by the Species at Risk Act (SARA), and/or assessed by the Committee on the Status of Endangered Wildlife in Canada (COSEWIC). Species designated as “Not at Risk” by SARA or COSEWIC are not included in this search. URLs contain links to a complete dataset description. The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area."), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 

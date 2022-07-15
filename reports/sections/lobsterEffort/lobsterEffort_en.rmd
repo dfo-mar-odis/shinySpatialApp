@@ -44,10 +44,16 @@ writeLines(noquote(lobsterEffort_rr$text$en))
 ```
 
 
-#### ***Area-specific lobster fishing effort results***
+##### *Area-Specific Lobster Fishing Effort Results*
 ```{r lobsterEffort-results, include=FALSE, cache=FALSE}
 # clip the data to the Study and Map areas:
 lobsterOutputList <- master_intersect(lobsterEffort_rr$data_sf, mapDataList, getRegion=TRUE)
+
+# summary intro table
+introResult <- !is.null(lobsterOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Lobster Fishing Effort](#lobsterEffort-section)", result=introResult)
+
+
 
 ```
 
@@ -69,7 +75,7 @@ lobsterEffortReport <- if (is.null(lobsterOutputList$studyData)) {
 writeLines(noquote(lobsterEffortReport))
 ```
 
-```{r lobsterEffort-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(lobsterEffort_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query lobster fishing effort records.')}
+```{r lobsterEffort-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(lobsterEffort_rr, "EN"), 'Grid map of lobster fishing effort (annual catch weight per number of trap hauls) within the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries. Data were obtained from @OpenData_lobsterEffort.')}
 if (!is.null(lobsterOutputList$studyData)) {
     plot(plot_rr_sf(regionMap, lobsterOutputList$regionData, 
                     attribute=lobsterEffort_rr$attribute, 
@@ -78,7 +84,7 @@ if (!is.null(lobsterOutputList$studyData)) {
   }
 ```
 
-```{r lobsterEffort-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(lobsterEffort_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query lobster fishing effort records.')}
+```{r lobsterEffort-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(lobsterEffort_rr, "EN"), 'Grid map of lobster fishing effort (annual catch weight per number of trap hauls) within the search area (red outline). Data were obtained from @OpenData_lobsterEffort.')}
 if (!is.null(lobsterOutputList$studyData)) {
     totalRegionMax <- max(lobsterOutputList$regionData[[lobsterEffort_rr$attribute]])
     totalRegionMin <- min(lobsterOutputList$regionData[[lobsterEffort_rr$attribute]])

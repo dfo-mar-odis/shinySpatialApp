@@ -37,11 +37,17 @@ writeLines(noquote(nbwText))
 
 Please see a list of all sources of information at the Open Data record [@DFO2020NBW_imphabitat]: `r nbw_rr$metadata$url$en`.
 
-#### ***Area-specific Northern Bottlenose Whale Important Habitat in inter-canyon areas on the eastern Scotian Shelf search results***
+##### *Area-Specific Northern Bottlenose Whale Important Habitat in Inter-Canyon Areas on the Eastern Scotian Shelf Search Results*
 
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
 clipped <- master_intersect(nbw_rr$data_sf, mapDataList)
+
+# summary intro table
+introResult <- !is.null(clipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Northern Bottlenose Whale Habitat](#nbw-hab-section)", result=introResult)
+
+
 if(!is.null(clipped$studyData)){
   summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[NBW Habitat](#nbw-hab-section)", summaryNBWTable, "Species", "Species")
@@ -56,13 +62,13 @@ polyText <- if(is.null(clipped$studyData)){"Search area does not overlap with No
  writeLines(polyText)
 ```
 
-```{r nbw-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>.')}
+```{r nbw-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'Proposed Northern Bottlenose Whales important habitat in inter-canyon areas on the eastern Scotian Shelf. Northern Bottlenose Whales are present year-round in the inter-canyon areas, which function as foraging habitat and movement corridors. Note that the full extent of important habitat for Scotian Shelf Northern Bottlenose Whales remains unknown. Please see additional information in <a href="http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf">DFO 2020</a>. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries.')}
 if (!is.null(nbw_rr$data_sf)){
   plot_rr_sf(regionMap, nbw_rr$data_sf, nbw_rr$attribute)
 }
 ```
 
-```{r nbw-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'This map summarizes areas where the search polygon overlaps with Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf.')}
+```{r nbw-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(nbw_rr, "EN"), 'Northern Bottlenose Whale important habitat in inter-canyon areas on the eastern Scotian Shelf observed within the search area (red outline).')}
 if (!is.null(clipped$mapData)){
   plot_rr_sf(areaMap, clipped$mapData, nbw_rr$attribute)
 }

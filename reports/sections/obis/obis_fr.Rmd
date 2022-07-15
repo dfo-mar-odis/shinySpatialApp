@@ -17,13 +17,35 @@ if (FALSE) { #load in data:
 ```
 
 
-```{r obis-gbif-load, include=FALSE}
-load_rdata(c("obis_rr", "gbif_rr"), regionStr, env = environment())
+### **Ocean Biodiversity Information System (OBIS)**{#OBIS-section}
 
+```{r obis-load, include=FALSE}
+load_rdata(c("obis_rr"), regionStr, env = environment())
 ```
 
-```{r child = here::here("reports/sections/obis/obisCommon_fr.Rmd")}
+```{r obis-meta, results='asis'}
+write_meta(obis_rr, "FR")
 ```
+
+OBIS is a global, open-access data and information clearing-house on marine biodiversity for science, conservation, and sustainable development [@OBIS]. Their vision is to build and maintain a global alliance that collaborates with scientific communities to facilitate free and open-access to, and application of, biodiversity and biogeographic data and information on marine life. OBIS accepts data from any organization, consortium, project or individual who wishes to contribute data [@OBIS]. As of April 2022, OBIS has over 100 million species occurrence records and over 4,400 datasets globally.
+
+
+### **Global Biodiversity Information Facility (GBIF) and iNaturalist** {#gbif-section}
+
+```{r gbif-load, include=FALSE}
+load_rdata(c("gbif_rr"), regionStr, env = environment())
+```
+
+```{r gbif-meta, results='asis'}
+write_meta(gbif_rr, "FR")
+```
+
+GBIF is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth [@GBIF]. Similar to OBIS, GBIF accepts data from various contributors such as university laboratories, government departments or private research institutions, although GBIF accepts both marine and terrestrial species data. As of April 2022, GBIF has over 2.1 billion species occurrence records and over 68,000 datasets globally. 
+
+iNaturalist is an open-source platform where naturalists, citizen scientists, and biologists can map species observations [@iNaturalist]. As of April 2022, iNaturalist has over 95 million species observations and over 2.1 million registered users/contributors globally. Every week, iNaturalist data that are considered "Research Grade" (i.e., the record contains a date, is georeferenced, has photos or sounds, isn't a captive or cultivated organism, and two thirds of identifiers agree on the species identification) are added to GBIF (more information here:
+<https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7>). iNaturalist records are not added to OBIS.
+
+For more information about these sources, please see the supplementary material.
 
 #### ***Area-specific OBIS search results***
 

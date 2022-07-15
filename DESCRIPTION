@@ -31,5 +31,11 @@ Imports:
     tidyverse,
     whisker,
     bookdown,
-    packageName
+    pagedown,
+    readxl,
+    plyr,
+    tibble,
+    stringr
+    lwgeom,
+    gridExtra
 RoxygenNote: 7.1.1
