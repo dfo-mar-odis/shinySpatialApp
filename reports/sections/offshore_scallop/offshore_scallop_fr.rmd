@@ -49,6 +49,10 @@ osOutputList <- master_intersect(offshoreScallop_rr$data_sf,
                                               mapDataList, getRegion = TRUE)
 
 
+# summary intro table
+introResult <- !is.null(osOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Offshore Scallop](#offshore-scallop-section)", result=introResult)
+
 # gen table:
 if (!is.null(osOutputList$studyData)) {
   osStudyData <- sf::st_drop_geometry(osOutputList$studyData)

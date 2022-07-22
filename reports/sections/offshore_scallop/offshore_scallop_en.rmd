@@ -47,6 +47,9 @@ Data requests are subject to the terms of the Collaborative Agreement. Please co
 osOutputList <- master_intersect(offshoreScallop_rr$data_sf, 
                                               mapDataList, getRegion = TRUE)
 
+# summary intro table
+introResult <- !is.null(osOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Offshore Scallop](#offshore-scallop-section)", result=introResult)
 
 # gen table:
 if (!is.null(osOutputList$studyData)) {
