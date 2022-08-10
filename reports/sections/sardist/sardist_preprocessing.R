@@ -5,20 +5,18 @@ source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "sardist_rr"), regionStr)
 
-
 filter_and_union <- function(sciName, sfObj) {
   filter_sf <- dplyr::filter(sfObj, `Scientific Name`==sciName)
   out_sf <- filter_sf %>%
-    dplyr::group_by(`Scientific Name`, `Common Name`, Species_Link) %>%
-    dplyr::summarize(geometry = sf::st_union(geometry))
+  dplyr::group_by(`Scientific Name`, `Common Name`, Species_Link) %>%
+  dplyr::summarize(geometry = sf::st_union(geometry))
   return(out_sf)
 }
 
 # -----------SAR DIST--------------
-# Creating the sardist rr object takes a LOT (>10gb) of ram which may cause errors
-# it is useful to run in a clean rstudio session and if needed, to manually
-# step through the functions.
+# get opendata metadata and set missing fields:
 sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
+<<<<<<< HEAD
 sardistResId <- "50c03ed9-a99f-4dd4-8c4e-2ad9d81432ef"
 sardistCheckDate <-  get_check_date("sardist_rr")
 
@@ -45,7 +43,43 @@ if(!is.null(openSardist_rr)) {
 }
 
 
+# ------------------ESRI VERSION------------------------
+sardist_rr <- get_opendata_rr(sardistPkgId)
+
+sardist_rr$metadata$qualityTier <- highQuality
+sardist_rr$metadata$contact <- email_format("info\\@dfo-mpo.gc.ca")
+
+# sara crs: 3857
+# get crs with: esri2sf(url, where="OBJECTID<10", progress=TRUE)
+
+regionBbox <- sf::st_bbox(sf::st_transform(region_sf, 3857))
+url <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/DFO_SARA_Distribution/MapServer/0"
+sardist_sf <- esri2sf::esri2sf(url, bbox=regionBbox, progress=TRUE)
+# dump corrupt geoms, is_valid returns na for corrupt geoms:
+sardist_sf <- sardist_sf[!is.na(sf::st_is_valid(sardist_sf)), ]
+sardist_sf <- sf::st_make_valid(sardist_sf)
+
+# trim and rename columns:
+sardist_sf <- dplyr::select(sardist_sf, c("Common_Name_EN", "Scientific_Name",
+                                          "Species_Link", "Population_EN", "geoms"))
+names(sardist_sf) <- c("Common Name", "Scientific Name",
+                       "Species_Link", "Population", "geometry")
+st_geometry(sardist_sf) <- "geometry"
+
+# find species names to join on:
+specNames <- names(table(sardist_sf$`Scientific Name`))
+outList <- lapply(specNames, filter_and_union, sfObj=sardist_sf)
+# !!! exapands the outlist in the argument, check ?"!!!"
+sardist_sf <- bind_rows(!!!outList)
+
+# save the data
+sardist_rr$data_sf <- sardist_sf
+save(sardist_rr, file = file.path(localFileSavePath, "Open/sardist_rr.RData"))
+
+
+
 # ------------------GEODATABASE VERSION------------------------
+sf::sf_use_s2(FALSE) # because sf 1.0 is "broken" does not support treating spheres as flat
 
 library(arcgisbinding)
 arc.check_product() # you must have access to an ESRI arc license. Yuck :(
@@ -113,9 +147,8 @@ crithabsOut <- left_join(finalCrithabs_sf, specLists, by="SPECIES_ID")
 draftCH_sf <- dplyr::select(crithabsOut, c("CHSTATUS_E", "WATERBODY", "COMMON_E", 
                                            "POP_E", "SCIENTIFIC", "LEAD_REG_E", 
                                            "PROFILE_E"))
-
+# esri mucks up your working dir too, joy!
 setwd(here::here())
-renv::activate()
 
 
 

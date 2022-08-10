@@ -42,6 +42,12 @@ Please see a list of all sources of information at the Open Data record [@DFO202
 ```{r overlap-nbw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
 clipped <- master_intersect(nbw_rr$data_sf, mapDataList)
+
+# summary intro table
+introResult <- !is.null(clipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Northern Bottlenose Whale Habitat](#nbw-hab-section)", result=introResult)
+
+
 if(!is.null(clipped$studyData)){
   summaryNBWTable <- data.frame("Species" = "Northern Bottlenose Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[NBW Habitat](#nbw-hab-section)", summaryNBWTable, "Species", "Species")

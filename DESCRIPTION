@@ -32,6 +32,11 @@ Imports:
     whisker,
     bookdown,
     pagedown,
+    readxl,
+    plyr,
+    tibble,
+    stringr
     lwgeom,
-    gridExtra
+    gridExtra,
+    lubridate
 RoxygenNote: 7.1.1

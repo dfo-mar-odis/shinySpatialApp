@@ -155,7 +155,8 @@ plot_raster <- function(baseMap, rasterData, legendName="", bgCutoff=0,
 
 plot_points <- function(baseMap, data_sf, attribute="NONE", legendName="", 
                         colorMap=NULL, shapeMap=NULL, size=2.5, shape=20, color="black",
-                        continuousAttr=FALSE, minScale=NULL, maxScale=NULL) {
+                        continuousAttr=FALSE, minScale=NULL, maxScale=NULL,
+                        labelData=NULL, labelAttribute=NULL) {
   
   # extract scaleBar layer to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
@@ -195,11 +196,26 @@ plot_points <- function(baseMap, data_sf, attribute="NONE", legendName="",
     dataLayer <- geom_sf(data = data_sf, aes(color=!!sym(attribute)), size = size, shape = shape)  
     
   }
+  
+  if(!is.null(labelData)) {
+    labelLayer <- ggrepel::geom_label_repel(data = labelData,
+                                            aes(label = !!sym(labelAttribute), 
+                                                geometry = geometry),
+                                            stat = "sf_coordinates",
+                                            min.segment.length = 0,
+                                            xlim = baseMap$coordinates$limits$x * c(0.998, 1.002),
+                                            ylim = baseMap$coordinates$limits$y * c(1.002, 0.998)
+    )
+  } else {
+    labelLayer <- NULL
+  }
+  
     
   pointMap <- baseMap +
     dataLayer +
     shapeLayer +
     legendLayer +
+    labelLayer + 
     axLim +
     watermarkLayer +
     studyBoxLayer +
@@ -286,7 +302,9 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
     polyLabels <- ggrepel::geom_label_repel(data = labelData,
                                             aes(label = !!sym(labelAttribute), geometry = geometry),
                                             stat = "sf_coordinates",
-                                            min.segment.length = 0
+                                            min.segment.length = 0,
+                                            xlim = baseMap$coordinates$limits$x * c(0.998, 1.002),
+                                            ylim = baseMap$coordinates$limits$y * c(1.002, 0.998)
                                             )
   }
   

@@ -35,6 +35,12 @@ From @ILTS: “An annual trawl survey is conducted in Southwestern Nova Scotia a
 ```{r ilts-results, include=FALSE, cache=FALSE}
 iltsClipped <- master_intersect(ilts_rr$data_sf, mapDataList)
 
+# summary intro table
+introResult <- !is.null(iltsClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[ILTS](#ilts-section)", result=introResult)
+
+
+
 tableList <- create_sar_tables(iltsClipped$studyData, listed_species)
 iltsAllTable <- tableList$allSpecies
 iltsSarTable <- tableList$sarData

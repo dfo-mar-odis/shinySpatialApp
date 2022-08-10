@@ -41,10 +41,19 @@ Please see a list of all sources of information used in @Lesage2018 and the Open
 ```{r overlap-bw-habitat, echo=FALSE, results='asis'}
 # intersect polyData with 3 polygons (region, map area, and study box)
 clipped <- master_intersect(blueWhaleHab_rr$data_sf, mapDataList)
-if(!is.null(clipped$studyData)){
+# summary intro table
+introResult = TRUE
+if(is.null(clipped$studyData)){
+  introResult = FALSE
+}
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Blue Whale Habitat](#bw-section)", result=introResult)
+
+if(introResult){
   summaryBWTable <- data.frame("Species" = "Blue Whale")
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "IH", "[BW Habitat](#bwhab-section)", summaryBWTable, "Species", "Species")
 }
+
+
 
 ```
 *

@@ -52,6 +52,12 @@ Please note the following important disclaimers and caveats associated with sigh
 ```{r wsdb, include=FALSE, cache=FALSE}
 wsdbClipped <- master_intersect(wsdb_rr$data_sf, mapDataList)
 linkedSectionText <- "[WSDB](#WSDB-section)"
+
+# summary intro table
+introResult <- !is.null(wsdbClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name=linkedSectionText, result=introResult)
+
+
 whaleSummaryTable <- add_col_to_whale_summary(whaleSummaryTable, linkedSectionText, wsdbClipped$studyData, wsdb_rr$attribute)
 if (!is.null(wsdbClipped$studyData)) {
   summarySarTable <- add_col_to_sar_summary(summarySarTable, linkedSectionText, whaleSummaryTable, "specIndex", linkedSectionText)

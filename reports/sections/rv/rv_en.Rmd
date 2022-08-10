@@ -46,6 +46,11 @@ knitr::kable(table_RV, align = "l",
 ```{r RV-results, include=FALSE, cache=FALSE}
 outputList <- master_intersect(rv_rr$data_sf, mapDataList, Year = minYear)
 
+# summary intro table
+introResult <- !is.null(outputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[RV Survey](#RV-section)", result=introResult)
+
+
 tableList <- create_table_RV(outputList$studyData, listed_species)
 rvAllTable <- tableList$allSpecies
 rvSarTable <- tableList$sarData

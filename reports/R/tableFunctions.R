@@ -390,12 +390,12 @@ EBSA_report <- function(EBSA_sf, lang="EN") {
                                                            Name, Bioregion)))
     EBSATable <- unique(EBSATable)
     row.names(EBSATable) <- NULL
-    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
+    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioregion")
   } else if (lang=="FR" & !is.null(EBSA_sf)) {
     EBSATable <- sf::st_drop_geometry(dplyr::select(EBSA_sf, c(Rapport, RapportURL,
                                                            Nom, Bioregion)))
     EBSATable <- unique(EBSATable)
-    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioreigon")
+    names(EBSATable) <- c("Report", "Report URL", "Location", "Bioregion")
     row.names(EBSATable) <- NULL
 
   }
@@ -532,4 +532,33 @@ add_to_hab_summary <- function(summaryTable, colName, dbName, dataTable, indexCo
 #helper function to trim whale legends down to common name
 get_cetacean_common_name <- function(dataCol) {
  return(sub("\\:.*", "", dataCol))
+}
+
+isle_madame_table <- function(data_sf, cols, colnames){
+  if (is.null(data_sf)) {
+    return(NULL)
+  }
+  
+  data_df <- sf::st_drop_geometry(data_sf)
+  data_sf$geometry <- NULL
+  data_df <- dplyr::select(data_df, cols) %>%
+    unique() 
+  names(data_df) <- colnames
+  rownames(data_df) <- NULL
+  return(data_df)
+}
+
+add_row_to_intro_summary <- function(introSummary, name, result) {
+  absentCode <- "&nbsp;-&nbsp;"
+  presentCode <- "&#x2714;"
+  
+  rowNum <- nrow(introSummary) + 1
+  
+  introSummary <- rbind(introSummary, 
+                        data.frame(No=rowNum,
+                                   Datasource=name,
+                                   Results=ifelse(result, presentCode,
+                                                  absentCode )))
+  return(introSummary)
+  
 }
