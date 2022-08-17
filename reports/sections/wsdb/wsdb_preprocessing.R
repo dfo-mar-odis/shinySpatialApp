@@ -1,22 +1,27 @@
 source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
-
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-
+source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "wsdb_rr"), regionStr)
 
 #------------------WSDB--------------------
 # Whale Sightings Database (wsdb)
-wsdb <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/WSDB/MarWSDB_20210407.csv"), stringsAsFactors = FALSE)
-wsdb <- dplyr::select(wsdb, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
-wsdb <- wsdb %>% dplyr::filter(YEAR >= rrMinYear)
-wsdb <- dplyr::rename(wsdb,c("Scientific Name" = "SCIENTIFICNAME",
+egisUrl <- "https://gisd.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Whale_Sightings_Database/MapServer/"
+egisLayer <- paste0(egisUrl, "0/")
+
+infoUrl <-"https://gisd.dfo-mpo.gc.ca/arcgis/rest/info"
+tokenUrl <- "https://gisd.dfo-mpo.gc.ca/portal/sharing/rest/generateToken"
+
+token <- get_token(tokenUrl, egisUrl)
+
+wsdb_sf <- esri2sf::esri2sf(egisLayer, token=token, progress = TRUE)
+
+wsdb_sf <- dplyr::select(wsdb_sf, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
+wsdb_sf <- wsdb_sf %>% dplyr::filter(YEAR >= rrMinYear)
+wsdb_sf <- dplyr::rename(wsdb_sf,c("Scientific Name" = "SCIENTIFICNAME",
                              "CNAME"= COMMONNAME))
-wsdb <- merge(wsdb, cetLegend, by='Scientific Name')
-wsdb <- dplyr::select(wsdb, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
-wsdb_sf <- sf::st_as_sf(wsdb, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+wsdb_sf <- merge(wsdb_sf, cetLegend, by='Scientific Name')
+wsdb_sf <- dplyr::select(wsdb_sf, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
 wsdb_sf <- sf::st_crop(wsdb_sf, region_sf)
 
 wsdb_rr <- list("title" = "Whale Sightings Database",
@@ -32,4 +37,4 @@ wsdb_rr <- list("title" = "Whale Sightings Database",
                                   "constraints" = internalUse
                 )
 )
-save(wsdb_rr, file = file.path(fileSavePath, "Secure/wsdb_rr.RData"))
+save(wsdb_rr, file = file.path(localFileSavePath, "Secure/wsdb_rr.RData"))
