@@ -9,29 +9,16 @@ library(dplyr)
 loadResult = load_rdata(c("CommonData", "permits_rr"), regionStr)
 
 #------------------permits--------------------
-if (nrow(keyring::key_list("egis_username")) == 0) {
-  keyring::key_set("egis_username", prompt="set username (email)")
-}
-if (nrow(keyring::key_list("egis_pw")) == 0) {
-  keyring::key_set("egis_pw", prompt="Set password (computer login)")
-}
+
 
 # SARA Section 73 Permits (permits)
 egisUrl <- "https://gisd.dfo-mpo.gc.ca/arcgis/rest/services/Maritimes_EM/SAR_Occurrences_S73Permits__2010_2020/MapServer/"
 egisLayer <- paste0(egisUrl, "1/")
 
-
 infoUrl <-"https://gisd.dfo-mpo.gc.ca/arcgis/rest/info"
 tokenUrl <- "https://gisd.dfo-mpo.gc.ca/portal/sharing/rest/generateToken"
-authValues <- list(
-  f = "json",
-  referer = egisUrl,
-  username = keyring::key_get("egis_username"),
-  password = keyring::key_get("egis_pw")
-)
-res <- POST(tokenUrl, body=authValues, encode="form")
-token <- jsonlite::fromJSON(rawToChar(res$content))$token
 
+token <- get_token(tokenUrl, egisUrl)
 
 rawPermits <- esri2sf::esri2sf(egisLayer, token = token, progress = TRUE)
 perm_df <- sf::st_drop_geometry(rawPermits) 
