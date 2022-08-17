@@ -1,7 +1,6 @@
 source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
 source(here::here("config.R"))
-library(readxl)
 library(plyr)
 library(tibble)
 library(stringr)
@@ -10,19 +9,32 @@ library(dplyr)
 loadResult = load_rdata(c("CommonData", "permits_rr"), regionStr)
 
 #------------------permits--------------------
+if (nrow(keyring::key_list("egis_username")) == 0) {
+  keyring::key_set("egis_username", prompt="set username (email)")
+}
+if (nrow(keyring::key_list("egis_pw")) == 0) {
+  keyring::key_set("egis_pw", prompt="Set password (computer login)")
+}
+
 # SARA Section 73 Permits (permits)
+egisUrl <- "https://gisd.dfo-mpo.gc.ca/arcgis/rest/services/Maritimes_EM/SAR_Occurrences_S73Permits__2010_2020/MapServer/"
+egisLayer <- paste0(egisUrl, "1/")
 
-# Determine file path for permit data (created by Charlotte Smith)
-xl_data = file.path(fileLoadPath, "NaturalResources/Species/Permits/SARAdata_withCoordinates.xlsx")
 
-# Get the sheet names from the spreadsheet (there is one sheet per year, from 2010 to 2020)
-sheets = excel_sheets(path = xl_data)
+infoUrl <-"https://gisd.dfo-mpo.gc.ca/arcgis/rest/info"
+tokenUrl <- "https://gisd.dfo-mpo.gc.ca/portal/sharing/rest/generateToken"
+authValues <- list(
+  f = "json",
+  referer = egisUrl,
+  username = keyring::key_get("egis_username"),
+  password = keyring::key_get("egis_pw")
+)
+res <- POST(tokenUrl, body=authValues, encode="form")
+token <- jsonlite::fromJSON(rawToChar(res$content))$token
 
-# Read in the data from each sheet in the Excel file. Each sheet will be its own list
-list_all = lapply(sheets, function (x) read_excel (xl_data, sheet = x))
 
-# Combine each list into a single dataframe
-perm_df = rbind.fill(list_all)
+rawPermits <- esri2sf::esri2sf(egisLayer, token = token, progress = TRUE)
+perm_df <- sf::st_drop_geometry(rawPermits) 
 
 # Get scientific name. The name will be listed within brackets
 species_brackets = str_extract_all(perm_df$Species, "\\([^()]+\\)")
