@@ -6,14 +6,24 @@ loadResult <- load_rdata(c("CommonData", "wsdb_rr"), regionStr)
 
 #------------------WSDB--------------------
 # Whale Sightings Database (wsdb)
+
+# Accessing API needs 2 parts: 1. the authentication token, and 2. the url to query.
+# There are 3-4 useful links/endpoints to make this happen.
+# This url is the mapserver url where the data is stored:
 egisUrl <- "https://gisd.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Whale_Sightings_Database/MapServer/"
+# this url specifies the exact layer to pull data from:
 egisLayer <- paste0(egisUrl, "0/")
 
+# The info url is not explicitly needed but helps identify the token URL 
 infoUrl <-"https://gisd.dfo-mpo.gc.ca/arcgis/rest/info"
+# This is the token UR, it only accepts POST requests.
 tokenUrl <- "https://gisd.dfo-mpo.gc.ca/portal/sharing/rest/generateToken"
 
+# Use helper function to get a token. (use ctrl+click to see how it works)
 token <- get_token(tokenUrl, egisUrl)
 
+# Use esri2sf to access the data from the mapserver. 
+# This requires passing in the token as a param/header:
 wsdb_sf <- esri2sf::esri2sf(egisLayer, token=token, progress = TRUE)
 
 wsdb_sf <- dplyr::select(wsdb_sf, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
