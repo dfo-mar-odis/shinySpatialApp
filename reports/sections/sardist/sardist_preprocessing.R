@@ -31,6 +31,11 @@ sardist_sf <- esri2sf::esri2sf(url, bbox=regionBbox, progress=TRUE)
 sardist_sf <- sardist_sf[!is.na(sf::st_is_valid(sardist_sf)), ]
 sardist_sf <- sf::st_make_valid(sardist_sf)
 
+national_list <- here::here("../../sara_database/my_data/national_list.csv")
+
+nationalList <- read.csv(national_list)
+nationalList <- select(nationalList, c(Common.Name, Population, COSEWIC.Status))
+
 # trim and rename columns:
 sardist_sf <- dplyr::select(sardist_sf, c("Common_Name_EN", "Scientific_Name",
                                           "Species_Link", "Population_EN", "SARA_Status",
@@ -44,6 +49,9 @@ specNames <- names(table(sardist_sf$`Scientific Name`))
 outList <- lapply(specNames, filter_and_union, sfObj=sardist_sf)
 # !!! exapands the outlist in the argument, check ?"!!!"
 sardist_sf <- bind_rows(!!!outList)
+
+dplyr::left_join(sardist_sf, nationalList, by=c("Common Name"="Common.Name", "Population"="Population"))$SARA.Status
+
 
 # save the data
 sardist_rr$data_sf <- sardist_sf
