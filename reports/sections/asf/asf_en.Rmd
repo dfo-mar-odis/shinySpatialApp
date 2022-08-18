@@ -1,0 +1,87 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+```{r asf-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```
+
+```{r eval=FALSE}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+```{r child = here::here("reports/sections/commonSections/commonCet.Rmd")}
+```
+
+### **Atlantic salmon rivers of Eastern North America** {#asf-section}
+
+```{r asf-load, include=FALSE}
+load_rdata(c("asf_rr"), "MAR", env = environment())
+```
+
+```{r asf-meta, results='asis'}
+write_meta(asf_rr, "EN")
+```
+
+This dataset comprises the rivers of Eastern North America with each river classified with the Atlantic salmon stock status for that river. The stock status of the rivers was developed by the North Atlantic Salmon Conservation Organization (NASCO). This layer was produced by the Atlantic Salmon Federation with cartographic work and design by As the Crow Flies cARTography. The geospatial component for the rivers was derived from the CanVec 1:50,000 hydrographic layer (<https://open.canada.ca/data/en/dataset/9d96e8c9-22fe-4ad2-b5e8-94a6991b744b>) and the US National Hydrography Dataset 1:100,000 data (<https://www.usgs.gov/national-hydrography/national-hydrography-dataset>).
+
+For more information:
+
+-   Atlantic Salmon Federation PO Box 5200 St. Andrews, New Brunswick, Canada, E5B 3S8. Website: (<https://www.asf.ca/>)
+
+-    North Atlantic Salmon Conservation Organization: (<https://nasco.int/>)
+
+-    As the Crow Flies cARTography: (<http://www.atcfc.ca/>)
+
+##### *Area-Specific Atlantic salmon rivers of Eastern North America Search Results*
+
+```{r asf-results, include=FALSE, cache=FALSE}
+asfClipped <- master_intersect(asf_rr$data_sf, mapDataList)
+linkedSectionText <- "[ASF](#asf-section)"
+
+# summary intro table
+introResult <- !is.null(asfClipped$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name=linkedSectionText, result=introResult)
+
+
+if (!is.null(asfClipped$studyData)) {
+  asfTable <- sf::st_drop_geometry(asfClipped$studyData)
+  asfTable <- unique(asfTable)
+  row.names(asfTable) <- NULL
+}
+```
+
+
+```{r asf-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
+Report_asf <- if (is.null(asfClipped$studyData)) {
+   "* There are no relevant records in the Atlantic salmon rivers of Eastern North America for this search area."
+ } else {
+   "* There are relevant records in the Atlantic salmon rivers of Eastern North America for this search area."
+ }
+writeLines(Report_asf)
+```
+
+<br>
+
+```{r asf-table}
+if (!is.null(asfClipped$studyData)) {
+  if (nrow(asfTable) > 0) {
+    knitr::kable(asfTable, align="l", caption=paste("\\label{tab:asf_table}", write_caption_blurb(asf_rr, "EN"),  "Atlantic salmon rivers of Eastern North America present in the study area selected by the user</b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  }
+}
+```
+
+<br>
+
+```{r asf-plot, fig.height=8, fig.width=11, fig.cap=paste(write_caption_blurb(asf_rr, "EN"), 'Map of Atlantic salmon rivers of Eastern North America present in the study area selected by the user')}
+if (!is.null(asfClipped$studyData)) {
+  plot_rr_sf(areaMap, asfClipped$mapData, attribute=asf_rr$attribute, lwd = 0.7)
+}
+```
