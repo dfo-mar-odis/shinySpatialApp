@@ -344,6 +344,7 @@ pkg_id_from_url <- function(rr) {
 }
 
 # ---------------------EGIS Helper Functions------------------------
+# Function to set the keyring username and password values:
 set_auth <- function() {
   if (nrow(keyring::key_list("egis_username")) == 0) {
     keyring::key_set("egis_username", prompt="Set username (email)")
@@ -353,16 +354,22 @@ set_auth <- function() {
   }
 }
 
+# function requests a token for the mapserverUrl from the tokenUrl,
+# using the saved authentication, or sets it with set_auth()
 get_token <- function(tokenUrl, mapserverUrl) {
   set_auth()
+  # body parameters for POST request:
   authValues <- list(
     f = "json",
     referer = mapserverUrl,
     username = keyring::key_get("egis_username"),
     password = keyring::key_get("egis_pw")
   )
+  
   res <- POST(tokenUrl, body=authValues, encode="form")
+  # check if request was successful:
   if (res$status_code == 200){
+    # parse the response into something readable:
     token <- jsonlite::fromJSON(rawToChar(res$content))$token
     return(token)
   } else {
