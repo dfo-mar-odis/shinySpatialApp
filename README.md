@@ -78,15 +78,21 @@ shiny::runApp("app")
 
 ## **Updating Data & Metadata**
 
-Note: this is only relevant for DFO project developers that have access to the IN folder. 
+Note: This is only relevant for DFO project developers that have access to the IN folder. 
 
-When metadata is updated in the preprocessing, you need to resave it to the local data directory before it will update in the rendered reports. For this:
+When metadata is updated in the preprocessing, you need to resave it before it will update in the rendered reports. 
 
-1.	Run the whole preprocessing script up to the save line. See this link for an example of a pre-processing file: https://github.com/dfo-mar-odis/shinySpatialApp/blob/main/reports/sections/rockweed/rockweed_preprocessing.R
+For this:
 
-2.	Run it again with remoteFileSavePath instead of the local one. 
+- Step 1: Save Data Locally. Run the whole preprocessing script up to the save line. See this link for an example of a pre-processing file: https://github.com/dfo-mar-odis/shinySpatialApp/blob/main/reports/sections/rockweed/rockweed_preprocessing.R
 
-## **How to add content to the report**
+- Step 2: Render Report to make sure everything is working smoothly 
+
+- Step 3: Save Data in the IN folder so all project collaborators can use the most up-to-date information. `remoteFileSavePath` is a variable with the path to the data folder on the IN drive. To save data in the IN folder, replace `localFileSavePath` with `remoteFileSavePath` inside the save function e.g. Replace `save(rockweed_rr, file = file.path(localFileSavePath, "Open/rockweed_rr.RData"))` wtih `save(rockweed_rr, file = file.path(remoteFileSavePath, "Open/rockweed_rr.RData"))`
+
+- Step 4: Write a nice commit in yor branch to announce this update!
+
+## **How to add title levels to the report**
 
 The following provides guidance on how to include titles and subtitles throughout the report to match the formatting. Main modules are presented, with dummy subtitles for data titles and search-area results.
 
