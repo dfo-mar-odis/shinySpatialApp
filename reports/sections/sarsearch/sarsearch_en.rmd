@@ -32,14 +32,14 @@ load_rdata(c("sarsearch_rr"), regionStr, env = environment())
 write_meta(sarsearch_rr, "EN")
 ```
 
-Species data collected in the Sarsearch application (part of DFO's DMapps suite) was extracted and is presented below.
+Species data collected in the SAR search application (part of DFO's DMapps suite) was extracted and is presented below.
 -	The data originates from both external and internal sources, and must not to be shared or used outside DFO. 
+- Sources include data mining from COSEWIC reports.
 -	The data is not comprehensive in any way. It is likely that there are records of occurrence for any given species that have not been included or represented and likely does not represent the latest records, findings, or distribution for any given species. 
 -	Although the data is accurate based on its original source, it is from a variety of sources and varies in quality depending on the source for any given record.
 -	While every reasonable effort has been made to ensure that the data is correct, DFO Species at Risk Program does not warrant or guarantee the accuracy, completeness, or currency of the data for any specific use. 
 -	Data that are represented only by “Regions” in the record and/or the map only implies that the species has been found in the specified region(s). “Regions” must not be used as polygons of distribution.
 -	A data point can either represent the exact location at which a species was found or may be used to indicate the presence of a species in any given waterbody. Please consult all information for any given record before making any interpretation. 
-
 
 
 #### *Area-specific Sarsearch results*
