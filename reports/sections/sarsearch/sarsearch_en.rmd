@@ -19,7 +19,7 @@ if (FALSE) {
 }
 ```
 
-### **Sarsearch DMapps Data** {#sarsearch-section}
+### **SAR search DMapps Data** {#sarsearch-section}
 
 ```{r sarsearch-load, include=FALSE}
 # load in section specific data
