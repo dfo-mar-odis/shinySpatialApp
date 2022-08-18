@@ -36,10 +36,6 @@ copy_rdata_files()
 shiny::runApp("app")
 ```
 
-## Demo
-
-See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.webm).
-
 ## Repo structure
 
 -   `config.R` contains key configuration parameters, including the region, file paths, and the list of Open Data records checked by the github action;
@@ -80,6 +76,16 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 
 9.  Once all lights are green, the pull request will be accepted and the new code merged into main branch.
 
+## **Updating Data & Metadata**
+
+Note: this is only relevant for DFO project developers that have access to the IN folder. 
+
+When metadata is updated in the preprocessing, you need to resave it to the local data directory before it will update in the rendered reports. For this:
+
+1.	Run the whole preprocessing script up to the save line. See this link for an example of a pre-processing file: https://github.com/dfo-mar-odis/shinySpatialApp/blob/main/reports/sections/rockweed/rockweed_preprocessing.R
+
+2.	Run it again with remoteFileSavePath instead of the local one. 
+
 ## **How to add content to the report**
 
 The following provides guidance on how to include titles and subtitles throughout the report to match the formatting. Main modules are presented, with dummy subtitles for data titles and search-area results.
@@ -92,3 +98,6 @@ The following provides guidance on how to include titles and subtitles throughou
    ### **Name of the dataset, database, or record**  --> set in individual section Rmd: /reports/sections/sectionName/*.Rmd
    
    ##### *Area-specific search results* --> set in individual section Rmd: /reports/sections/sectionName/*.Rmd
+   
+   
+   
