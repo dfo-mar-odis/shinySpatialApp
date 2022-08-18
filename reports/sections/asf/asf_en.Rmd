@@ -20,7 +20,7 @@ if (FALSE) { #load in data:
 ```{r child = here::here("reports/sections/commonSections/commonCet.Rmd")}
 ```
 
-### **Atlantic salmon rivers of Eastern North America** {#asf-section}
+### **Atlantic Salmon rivers of Eastern North America** {#asf-section}
 
 ```{r asf-load, include=FALSE}
 load_rdata(c("asf_rr"), "MAR", env = environment())
@@ -30,7 +30,7 @@ load_rdata(c("asf_rr"), "MAR", env = environment())
 write_meta(asf_rr, "EN")
 ```
 
-This dataset comprises the rivers of Eastern North America with each river classified with the Atlantic salmon stock status for that river. The stock status of the rivers was developed by the North Atlantic Salmon Conservation Organization (NASCO). This layer was produced by the Atlantic Salmon Federation with cartographic work and design by As the Crow Flies cARTography. The geospatial component for the rivers was derived from the CanVec 1:50,000 hydrographic layer (<https://open.canada.ca/data/en/dataset/9d96e8c9-22fe-4ad2-b5e8-94a6991b744b>) and the US National Hydrography Dataset 1:100,000 data (<https://www.usgs.gov/national-hydrography/national-hydrography-dataset>).
+This dataset comprises the rivers of Eastern North America with each river classified with the Atlantic Salmon stock status for that river. The stock status of the rivers was developed by the North Atlantic Salmon Conservation Organization (NASCO). This layer was produced by the Atlantic Salmon Federation with cartographic work and design by As the Crow Flies cARTography. The geospatial component for the rivers was derived from the CanVec 1:50,000 hydrographic layer (<https://open.canada.ca/data/en/dataset/9d96e8c9-22fe-4ad2-b5e8-94a6991b744b>) and the US National Hydrography Dataset 1:100,000 data (<https://www.usgs.gov/national-hydrography/national-hydrography-dataset>).
 
 For more information:
 
@@ -40,7 +40,7 @@ For more information:
 
 -    As the Crow Flies cARTography: (<http://www.atcfc.ca/>)
 
-##### *Area-Specific Atlantic salmon rivers of Eastern North America Search Results*
+##### *Area-Specific Atlantic Salmon rivers of Eastern North America Search Results*
 
 ```{r asf-results, include=FALSE, cache=FALSE}
 asfClipped <- master_intersect(asf_rr$data_sf, mapDataList)
@@ -61,9 +61,9 @@ if (!is.null(asfClipped$studyData)) {
 
 ```{r asf-check, comment="", prompt=TRUE, echo=FALSE, results='asis'}
 Report_asf <- if (is.null(asfClipped$studyData)) {
-   "* There are no relevant records in the Atlantic salmon rivers of Eastern North America for this search area."
+   "* There are no relevant records in the Atlantic Salmon rivers of Eastern North America for this search area."
  } else {
-   "* There are relevant records in the Atlantic salmon rivers of Eastern North America for this search area."
+   "* There are relevant records in the Atlantic Salmon rivers of Eastern North America for this search area."
  }
 writeLines(Report_asf)
 ```
