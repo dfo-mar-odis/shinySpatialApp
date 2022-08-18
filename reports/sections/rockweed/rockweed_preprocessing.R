@@ -26,6 +26,7 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
                     "data_sf" = final_rockweed_sf,
                     "attribute" = "status",
                     "metadata" = list("contact" = email_format("Gordana.Lazin@dfo-mpo.gc.ca"), 
+                                      "url" = lang_list("<https://gisd.dfo-mpo.gc.ca/portal/home/item.html?id=cbf26467bce84abc972a04e88581a030>"),
                                       "accessedOnStr" = list("en" ="July 28 2022", 
                                                              "fr" = "28 juillet 2022") ,
                                       "accessDate" = as.Date("2022-07-28"),
