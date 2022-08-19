@@ -33,6 +33,6 @@ fbWhale_rr$data_sf <- sf::st_transform(fbWhale_sf, crs = 4326) %>%
 fbWhale_rr$attribute <- "None"
 fbWhale_rr$metadata$qualityTier <- mediumQuality
 fbWhale_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
-fbWhale_rr$datasetName <- "Fin Whale Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
+fbWhale_rr$datasetName <- "Likelihood of Presence of Finback Whales in Area Response Planning Pilot Areas"
 save(fbWhale_rr, file = file.path(localFileSavePath, "Open/fbWhale_rr.RData"))
 

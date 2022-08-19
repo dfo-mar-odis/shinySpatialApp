@@ -33,6 +33,6 @@ harbourSeal_rr$data_sf <- sf::st_transform(harbourSeal_sf, crs = 4326) %>%
 harbourSeal_rr$attribute <- "None"
 harbourSeal_rr$metadata$qualityTier <- mediumQuality
 harbourSeal_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
-harbourSeal_rr$datasetName <- "Harbour Seal Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
-save(harbourSeal_rr, file = file.path(locaFileSavePath, "Open/harbourSeal_rr.RData"))
+harbourSeal_rr$datasetName <- "Likelihood of Presence of Harbour Seal in Area Response Planning Pilot Areas"
+save(harbourSeal_rr, file = file.path(localFileSavePath, "Open/harbourSeal_rr.RData"))
 

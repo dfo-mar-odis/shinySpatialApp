@@ -33,6 +33,6 @@ harbourPorpoise_rr$data_sf <- sf::st_transform(harbourPorpoise_sf, crs = 4326) %
 harbourPorpoise_rr$attribute <- "None"
 harbourPorpoise_rr$metadata$qualityTier <- mediumQuality
 harbourPorpoise_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
-harbourPorpoise_rr$datasetName <- "Harbour Porpoise Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
+harbourPorpoise_rr$datasetName <- "Likelihood of Presence of Harbour Porpoise in Area Response Planning Pilot Areas"
 save(harbourPorpoise_rr, file = file.path(localFileSavePath, "Open/harbourPorpoise_rr.RData"))
 

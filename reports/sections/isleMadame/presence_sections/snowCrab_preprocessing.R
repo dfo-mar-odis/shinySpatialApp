@@ -34,6 +34,6 @@ snowCrab_rr$data_sf <- sf::st_transform(snowCrab_sf, crs = 4326) %>%
 snowCrab_rr$attribute <- "Overall Presence"
 snowCrab_rr$metadata$qualityTier <- mediumQuality
 snowCrab_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
-snowCrab_rr$datasetName <- "Snow Crab Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
+snowCrab_rr$datasetName <- "Likelihood of Presence of Snow Crab in Area Response Planning Pilot Areas"
 save(snowCrab_rr, file = file.path(localFileSavePath, "Open/snowCrab_rr.RData"))
 

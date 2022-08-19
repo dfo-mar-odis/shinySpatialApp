@@ -33,6 +33,6 @@ bnWhale_rr$data_sf <- sf::st_transform(bnWhale_sf, crs = 4326) %>%
 bnWhale_rr$attribute <- "None"
 bnWhale_rr$metadata$qualityTier <- mediumQuality
 bnWhale_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
-bnWhale_rr$datasetName <- "Northern Bottlenose Whale Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
+bnWhale_rr$datasetName <- "Likelihood of Presence of Bottlenose Whales in Area Response Planning Pilot Areas"
 save(bnWhale_rr, file = file.path(localFileSavePath, "Open/bnWhale_rr.RData"))
 

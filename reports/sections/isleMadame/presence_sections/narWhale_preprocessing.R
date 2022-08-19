@@ -33,6 +33,6 @@ narWhale_rr$data_sf <- sf::st_transform(narWhale_sf, crs = 4326) %>%
 narWhale_rr$attribute <- "None"
 narWhale_rr$metadata$qualityTier <- mediumQuality
 narWhale_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
-narWhale_rr$datasetName <- "North Atlantic Right Whale Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
+narWhale_rr$datasetName <- "Likelihood of Presence of North Atlantic Right Whales in Area Response Planning Pilot Areas"
 save(narWhale_rr, file = file.path(localFileSavePath, "Open/narWhale_rr.RData"))
 

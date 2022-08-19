@@ -32,6 +32,6 @@ ssClam_rr$data_sf <- sf::st_transform(ssClam_sf, crs = 4326) %>%
 ssClam_rr$attribute <- "OVERALL_PRESENCE"
 ssClam_rr$metadata$qualityTier <- mediumQuality
 ssClam_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
-ssClam_rr$datasetName <- "Soft Shelled Clams Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
-save(ssClam_rr, file = file.path(remoteFileSavePath, "Open/ssClam_rr.RData"))
+ssClam_rr$datasetName <- "Likelihood of Presence of Soft Shelled Clams in Area Response Planning Pilot Areas"
+save(ssClam_rr, file = file.path(localFileSavePath, "Open/ssClam_rr.RData"))
 
