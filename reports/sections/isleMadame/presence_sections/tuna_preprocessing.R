@@ -30,6 +30,7 @@ tuna_rr$data_sf <- sf::st_transform(tuna_sf, crs = 4326) %>%
 
 tuna_rr$attribute <- "None"
 tuna_rr$metadata$qualityTier <- mediumQuality
+tuna_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 tuna_rr$datasetName <- "Bluefin Tuna Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
 save(tuna_rr, file = file.path(localFileSavePath, "Open/tuna_rr.RData"))
 
