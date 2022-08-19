@@ -18,7 +18,9 @@ greySeal_rr <- get_opendata_rr(pkgId)
 esriUrl <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/OPP_ARP_MAR_SpeciesPresence_GreySeal/MapServer/"
 greySeal_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"), progress = TRUE)
 greySeal_sf <- dplyr::select(greySeal_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
-                                    "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "IMPORTANCE_RATIONALE"))
+                                    "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "IMPORTANCE_RATIONALE", "JAN", "FEB",
+                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+                                    "NOV", "DEC"))
 greySeal_sf$OVERALL_PRESENCE[greySeal_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 
 
@@ -31,5 +33,5 @@ greySeal_rr$data_sf <- sf::st_transform(greySeal_sf, crs = 4326) %>%
 greySeal_rr$attribute <- "None"
 greySeal_rr$metadata$qualityTier <- mediumQuality
 greySeal_rr$datasetName <- "Grey Seal Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
-save(greySeal_rr, file = file.path(localFileSavePath, "Open/greySeal_rr.RData"))
+save(greySeal_rr, file = file.path(remoteFileSavePath, "Open/greySeal_rr.RData"))
 
