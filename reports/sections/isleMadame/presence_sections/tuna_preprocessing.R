@@ -18,8 +18,10 @@ tuna_rr <- get_opendata_rr(pkgId)
 esriUrl <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/OPP_ARP_MAR_SpeciesPresence_BluefinTuna/MapServer/"
 tuna_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"))
 tuna_sf <- dplyr::select(tuna_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
-                                    "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA"))
-tuna_sf$OVERALL_PRESENCE[tuna_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Present June-November, likely present May, December"
+                                    "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "JAN", "FEB",
+                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+                                    "NOV", "DEC"))
+tuna_sf$OVERALL_PRESENCE[tuna_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 
 
 

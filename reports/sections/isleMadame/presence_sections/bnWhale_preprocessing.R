@@ -18,8 +18,10 @@ bnWhale_rr <- get_opendata_rr(pkgId)
 esriUrl <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/OPP_ARP_MAR_SpeciesPresence_BottlenoseWhale/MapServer/"
 bnWhale_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"), progress = TRUE)
 bnWhale_sf <- dplyr::select(bnWhale_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
-                                    "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "JAN"))
-bnWhale_sf$OVERALL_PRESENCE[bnWhale_sf$OVERALL_PRESENCE == "see monthly presence"] <- bnWhale_sf$JAN[bnWhale_sf$OVERALL_PRESENCE == "see monthly presence"]
+                                          "RELATIVE_ABUNDANCE", "IMPORTANCE_RATIONALE", "JAN", "FEB",
+                                          "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+                                          "NOV", "DEC"))
+bnWhale_sf$OVERALL_PRESENCE[bnWhale_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 
 
 
