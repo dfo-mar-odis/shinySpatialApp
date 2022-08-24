@@ -57,7 +57,7 @@ outputList <- master_intersect(sarsearch_rr$data_sf, mapDataList, getRegion = TR
 
 # summary intro table
 introResult <- !is.null(outputList$studyData)
-summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Sarsearch DMapp](#sarsearch-section)", result=introResult)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[SAR search DMapp](#sarsearch-section)", result=introResult)
 
 
 sarsearchTable <- sf::st_drop_geometry(outputList$studyData)
