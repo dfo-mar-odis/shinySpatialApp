@@ -19,7 +19,7 @@ esriUrl <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/OPP_ARP_MAR_Spec
 snowCrab_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"), progress = TRUE)
 snowCrab_sf <- dplyr::select(snowCrab_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
                                     "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "IMPORTANCE_RATIONALE", "JAN", "FEB",
-                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT",
                                     "NOV", "DEC"))
 snowCrab_sf$OVERALL_PRESENCE[snowCrab_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 snowCrab_sf["Overall Presence"] <- snowCrab_sf$OVERALL_PRESENCE
@@ -36,4 +36,3 @@ snowCrab_rr$metadata$qualityTier <- mediumQuality
 snowCrab_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 snowCrab_rr$datasetName <- "Likelihood of Presence of Snow Crab in Area Response Planning Pilot Areas"
 save(snowCrab_rr, file = file.path(localFileSavePath, "Open/snowCrab_rr.RData"))
-

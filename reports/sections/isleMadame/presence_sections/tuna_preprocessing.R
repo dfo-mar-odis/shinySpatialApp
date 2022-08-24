@@ -19,7 +19,7 @@ esriUrl <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/OPP_ARP_MAR_Spec
 tuna_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"))
 tuna_sf <- dplyr::select(tuna_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
                                     "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "JAN", "FEB",
-                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT",
                                     "NOV", "DEC"))
 tuna_sf$OVERALL_PRESENCE[tuna_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 
@@ -35,4 +35,3 @@ tuna_rr$metadata$qualityTier <- mediumQuality
 tuna_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 tuna_rr$datasetName <- "Likelihood of Presence of Bluefin Tuna in Area Response Planning Pilot Areas"
 save(tuna_rr, file = file.path(localFileSavePath, "Open/tuna_rr.RData"))
-

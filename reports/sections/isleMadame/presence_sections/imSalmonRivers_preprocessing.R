@@ -30,4 +30,3 @@ imSalmonRivers_rr$metadata$qualityTier <- mediumQuality
 imSalmonRivers_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 imSalmonRivers_rr$datasetName <- "Salmon Rivers Presence in Area Response Planning Pilot Areas"
 save(imSalmonRivers_rr, file = file.path(localFileSavePath, "Open/imSalmonRivers_rr.RData"))
-

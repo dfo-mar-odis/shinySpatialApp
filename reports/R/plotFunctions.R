@@ -346,22 +346,36 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
 # 2. data_sf: sf data to be plotted 
 #    (ideally, pre-clipped to map area with the master_intersect function, using bboxMap, or regionBox)
 # 
-plot_lines <- function(baseMap, data_sf, ...) {
+plot_lines <- function(baseMap, data_sf, attribute="NONE", legendName=attribute,
+                       continuousAttr=FALSE, minScale=NULL,
+                       maxScale=NULL, ...) {
+  
   
   # extract scaleBar layer to ensure it plots over polygons/study area box
   scaleBarLayer = get_scale_bar_layer(baseMap)
   studyBoxLayer = get_study_box_layer(baseMap)
   watermarkLayer = get_watermark_layer(baseMap)
+  lineCol <- NULL
   
   # axis limits based on baseMap
   axLim = ggplot2::coord_sf(xlim=baseMap$coordinates$limits$x, 
                             ylim=baseMap$coordinates$limits$y, expand=FALSE) 
-  
-  # just plot raw data (no colors, shapes, etc)
-  dataLayer <- geom_sf(data = data_sf, ...) 
+  if (toupper(attribute) == "NONE") { # Case 1: plotting all polygons in one color
+    # just plot raw data (no colors, shapes, etc)
+    dataLayer <- geom_sf(data = data_sf, ...) 
+  } else {
+    lineAes <- aes(col = !!sym(attribute))
+    colorMap <- get_rr_color_map(data_sf[[attribute]])
+    lineCol <- scale_bar_layer(data_sf, attribute, continuousAttr, minScale,
+                                maxScale, legendName, colorMap, fill=FALSE)
+    
+    dataLayer <- geom_sf(data = data_sf, lineAes, ...) 
+    
+  }
   
   lineMap <- baseMap +
     dataLayer +
+    lineCol +
     axLim +
     watermarkLayer +
     studyBoxLayer +
