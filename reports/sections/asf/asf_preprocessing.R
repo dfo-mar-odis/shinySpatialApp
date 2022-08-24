@@ -37,7 +37,6 @@ asf_rr <- list("title" = "Atlantic salmon rivers of Eastern North America",
                                   "url internal" = lang_list("<https://gisd.dfo-mpo.gc.ca/portal/home/item.html?id=eed6dd1d26354b6f83235032b89ac576>"), 
                                   "accessedOnStr" = list("en" ="August 18, 2022", "fr" = "18 Aout 2022") ,
                                   "accessDate" = as.Date("2022-08-18"),
-                                  "searchYears" = "??",
                                   "securityLevel" = internalUse,
                                   "qualityTier" = highQuality,
                                   "constraints" = internalUse
