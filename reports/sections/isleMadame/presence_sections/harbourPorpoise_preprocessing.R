@@ -19,7 +19,7 @@ esriUrl <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/OPP_ARP_MAR_Spec
 harbourPorpoise_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"), progress = TRUE)
 harbourPorpoise_sf <- dplyr::select(harbourPorpoise_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
                                     "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "IMPORTANCE_RATIONALE", "JAN", "FEB",
-                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT",
                                     "NOV", "DEC"))
 harbourPorpoise_sf$OVERALL_PRESENCE[harbourPorpoise_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 
@@ -35,4 +35,3 @@ harbourPorpoise_rr$metadata$qualityTier <- mediumQuality
 harbourPorpoise_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 harbourPorpoise_rr$datasetName <- "Likelihood of Presence of Harbour Porpoise in Area Response Planning Pilot Areas"
 save(harbourPorpoise_rr, file = file.path(localFileSavePath, "Open/harbourPorpoise_rr.RData"))
-

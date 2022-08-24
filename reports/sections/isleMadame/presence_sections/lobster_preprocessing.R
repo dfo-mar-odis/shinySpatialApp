@@ -19,7 +19,7 @@ esriUrl <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/OPP_ARP_MAR_Spec
 imLobster_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"), progress = TRUE)
 imLobster_sf <- dplyr::select(imLobster_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
                                     "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "IMPORTANCE_RATIONALE", "JAN", "FEB",
-                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT",
                                     "NOV", "DEC"))
 imLobster_sf$OVERALL_PRESENCE[imLobster_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 
@@ -35,4 +35,3 @@ imLobster_rr$metadata$qualityTier <- mediumQuality
 imLobster_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 imLobster_rr$datasetName <- "Likelihood of Presence of American Lobster in Area Response Planning Pilot Areas"
 save(imLobster_rr, file = file.path(localFileSavePath, "Open/imLobster_rr.RData"))
-
