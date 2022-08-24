@@ -9,4 +9,7 @@ output:
     toc: yes
 ---
     
-# Part 1 
+# Environmental Response 
+
+```{r child = here::here("reports/sections/isleMadame/isleMadameFull_en.Rmd")}
+```

@@ -18,7 +18,9 @@ narWhale_rr <- get_opendata_rr(pkgId)
 esriUrl <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/OPP_ARP_MAR_SpeciesPresence_NARightwhale/MapServer/"
 narWhale_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"), progress = TRUE)
 narWhale_sf <- dplyr::select(narWhale_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
-                                    "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "IMPORTANCE_RATIONALE"))
+                                    "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "IMPORTANCE_RATIONALE", "JAN", "FEB",
+                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+                                    "NOV", "DEC"))
 narWhale_sf$OVERALL_PRESENCE[narWhale_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 
 
@@ -30,6 +32,7 @@ narWhale_rr$data_sf <- sf::st_transform(narWhale_sf, crs = 4326) %>%
 
 narWhale_rr$attribute <- "None"
 narWhale_rr$metadata$qualityTier <- mediumQuality
-narWhale_rr$datasetName <- "North Atlantic Right Whale Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
+narWhale_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
+narWhale_rr$datasetName <- "Likelihood of Presence of North Atlantic Right Whales in Area Response Planning Pilot Areas"
 save(narWhale_rr, file = file.path(localFileSavePath, "Open/narWhale_rr.RData"))
 
