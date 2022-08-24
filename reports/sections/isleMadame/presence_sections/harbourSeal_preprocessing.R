@@ -19,7 +19,7 @@ esriUrl <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/OPP_ARP_MAR_Spec
 harbourSeal_sf <- esri2sf::esri2sf(paste0(esriUrl, "0"), progress = TRUE)
 harbourSeal_sf <- dplyr::select(harbourSeal_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_DISTRIBUTION",
                                     "RELATIVE_ABUNDANCE", "GEOGRAPHIC_AREA", "IMPORTANCE_RATIONALE", "JAN", "FEB",
-                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
+                                    "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT",
                                     "NOV", "DEC"))
 harbourSeal_sf$OVERALL_PRESENCE[harbourSeal_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 
@@ -33,6 +33,5 @@ harbourSeal_rr$data_sf <- sf::st_transform(harbourSeal_sf, crs = 4326) %>%
 harbourSeal_rr$attribute <- "None"
 harbourSeal_rr$metadata$qualityTier <- mediumQuality
 harbourSeal_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
-harbourSeal_rr$datasetName <- "Harbour Seal Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
-save(harbourSeal_rr, file = file.path(locaFileSavePath, "Open/harbourSeal_rr.RData"))
-
+harbourSeal_rr$datasetName <- "Likelihood of Presence of Harbour Seal in Area Response Planning Pilot Areas"
+save(harbourSeal_rr, file = file.path(localFileSavePath, "Open/harbourSeal_rr.RData"))

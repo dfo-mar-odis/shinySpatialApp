@@ -72,6 +72,7 @@ This report is intended to provide a first-order view of the data available with
   - Access the original data source if more information is required,
   - Circulate this document to all contacts outlined in the different sections of the report for each data source, to ensure its veracity, and to provide any supplemental information that may support the provision of science advice.
 - Data and metadata summarized in this report may change frequently because different sources of information may change, or may get updated, without prior notice. Consequently, reports may summarize different outputs of the same polygon depending on their date of creation. 
+- This report synthesizes information provided by data providers/data custodians. This document does not do QAQC of the data provided. 
 -	The focus of this report is on available observations of species presence and not on absences, quantities (e.g., species abundance or biomass), frequency, or catch information.
 -	The absence of a species in this report should be interpreted as an absence of observation or reporting of the species within the user-defined search area, not necessarily as a true absence of the species.
 -	Unless otherwise specified, data were queried from 2010 to present. This was selected as an arbitrary time range to present the most recent information. Please contact data providers if data outside of these ranges are required.
