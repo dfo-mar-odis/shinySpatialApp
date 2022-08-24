@@ -40,7 +40,6 @@ leatherback_rr <- list("title" = " Leatherback Sea Turtle draft critical habitat
                        "data_sf" = leatherback_sf,
                        "attribute" = "NONE",
                        "metadata" = list("contact" = email_format("info@dfo-mpo.gc.ca"),
-                                         "url" = lang_list("<https://www.narwc.org/sightings-database.html>"),
                                          "accessedOnStr" = list("en" ="February 25 2021", "fr" = "25 février 2021") ,
                                          "accessDate" = as.Date("2021-02-25"),
                                          "securityLevel" = noneList,

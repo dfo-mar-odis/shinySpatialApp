@@ -33,12 +33,12 @@ write_meta(sarsearch_rr, "EN")
 ```
 
 Species data collected in the Sarsearch application (part of DFO's DMapps suite) was extracted and is presented below.
--	The data originates from both external and internal sources, and must not to be shared or used outside DFO. 
--	The data is not comprehensive in any way. It is likely that there are records of occurrence for any given species that have not been included or represented and likely does not represent the latest records, findings, or distribution for any given species. 
--	Although the data is accurate based on its original source, it is from a variety of sources and varies in quality depending on the source for any given record.
--	While every reasonable effort has been made to ensure that the data is correct, DFO Species at Risk Program does not warrant or guarantee the accuracy, completeness, or currency of the data for any specific use. 
--	Data that are represented only by “Regions” in the record and/or the map only implies that the species has been found in the specified region(s). “Regions” must not be used as polygons of distribution.
--	A data point can either represent the exact location at which a species was found or may be used to indicate the presence of a species in any given waterbody. Please consult all information for any given record before making any interpretation. 
+-   The data originates from both external and internal sources, and must not to be shared or used outside DFO. 
+-   The data is not comprehensive in any way. It is likely that there are records of occurrence for any given species that have not been included or represented and likely does not represent the latest records, findings, or distribution for any given species. 
+-   Although the data is accurate based on its original source, it is from a variety of sources and varies in quality depending on the source for any given record.
+-   While every reasonable effort has been made to ensure that the data is correct, DFO Species at Risk Program does not warrant or guarantee the accuracy, completeness, or currency of the data for any specific use. 
+-   Data that are represented only by “Regions” in the record and/or the map only implies that the species has been found in the specified region(s). “Regions” must not be used as polygons of distribution.
+-   A data point can either represent the exact location at which a species was found or may be used to indicate the presence of a species in any given waterbody. Please consult all information for any given record before making any interpretation. 
 
 
 
@@ -71,15 +71,13 @@ sarsearchReport <- if (is.null(outputList$studyData)) {
 writeLines(noquote(sarsearchReport))
 ```
 
-```{r sarsearch-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(sarsearch_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from Sarsearch records.')}
+```{r sarsearch-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(sarsearch_rr, "EN"), 'Map showing the search area defined by the user (red outline) used to query information from Sarsearch records and all SAR search records present in the region. ')}
 if (!is.null(outputList$regionData)) {
   pointData <- outputList$regionData[sf::st_is(outputList$regionData$geometry, c("POINT", "MULTIPOINT")), ]
   lineData <- outputList$regionData[sf::st_is(outputList$regionData$geometry, "LINESTRING"), ]
   polyData <- outputList$regionData[sf::st_is(outputList$regionData$geometry, "POLYGON"), ]
   
-  polyMap <- plot_rr_sf(regionMap, polyData, attribute = sarsearch_rr$attribute, alpha = 0.5)
-  lineMap <- plot_rr_sf(polyMap, lineData)
-  plot_rr_sf(lineMap, pointData, attribute = sarsearch_rr$attribute)
+  plot_rr_sf(regionMap, pointData, attribute = "NONE")
 }
 ```
 
@@ -89,10 +87,8 @@ if (!is.null(outputList$studyData)) {
   lineData <- outputList$mapData[sf::st_is(outputList$mapData$geometry, "LINESTRING"), ]
   polyData <- outputList$mapData[sf::st_is(outputList$mapData$geometry, "POLYGON"), ]
   
-  polyMap <- plot_rr_sf(areaMap, polyData, attribute = 
-               sarsearch_rr$attribute, alpha = 0.5)
-  lineMap <- plot_rr_sf(polyMap, lineData)
-  plot_rr_sf(lineMap, pointData, attribute = 
+  
+  plot_rr_sf(areaMap, pointData, attribute = 
                sarsearch_rr$attribute)
 }
 ```

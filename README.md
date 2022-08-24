@@ -36,10 +36,6 @@ copy_rdata_files()
 shiny::runApp("app")
 ```
 
-## Demo
-
-See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.webm).
-
 ## Repo structure
 
 -   `config.R` contains key configuration parameters, including the region, file paths, and the list of Open Data records checked by the github action;
@@ -80,7 +76,23 @@ See [demo.webm](https://github.com/dfo-mar-odis/shinySpatialApp/raw/main/demo.we
 
 9.  Once all lights are green, the pull request will be accepted and the new code merged into main branch.
 
-## **How to add content to the report**
+## **Updating Data & Metadata**
+
+Note: This is only relevant for DFO project developers that have access to the IN folder. 
+
+When metadata is updated in the preprocessing, you need to resave it before it will update in the rendered reports. 
+
+For this:
+
+- Step 1: Save Data Locally. Run the whole preprocessing script up to the save line. See this link for an example of a pre-processing file: https://github.com/dfo-mar-odis/shinySpatialApp/blob/main/reports/sections/rockweed/rockweed_preprocessing.R
+
+- Step 2: Render Report to make sure everything is working smoothly 
+
+- Step 3: Save Data in the IN folder so all project collaborators can use the most up-to-date information. `remoteFileSavePath` is a variable with the path to the data folder on the IN drive. To save data in the IN folder, replace `localFileSavePath` with `remoteFileSavePath` inside the save function e.g. Replace `save(rockweed_rr, file = file.path(localFileSavePath, "Open/rockweed_rr.RData"))` wtih `save(rockweed_rr, file = file.path(remoteFileSavePath, "Open/rockweed_rr.RData"))`
+
+- Step 4: Write a nice commit in yor branch to announce this update!
+
+## **How to add title levels to the report**
 
 The following provides guidance on how to include titles and subtitles throughout the report to match the formatting. Main modules are presented, with dummy subtitles for data titles and search-area results.
 
@@ -92,3 +104,6 @@ The following provides guidance on how to include titles and subtitles throughou
    ### **Name of the dataset, database, or record**  --> set in individual section Rmd: /reports/sections/sectionName/*.Rmd
    
    ##### *Area-specific search results* --> set in individual section Rmd: /reports/sections/sectionName/*.Rmd
+   
+   
+   
