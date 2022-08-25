@@ -13,38 +13,69 @@ loadResult <- load_rdata(c("CommonData", "sarsearch_rr"), regionStr)
 
 # ---------------------SAR Search-----------------------------------
 # LOADING AND PROCESSING CODE HERE
-library(rvest)
-s <- rvest::session("127.0.0.1:8000/en")
-s <- rvest::session_jump_to(s, "http://127.0.0.1:8000/en/accounts/login/")
-loginForm <- html_form(s)[[2]]
-httr::cookies(s)
 
-filledForm <- html_form_set(loginForm, email = "quentin.stoyel@dfo-mpo.gc.ca")
-
-
-
-html_form_submit(filledForm)
-
-
-
-url <- "http://dmapps/api/sar-search/points/?limit=5&f=json"
+url <- "http://dmapps/api/sar-search/points/?f=json"
 res <- httr::GET(url)
-raise <- content(res, as="text")
+raise <- httr::content(res, as="text")
 #parse JSON
 sarsearch_df <- jsonlite::fromJSON(raise)
 
+sarsearch_df$geometry <- lapply(sarsearch_df$geometry, function(geom) {
+  outGeom <- NULL
+  if (!is.null(geom)) {
+    geom <- matrix(geom[, 2:1], ncol=2)
+    outGeom <- sf::st_multipoint(geom)
+  }
+  return(outGeom)
+})
+
+sarsearch_sf <- sf::st_as_sf(sarsearch_df)
+sarsearch_sf <- sf::st_cast(sarsearch_sf, "POINT")
+
+# POLYGONS
+url <- "http://dmapps/api/sar-search/polygons/?f=json"
+res <- httr::GET(url)
+raise <- httr::content(res, as="text")
+#parse JSON
+poly_df <- jsonlite::fromJSON(raise)
+
+poly_df$geometry <- mapply(function(geomType, geom) {
+  if (!is.null(geom)) {
+    # swap the geom columns so lat-long is long-lat for sf
+    geom <- matrix(geom[, 2:1], ncol=2)
+    if (geomType == "line") {
+      outGeom <- sf::st_linestring(geom)  
+    } else {
+      geomClosed <- rbind(geom, geom[1, ])
+      outGeom <- sf::st_polygon(list(geomClosed))
+    }
+    
+  } else {
+    outGeom <- sf::st_polygon()
+  }
+  return(outGeom)
+}, poly_df$record_type, poly_df$geometry)
+
+poly_sf <- sf::st_as_sf(poly_df)
+sarsearch_sf <- rbind(sarsearch_sf, poly_sf)
+
+sarsearch_sf <- sarsearch_sf[!sf::st_is_empty(sarsearch_sf),,]
+sarsearch_sf <- dplyr::select(sarsearch_sf, "name", "source", "year", "notes", "species_name", "record_type", "geometry")
+sf::st_crs(sarsearch_sf) <- 4326
+
 # rr object structure:
 sarsearch_rr <- list("title" = "DMapps SAR Search Database",
-                     "data_sf" = "an sf object",
-              "metadata" = list("contact" = email_format("email@email.com"), 
-                                "accessedOnStr" = list("en" ="January 1, 2022", "fr" = "1 Janvier, 2022") ,
-                                "accessDate" = as.Date("2022-01-01"),
-                                "searchYears" = "2022-2022",
+                     "data_sf" = sarsearch_sf,
+                     "attributee" = "species_name",
+              "metadata" = list("contact" = email_format("Donald.Pirie-Hay@dfo-mpo.gc.ca"), 
+                                "accessedOnStr" = list("en" ="August 18, 2022", "fr" = "18 Aout, 2022") ,
+                                "accessDate" = as.Date("2022-08-18"),
+                                "searchYears" = "1874-2020",
                                 "securityLevel" = noneList,
-                                "qualityTier" = highQuality,
+                                "qualityTier" = mediumQuality,
                                 "constraints" = internalUse
               )
               
 )
-save(template_rr, file = file.path(localFileSavePath, "Secure/template_rr.RData"))
+save(sarsearch_rr, file = file.path(localFileSavePath, "Secure/sarsearch_rr.RData"))
 

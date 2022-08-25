@@ -39,5 +39,7 @@ Imports:
     lwgeom,
     gridExtra,
     lubridate,
+    keyring,
+    esri2sf,
     lwgeom
 RoxygenNote: 7.1.1
