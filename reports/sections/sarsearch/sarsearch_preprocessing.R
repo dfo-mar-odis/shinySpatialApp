@@ -39,10 +39,11 @@ raise <- httr::content(res, as="text")
 #parse JSON
 poly_df <- jsonlite::fromJSON(raise)
 
-poly_df$geometry <- lapply(poly_df$geometry, function(geom) {
+poly_df$geometry <- mapply(function(geomType, geom) {
   if (!is.null(geom)) {
+    # swap the geom columns so lat-long is long-lat for sf
     geom <- matrix(geom[, 2:1], ncol=2)
-    if (nrow(geom) < 4) {
+    if (geomType == "line") {
       outGeom <- sf::st_linestring(geom)  
     } else {
       geomClosed <- rbind(geom, geom[1, ])
@@ -53,13 +54,13 @@ poly_df$geometry <- lapply(poly_df$geometry, function(geom) {
     outGeom <- sf::st_polygon()
   }
   return(outGeom)
-})
+}, poly_df$record_type, poly_df$geometry)
 
 poly_sf <- sf::st_as_sf(poly_df)
 sarsearch_sf <- rbind(sarsearch_sf, poly_sf)
 
 sarsearch_sf <- sarsearch_sf[!sf::st_is_empty(sarsearch_sf),,]
-sarsearch_sf <- dplyr::select(sarsearch_sf, "name", "source", "year", "notes", "species_name", "geometry")
+sarsearch_sf <- dplyr::select(sarsearch_sf, "name", "source", "year", "notes", "species_name", "record_type", "geometry")
 sf::st_crs(sarsearch_sf) <- 4326
 
 # rr object structure:
