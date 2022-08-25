@@ -51,7 +51,7 @@ summaryHabTable <- add_to_hab_summary(summaryHabTable, "range", "[SAR Distributi
 
 plotHeight <- 7
 #generate plots:
-if (!is.null(outputListSardist$studyData)) {
+if (FALSE) { #(!is.null(outputListSardist$studyData)) {
   plotList <- list(1:nrow(outputListSardist$studyData))
   # auto set fig height based on plot number:
   if (nrow(outputListSardist$studyData) > 8) {
