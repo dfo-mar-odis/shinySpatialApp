@@ -8,7 +8,7 @@ loadResult <- load_rdata(c("CommonData", "benthicEffort_rr"), regionStr)
 # -----------Benthic Fishing Effort--------------
 
 benthicEffortPkgId <- "273df20a-47ae-42c0-bc58-01e451d4897a"
-benthicEffortResId <- "2bcd161c-d6f6-4145-9c53-265a51376494"
+benthicEffortResId <- "9473a44f-de4b-4177-a77a-d7048e252079"
 benthicEffortCheckDate <-  get_check_date("benthicEffort_rr")
 
 
