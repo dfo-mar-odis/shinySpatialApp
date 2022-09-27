@@ -89,6 +89,7 @@ Currently, our key collaborations tools include:
 -   [Virtual communities of practice](https://sites.google.com/view/science-collaboration-hubs/home)
 -   [Jamboards](https://jamboard.google.com/)
 -   [Our own Strategic RAP board linked to our code repository](https://github.com/orgs/dfo-mar-odis/projects/2)
+-   [SCRUM Approach](https://086gc.sharepoint.com/:p:/s/MaritimesSpatialPlanning-MAROpenDataLogistics/Ec7TCQGu46ZKgnbzK2ew24UBN-S9p-aCt1wUUxwKrO33uQ)
 
 ## Why using GitHub for our Strategic RAP board
 
@@ -103,6 +104,7 @@ Do you have advice / ideas you may want to share? Please reach out! We are alway
 ## Contributors 
 
 - Quentin Stoyel
+- Adrian Hamer
 - Remi Daigle
 - Stephen Finnis
 - Brian Bower
