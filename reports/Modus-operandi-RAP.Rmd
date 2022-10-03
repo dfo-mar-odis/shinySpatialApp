@@ -34,7 +34,7 @@ This document takes inspiration from discussions, brainstorming sessions, [examp
 
 ## Strategic RAP Champions: who are we?
 
-This section is a modified version of the [RAP champions network in the UK](https://gss.civilservice.gov.uk/about-us/champion-networks/reproducible-analytical-pipeline-rap-champions/).
+This section is a modified version of the [RAP champions network in the UK](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/reproducible-analytical-pipeline-rap-champions/).
 
 Strategic RAP champions support the implementation of reproducible analytical pipelines at DFO. This includes:
 
@@ -105,8 +105,11 @@ Do you have advice / ideas you may want to share? Please reach out! We are alway
 
 - Quentin Stoyel
 - Adrian Hamer
+- Kyle Matheson
 - Remi Daigle
 - Stephen Finnis
 - Brian Bower
+- Jeff Jackson
 - Catalina Gomez
 
+## References 
