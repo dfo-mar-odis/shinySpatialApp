@@ -101,7 +101,7 @@ GitHub is one of the recommended public source code repositories for Government 
 
 Do you have advice / ideas you may want to share? Please reach out! We are always happy to share our approaches and support our colleagues at DFO and beyond.
 
-## Contributors 
+## Contributors to RAP 
 
 - Quentin Stoyel
 - Adrian Hamer
