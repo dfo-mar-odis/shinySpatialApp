@@ -34,7 +34,7 @@ This document takes inspiration from discussions, brainstorming sessions, [examp
 
 ## Strategic RAP Champions: who are we?
 
-This section is a modified version of the [RAP champions network in the UK](https://gss.civilservice.gov.uk/about-us/champion-networks/reproducible-analytical-pipeline-rap-champions/).
+This section is a modified version of the [RAP champions network in the UK](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/reproducible-analytical-pipeline-rap-champions/).
 
 Strategic RAP champions support the implementation of reproducible analytical pipelines at DFO. This includes:
 
@@ -89,6 +89,7 @@ Currently, our key collaborations tools include:
 -   [Virtual communities of practice](https://sites.google.com/view/science-collaboration-hubs/home)
 -   [Jamboards](https://jamboard.google.com/)
 -   [Our own Strategic RAP board linked to our code repository](https://github.com/orgs/dfo-mar-odis/projects/2)
+-   [SCRUM Approach](https://086gc.sharepoint.com/:p:/s/MaritimesSpatialPlanning-MAROpenDataLogistics/Ec7TCQGu46ZKgnbzK2ew24UBN-S9p-aCt1wUUxwKrO33uQ)
 
 ## Why using GitHub for our Strategic RAP board
 
@@ -100,11 +101,15 @@ GitHub is one of the recommended public source code repositories for Government 
 
 Do you have advice / ideas you may want to share? Please reach out! We are always happy to share our approaches and support our colleagues at DFO and beyond.
 
-## Contributors 
+## Contributors to RAP 
 
 - Quentin Stoyel
+- Adrian Hamer
+- Kyle Matheson
 - Remi Daigle
 - Stephen Finnis
 - Brian Bower
+- Jeff Jackson
 - Catalina Gomez
 
+## References 
