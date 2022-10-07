@@ -63,13 +63,10 @@ introResultM <- !is.null(outputListM$studyData)
 summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[MARFIS](#MARFIS-section)", result=introResultM)
 
 
-
-
-tableList <- create_table_ISDB(outputListI$studyData, listed_species,
-                               speciesTable = ISSPECIESCODES)
-isdbAllTable <- tableList$allSpeciesData
+tableList <- create_table_ISDB(outputListI$studyData, isdbSpeceis_df, listed_species)
+isdbAllTableList <- tableList$allSpeciesNafoList
 isdbSarTable <- tableList$sarData
-summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ISDB](#ISDB-section)", isdbSarTable, "Common Name", "Records")
+summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ISDB](#ISDB-section)", isdbSarTable, "Common Name", "Common Name")
 
 tableList <- create_table_MARFIS(outputListM$studyData, listed_species, speciesTable = MARFISSPECIESCODES)
 marfisAllTable <- tableList$allSpeciesData
@@ -98,6 +95,21 @@ Report_marfis<-noquote(Report_marfis)
 writeLines(Report_marfis)
 ```
 
+
+```{r ISDB-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing NAFO areas containing ISDB records within the search area (red outline).')}
+if(!is.null(isdb_rr$data_sf)){
+  plot_rr_sf(regionMap,isdb_rr$data_sf, isdb_rr$attribute, alpha=0.5)
+}
+```
+
+```{r ISDB-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing NAFO areas containing ISDB records within the search area (red outline).')}
+if(!is.null(outputListI$studyData)){
+  labelData <- sf::st_centroid(outputListI$mapData)
+  plot_rr_sf(areaMap, outputListI$mapData, isdb_rr$attribute, alpha=0.5, labelData=labelData, labelAttribute="NAFO")
+  }
+```
+
+
 ```{r isdb-SAR-table}
 if (!is.null(isdbSarTable)) {
     if (nrow(isdbSarTable) > 0) {
@@ -107,12 +119,13 @@ knitr::kable(isdbSarTable, align="l", caption=paste(write_caption_blurb(isdb_rr,
   } 
 ```
 <br><br>
-```{r isdb-all-table}
-if (!is.null(isdbAllTable)) {
-  if (nrow(isdbAllTable) > 0) {
-  knitr::kable(isdbAllTable, align="l", caption=paste(write_caption_blurb(isdb_rr, "EN"), "Industry Survey Database (ISDB) records of <u>all species</u> observed within the search area, summarized by species or species group. Records do not necessarily correspond to number of individuals. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>"), booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
-    }
-  } 
+```{r isdb-all-table results="asis"}
+if (!is.null(isdbAllTableList)) {
+  for(tableIndex in seq_along(isdbAllTableList)) {
+    print(knitr::kable(isdbAllTableList[[tableIndex]], align="l", caption = names(isdbAllTableList)[tableIndex], booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+    )
+  }
+} 
 ```
 
 ```{r marfis-SAR-table}
