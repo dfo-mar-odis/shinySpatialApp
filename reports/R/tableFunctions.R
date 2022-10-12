@@ -256,8 +256,21 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
 
 create_table_ISDB <- function(data_sf, speciesTable, sarTable, ...) {
   
-  isdbTables <- dplyr::filter(speciesTable, NAFO %in% data_sf$NAFO)
-  allSpeciesNafoList <- split(isdbTables, f=isdbTables$NAFO)
+  nafoList <- as.list(unique(data_sf$NAFO))
+  # nafoList <- append(nafoList, "4WG")
+  nafoSpeciesFilter <- dplyr::filter(speciesTable, NAFO %in% nafoList)
+  # sometime for loops are just better and R apply's can go hide in a hole:
+  for (nafoStr in nafoList) {
+    nafoSpeciesFilter[nafoStr] = nafoSpeciesFilter$NAFO == nafoStr
+  }
+  
+  finalDf <- nafoSpeciesFilter %>% 
+    dplyr::group_by(SCIENTIFIC) %>% 
+    dplyr::summarise_all(max)%>%
+    base::subset(select = -c(NAFO))
+  
+  
+  
   
   allSpeciesNafoList <- lapply(allSpeciesNafoList, dplyr::select, "COMMON", "SCIENTIFIC")
   allSpeciesNafoList <- lapply(allSpeciesNafoList, dplyr::mutate_all, stringr::str_to_sentence)
