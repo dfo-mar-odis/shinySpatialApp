@@ -95,7 +95,7 @@ writeLines(Report_marfis)
 ```
 
 
-```{r ISDB-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(isdb_rr, "EN", constraints=TRUE), 'Map showing NAFO areas containing ISDB and MARFIS records within the search area (red outline).')}
+```{r ISDB-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(isdb_rr, "EN", constraints=TRUE), 'Map showing NAFO areas containing ISDB and MARFIS records relative to the search area (red outline).')}
 if(!is.null(isdb_rr$data_sf)){
   plot_rr_sf(regionMap,isdb_rr$data_sf, isdb_rr$attribute, alpha=0.5)
 }
