@@ -50,18 +50,20 @@ lang_check <- function(metadata_arg, lang){
 # Inputs:
 # rr: An rr object
 # lang: EN or FR used to the set the language of the blurb.
-write_caption_blurb <- function(rr, lang) {
+write_caption_blurb <- function(rr, lang, constraints=FALSE) {
   metadata <- rr$metadata
   outText <- ""
   if (lang == "EN"){
-    outText <- paste("Quality tier: ", metadata$qualityTier$en, ". ", 
-                     "Security level: ", metadata$securityLevel$en,
-                     ". ", sep="") 
+    outText <- paste0("Quality tier: ", metadata$qualityTier$en, ". ", 
+                     "Security level: ", metadata$securityLevel$en, ". ",
+                     ifelse(constraints, paste0("Constraints:", metadata$constraints$en, ". "), "")
+                     ) 
     
   } else if (lang == "FR") {
-    outText <- paste("Niveau de qualité:", metadata$qualityTier$fr, ". ", 
-                     "Niveau de sécurité:", metadata$securityLevel$fr,
-                     ". ", sep="") 
+    outText <- paste0("Niveau de qualité:", metadata$qualityTier$fr, ". ", 
+                     "Niveau de sécurité:", metadata$securityLevel$fr, ". ", 
+                     ifelse(constraints, paste0("Constraints:", metadata$constraints$fr, ". "), "")
+                     ) 
   }
   return(outText)
 }
