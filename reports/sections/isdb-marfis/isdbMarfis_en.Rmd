@@ -29,9 +29,9 @@ write_meta(isdb_rr, "EN")
 
 The Industry Survey Database (ISDB) is a departmental database containing at-sea fish catch observations from commercial fishing vessels operating in the Northwest Atlantic. Records can be associated with regular commercial fishing activities, or can represent industry-led scientific surveys. Industry surveys are not spatially or temporally synoptic; therefore, integrating additional information on presence and/or habitat use (i.e., spawning, migration, feeding areas) from larger-scale studies is strongly recommended. 
 
-ISDB must not be considered, or treated, as one data source when plotting or analyzing spatial information/catch data. Each fleet, or fishery, is a single data source with specific characteristics that critically affect the information collected and thus the catch data available to be displayed spatially. When information is amalgamated from several fisheries that are affected by a various number of issues, the spatial representation of species may become uninformative and/or misleading. Please contact Heather.Bowlby@dfo-mpo.gc.ca and Mike.McMahon@dfo-mpo.gc.ca if you would like to learn more about their R package to facilitate the extraction of commercial logbook and observer data associated with commercial fisheries for the Maritimes Region (https://github.com/Maritimes/Mar.fleets).
+ISDB must not be considered, or treated, as one data source when plotting or analyzing spatial information/catch data. Each fleet, or fishery, is a single data source with specific characteristics that critically affect the information collected and thus the catch data available to be displayed spatially. When information is amalgamated from several fisheries that are affected by a various number of issues, the spatial representation of species may become uninformative and/or misleading. The ISDB should not be considered exhaustive of observed fishing activity in the Maritimes as data may reside with other regions. Please contact Heather.Bowlby@dfo-mpo.gc.ca and Mike.McMahon@dfo-mpo.gc.ca if you would like to learn more about their R package to facilitate the extraction of commercial logbook and observer data associated with commercial fisheries for the Maritimes Region (https://github.com/Maritimes/Mar.fleets).
 
-Fisheries catch and effort information for an individual license holder is considered personal information and is protected under section 19 of the Access to Information Act (https://laws-lois.justice.gc.ca/eng/acts/a-1/page-5.html#h-12), and, for a corporate license holder, is considered to be sensitive, proprietary information and protected under section 20 of the Access to Information Act (https://laws-lois.justice.gc.ca/eng/acts/a-1/page-5.html#h-13).
+Fisheries catch and effort information for an individual license holder is considered personal information and is protected under section 19 of the Access to Information Act (https://laws-lois.justice.gc.ca/eng/acts/a-1/page-5.html#h-12), and, for a corporate license holder, is considered to be sensitive, proprietary information and protected under section 20 of the Access to Information Act (https://laws-lois.justice.gc.ca/eng/acts/a-1/page-5.html#h-13).Ongoing QA/QC work is done on the ISDB, but not all errors are corrected. If you have data errors, questions, or corrections, you can send them to Claire.mussells@dfo-mpo.gc.ca.
 
 Without written consent, DFO is not permitted to release information or data products from ISDB (e.g., maps and data layers) that might reveal personal or third party information such as catch, landed values, and vessel-specific fishing locations, as this information is considered confidential. Information on privacy policy is available in the DFO staff informal release guidelines (i.e., Appendix B – “Catch and Effort and Quota Information: Do’s and Don'ts for Informal Release” (\\\\ent.dfo-mpo.ca\\ATLShares\\Shared\\ATIP Information\\Information_Release_Guidelines-eng.docx). If you are interested in including observer data in a publication, please remember to aggregate it (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r).
 
@@ -46,6 +46,22 @@ write_meta(marfis_rr, "EN")
 ```
 
 The Maritimes Fishery Information System (MARFIS) is a DFO database, managed by the Policy & Economics Branch. MARFIS contains catch and effort, quota, and licensing information for the Maritimes Region. Log information for all commercial fisheries that land within this region is associated with this data. If a Maritimes Region commercial vessel makes landings in another DFO region or outside of Canadian waters, information is not included in the MARFIS database, irrespective of whether that vessel originated in Maritimes Region. The majority of catch information is related to commercial offloads i.e. dockside monitoring programs. Reported information contained within MARFIS is not considered spatially or temporally synoptic; therefore, integrating additional information on presence and/or habitat use (i.e., spawning, migration, feeding) from larger-scale studies is strongly recommended. There is also more limited data related to discards and the Species At Risk data logs. Not all catch records have associated lat/lon coordinates or information on fishing effort. However, generally all records are associated with a NAFO Division and NAFO Unit Area, even if no coordinates have been provided. Production data (<4 years old) are considered preliminary and subject to change without notice. Changes to archived data (>4 years old) may also occur but are generally limited. Ongoing QA/QC work is done on the MARFIS database, but not all errors are corrected. If you have data errors, questions, or corrections, you can send them to our data quality inbox: CDDDataQuality@dfo-mpo.gc.ca. This information about MARFIS was provided by Colin.O'Neil@dfo-mpo.gc.ca (July 2020, Policy & Economics Branch). If you are interested in including comercial catch data in a publication, please remember to aggregate it (https://github.com/Maritimes/Mar.utils/blob/master/R/assess_privacy.r).
+
+First Nations - Food, Social, and Ceremonial (FSC) Landed Offloads Reporting:  Recommendation was to exclude FSC landed offload data from this standard MARFIS landed offload data exports (i.e. buyers with a buyer code of 9004 – FIRST NATIONS FOOD FISHERY was filtered out). Commercial and Communal Commercial harvesting activity are expected to be fully reported to DFO and included comprehensively in the MARFIS database. The current scope of FSC data inclusion in MARFIS is only when there is FSC harvesting happening on the same trip as commercial or commercial communal harvesting activity. This makes the FSC data in MARFIS very partial and spotty, and often is accidentally grouped in with Communal Commercial harvest activity. The stewards of the FSC data are Indigenous Fisheries Management, who should be contacted about publishing data related to all FSC catch records submitted to the department. The amount of overall FSC catch in the MARFIS database is very minimal in relation to the Commercial and Communal Commercial data and will mostly show up in Lobster and Sea Scallop fisheries. 
+
+
+##### *Data Extraction*
+
+Contact: Mike.McMahon@dfo-mpo.gc.ca 
+ 
+Data extractions of both MARFIS and ISDB were performed using the programming language R: 
+
+- All data was extracted from each database; 
+- Data was aggregated by the species and the NAFO area it landed; 
+- Data was split into blocks by year; 
+- Data was merged onto a NAFO divisions spatial object. 
+
+Code used to extract information is available here: https://github.com/dfo-mar-odis/shinySpatialApp/tree/main/reports/sections/isdb-marfis  
 
 ##### *Area-Specific MARFIS & ISDB Search Results*
 
@@ -142,3 +158,4 @@ if (!is.null(marfisAllTable)) {
   }
 
 ```
+
