@@ -335,16 +335,16 @@ italicize_col <- function(tableCol) {
 # Outputs:
 # critTable: table used in the report
 #
-table_crit <- function(CCH_sf, LB_sf, lang) {
+table_crit <- function(CCH_sf, lang) {
 
   if (lang == "EN"){
-    critTableCols <- c("Common_Name_EN", "Population_EN", "Waterbody", "SARA_Status")
-    critTableNames <- c("Common Name", "Population", "Area", "SARA status")
-    leatherbackRow <- data.frame("Leatherback Sea Turtle", NA, paste(LB_sf$AreaName, collapse=', ' ), "Endangered" )
+    critTableCols <- c("Common_Name_EN", "Population_EN", "Waterbody", "SARA_Status", 
+                       "COSEWIC_Status", "Area_Status")
+    critTableNames <- c("Common Name", "Population", "Area", "SARA status",
+                        "COSEWIC Status", "Area Status")
   } else if (lang =="FR") {
     critTableCols <- c("Common_Name_FR", "Population_FR", "Waterbody", "SARA_Status")
     critTableNames <- c("Nom Commun", "Population", "Region", "Statut LEP")
-    leatherbackRow <- data.frame("Tortue Luth", NA, paste(LB_sf$AreaName, collapse=', ' ), "En voie de disparition" )
   } else {
     stop("Specify Critical Habitat Table language choice (EN/FR)")
   }
@@ -357,11 +357,6 @@ table_crit <- function(CCH_sf, LB_sf, lang) {
     # only set names after init to preserve spaces etc.
     critTable <- data.frame("a"=NA, "b"=NA, "c"=NA, "d"=NA)
     names(critTable) <- critTableNames
-  }
-
-  if (!is.null(LB_sf)){
-    names(leatherbackRow) <- critTableNames
-    critTable <- bind_rows(critTable, leatherbackRow)
   }
 
   # remove rows with NA area, dump duplicates:
