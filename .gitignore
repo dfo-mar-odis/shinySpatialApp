@@ -18,8 +18,6 @@ app/www/reports/*
 !app/www/reports/.gitkeep
 !app/www/empty_report.html
 !app/www/wrong.html
-
-
 *.log
 app/output/report_SMR_EN_files/
 app/output/report_SMR_FR_files/

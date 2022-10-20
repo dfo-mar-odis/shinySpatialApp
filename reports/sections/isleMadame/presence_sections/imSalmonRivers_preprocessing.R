@@ -27,6 +27,6 @@ imSalmonRivers_rr$data_sf <- sf::st_transform(imSalmonRivers_sf, crs = 4326) %>%
 
 imSalmonRivers_rr$attribute <- "DU"
 imSalmonRivers_rr$metadata$qualityTier <- mediumQuality
-imSalmonRivers_rr$datasetName <- "Salmon Rivers Presence within the Bay of Fundy and Port Hawkesbury Response Plan areas"
+imSalmonRivers_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
+imSalmonRivers_rr$datasetName <- "Salmon Rivers Presence in Area Response Planning Pilot Areas"
 save(imSalmonRivers_rr, file = file.path(localFileSavePath, "Open/imSalmonRivers_rr.RData"))
-

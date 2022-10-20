@@ -34,7 +34,7 @@ This document takes inspiration from discussions, brainstorming sessions, [examp
 
 ## Strategic RAP Champions: who are we?
 
-This section is a modified version of the [RAP champions network in the UK](https://gss.civilservice.gov.uk/about-us/champion-networks/reproducible-analytical-pipeline-rap-champions/).
+This section is a modified version of the [RAP champions network in the UK](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/reproducible-analytical-pipeline-rap-champions/).
 
 Strategic RAP champions support the implementation of reproducible analytical pipelines at DFO. This includes:
 
@@ -87,9 +87,29 @@ Currently, our key collaborations tools include:
 -   DM apps
 -   Open Data 
 -   [Virtual communities of practice](https://sites.google.com/view/science-collaboration-hubs/home)
--   [Our own Strategic RAP board linked to our code repository](https://github.com/orgs/dfo-mar-odis/projects/2)
 -   [Jamboards](https://jamboard.google.com/)
+-   [Our own Strategic RAP board linked to our code repository](https://github.com/orgs/dfo-mar-odis/projects/2)
+-   [SCRUM Approach](https://086gc.sharepoint.com/:p:/s/MaritimesSpatialPlanning-MAROpenDataLogistics/Ec7TCQGu46ZKgnbzK2ew24UBN-S9p-aCt1wUUxwKrO33uQ)
+
+## Why using GitHub for our Strategic RAP board
+
+[DFO’s data strategy](https://intranet.ent.dfo-mpo.ca/mpo/sites/dfo-mpo/files/en_-_dfo_data_strategy_2020-02-04.pdf) suggests a future state where “Data open by default, supported by open-source infrastructure for data management”. The [GoC’s Digital Transformation](https://www.canada.ca/en/government/system/digital-government/government-canada-digital-operations-strategic-plans/digital-operations-strategic-plan-2021-2024.html) plan states that “The use of open-source software supports interoperability and information‑sharing and should be considered in the assessment of IM‑IT solutions. Open-source products are publicly available, and the availability of their source code promotes open and collaborative development around their specifications, making them more robust and interoperable. The use of open standards ensures interoperability between products and systems and maintains flexibility within the IM‑IT environment.” In this light, we encourage further use of open tools and workflows whenever possible, such as our own Strategic RAP board linked to our [code repository](https://github.com/orgs/dfo-mar-odis/projects/2).  
+
+GitHub is one of the recommended public source code repositories for Government of Canada, as described in the [Government of Canada Guide for Publishing Open Source Code](https://www.canada.ca/en/government/system/digital-government/digital-government-innovations/open-source-software/guide-for-publishing-open-source-code.html). "It is highly recommended that departments add a link to their projects’ source code repositories on the Open Source Code section of the [Open Resource Exchange](https://code.open.canada.ca/en/index.html). This will help raise visibility to all the projects managed by the GC and potentially increase collaboration".
 
 ## Final Thoughts
 
 Do you have advice / ideas you may want to share? Please reach out! We are always happy to share our approaches and support our colleagues at DFO and beyond.
+
+## Contributors to RAP 
+
+- Quentin Stoyel
+- Adrian Hamer
+- Kyle Matheson
+- Remi Daigle
+- Stephen Finnis
+- Brian Bower
+- Jeff Jackson
+- Catalina Gomez
+
+## References 

@@ -24,6 +24,12 @@ editor_options:
 ```{r child = here::here("reports/sections/sturg/sturg_en.Rmd")}
 ```
 
+```{r child = here::here("reports/sections/asf/asf_en.Rmd")}
+```
+
+```{r child = here::here("reports/sections/sarsearch/sarsearch_en.Rmd")}
+```
+
 ```{r child = here::here("reports/sections/ocearch/ocearch_en.Rmd")}
 ```
 
@@ -64,6 +70,5 @@ This module does not endeavor to describe every source of information available;
 ```{r child = here::here("reports/sections/permits/permits_en.Rmd")}
 ```
 
-```{r child = here::here("reports/sections/isleMadame/isleMadameFull_en.Rmd")}
-```
+
 

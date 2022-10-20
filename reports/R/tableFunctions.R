@@ -533,7 +533,13 @@ isle_madame_table <- function(data_sf, cols, colnames){
   if (is.null(data_sf)) {
     return(NULL)
   }
-  
+  if ("JAN" %in% names(data_sf)) {
+    currentMonth <- toupper(format(Sys.Date(), "%b"))
+    data_sf[[currentMonth]][sf::st_drop_geometry(data_sf)[currentMonth] == "see OVERALL_PRESENCE"] <- ""
+    monthName <- month.name[as.integer(format(Sys.Date(), "%m"))]
+    cols <- append(cols, currentMonth)
+    colnames <- append(colnames, paste(monthName, "presence"))
+  }  
   data_df <- sf::st_drop_geometry(data_sf)
   data_sf$geometry <- NULL
   data_df <- dplyr::select(data_df, cols) %>%

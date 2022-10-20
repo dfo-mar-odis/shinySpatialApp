@@ -1,22 +1,37 @@
 source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
-
-fileSavePath <- "\\\\ent.dfo-mpo.ca\\ATLShares\\Science\\BIODataSvc\\IN\\MSP\\Data\\RData\\data\\MAR"
-fileSavePath <- here::here("app/data/MAR")
-
+source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "wsdb_rr"), regionStr)
 
 #------------------WSDB--------------------
 # Whale Sightings Database (wsdb)
-wsdb <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/WSDB/MarWSDB_20210407.csv"), stringsAsFactors = FALSE)
-wsdb <- dplyr::select(wsdb, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
-wsdb <- wsdb %>% dplyr::filter(YEAR >= rrMinYear)
-wsdb <- dplyr::rename(wsdb,c("Scientific Name" = "SCIENTIFICNAME",
+
+# Accessing API needs 2 parts: 1. the authentication token, and 2. the url to query.
+# There are 3-4 useful links/endpoints to make this happen.
+# This url is the mapserver url where the data is stored:
+egisUrl <- "https://gisd.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Whale_Sightings_Database/MapServer/"
+# this url specifies the exact layer to pull data from:
+egisLayer <- paste0(egisUrl, "0/")
+
+# The info url is not explicitly needed but helps identify the token URL 
+infoUrl <-"https://gisd.dfo-mpo.gc.ca/arcgis/rest/info"
+# This is the token UR, it only accepts POST requests.
+tokenUrl <- "https://gisd.dfo-mpo.gc.ca/portal/sharing/rest/generateToken"
+
+# Use helper function to get a token. (use ctrl+click to see how it works)
+token <- get_token(tokenUrl, egisUrl)
+
+# Use esri2sf to access the data from the mapserver. 
+# This requires passing in the token as a param/header:
+wsdb_sf <- esri2sf::esri2sf(egisLayer, token=token, progress = TRUE)
+
+wsdb_sf <- dplyr::select(wsdb_sf, COMMONNAME, SCIENTIFICNAME, YEAR, LATITUDE, LONGITUDE)
+wsdb_sf <- wsdb_sf %>% dplyr::filter(YEAR >= rrMinYear)
+wsdb_sf <- dplyr::rename(wsdb_sf,c("Scientific Name" = "SCIENTIFICNAME",
                              "CNAME"= COMMONNAME))
-wsdb <- merge(wsdb, cetLegend, by='Scientific Name')
-wsdb <- dplyr::select(wsdb, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
-wsdb_sf <- sf::st_as_sf(wsdb, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
+wsdb_sf <- merge(wsdb_sf, cetLegend, by='Scientific Name')
+wsdb_sf <- dplyr::select(wsdb_sf, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
 wsdb_sf <- sf::st_crop(wsdb_sf, region_sf)
 
 wsdb_rr <- list("title" = "Whale Sightings Database",
@@ -24,7 +39,8 @@ wsdb_rr <- list("title" = "Whale Sightings Database",
                 "attribute" = "Legend",
                 "metadata" = list("contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
                                   "url" = lang_list("<http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>"),
-                                  "accessedOnStr" = list("en" ="October 27, 2020 by Shelley Lang", "fr" = "27 octobre 2020 par Shelley Lang  ") ,
+                                  "url internal" = lang_list("<https://gisd.dfo-mpo.gc.ca/portal/home/webmap/viewer.html?webmap=7b4dd9e932864700a2f44ed70cc75b40&extent=-82.7098,36.4078,-30.8983,53.5042>"), 
+                                  "accessedOnStr" = list("en" ="April 7, 2021 by Amanda Babin", "fr" = "7 avril 2021 par Amanda Babin") ,
                                   "accessDate" = as.Date("2020-10-27"),
                                   "searchYears" = paste(rrMinYear, "-2020", sep=""),
                                   "securityLevel" = noneList,
@@ -32,4 +48,4 @@ wsdb_rr <- list("title" = "Whale Sightings Database",
                                   "constraints" = internalUse
                 )
 )
-save(wsdb_rr, file = file.path(fileSavePath, "Secure/wsdb_rr.RData"))
+save(wsdb_rr, file = file.path(localFileSavePath, "Secure/wsdb_rr.RData"))
