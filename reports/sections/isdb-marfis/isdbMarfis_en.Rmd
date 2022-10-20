@@ -111,13 +111,13 @@ writeLines(Report_marfis)
 ```
 
 
-```{r ISDB-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(isdb_rr, "EN", constraints=TRUE), 'Map showing NAFO areas containing ISDB and MARFIS records relative to the search area (red outline).')}
+```{r ISDB-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(isdb_rr, "EN", constraints=TRUE), 'Map showing NAFO divisions containing ISDB and MARFIS records relative to the search area (red outline).')}
 if(!is.null(isdb_rr$data_sf)){
   plot_rr_sf(regionMap,isdb_rr$data_sf, isdb_rr$attribute, alpha=0.5)
 }
 ```
 
-```{r ISDB-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(isdb_rr, "EN", constraints=TRUE), 'Map showing NAFO areas containing ISDB and MARFIS records within the search area (red outline).')}
+```{r ISDB-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(isdb_rr, "EN", constraints=TRUE), 'Map showing NAFO divisions containing ISDB and MARFIS records within the search area (red outline).')}
 if(!is.null(outputListI$studyData)){
   labelData <- sf::st_centroid(outputListI$mapData)
   plot_rr_sf(areaMap, outputListI$mapData, isdb_rr$attribute, alpha=0.5, labelData=labelData, labelAttribute="NAFO")
@@ -137,7 +137,7 @@ knitr::kable(isdbSarTable, align="l", caption=paste(write_caption_blurb(isdb_rr,
 ```{r isdb-all-table}
 if (!is.null(isdbAllTable)) {
     if (nrow(isdbAllTable) > 0) {
-knitr::kable(isdbAllTable, align="l", caption=paste(write_caption_blurb(isdb_rr, "EN", constraints=TRUE), "Industry Survey Database (ISDB) records of species observed within the search area broken down by NAFO subunit. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>"), booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+knitr::kable(isdbAllTable, align="l", caption=paste(write_caption_blurb(isdb_rr, "EN", constraints=TRUE), "Industry Survey Database (ISDB) records of species observed within the search area broken down by NAFO division. <b>The absence of a species in this table should be interpreted as an absence of reporting, not necessarily as an absence of the species in the area.</b>"), booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
       }
   } 
 ```
