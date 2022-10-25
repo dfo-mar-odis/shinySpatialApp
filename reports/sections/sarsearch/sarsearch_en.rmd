@@ -59,13 +59,14 @@ outputList <- master_intersect(sarsearch_rr$data_sf, mapDataList, getRegion = TR
 introResult <- !is.null(outputList$studyData)
 summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[SAR search DMapp](#sarsearch-section)", result=introResult)
 
-sarsearchTable <- sf::st_drop_geometry(outputList$studyData)
-sarsearchTable <- if (!is.null(outputList$studyData)) {
-    dplyr::select(sarsearchTable, c(species_name, year, name, source, record_type, notes))
+sarsearchTable <- NULL
+if (!is.null(outputList$studyData)) {
+  sarsearchTable <- sf::st_drop_geometry(outputList$studyData)
+  dplyr::select(sarsearchTable, c(species_name, year, name, source, record_type, notes))
   names(sarsearchTable) <- c("Species Name", "Year", "Location Name", "Source", "Geometry Type", "Notes")  
-sarsearchTable[is.na(sarsearchTable)] <- ""
-row.names(sarsearchTable) <- NULL  
-      }
+  sarsearchTable[is.na(sarsearchTable)] <- ""
+  row.names(sarsearchTable) <- NULL  
+}
 
 ```
 
