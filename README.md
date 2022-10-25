@@ -4,6 +4,24 @@
 
 R Shiny App to select search area(s) and generate reproducible reports (R Markdown) in support of the project "Reproducible Reports for Species at Risk: Development of a tool to produce consistent reports on Species at Risk within Predicted Exposure Zones (PEZ) for a variety of threats and activities, focusing on Maritimes Region as a pilot".
 
+# How to request a new Reproducible Report
+
+Code is publicly available via this repository. However, due to issues related to Protected B information, the data are not publicly accessible. As a result, currently, only core members of our team at DFO can generate the reports in response to requests for information internal to DFO. The core team is not, and should not, be perceived as data providers or data custodians.
+
+New report requests are being tracked since October 2022 in https://github.com/orgs/dfo-mar-odis/projects/2/views/26
+
+This new way of requesting/tracking reports will support the process of creating requests to the team, not to individual folks. Furthermore, by using this tracking approach we can keep reporting a list of requests. This helps us justify spending our work time on its development.
+
+To do a new request:
+
+- Make sure you have a GitHub account (or join https://github.com/)
+- Please confirm with RAP team whether you are in the list of members authorized to request reports (due to limited capacity, we are not able to support all requests)
+- Access the repo main page: https://github.com/dfo-mar-odis/shinySpatialApp
+- On the top left, select the tab 'Issues'
+- On the top right, select green tab 'New Issue'
+- Select 'RRRequests' and click 'Get Started'. This step will prompt you to add all the details of your requests. 
+- Please send an email to Quentin & Catalina. They will support next steps.
+
 # How to use the App
 
 ## Installation
@@ -35,7 +53,6 @@ copy_rdata_files()
 ``` r
 shiny::runApp("app")
 ```
-
 ## Repo structure
 
 -   `config.R` contains key configuration parameters, including the region, file paths, and the list of Open Data records checked by the github action;
@@ -55,6 +72,19 @@ shiny::runApp("app")
 -   `tests/testthat` contains the unit test scripts that are run when test_local() is called.
 
 # **Collaborative Workflow**
+
+## **How to troubleshoot/debug .Rmd sections**
+
+Here are suggestion of things to think about when .Rmd sections of the rpeort are not running:
+- Open the .rmd hat is not working (e.g. sections/sarsearch/sarsearch.rmd) and ctrl+enter each chunk. Make sure you run and each line inside the if (FALSE) blocks at the top.
+- No need to play with paths, everything should work, except the problematic line.
+- NULL as an output is ok.
+- once you find the error:
+- Figure out what the error message means
+- Think about why this showed up now
+- Try to fix the error
+
+If all this fails, feel free to reach out to Quentin. 
 
 ## **How to contribute to the project**
 
