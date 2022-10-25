@@ -15,12 +15,12 @@ This new way of requesting/tracking reports will support the process of creating
 To do a new request:
 
 - Make sure you have a GitHub account (or join https://github.com/)
+- Please confirm with RAP team whether you are in the list of members authorized to request reports (due to limited capacity, we are not able to support all requests)
 - Access the repo main page: https://github.com/dfo-mar-odis/shinySpatialApp
 - On the top left, select the tab 'Issues'
 - On the top right, select green tab 'New Issue'
-- Select 'RRRequests' and click 'Get Started' 
-
-This step will prompt you to add all the details of your requests. Once that is done, please feel free to send an email to Quentin & Catalina. They will support next steps.
+- Select 'RRRequests' and click 'Get Started'. This step will prompt you to add all the details of your requests. 
+- Please send an email to Quentin & Catalina. They will support next steps.
 
 # How to use the App
 
@@ -53,7 +53,6 @@ copy_rdata_files()
 ``` r
 shiny::runApp("app")
 ```
-
 ## Repo structure
 
 -   `config.R` contains key configuration parameters, including the region, file paths, and the list of Open Data records checked by the github action;
@@ -73,6 +72,19 @@ shiny::runApp("app")
 -   `tests/testthat` contains the unit test scripts that are run when test_local() is called.
 
 # **Collaborative Workflow**
+
+## **How to troubleshoot/debug .Rmd sections**
+
+Here are suggestion of things to think about when .Rmd sections of the rpeort are not running:
+- Open the .rmd hat is not working (e.g. sections/sarsearch/sarsearch.rmd) and ctrl+enter each chunk. Make sure you run and each line inside the if (FALSE) blocks at the top.
+- No need to play with paths, everything should work, except the problematic line.
+- NULL as an output is ok.
+- once you find the error:
+- Figure out what the error message means
+- Think about why this showed up now
+- Try to fix the error
+
+If all this fails, feel free to reach out to Quentin. 
 
 ## **How to contribute to the project**
 
