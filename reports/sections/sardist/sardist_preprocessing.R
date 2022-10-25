@@ -3,18 +3,17 @@ source(here::here("reports/R/dataFunctions.R"))
 
 source(here::here("config.R"))
 
-
 loadResult <- load_rdata(c("CommonData", "sardist_rr"), regionStr)
 
 filter_and_union <- function(sciName, sfObj) {
   filter_sf <- dplyr::filter(sfObj, `Scientific Name`==sciName)
   out_sf <- filter_sf %>%
-    group_by(`Scientific Name`, `Common Name`, Species_Link, `Population`) %>%
-    summarize(geometry = sf::st_union(geometry))
+  dplyr::group_by(`Scientific Name`, `Common Name`, Species_Link, Population, SARA_Status) %>%
+  dplyr::summarize(geometry = sf::st_union(geometry))
   return(out_sf)
 }
 
-# -----------SAR DIST--------------
+# -----------SAR DIST --------------
 # get opendata metadata and set missing fields:
 sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
 sardist_rr <- get_opendata_rr(sardistPkgId)
@@ -32,11 +31,17 @@ sardist_sf <- esri2sf::esri2sf(url, bbox=regionBbox, progress=TRUE)
 sardist_sf <- sardist_sf[!is.na(sf::st_is_valid(sardist_sf)), ]
 sardist_sf <- sf::st_make_valid(sardist_sf)
 
+national_list <- here::here("../../sara_database/my_data/national_list.csv")
+
+nationalList <- read.csv(national_list)
+nationalList <- select(nationalList, c(Common.Name, Population, COSEWIC.Status))
+
 # trim and rename columns:
 sardist_sf <- dplyr::select(sardist_sf, c("Common_Name_EN", "Scientific_Name",
-                                          "Species_Link", "Population_EN", "geoms"))
+                                          "Species_Link", "Population_EN", "SARA_Status",
+                                          "geoms"))
 names(sardist_sf) <- c("Common Name", "Scientific Name",
-                       "Species_Link", "Population", "geometry")
+                       "Species_Link", "Population", "SARA_Status", "geometry")
 st_geometry(sardist_sf) <- "geometry"
 
 # find species names to join on:
@@ -44,6 +49,9 @@ specNames <- names(table(sardist_sf$`Scientific Name`))
 outList <- lapply(specNames, filter_and_union, sfObj=sardist_sf)
 # !!! exapands the outlist in the argument, check ?"!!!"
 sardist_sf <- bind_rows(!!!outList)
+
+dplyr::left_join(sardist_sf, nationalList, by=c("Common Name"="Common.Name", "Population"="Population"))$SARA.Status
+
 
 # save the data
 sardist_rr$data_sf <- sardist_sf
@@ -54,9 +62,14 @@ save(sardist_rr, file = file.path(localFileSavePath, "Open/sardist_rr.RData"))
 # ------------------GEODATABASE VERSION------------------------
 sf::sf_use_s2(FALSE) # because sf 1.0 is "broken" does not support treating spheres as flat
 
-
 library(arcgisbinding)
 arc.check_product() # you must have access to an ESRI arc license. Yuck :(
+
+# sanity check the bridge:
+filename <- system.file("extdata", "ca_ozone_pts.shp",
+                        package = "arcgisbinding")
+d <- arc.open(filename)
+cat('all fields:', names(d@fields), fill = TRUE) # print all fields
 
 
 get_sde_sf <- function(sdeLayerPath, whereClause = "OBJECTID > 0", isGeo=TRUE, cropRegion=FALSE) {
@@ -75,8 +88,17 @@ get_sde_sf <- function(sdeLayerPath, whereClause = "OBJECTID > 0", isGeo=TRUE, c
   return(outData)
 }
 
+somePath <- "C:\\Users\\stoyelq\\Desktop\\Work\\Reproducible_reports\\sara_database\\WEB.DFO_Regions"
+arc.open(somePath)
+
+
+sde_file <- system.file("C:/Users/stoyelq/Desktop/Work/Reproducible_reports/sara_database/VIEWER_SARA.sde/WEB.DFO_Regions",
+                        package="arcgisbinding")
+dataSDE <- arc.open(sde_file)
+
 regionsPath <- here::here("../../sara_database/VIEWER_SARA.sde/WEB.DFO_Regions")
 arc.open(regionsPath)
+
 regions_sf <- get_sde_sf(regionsPath)
 
 plot(dplyr::filter(regions_sf, DFO_REGION=="Maritimes")$geom)

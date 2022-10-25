@@ -1,9 +1,11 @@
+
 if(!("ckanr" %in% (.packages()))){
   install.packages("ckanr") #you need to install the packages every time since it is a fresh container
   library(ckanr)
   ckanr_setup(url="https://open.canada.ca/data")
 }
 library(sf)
+sf::sf_use_s2(FALSE)
 library(httr)
 library(raster)
 source(here::here("config.R"))
