@@ -183,60 +183,43 @@ create_sar_tables <- function(data_sf, sarTable, uniqueCols = c("geometry"), ext
 # Outputs: list containing 2 items
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. sarData: datatable of only listed species found within the studyArea
-create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
-
-  if (is.null(data_sf)) {
-    return(list("allSpecies" = NULL, "sarData" = NULL))
-  }
-
-  # set record column and join with speciesTable
-  allSpeciesData <- aggregate(
-    x = list(Records = data_sf$SPECIES_CODE),
-    by = list(SPECIES_CODE = data_sf$SPECIES_CODE),
-    FUN = length)
-
-  allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'SPECIES_CODE')
-  allSpeciesData <- allSpeciesData %>% rename("Common Name"= COMMONNAME)
-
-  data1 <- merge(data_sf, speciesTable, by = 'SPECIES_CODE')
-  data1$Common_Name_MARFIS <- data1$COMMONNAME
-
-  # Merge the data_sf with the listed_species table
-  # and create a frequency table of all listed species
-  # caught
-  data1 <- merge(data1, sarTable, by = 'Common_Name_MARFIS')
-  # data1 <- data1 %>% rename("SCIENTIFICNAME" = Scientific_Name)
+create_table_MARFIS <- function(data_sf, speciesTable, sarTable) {
+  absentCode <- "&nbsp;-&nbsp;"
+  presentCode <- "&#x2714;"
   
-  if (nrow(data1) == 0) {
-    sarData <- NULL
-  } else {
-    sarData <- aggregate(
-      x = list(Records = data1$'Scientific Name'),
-      by = list('Scientific Name' = data1$'Scientific Name'),
-      length)
-    sarData <- merge(sarData, sarTable, by = 'Scientific Name')
+  nafoList <- as.list(unique(data_sf$NAFO))
+  # nafoList <- append(nafoList, "4WG")
+  nafoSpeciesFilter <- dplyr::filter(speciesTable, NAFO %in% nafoList)
+  # sometime for loops are just better and R apply's can go hide in a hole:
+  for (nafoStr in nafoList) {
+    nafoSpeciesFilter[nafoStr] = nafoSpeciesFilter$NAFO == nafoStr
+  }
+  
+  finalDf <- nafoSpeciesFilter %>% 
+    dplyr::group_by(SPECIES_NAME) %>% 
+    dplyr::summarise_all(max)%>%
+    base::subset(select = -c(NAFO))
+  
+  cleanDf <- rename(finalDf, Common = SPECIES_NAME) %>%
+    dplyr::mutate(Common = stringr::str_to_sentence(Common))
+  
+  for (nafoStr in nafoList) {
+    cleanDf[nafoStr] = ifelse(dplyr::pull(cleanDf[nafoStr]), presentCode, absentCode)
+  }  
+  
+  
+  sarData <- dplyr::filter(sarTable, Common_Name_MARFIS %in% nafoSpeciesFilter$SPECIES_NAME)
+  
+  if (nrow(sarData>0)){
     sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
-                             "SARA status","COSEWIC status", Records)
+                             "SARA status","COSEWIC status")
     sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
-    sarData <- sarData[with(sarData, order(-Records)), ]
-    row.names(sarData) <- NULL
+    row.names(sarData) <- NULL    
+  } else {
+    sarData <- NULL
   }
   
-
-  allSpeciesData <- dplyr::select(allSpeciesData, 'Common Name', Records)
-  allSpeciesData <- allSpeciesData %>% rename(CName = 'Common Name')
-  allSpeciesData <- allSpeciesData %>% transmute(allSpeciesData,
-                                                 CName = stringr::str_to_sentence(CName))
-  allSpeciesData <- allSpeciesData %>% rename('Common Name' = CName)
-  
-
-  allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
-
-  # order the tables by number of Records (decreasing)
-  allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
-  
-  row.names(allSpeciesData) <- NULL
-  outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
+  outList <- list("allSpecies" = cleanDf, "sarData" = sarData)
   return(outList)
 }
 
@@ -254,49 +237,51 @@ create_table_MARFIS <- function(data_sf, sarTable, speciesTable, ...) {
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. datatable2: datatable of only listed species found within the studyArea
 
-create_table_ISDB <- function(data_sf, sarTable, speciesTable, ...) {
-
-  if (is.null(data_sf)) {
-    return(list("allSpecies" = NULL, "sarData" = NULL))
+create_table_ISDB <- function(data_sf, speciesTable, sarTable) {
+  absentCode <- "&nbsp;-&nbsp;"
+  presentCode <- "&#x2714;"
+  
+  
+  nafoList <- as.list(unique(data_sf$NAFO))
+  # nafoList <- append(nafoList, "4WG")
+  nafoSpeciesFilter <- dplyr::filter(speciesTable, NAFO %in% nafoList)
+  # sometime for loops are just better and R apply's can go hide in a hole:
+  for (nafoStr in nafoList) {
+    nafoSpeciesFilter[nafoStr] = nafoSpeciesFilter$NAFO == nafoStr
   }
-
-  # calculate frequency of ISDB samples and join
-  # to species lookup tables
-
-  allSpeciesData <- aggregate(
-    x = list(Records = data_sf$SPECCD_ID),
-    by = list(SPECCD_ID = data_sf$SPECCD_ID),
-    FUN = length)
-  data1 <- merge(data_sf, speciesTable, by = 'SPECCD_ID')
-  allSpeciesData <- merge(allSpeciesData, speciesTable, by = 'SPECCD_ID')
-  # Merge the data_sf with the listed_species table
-  # and create a frequency table of all listed species
-  # caught
-  data1 <- merge(data1, sarTable, by = 'Scientific Name')
-  if (nrow(data1) == 0) {
-    sarData <- NULL
-  } else {
-    sarData <- aggregate(
-      x = list(Records = data1$'Scientific Name'),
-      by = list('Scientific Name' = data1$'Scientific Name'),
-      length)
-    sarData <- merge(sarData, sarTable, by = 'Scientific Name')
+  
+  finalDf <- nafoSpeciesFilter %>% 
+    dplyr::group_by(SCIENTIFIC) %>% 
+    dplyr::summarise_all(max)%>%
+    base::subset(select = -c(NAFO))
+  
+  cleanDf <- rename(finalDf, Scientific = SCIENTIFIC) %>%
+    dplyr::rename(Common = COMMON) %>%
+    dplyr::mutate(Scientific = stringr::str_to_sentence(Scientific)) %>%
+    dplyr::mutate(Common = stringr::str_to_sentence(Common))
+  
+  cleanDf$Scientific <- italicize_col(cleanDf$Scientific)
+  
+  for (nafoStr in nafoList) {
+    cleanDf[nafoStr] = ifelse(dplyr::pull(cleanDf[nafoStr]), presentCode, absentCode)
+  }  
+  
+  
+  sarData <- dplyr::filter(sarTable, SCIENTIFICNAME %in% nafoSpeciesFilter$SCIENTIFIC)
+  
+  if (nrow(sarData>0)){
     sarData <- dplyr::select(sarData, 'Scientific Name', 'Common Name',
-                             "SARA status","COSEWIC status", Records)
+                             "SARA status","COSEWIC status")
     sarData$`Scientific Name` <- italicize_col(sarData$`Scientific Name`)
-    sarData <- sarData[with(sarData, order(-Records)), ]
-    row.names(sarData) <- NULL
+    row.names(sarData) <- NULL    
+  } else {
+    sarData <- NULL
   }
 
-  allSpeciesData <- dplyr::select(allSpeciesData, 'Scientific Name', 'Common Name', Records)
-  allSpeciesData$`Scientific Name` <- italicize_col(allSpeciesData$`Scientific Name`)
-  # order the tables by number of Records (decreasing)
-  allSpeciesData <- allSpeciesData[with(allSpeciesData, order(-Records)), ]
-  row.names(allSpeciesData) <- NULL
-
-  outList <- list("allSpeciesData" = allSpeciesData, "sarData" = sarData)
+  outList <- list("allSpecies" = cleanDf, "sarData" = sarData)
   return(outList)
 }
+  
 
 ##### - sfcoords_as_cols  ##################################
 # This function extracts X and Y coordinates from the

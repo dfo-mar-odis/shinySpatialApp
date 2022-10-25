@@ -198,6 +198,7 @@ plot_points <- function(baseMap, data_sf, attribute="NONE", legendName="",
   }
   
   if(!is.null(labelData)) {
+    sf::st_geometry(labelData) <- "geometry"
     labelLayer <- ggrepel::geom_label_repel(data = labelData,
                                             aes(label = !!sym(labelAttribute), 
                                                 geometry = geometry),
@@ -299,6 +300,7 @@ plot_polygons <- function(baseMap, polyData, attribute, legendName=attribute,
   }
   
   if(!is.null(labelData)) {
+    sf::st_geometry(labelData) <- "geometry"
     polyLabels <- ggrepel::geom_label_repel(data = labelData,
                                             aes(label = !!sym(labelAttribute), geometry = geometry),
                                             stat = "sf_coordinates",
