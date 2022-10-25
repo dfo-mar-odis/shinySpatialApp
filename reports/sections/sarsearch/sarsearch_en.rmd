@@ -60,14 +60,13 @@ introResult <- !is.null(outputList$studyData)
 summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[SAR search DMapp](#sarsearch-section)", result=introResult)
 
 sarsearchTable <- sf::st_drop_geometry(outputList$studyData)
-#sarsearchTable <- dplyr::select(sarsearchTable, c(species_name, year, name, source, record_type, notes))
 sarsearchTable <- if (!is.null(outputList$studyData)) {
     dplyr::select(sarsearchTable, c(species_name, year, name, source, record_type, notes))
   names(sarsearchTable) <- c("Species Name", "Year", "Location Name", "Source", "Geometry Type", "Notes")  
-    }
-
 sarsearchTable[is.na(sarsearchTable)] <- ""
-row.names(sarsearchTable) <- NULL
+row.names(sarsearchTable) <- NULL  
+      }
+
 ```
 
 ```{r sarsearch-check, echo=FALSE, results='asis',}
