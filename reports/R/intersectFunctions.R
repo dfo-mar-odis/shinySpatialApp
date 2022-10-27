@@ -76,8 +76,8 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
     }
 
     mapData <- sf::st_crop(data_sf, mapArea)
-    studyData <- sf::st_crop(mapData, mapDataList$studyArea)
-
+    studyData <- sf::st_intersection(mapData, sf::st_geometry(mapDataList$studyArea))
+    
     # if there is no intersect with the box, set return to NULL
     if (nrow(mapData) == 0) {mapData <- NULL}
 
