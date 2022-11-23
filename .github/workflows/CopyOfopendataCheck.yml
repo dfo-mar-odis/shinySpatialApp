@@ -1,6 +1,6 @@
 # This is a workflow to check for open data updates
 
-name: NEw Open Data Check
+name: New Open Data Check
 
 on:
   workflow_dispatch:
@@ -27,7 +27,11 @@ jobs:
       
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: ckanr::., here::here
+          with:
+          cache-version: 1
+          extra-packages: |
+            ckanr
+            here
 
       - name: Fix ubuntu packages
         run: |

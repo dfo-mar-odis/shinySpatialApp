@@ -12,7 +12,7 @@ localFileSavePath <- here::here("app/data", regionStr)
 fileLoadPath <- file.path("//ent.dfo-mpo.ca","ATLShares", "Science", "BIODataSvc", 
                           "IN", "MSP", "Data")
 
-rr_openDataList <- data.frame("rrStr" = c("ebsa_rr", "sardist_rr", 
+rr_openDataList <- data.frame("rrStr" = c("ebsa_rr",  
                                           "nbw_rr", "blueWhaleHab_rr", "finWhale_rr", 
                                           "rv_rr", "pasBay_rr", "benthicEffort_rr",
                                           "fbWhale_rr", "bnWhale_rr", "greySeal_rr",
