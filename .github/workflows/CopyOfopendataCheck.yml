@@ -1,6 +1,6 @@
 # This is a workflow to check for open data updates
 
-name: Open Data Check
+name: NEw Open Data Check
 
 on:
   workflow_dispatch:
