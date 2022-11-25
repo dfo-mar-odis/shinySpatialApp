@@ -74,7 +74,8 @@ ef_rr <- list("title" = "Electrofishing Data","data_sf" = ef_sf,
                                 "searchYears" = "2008-2014",
                                 "securityLevel" = noneList,
                                 "qualityTier" = highQuality,
-                                "constraints" = internalUse
+                                "constraints" = internalUse,
+                                "pipelinePath" = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R")
               )
               
 )

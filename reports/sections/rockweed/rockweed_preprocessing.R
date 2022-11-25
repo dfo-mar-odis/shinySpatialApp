@@ -33,7 +33,8 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
                                       "searchYears" = "2020",
                                       "securityLevel" = noneList,
                                       "qualityTier" = mediumQuality,
-                                      "constraints" = internalUse
+                                      "constraints" = internalUse,
+                                      "pipelinePath" = paste0(githubRepo, "reports/sections/rockweed/rockweed_preprocessing.R")
                     )
 )
 save(rockweed_rr, file = file.path(localFileSavePath, "Open/rockweed_rr.RData"))

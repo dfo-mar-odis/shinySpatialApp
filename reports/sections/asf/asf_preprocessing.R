@@ -29,6 +29,7 @@ asf_sf <- esri2sf::esri2sf(egisLayer, bbox=regionBbox, token=token, progress = T
 asf_sf <- dplyr::select(asf_sf, NAME_LABEL, STATUS, geoms)
 names(asf_sf) <- c("River name", "Status", "geoms")
 
+
 asf_rr <- list("title" = "Atlantic salmon rivers of Eastern North America",
                 "data_sf" = asf_sf,
                 "attribute" = "Status",
@@ -39,7 +40,8 @@ asf_rr <- list("title" = "Atlantic salmon rivers of Eastern North America",
                                   "accessDate" = as.Date("2022-08-18"),
                                   "securityLevel" = internalUse,
                                   "qualityTier" = highQuality,
-                                  "constraints" = internalUse
+                                  "constraints" = internalUse,
+                                  "pipelinePath" = paste0(githubRepo, "reports/sections/asf/asf_preprocessing.R")
                 )
 )
 save(asf_rr, file = file.path(localFileSavePath, "Secure/asf_rr.RData"))

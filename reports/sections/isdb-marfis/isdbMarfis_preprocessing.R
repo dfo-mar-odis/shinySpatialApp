@@ -46,6 +46,7 @@ isdb_rr <- list("title" = "Industry Survey Database (ISDB)",
                                   "searchYears" = "2010-2021",
                                   "securityLevel" = protectedBList,
                                   "qualityTier" = mediumQuality,
+                                  "pipelinePath" = paste0(githubRepo, "reports/sections/isdb-marfis/isdbMarfis_preprocessing.R"),
                                   "constraints" = lapply(internalUse, paste0, ". CONFIDENTIAL – AN ASSESSMENT IS REQUIRED BEFORE PUBLIC RELEASE")
                 )
 )

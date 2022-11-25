@@ -45,7 +45,8 @@ wsdb_rr <- list("title" = "Whale Sightings Database",
                                   "searchYears" = paste(rrMinYear, "-2020", sep=""),
                                   "securityLevel" = noneList,
                                   "qualityTier" = lowQuality,
-                                  "constraints" = internalUse
+                                  "constraints" = internalUse,
+                                  "pipelinePath" = paste0(githubRepo, "reports/sections/wsdb/wsdb_preprocessing.R")
                 )
 )
 save(wsdb_rr, file = file.path(localFileSavePath, "Secure/wsdb_rr.RData"))

@@ -19,6 +19,8 @@ if(!is.null(openEbsa_rr)) {
   ebsa_rr <- openEbsa_rr
   ebsa_rr$metadata$qualityTier <- highQuality
   ebsa_rr$metadata$contact <- email_format("carissa.philippe\\@dfo-mpo.gc.ca")
+  ebsa_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/ebsa/ebsa_preprocessing.R")
+
   save(ebsa_rr, file = file.path(localFileSavePath, "Open/ebsa_rr.RData"))
 }
 

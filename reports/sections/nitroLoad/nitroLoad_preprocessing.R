@@ -25,12 +25,14 @@ deltaNitroLoad_rr <- get_opendata_rr(nitroPkgId, nitroResId, region_sf = region_
 totalNitroLoad_rr$attribute <- "Total_Nitrogen_Load"
 totalNitroLoad_rr$metadata$contact <- email_format("Noreen.Kelly\\@dfo-mpo.gc.ca")
 totalNitroLoad_rr$metadata$qualityTier <- mediumQuality
+totalNitroLoad_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/nitroLoad/nitroLoad_preprocessing.R")
 totalNitroLoad_rr$metadata$searchYears <- "2000-2020?"
 
 
 deltaNitroLoad_rr$attribute <- "Mean_DeltaN"
 deltaNitroLoad_rr$metadata$contact <- email_format("Noreen.Kelly\\@dfo-mpo.gc.ca")
 deltaNitroLoad_rr$metadata$qualityTier <- mediumQuality
+totalNitroLoad_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/nitroLoad/nitroLoad_preprocessing.R")
 totalNitroLoad_rr$metadata$searchYears <- "2000-2020?"
 
 save(totalNitroLoad_rr, deltaNitroLoad_rr, file = file.path(localFileSavePath, "Open/nitroLoad_rr.RData"))

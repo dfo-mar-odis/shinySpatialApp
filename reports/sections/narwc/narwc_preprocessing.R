@@ -29,7 +29,8 @@ narwc_rr <- list("title" = "North Atlantic Right Whale consortium",
                                    "searchYears" = paste(rrMinYear, "-2019", sep=""),
                                    "securityLevel" = noneList,
                                    "qualityTier" = highQuality,
-                                   "constraints" = internalUse
+                                   "constraints" = internalUse,
+                                   "pipelinePath" = paste0(githubRepo, "reports/sections/narwc/narwc_preprocessing.R")
                  )
 )
 save(narwc_rr, file = file.path(localFileSavePath, "Secure/narwc_rr.RData"))

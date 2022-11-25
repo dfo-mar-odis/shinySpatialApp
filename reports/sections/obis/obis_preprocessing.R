@@ -82,7 +82,10 @@ obis_rr <- list("title" = "Ocean Biodiversity Information System (OBIS)",
                                   "searchYears" = "2010-2021",
                                   "securityLevel" = noneList,
                                   "qualityTier" = variableQuality,
-                                  "constraints" = noneList
+                                  "constraints" = noneList,
+                                  "pipelinePath" = paste0(githubRepo, "reports/sections/obis/obis_preprocessing.R")
+                                  
+                                  
                 )
 )
 save(obis_rr, file = file.path(localFileSavePath, "Open/obis_rr.RData"))

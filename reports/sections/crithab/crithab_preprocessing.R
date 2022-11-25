@@ -43,7 +43,8 @@ leatherback_rr <- list("title" = " Leatherback Sea Turtle draft critical habitat
                                          "accessDate" = as.Date("2021-02-25"),
                                          "securityLevel" = noneList,
                                          "qualityTier" = highQuality,
-                                         "constraints" = internalUse
+                                         "constraints" = internalUse,
+                                         "pipelinePath" = paste0(githubRepo, "reports/sections/crithab/crithab_preprocessing.R")
                        )
 )
 save(leatherback_rr, file = file.path(localFileSavePath, "Secure/leatherback_rr.RData"))

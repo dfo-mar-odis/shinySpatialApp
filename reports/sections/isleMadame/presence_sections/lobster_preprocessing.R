@@ -32,6 +32,7 @@ imLobster_rr$data_sf <- sf::st_transform(imLobster_sf, crs = 4326) %>%
 
 imLobster_rr$attribute <- "None"
 imLobster_rr$metadata$qualityTier <- mediumQuality
+imLobster_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/lobster_preprocessing.R")
 imLobster_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 imLobster_rr$datasetName <- "Likelihood of Presence of American Lobster in Area Response Planning Pilot Areas"
 save(imLobster_rr, file = file.path(localFileSavePath, "Open/imLobster_rr.RData"))

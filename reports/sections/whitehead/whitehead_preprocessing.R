@@ -30,7 +30,8 @@ whitehead_rr <- list("title" = "Whitehead lab (Dalhousie University)",
                                        "searchYears" = paste(rrMinYear, "-2019", sep=""),
                                        "securityLevel" = noneList,
                                        "qualityTier" = highQuality,
-                                       "constraints" = internalUse
+                                       "constraints" = internalUse,
+                                       "pipelinePath" = paste0(githubRepo, "reports/sections/whitehead/whitehead_preprocessing.R")
                      )
 )
 save(whitehead_rr, file = file.path(fileSavePath, "Secure/whitehead_rr.RData"))

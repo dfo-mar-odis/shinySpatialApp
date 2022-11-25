@@ -31,6 +31,7 @@ ssClam_rr$data_sf <- sf::st_transform(ssClam_sf, crs = 4326) %>%
 
 ssClam_rr$attribute <- "OVERALL_PRESENCE"
 ssClam_rr$metadata$qualityTier <- mediumQuality
+ssClam_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/ssClam_preprocessing.R")
 ssClam_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 ssClam_rr$datasetName <- "Likelihood of Presence of Soft Shelled Clams in Area Response Planning Pilot Areas"
 save(ssClam_rr, file = file.path(localFileSavePath, "Open/ssClam_rr.RData"))

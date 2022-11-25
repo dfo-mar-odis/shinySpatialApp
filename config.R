@@ -23,3 +23,5 @@ rr_openDataList <- data.frame("rrStr" = c("ebsa_rr",
                                           "opprrpe_rr"))
 
 
+githubRepo <- "https://github.com/dfo-mar-odis/shinySpatialApp/tree/main/"
+
