@@ -23,3 +23,4 @@ rr_openDataList <- data.frame("rrStr" = c("ebsa_rr",
                                           "opprrpe_rr"))
 
 
+configMetadataSheetUrl <- "1lEhBikDNAec-X88q1C02Aw6lOP8gKOkUlDurMznOAOI"

@@ -116,3 +116,27 @@ intro_setup <- function(studyArea, env=globalenv()) {
   
   return("Data Setup Complete")
 }
+
+
+
+
+# ------------read_google_sheet----------------
+# Reads named list from google metadata sheet!
+read_google_metadata <- function(rrID, pipelinePath=NULL){
+  rrBase <- rrID
+  metadata_df <- googlesheets4::read_sheet(configMetadataSheetUrl)
+  metadataRow <- dplyr::filter(metadata_df, DatasetName==rrID)
+  metadataList <- list("contact" = lang_list(metadataRow$Contact),
+                       "url" = lang_list(metadataRow$URL),
+                       "searchYears"= ifelse(is.null(metadataRow$SearchYear),
+                                              metadataRow$SearchYear, ""),
+                       "constraints" = lang_list(metadataRow$DataUseConstraints),
+                       "securityLevel" = lang_list(metadataRow$SecurityLevel),
+                       "qualityTier" =  metadataRow$QualityTier,
+                       "pipelinePath" = ifelse(!is.null(pipelinePath), pipelinePath,
+                                               paste0(githubRepo, "reports/sections/",
+                                                      rrBase, "/", rrBase, "_preprocessing.R"))
+                       )
+ return(metadataList)
+}
+
