@@ -93,7 +93,8 @@ crithab_rr$metadata <- list("contact" = email_format("info@dfo-mpo.gc.ca"),
                                          "accessDate" = as.Date("2022-08-12"),
                                          "securityLevel" = noneList,
                                          "qualityTier" = highQuality,
-                                         "constraints" = internalUse
+                                         "constraints" = internalUse,
+                                         "pipelinePath" = paste0(githubRepo, "reports/sections/crithab/crithab_preprocessing.R")
                        )
 
 save(crithab_rr, file = file.path(localFileSavePath, "Open/crithab_rr.RData"))

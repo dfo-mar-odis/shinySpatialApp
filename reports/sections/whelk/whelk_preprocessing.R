@@ -19,6 +19,8 @@ resId <- "5355ea5b-ea37-4a4b-8f61-9d6b716b7d17"
 # get open data metadata
 whelk_rr <- get_opendata_rr(pkgId, NULL)
 whelk_rr$metadata$contact <- whelk_rr$metadata$contact$fr
+benthicEffort_rr$metadata$pipelinePath = paste0(githubRepo, "reports/sections/whelk/whelk_preprocessing.R")
+
 
 # download csv's from open data
 outData <- download_extract_res_files(resId, c("taxon_occurrence", "event_information"))

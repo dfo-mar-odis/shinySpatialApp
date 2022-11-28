@@ -29,7 +29,6 @@ asf_sf <- esri2sf::esri2sf(egisLayer, bbox=regionBbox, token=token, progress = T
 asf_sf <- dplyr::select(asf_sf, NAME_LABEL, STATUS, geoms)
 names(asf_sf) <- c("River name", "Status", "geoms")
 
-
 asf_rr <- list("title" = "Atlantic salmon rivers of Eastern North America",
                 "data_sf" = asf_sf,
                 "attribute" = "Status",

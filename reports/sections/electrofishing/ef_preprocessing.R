@@ -100,9 +100,11 @@ ws_rr <- list("title" = "Watershed Boundries",
                                 "accessDate" = as.Date("2021-11-25"),
                                 "securityLevel" = noneList,
                                 "qualityTier" = highQuality,
-                                "constraints" = noneList
+                                "constraints" = noneList,
+                                "pipelinePath" = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R")
               )
 )
+save(ws_rr, file = file.path(localFileSavePath, "Open/rivers_rr.RData"))
 
 # rivers:
 
@@ -122,7 +124,8 @@ rivers_rr <- list("title" = "Rivers",
                                 "accessDate" = as.Date("2021-11-25"),
                                 "securityLevel" = noneList,
                                 "qualityTier" = highQuality,
-                                "constraints" = noneList
+                                "constraints" = noneList,
+                                "pipelinePath" = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R")
               )
 )
 save(rivers_rr, file = file.path(localFileSavePath, "Open/rivers_rr.RData"))

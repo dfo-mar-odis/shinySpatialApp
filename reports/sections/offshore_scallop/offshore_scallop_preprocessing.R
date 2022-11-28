@@ -69,5 +69,5 @@ offshoreScallop_rr <- list(
                     
                     )
   )
-save(offshoreScallop_rr, bankLabels, file = file.path(localFileSavePath, "Protected/offshoreScallop_rr.RData"))
+save(offshoreScallop_rr, bankLabels, file = file.path(remoteFileSavePath, "Protected/offshoreScallop_rr.RData"))
 
