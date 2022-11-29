@@ -9,10 +9,10 @@ loadResult <- load_rdata(c("CommonData", "narwc_rr"), regionStr)
 
 # ----------------------NARWC-------------------------
 # North Atlantic Right Whale Consortium (narwc)
-narwc <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/NARWC/NARWC_09-18-2020.csv"), stringsAsFactors = FALSE)
+narwcExcel <- readxl::read_xlsx(path = file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/NARWC/NARWC_02-23-2022.xlsx"))
 narwcspecies <-  read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/NARWC/NARWCSpeciesNames.csv"), stringsAsFactors = FALSE)
 narwcspecies <- narwcspecies %>% rename("Scientific Name"= ScientificName)
-narwc <- merge(narwc, narwcspecies, by='SPECNAME')
+narwc <- merge(narwcExcel, narwcspecies, by='SPECNAME')
 narwc <- narwc %>% dplyr::filter(YEAR >= rrMinYear)
 narwc <- merge(narwc, cetLegend, by = 'Scientific Name')
 narwc <- dplyr::select(narwc, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
