@@ -32,6 +32,7 @@ harbourPorpoise_rr$data_sf <- sf::st_transform(harbourPorpoise_sf, crs = 4326) %
 
 harbourPorpoise_rr$attribute <- "None"
 harbourPorpoise_rr$metadata$qualityTier <- mediumQuality
+harbourPorpoise_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/harbourPorpoise_preprocessing.R")
 harbourPorpoise_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 harbourPorpoise_rr$datasetName <- "Likelihood of Presence of Harbour Porpoise in Area Response Planning Pilot Areas"
 save(harbourPorpoise_rr, file = file.path(localFileSavePath, "Open/harbourPorpoise_rr.RData"))

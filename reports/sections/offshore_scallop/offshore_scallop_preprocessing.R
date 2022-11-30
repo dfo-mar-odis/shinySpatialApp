@@ -64,7 +64,9 @@ offshoreScallop_rr <- list(
                     "searchYears" = "1978-2021",
                     "securityLevel" = protectedBList,
                     "qualityTier" = highQuality,
-                    "constraints" = internalUse
+                    "constraints" = internalUse,
+                    "pipelinePath" = paste0(githubRepo, "reports/sections/offshore_scallop/offshore_scallop_preprocessing.R")
+                    
                     )
   )
 save(offshoreScallop_rr, bankLabels, file = file.path(localFileSavePath, "Protected/offshoreScallop_rr.RData"))

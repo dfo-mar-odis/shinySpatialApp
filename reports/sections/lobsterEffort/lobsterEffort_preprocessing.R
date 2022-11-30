@@ -26,5 +26,6 @@ lobsterEffort_rr$attribute <- "weight_kg"
 lobsterEffort_rr$metadata$contact <- email_format("Scott.Coffen-Smout@dfo-mpo.gc.ca")
 lobsterEffort_rr$metadata$searchYears <- "2012-2014"
 lobsterEffort_rr$metadata$qualityTier <- mediumQuality
+lobsterEffort_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/lobsterEffort/lobsterEffort_preprocessing.R")
 save(lobsterEffort_rr, file = file.path(localFileSavePath, "Open/lobsterEffort_rr.RData"))
 

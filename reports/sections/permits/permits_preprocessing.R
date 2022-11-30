@@ -79,7 +79,9 @@ permits_rr = list("title" = "Section 73 Permits",
                                   "searchYears" = paste(rrMinYear, "-2020", sep=""),
                                   "securityLevel" = internalUse,
                                   "qualityTier" = mediumQuality,
-                                  "constraints" = internalUse))
+                                  "constraints" = internalUse,
+                                  "pipelinePath" = paste0(githubRepo, "reports/sections/permits/permits_preprocessing.R")
+                  ))
 
 # Save the data. Do this locally and on the IN folder
 save(permits_rr, file = file.path(localFileSavePath, "Secure/permits_rr.RData"))

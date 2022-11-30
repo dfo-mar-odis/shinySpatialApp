@@ -38,7 +38,9 @@ ilts_rr <- list("title" = "Inshore Lobster Trawl Survey (ILTS)",
                                   "searchYears" = "2016-2021",
                                   "securityLevel" = protectedBList,
                                   "qualityTier" = highQuality,
-                                  "constraints" = internalUse)
+                                  "constraints" = internalUse,
+                                  "pipelinePath" = paste0(githubRepo, "reports/sections/ilts/ilts_preprocessing.R")
+                )
 )
 
 save(ilts_rr, file = file.path(localFileSavePath, "Protected/ilts_rr.RData"))

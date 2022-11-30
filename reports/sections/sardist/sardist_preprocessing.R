@@ -19,6 +19,7 @@ sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
 sardist_rr <- get_opendata_rr(sardistPkgId)
 
 sardist_rr$metadata$qualityTier <- highQuality
+sardist_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/sardist/sardist_preprocessing.R")
 sardist_rr$metadata$contact <- email_format("info\\@dfo-mpo.gc.ca")
 
 # sara crs: 3857

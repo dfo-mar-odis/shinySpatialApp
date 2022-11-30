@@ -39,7 +39,8 @@ asf_rr <- list("title" = "Atlantic salmon rivers of Eastern North America",
                                   "accessDate" = as.Date("2022-08-18"),
                                   "securityLevel" = internalUse,
                                   "qualityTier" = highQuality,
-                                  "constraints" = internalUse
+                                  "constraints" = internalUse,
+                                  "pipelinePath" = paste0(githubRepo, "reports/sections/asf/asf_preprocessing.R")
                 )
 )
 save(asf_rr, file = file.path(localFileSavePath, "Secure/asf_rr.RData"))

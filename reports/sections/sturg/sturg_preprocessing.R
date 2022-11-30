@@ -29,7 +29,8 @@ sturg_rr <- list("title" = "Atlantic Sturgeon Foraging Areas in the Upper Bay of
                                    "accessDate" = as.Date("2021-09-21"),
                                    "securityLevel" = noneList,
                                    "qualityTier" = highQuality,
-                                   "constraints" = internalUse
+                                   "constraints" = internalUse,
+                                   "pipelinePath" = paste0(githubRepo, "reports/sections/sturg/sturg_preprocessing.R")
                  )
 )
 save(sturg_rr, file = file.path(localFileSavePath, "Secure/sturg_rr.RData"))

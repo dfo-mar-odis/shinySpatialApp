@@ -28,7 +28,9 @@ ocearch_rr <- list("title" = "OCEARCH Shark Tracker",
                                      "searchYears" = "2013-2020",
                                      "securityLevel" = noneList,
                                      "qualityTier" = highQuality,
-                                     "constraints" = internalUse
+                                     "constraints" = internalUse,
+                                     "pipelinePath" = paste0(githubRepo, "reports/sections/ocearch/ocearch_preprocessing.R")
+                                     
                    )
 )
 save(ocearch_rr, file = file.path(localFileSavePath, "Secure/ocearch_rr.RData"))

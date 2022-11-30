@@ -10,6 +10,7 @@ pasBayPkgId <- "2dfa19db-a8cf-4460-97b9-710c2b856276"
 pasBay_rr <- get_opendata_rr(pasBayPkgId, NULL, region_sf = region_sf)
 pasBay_rr$metadata$contact <- email_format("Andrew.Cooper@dfo-mpo.gc.ca")
 pasBay_rr$metadata$qualityTier <- highQuality
+pasBay_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/pasBay/pasBay_preprocessing.R")
 pasBay_rr$metadata$searchYears <- "2009-2019"
 
 catchDataResId <- "9ee042ea-ab9b-4af8-8cf5-de9c89a77a95"

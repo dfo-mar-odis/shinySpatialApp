@@ -25,6 +25,8 @@ imAcoustic_rr$data_sf <- sf::st_transform(imAcoustic_sf, crs = 4326) %>%
 
 imAcoustic_rr$attribute <- "None"
 imAcoustic_rr$metadata$qualityTier <- highQuality
+imAcoustic_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/imAcoustic/imAcoustic_preprocessing.R")
+
 imAcoustic_rr$datasetName <- "Novel Video and Acoustic Survey of the Seaweeds of Isle Madame"
 save(imAcoustic_rr, file = file.path(localFileSavePath, "Open/imAcoustic_rr.RData"))
 

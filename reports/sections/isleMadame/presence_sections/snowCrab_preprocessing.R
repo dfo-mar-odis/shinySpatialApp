@@ -33,6 +33,7 @@ snowCrab_rr$data_sf <- sf::st_transform(snowCrab_sf, crs = 4326) %>%
 
 snowCrab_rr$attribute <- "Overall Presence"
 snowCrab_rr$metadata$qualityTier <- mediumQuality
+snowCrab_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/snowCrab_preprocessing.R")
 snowCrab_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 snowCrab_rr$datasetName <- "Likelihood of Presence of Snow Crab in Area Response Planning Pilot Areas"
 save(snowCrab_rr, file = file.path(localFileSavePath, "Open/snowCrab_rr.RData"))

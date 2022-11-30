@@ -27,4 +27,5 @@ waste_rr$attribute <- "Status"
 waste_rr$metadata$contact <- paste(email_format("michael.parry@canada.ca"),  email_format("Michael.Buckland-Nicks@canada.ca"), sep=", ")
 waste_rr$metadata$searchYears <- "2018"
 waste_rr$metadata$qualityTier <- mediumQuality
+waste_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/waste/waste_preprocessing.R")
 save(waste_rr, file = file.path(localFileSavePath, "Open/waste_rr.RData"))

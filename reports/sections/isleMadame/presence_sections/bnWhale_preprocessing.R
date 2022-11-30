@@ -33,4 +33,6 @@ bnWhale_rr$attribute <- "None"
 bnWhale_rr$metadata$qualityTier <- mediumQuality
 bnWhale_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
 bnWhale_rr$datasetName <- "Likelihood of Presence of Bottlenose Whales in Area Response Planning Pilot Areas"
+bnWhale_rr$pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/bnWhale_preprocessing.R")
+
 save(bnWhale_rr, file = file.path(localFileSavePath, "Open/bnWhale_rr.RData"))

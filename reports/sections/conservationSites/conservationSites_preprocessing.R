@@ -24,7 +24,9 @@ conservationSites_rr <- list("title" = "Draft Conservation Network Design",
                                                "accessDate" = as.Date("2021-10-01"),
                                                "securityLevel" = noneList,
                                                "qualityTier" = highQuality,
-                                               "constraints" = internalUse
+                                               "constraints" = internalUse,
+                                               "pipelinePath" = paste0(githubRepo, "reports/sections/conservationSites/conservationSites_preprocessing.R")
+                                               
                              )
 )
 

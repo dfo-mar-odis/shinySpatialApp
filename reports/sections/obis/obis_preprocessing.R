@@ -76,13 +76,16 @@ obis_rr <- list("title" = "Ocean Biodiversity Information System (OBIS)",
                 "attribute" = "NONE",
                 "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
                                   "url" = lang_list("<https://obis.org/>"),
-                                  "accessedOnStr" = list("en" ="April 28 2022 using robis", 
-                                                        "fr" = "28 avril 2022 par robis") ,
-                                  "accessDate" = as.Date("2022-04-28"),
-                                  "searchYears" = "2010-2021",
+                                  "accessedOnStr" = list("en" ="November 25 2022 using robis", 
+                                                        "fr" = "25 novembre 2022 par robis") ,
+                                  "accessDate" = as.Date("2022-11-25"),
+                                  "searchYears" = "2010-2022",
                                   "securityLevel" = noneList,
                                   "qualityTier" = variableQuality,
-                                  "constraints" = noneList
+                                  "constraints" = noneList,
+                                  "pipelinePath" = paste0(githubRepo, "reports/sections/obis/obis_preprocessing.R")
+                                  
+                                  
                 )
 )
 save(obis_rr, file = file.path(localFileSavePath, "Open/obis_rr.RData"))

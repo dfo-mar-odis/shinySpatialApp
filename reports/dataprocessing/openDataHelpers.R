@@ -10,6 +10,7 @@ library(httr)
 library(raster)
 source(here::here("config.R"))
 source(here::here("reports/R/dataFunctions.R"))
+source(here::here("reports/R/textFunctions.R"))
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
@@ -31,58 +32,21 @@ protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 #
 # Outputs:
 # 1 .out_rr: output rr object containing spatial data and metadata
-get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
+get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE) {
   opendataPKG <- package_show(pkgId)
   
-  # check if package has been updated since checkdate
-  if (!is.null(checkDate)){
-    if ("date_modified" %in% names(opendataPKG)) {
-      pkgTime <- strptime(opendataPKG$date_modified, "%Y-%m-%d %H:%M:%S")  
-      if (pkgTime < checkDate) {
-        return(NULL)
-      }
-    } else if ("metadata_modified" %in% names(opendataPKG)) {
-      pkgTime <- strptime(opendataPKG$metadata_modified, "%Y-%m-%dT%H:%M:%S")  
-      if (pkgTime < checkDate) {
-        return(NULL)
-      }
-    }
-  }
-  
   pkgTitle <- opendataPKG$title_translated
-  contactInfo <- opendataPKG$metadata_contact
   pkgText <- opendataPKG$notes_translated
+  
   if (!is.null(resId)) {
     data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer, tifFile=tifFile, returnRaster=returnRaster)  
   } else {
     data_sf <- NULL
   }
-  
-  url <- list("en" = paste("<https://open.canada.ca/data/en/dataset/", pkgId, ">", sep =""), 
-              "fr" = paste("<https://open.canada.ca/data/fr/dataset/", pkgId, ">", sep =""))  
-  securityLevel <- list("en" = "None", "fr"= "Aucun")
-  constraints <- list("en" = "None", "fr"= "Aucun")
-  accessedDate <- list("en" = NA, "fr" = NA)
-  # date nonesense:
-  Sys.setlocale(locale = "French")
-  accessedDate$fr <-paste(strftime(lubridate::today(), "%B %d, %Y"), "sur le Portail de données ouvertes")
-  Sys.setlocale(locale = "English")
-  accessedDate$en <- paste(strftime(lubridate::today(), "%B %d, %Y"), "from Open Data")
-  # reset locale to default:
-  Sys.setlocale(locale="")
-  
   out_rr <- list("title" = pkgTitle,
                  "text" = pkgText,
                  "attribute" = "NONE",
-                 "data_sf" = data_sf,
-                 "metadata" = list("contact" = contactInfo,
-                                   "url" = url,
-                                   "accessedOnStr" = accessedDate,
-                                   "accessedDate" = lubridate::today(),
-                                   "constraints" = constraints,
-                                   "securityLevel" = securityLevel
-                   
-                 ) # end metadata
+                 "data_sf" = data_sf
              ) # end rr
   return(out_rr)
 }
@@ -232,13 +196,6 @@ get_check_date <- function(varName) {
   return(checkDate)
 }
 
-
-# --------------lang_list-----------------
-# Helper function that converts a string into a bilinugual list
-lang_list <- function(inValue) {
-  return(list("en" = inValue, "fr" = inValue))
-}
-
 # --------------email_format-----------------
 # Helper function that converts a string email address into a linked one for use in rmd
 email_format <- function(emailStr) {
@@ -250,7 +207,7 @@ email_format <- function(emailStr) {
 # Wrapper function to peform all the steps required to save an open data object.
 save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
                            disableCheckDate = TRUE, contactEmail = NULL, searchYears=NULL,
-                           reference = NULL, ...) {
+                           reference = NULL, pipelinePath = NULL, ...) {
   dataSaved <- FALSE
   fnCheckDate <- NULL
   if (!disableCheckDate){
@@ -266,6 +223,9 @@ save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
     }
     if (!is.null(searchYears)){
       temp_rr$metadata$searchYears = searchYears
+    }
+    if (!is.null(pipelinePath)){
+      temp_rr$metadata$pipelinePath = pipelinePath
     }
     temp_rr$metadata$qualityTier <- qualityTier
     assign(variableName, temp_rr)
