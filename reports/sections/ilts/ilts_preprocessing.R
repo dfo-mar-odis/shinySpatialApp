@@ -29,18 +29,7 @@ ilts_sf <- sf::st_crop(ilts_sf, region_sf)
 ilts_rr <- list("title" = "Inshore Lobster Trawl Survey (ILTS)",
                 "data_sf" = ilts_sf,
                 "attribute" = "NONE",
-                "metadata" = list("contact" = email_format("Cheryl.Denton@dfo-mpo.gc.ca"),
-                                  "url" = list("en" = "<https://gcgeo.gc.ca/geonetwork/metadata/eng/190276ba-29ea-4b3b-be74-757d0eb896f2>",
-                                               "fr" = "<https://gcgeo.gc.ca/geonetwork/metadata/fre/190276ba-29ea-4b3b-be74-757d0eb896f2>"),
-                                  "accessedOnStr" = list("en" = "October 1, 2021 by Geraint Element", 
-                                                         "fr" = "1 Octobre, 2021 par Geraint Element") ,
-                                  "accessDate" = as.Date("2020-10-01"),
-                                  "searchYears" = "2016-2021",
-                                  "securityLevel" = protectedBList,
-                                  "qualityTier" = highQuality,
-                                  "constraints" = internalUse,
-                                  "pipelinePath" = paste0(githubRepo, "reports/sections/ilts/ilts_preprocessing.R")
-                )
+                "metadata" = read_google_metadata("ilts_rr")
 )
 
 save(ilts_rr, file = file.path(localFileSavePath, "Protected/ilts_rr.RData"))

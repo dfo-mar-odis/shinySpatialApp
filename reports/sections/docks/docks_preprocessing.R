@@ -26,10 +26,8 @@ docks_rr$data_sf <- sf::st_crop(docks_sf, region_sf) %>%
 
 docks_rr$attribute <- "NONE"
 docks_rr$title$en <- "Man-made solid classification from the Atlantic Shoreline Classification dataset"
-docks_rr$metadata$contact <- email_format("enviroinfo@ec.gc.ca")
-docks_rr$metadata$searchYears <- "2017-2019"
-docks_rr$metadata$qualityTier <- mediumQuality
-docks_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/docks/docks_preprocessing.R")
+
+docks_rr$metadata <- read_google_metadata("docks_rr")
 
 save(docks_rr, file = file.path(localFileSavePath, "Open/docks_rr.RData"))
 

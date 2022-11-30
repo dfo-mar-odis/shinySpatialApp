@@ -68,15 +68,7 @@ ef_sf <- rbind(ef_sf, efSurvey_to_sf(efSurvey2018B_sf, efSpecList, region_sf))
 
 ef_rr <- list("title" = "Electrofishing Data","data_sf" = ef_sf,
               "attribute" = "Year",
-              "metadata" = list("contact" = email_format("Dustin.Raab@dfo-mpo.gc.ca"), 
-                                "accessedOnStr" = list("en" ="October 18 2021 by Sean Butler", "fr" = "18 octobre 2021 par Sean Butler") ,
-                                "accessDate" = as.Date("2021-10-18"),
-                                "searchYears" = "2008-2014",
-                                "securityLevel" = noneList,
-                                "qualityTier" = highQuality,
-                                "constraints" = internalUse,
-                                "pipelinePath" = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R")
-              )
+              "metadata" = read_google_metadata("ef_rr", pipelinePath = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R"))
               
 )
 save(ef_rr, file = file.path(localFileSavePath, "Secure/ef_rr.RData"))
@@ -95,14 +87,8 @@ ws_sf <- dplyr::select(ws_sf, c("WS_NAME", "geometry"))
 ws_rr <- list("title" = "Watershed Boundries",
               "data_sf" = ws_sf,
               "attribute" = "NONE",
-              "metadata" = list("contact" = "https://novascotia.ca/opendata/contact-us/, http://www.snb.ca/geonb1/e/contact/contact-E.asp", 
-                                "accessedOnStr" = list("en" ="November 25 2021 by Quentin Stoyel", "fr" = "25 novembre 2021 par Quentin Stoye") ,
-                                "accessDate" = as.Date("2021-11-25"),
-                                "securityLevel" = noneList,
-                                "qualityTier" = highQuality,
-                                "constraints" = noneList,
-                                "pipelinePath" = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R")
-              )
+              "metadata" = read_google_metadata("ws_rr", pipelinePath = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R"))
+              
 )
 save(ws_rr, file = file.path(localFileSavePath, "Open/rivers_rr.RData"))
 
@@ -119,14 +105,7 @@ rivers_sf <- sf::st_crop(rivers_sf, region_sf)
 rivers_rr <- list("title" = "Rivers",
               "data_sf" = rivers_sf,
               "attribute" = "NONE",
-              "metadata" = list("contact" = "https://novascotia.ca/opendata/contact-us/, http://www.snb.ca/geonb1/e/contact/contact-E.asp", 
-                                "accessedOnStr" = list("en" ="November 25 2021 by Quentin Stoyel", "fr" = "25 novembre 2021 par Quentin Stoye") ,
-                                "accessDate" = as.Date("2021-11-25"),
-                                "securityLevel" = noneList,
-                                "qualityTier" = highQuality,
-                                "constraints" = noneList,
-                                "pipelinePath" = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R")
-              )
+              "metadata" = read_google_metadata("rivers_rr", pipelinePath = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R"))
 )
 save(rivers_rr, file = file.path(localFileSavePath, "Open/rivers_rr.RData"))
 

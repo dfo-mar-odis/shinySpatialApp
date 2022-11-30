@@ -11,20 +11,15 @@ crithabPkgId <- "db177a8c-5d7d-49eb-8290-31e6a45d786c"
 crithabResId <- "94284a7f-46b8-4304-99d5-c278e88b22a8"
 critHabLayer <- "DFO_SARA_CritHab_2022_FGP_EN"
 
-critHabCheckDate <-  get_check_date("crithab_rr")
-
-openCrithab_rr <- get_opendata_rr(crithabPkgId, crithabResId, 
+crithab_rr <- get_opendata_rr(crithabPkgId, crithabResId, 
                                   region_sf = region_sf,
                                   gdbLayer = critHabLayer, 
                                   checkDate = critHabCheckDate)
 
-if(!is.null(openCrithab_rr)) {
-  crithab_rr <- openCrithab_rr
-  crithab_rr$metadata$qualityTier <- highQuality
-  crithab_rr$metadata$contact <- email_format("info@dfo-mpo.gc.ca")
-  crithab_rr$attribute <- "Common_Name_EN"
-  save(crithab_rr, file = file.path(localFileSavePath, "Open/crithab_rr.RData"))
-}
+crithab_rr$metadata <- read_google_metadata("crithab_rr", isOpenData = TRUE)
+crithab_rr$attribute <- "Common_Name_EN"
+save(crithab_rr, file = file.path(localFileSavePath, "Open/crithab_rr.RData"))
+
 
 
 # ------------LEATHERBACKS--------------------
@@ -38,21 +33,14 @@ leatherback_sf <- sf::st_crop(leatherback_sf, region_sf)
 leatherback_rr <- list("title" = " Leatherback Sea Turtle draft critical habitat",
                        "data_sf" = leatherback_sf,
                        "attribute" = "NONE",
-                       "metadata" = list("contact" = email_format("info@dfo-mpo.gc.ca"),
-                                         "accessedOnStr" = list("en" ="February 25 2021", "fr" = "25 février 2021") ,
-                                         "accessDate" = as.Date("2021-02-25"),
-                                         "securityLevel" = noneList,
-                                         "qualityTier" = highQuality,
-                                         "constraints" = internalUse,
-                                         "pipelinePath" = paste0(githubRepo, "reports/sections/crithab/crithab_preprocessing.R")
-                       )
+                       "metadata" = read_google_metadata("leatherback_rr")
 )
 save(leatherback_rr, file = file.path(localFileSavePath, "Secure/leatherback_rr.RData"))
 
 # -------------CRITHAB from SDE--------------
 library(sf)
 library(gdalUtilities)
-# grabbed this from stack overflow, converst multisurfaces to multipolygons
+# grabbed this from stack overflow, converts multisurfaces to multipolygons
 ensure_multipolygons <- function(X) {
   tmp1 <- tempfile(fileext = ".gpkg")
   tmp2 <- tempfile(fileext = ".gpkg")
@@ -88,14 +76,7 @@ names(crithab_sf) <- c("Common_Name_EN", "Waterbody", "Population_EN", "SARA_Sta
 
 crithab_rr$data_sf <- crithab_sf
 crithab_rr$attribute <- "Common_Name_EN"
-crithab_rr$metadata <- list("contact" = email_format("info@dfo-mpo.gc.ca"),
-                                         "accessedOnStr" = list("en" ="August 12 2021", "fr" = "12 Aout 2021") ,
-                                         "accessDate" = as.Date("2022-08-12"),
-                                         "securityLevel" = noneList,
-                                         "qualityTier" = highQuality,
-                                         "constraints" = internalUse,
-                                         "pipelinePath" = paste0(githubRepo, "reports/sections/crithab/crithab_preprocessing.R")
-                       )
+crithab_rr$metadata <- read_google_metadata("crithab_rr")
 
 save(crithab_rr, file = file.path(localFileSavePath, "Open/crithab_rr.RData"))
 

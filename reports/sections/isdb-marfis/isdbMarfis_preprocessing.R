@@ -40,15 +40,7 @@ isdbSpecies_df <- unique(sf::st_drop_geometry(dplyr::select(isdb_sf, "NAFO",
 isdb_rr <- list("title" = "Industry Survey Database (ISDB)",
                 "data_sf" = nafoGeoms_sf,
                 "attribute" = "NONE",
-                "metadata" = list("contact" = email_format("Claire.Mussells@dfo-mpo.gc.ca"), 
-                                  "accessedOnStr" = list("en" ="2022", "fr" = "2022") ,
-                                  "accessDate" = as.Date("2022-10-07"),
-                                  "searchYears" = "2010-2021",
-                                  "securityLevel" = protectedBList,
-                                  "qualityTier" = mediumQuality,
-                                  "pipelinePath" = paste0(githubRepo, "reports/sections/isdb-marfis/isdbMarfis_preprocessing.R"),
-                                  "constraints" = lapply(internalUse, paste0, ". CONFIDENTIAL – AN ASSESSMENT IS REQUIRED BEFORE PUBLIC RELEASE")
-                )
+                "metadata" = read_google_metadata("isdb_rr", pipelinePath = paste0(githubRepo, "reports/sections/isdb-marfis/isdbMarfis_preprocessing.R"))
 )
 save(isdb_rr, isdbSpecies_df, file = file.path(localFileSavePath, "Protected/isdb_rr.RData"))
 
@@ -88,13 +80,7 @@ marfisSpeceis_df <- unique(sf::st_drop_geometry(dplyr::select(marfis_sf, "NAFO",
 marfis_rr <- list("title" = "Maritime Fishery Information System (MARFIS)",
                   "data_sf" = nafoGeoms_sf,
                   "attribute" = "NONE",
-                  "metadata" = list("contact" = email_format("XMARComData@dfo-mpo.gc.ca"),
-                                    "accessedOnStr" = list("en" = "2022", "fr" = "2022") ,
-                                    "accessDate" = as.Date("2022-10-12"),
-                                    "searchYears" = "2010-2021",
-                                    "securityLevel" = protectedBList,
-                                    "qualityTier" = mediumQuality,
-                                    "constraints" = lapply(internalUse, paste0, ". CONFIDENTIAL – AN ASSESSMENT IS REQUIRED BEFORE PUBLIC RELEASE"))
+                  "metadata" = read_google_metadata("marfis_rr", pipelinePath = paste0(githubRepo, "reports/sections/isdb-marfis/isdbMarfis_preprocessing.R"))
 )
 save(marfis_rr, marfisSpeceis_df, file = file.path(localFileSavePath, "Protected/marfis_rr.RData"))
 

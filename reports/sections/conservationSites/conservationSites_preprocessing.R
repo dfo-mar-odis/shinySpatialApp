@@ -19,15 +19,7 @@ conservationSites_sf[conservationSites_sf$Id == 18, "Legend" ] <- "Bras d'Or Lak
 conservationSites_rr <- list("title" = "Draft Conservation Network Design",
                              "data_sf" = conservationSites_sf,
                              "attribute" = "Legend",
-                             "metadata" = list("contact" = "Marty King ([Marty.King@dfo-mpo.gc.ca](mailto:Marty.King@dfo-mpo.gc.ca){.email})", 
-                                               "accessedOnStr" = list("en" ="October 2021", "fr" = "octobre, 2021") ,
-                                               "accessDate" = as.Date("2021-10-01"),
-                                               "securityLevel" = noneList,
-                                               "qualityTier" = highQuality,
-                                               "constraints" = internalUse,
-                                               "pipelinePath" = paste0(githubRepo, "reports/sections/conservationSites/conservationSites_preprocessing.R")
-                                               
-                             )
+                             "metadata" = read_google_metadata("conservationSites_rr")
 )
 
 save(conservationSites_rr, file = file.path(localFileSavePath, "Secure/conservationSites_rr.RData"))
