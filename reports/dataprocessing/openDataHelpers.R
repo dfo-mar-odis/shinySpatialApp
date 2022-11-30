@@ -47,7 +47,7 @@ get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, ti
                  "text" = pkgText,
                  "attribute" = "NONE",
                  "data_sf" = data_sf
-             ) # end rr
+             ) 
   return(out_rr)
 }
 

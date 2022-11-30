@@ -126,31 +126,30 @@ intro_setup <- function(studyArea, env=globalenv()) {
 read_google_metadata <- function(rrID, pipelinePath=NULL, isOpenData=FALSE){
   rrBase <- rrID
   metadata_df <- googlesheets4::read_sheet(configMetadataSheetUrl)
-  metadataRow <- dplyr::filter(metadata_df, DatasetName==rrID)
-  if (nrow(metadataRow) > 1) {
-    metadataRow <- head(metadataRow, 1)
-  }
+  metadataRow <- head(dplyr::filter(metadata_df, DatasetName==rrID), 1)
   metadataList <- list("contact" = lang_list(metadataRow$Contact),
                        "url" = lang_list(metadataRow$URL),
-                       "searchYears"= ifelse(is.null(metadataRow$SearchYear),
+                       "searchYears"= ifelse(!is.null(metadataRow$SearchYear),
                                               metadataRow$SearchYear, ""),
                        "constraints" = lang_list(metadataRow$DataUseConstraints),
                        "securityLevel" = lang_list(metadataRow$SecurityLevel),
-                       "qualityTier" =  metadataRow$QualityTier,
+                       "qualityTier" =  lang_list(metadataRow$QualityTier),
                        "pipelinePath" = ifelse(!is.null(pipelinePath), pipelinePath,
                                                paste0(githubRepo, "reports/sections/",
                                                       rrBase, "/", rrBase, "_preprocessing.R"))
                        )
-  accessedDate <- list("en" = NA, "fr" = NA) 
+  
   # date nonesense:
   Sys.setlocale(locale = "French")
-  accessedDate$fr <-paste(strftime(lubridate::today(), "%B %d, %Y"), "sur le Portail de données ouvertes")
+  accessedDateFr <-paste(strftime(lubridate::today(), "%B %d, %Y"), ifelse(isOpenData, "sur le Portail de données ouvertes", ""))
   Sys.setlocale(locale = "English")
-  accessedDate$en <- paste(strftime(lubridate::today(), "%B %d, %Y"), "from Open Data")
+  accessedDateEn <- paste(strftime(lubridate::today(), "%B %d, %Y"), ifelse(isOpenData, "from Open Data", ""))
   # reset locale to default:
   Sys.setlocale(locale="")
+
+  metadataList = c(metadataList, "accessedOnStr"= list(list("en" = accessedDateEn, 
+                                                       "fr" = accessedDateFr)))
   
-  metadataList.append("accessedDate"=accessedDate)
   
  return(metadataList)
 }
