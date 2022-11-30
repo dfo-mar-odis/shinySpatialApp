@@ -33,6 +33,8 @@ if (length(allRasters) > 0){
 
 benthicEffort_rr <- ea_rr
 benthicEffort_rr$metadata$qualityTier <- mediumQuality
+benthicEffort_rr$metadata$pipelinePath = paste0(githubRepo, "reports/sections/benthicEffort/benthicEffort_preprocessing.R")
+
 benthicEffort_rr$data_sf <- mergeRaster
 
 save(benthicEffort_rr, file = file.path(localFileSavePath, "Open/benthicEffort_rr.RData"))

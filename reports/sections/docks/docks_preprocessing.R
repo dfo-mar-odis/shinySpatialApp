@@ -29,5 +29,7 @@ docks_rr$title$en <- "Man-made solid classification from the Atlantic Shoreline 
 docks_rr$metadata$contact <- email_format("enviroinfo@ec.gc.ca")
 docks_rr$metadata$searchYears <- "2017-2019"
 docks_rr$metadata$qualityTier <- mediumQuality
+docks_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/docks/docks_preprocessing.R")
+
 save(docks_rr, file = file.path(localFileSavePath, "Open/docks_rr.RData"))
 

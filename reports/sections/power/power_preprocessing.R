@@ -2,7 +2,7 @@
 source(here::here("dataprocessing/openDataHelpers.R"))
 
 #contains load_rdata function
-source(here::here("app/R/dataFunctions.R"))
+source(here::here("reports/R/dataFunctions.R"))
 
 #contains config parameters and paths
 source(here::here("config.R"))
@@ -28,4 +28,5 @@ power_rr$attribute <- "MEGAWATTS"
 power_rr$metadata$contact <- email_format("NRCan.geogratis-geogratis.RNCan@canada.ca")
 power_rr$metadata$searchYears <- "2016"
 power_rr$metadata$qualityTier <- mediumQuality
+power_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/power/power_preprocessing.R")
 save(power_rr, file = file.path(localFileSavePath, "Open/power_rr.RData"))

@@ -41,6 +41,7 @@ rv_sf <- rbind(fourVSW_sf, spring_sf, summer_sf, fall_sf)
 rv_sf <- sf::st_crop(rv_sf, region_sf)
 rv_rr$data_sf <- rv_sf
 rv_rr$metadata$searchYears <- paste(rrMinYear, "-2022", sep="")
+rv_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/rv/rv_preprocessing.R")
 save(rv_rr, file = file.path(localFileSavePath, "Open/rv_rr.RData"))
 
 

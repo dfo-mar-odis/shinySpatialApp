@@ -31,7 +31,8 @@ janvrinIsland_rr <- list("title" = "Janvrin Island Eelgrass Presence/Absence",
                                       "searchYears" = "2005",
                                       "securityLevel" = noneList,
                                       "qualityTier" = highQuality,
-                                      "constraints" = internalUse
+                                      "constraints" = internalUse,
+                                      "pipelinePath" = paste0(githubRepo, "reports/sections/janvrinIsland/janvrinIsland_preprocessing.R")
                     )
                     
 )

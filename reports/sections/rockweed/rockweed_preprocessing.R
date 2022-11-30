@@ -27,13 +27,14 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
                     "attribute" = "status",
                     "metadata" = list("contact" = email_format("Gordana.Lazin@dfo-mpo.gc.ca"), 
                                       "url" = lang_list("<https://gisd.dfo-mpo.gc.ca/portal/home/item.html?id=cbf26467bce84abc972a04e88581a030>"),
-                                      "accessedOnStr" = list("en" ="July 28 2022", 
-                                                             "fr" = "28 juillet 2022") ,
-                                      "accessDate" = as.Date("2022-07-28"),
+                                      "accessedOnStr" = list("en" ="November 25 2022", 
+                                                             "fr" = "25 novembre 2022") ,
+                                      "accessDate" = as.Date("2022-11-25"),
                                       "searchYears" = "2020",
                                       "securityLevel" = noneList,
                                       "qualityTier" = mediumQuality,
-                                      "constraints" = internalUse
+                                      "constraints" = internalUse,
+                                      "pipelinePath" = paste0(githubRepo, "reports/sections/rockweed/rockweed_preprocessing.R")
                     )
 )
 save(rockweed_rr, file = file.path(localFileSavePath, "Open/rockweed_rr.RData"))

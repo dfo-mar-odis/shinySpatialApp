@@ -250,7 +250,7 @@ email_format <- function(emailStr) {
 # Wrapper function to peform all the steps required to save an open data object.
 save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
                            disableCheckDate = TRUE, contactEmail = NULL, searchYears=NULL,
-                           reference = NULL, ...) {
+                           reference = NULL, pipelinePath = NULL, ...) {
   dataSaved <- FALSE
   fnCheckDate <- NULL
   if (!disableCheckDate){
@@ -266,6 +266,9 @@ save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
     }
     if (!is.null(searchYears)){
       temp_rr$metadata$searchYears = searchYears
+    }
+    if (!is.null(pipelinePath)){
+      temp_rr$metadata$pipelinePath = pipelinePath
     }
     temp_rr$metadata$qualityTier <- qualityTier
     assign(variableName, temp_rr)
