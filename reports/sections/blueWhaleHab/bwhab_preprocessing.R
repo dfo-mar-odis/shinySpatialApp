@@ -16,13 +16,8 @@ blueWhaleHab_sf <- dplyr::select(blueWhaleHab_sf, c("Activity"))
 blueWhaleHab_sf <- sf::st_crop(blueWhaleHab_sf, region_sf)
 blueWhaleHab_rr$data_sf <- blueWhaleHab_sf
 
-blueWhaleHab_rr$metadata$contact <- email_format("gddaiss-dmsaisb\\@dfo-mpo.gc.ca")
-blueWhaleHab_rr$metadata$qualityTier <- highQuality
-blueWhaleHab_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/bwhab/bwhab_preprocessing.R")
-
-blueWhaleHab_rr$attribute <- "Activity"
+blueWhaleHab_rr$metadata <- read_google_metadata("blueWhaleHab_rr", isOpenData = TRUE)
 blueWhaleHab_rr$metadata$reference <- lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40687776.pdf>")
-
 
 save(blueWhaleHab_rr, file = file.path(localFileSavePath, "Open/blueWhaleHab_rr.RData"))
 

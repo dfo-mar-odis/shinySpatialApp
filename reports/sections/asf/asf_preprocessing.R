@@ -32,15 +32,6 @@ names(asf_sf) <- c("River name", "Status", "geoms")
 asf_rr <- list("title" = "Atlantic salmon rivers of Eastern North America",
                 "data_sf" = asf_sf,
                 "attribute" = "Status",
-                "metadata" = list("contact" = "<ncrabbe@asf.ca>", 
-                                  "url" = lang_list("<https://gisd.dfo-mpo.gc.ca/portal/home/item.html?id=eed6dd1d26354b6f83235032b89ac576>"),
-                                  "url internal" = lang_list("<https://gisd.dfo-mpo.gc.ca/portal/home/item.html?id=eed6dd1d26354b6f83235032b89ac576>"), 
-                                  "accessedOnStr" = list("en" ="August 18, 2022", "fr" = "18 Aout 2022") ,
-                                  "accessDate" = as.Date("2022-08-18"),
-                                  "securityLevel" = internalUse,
-                                  "qualityTier" = highQuality,
-                                  "constraints" = internalUse,
-                                  "pipelinePath" = paste0(githubRepo, "reports/sections/asf/asf_preprocessing.R")
-                )
+                "metadata" = read_google_metadata("asf_rr")
 )
 save(asf_rr, file = file.path(localFileSavePath, "Secure/asf_rr.RData"))
