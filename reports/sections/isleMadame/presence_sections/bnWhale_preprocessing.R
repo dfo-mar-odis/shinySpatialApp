@@ -30,7 +30,7 @@ bnWhale_rr$data_sf <- sf::st_transform(bnWhale_sf, crs = 4326) %>%
   sf::st_crop(region_sf)
 
 bnWhale_rr$attribute <- "None"
-bnWhale_rr$metadata <- read_google_metadata("Many", pipelinePath = paste0(githubRepo, "reports/sections/isleMadame/presence_sections/bnWhale_preprocessing.R"))
+bnWhale_rr$metadata <- read_google_metadata("Many")
 bnWhale_rr$datasetName <- "Likelihood of Presence of Bottlenose Whales in Area Response Planning Pilot Areas"
 
 save(bnWhale_rr, file = file.path(localFileSavePath, "Open/bnWhale_rr.RData"))

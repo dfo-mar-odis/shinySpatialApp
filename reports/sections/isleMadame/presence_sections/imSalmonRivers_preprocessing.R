@@ -26,7 +26,6 @@ imSalmonRivers_rr$data_sf <- sf::st_transform(imSalmonRivers_sf, crs = 4326) %>%
 
 
 imSalmonRivers_rr$attribute <- "DU"
-pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/imSalmonRivers_preprocessing.R")
-imSalmonRivers_rr$metadata <- read_google_metadata("Many", pipelinePath = pipelinePath)
+imSalmonRivers_rr$metadata <- read_google_metadata("Many")
 imSalmonRivers_rr$datasetName <- "Salmon Rivers Presence in Area Response Planning Pilot Areas"
 save(imSalmonRivers_rr, file = file.path(localFileSavePath, "Open/imSalmonRivers_rr.RData"))

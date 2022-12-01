@@ -97,7 +97,7 @@ gbif_sf <- subset(gbif_sf, !(gbif_sf$`Scientific Name` %in% rr_otherSpecies$Scie
 gbif_rr <- list("title" = "Global Biodiversity Information Facility (GBIF)",
                 "data_sf" = gbif_sf,
                 "attribute" = "NONE",
-                "metadata" = read_google_metadata("gbif_rr", pipelinePath = paste0(githubRepo, "reports/sections/obis/gbif_preprocessing.R"))
+                "metadata" = read_google_metadata("gbif_rr")
 )
 save(gbif_rr, file = file.path(localFileSavePath, "Open/gbif_rr.RData"))
 

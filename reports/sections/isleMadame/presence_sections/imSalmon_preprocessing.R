@@ -31,7 +31,6 @@ imSalmon_rr$data_sf <- sf::st_transform(imSalmon_sf, crs = 4326) %>%
 
 
 imSalmon_rr$attribute <- "None"
-pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/imSalmon_preprocessing.R")
-imSalmon_rr$metadata <- read_google_metadata("Many", pipelinePath = pipelinePath)
+imSalmon_rr$metadata <- read_google_metadata("Many")
 imSalmon_rr$datasetName <- "Likelihood of Presence of Atlantic Salmon in Area Response Planning Pilot Areas"
 save(imSalmon_rr, file = file.path(localFileSavePath, "Open/imSalmon_rr.RData"))

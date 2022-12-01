@@ -123,7 +123,7 @@ intro_setup <- function(studyArea, env=globalenv()) {
 
 
 # ------------read_google_metadata----------------
-read_google_metadata <- function(rrID, pipelinePath=NULL, isOpenData=FALSE){
+read_google_metadata <- function(rrID, isOpenData=FALSE){
   rrBase <- rrID
   rrBaseName <-  substring(rrID, 1, nchar(rrID)-3) # remove _rr from name
   metadata_df <- googlesheets4::read_sheet(configMetadataSheetUrl)
@@ -135,9 +135,8 @@ read_google_metadata <- function(rrID, pipelinePath=NULL, isOpenData=FALSE){
                        "constraints" = lang_list(metadataRow$DataUseConstraints),
                        "securityLevel" = lang_list(metadataRow$SecurityLevel),
                        "qualityTier" =  lang_list(metadataRow$QualityTier),
-                       "pipelinePath" = ifelse(!is.null(pipelinePath), pipelinePath,
-                                               paste0(githubRepo, "reports/sections/",
-                                                      rrBaseName, "/", rrBaseName, "_preprocessing.R"))
+                       "reference" =  lang_list(metadataRow$referenceUrl),
+                       "pipelinePath" = metadataRow$pipelinePath
                        )
   
   # date nonesense:

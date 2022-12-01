@@ -33,6 +33,9 @@ editor_options:
 ```{r child = here::here("reports/sections/ocearch/ocearch_en.Rmd")}
 ```
 
+```{r child = here::here("reports/sections/electrofishing/ef_en.Rmd")}
+```
+
 ## **DATASETS INCLUDING CETACEAN SPECIES**
 
 Multiple sections in this report summarizes cetacean (whale and dolphins) information available from various DFO and non-DFO sources, including visual sightings, and modeled predictions. Outputs from each data source are described in subsections labelled according to the data source. While numerous cetacean species have been identified in this region, only those listed under SARA or assessed by COSEWIC are summarized in this module. The majority of cetacean sightings for the Scotian Shelf bioregion are opportunistic; comprehensive systematic surveys on the occurrence or distribution of cetaceans across the entire region are limited. Results in this report provide some information on distribution but should not be interpreted as comprehensive indices of population abundance or relative density or abundance within the study area, as the related effort does not cover the entirety of a species' range and is unequal in coverage across the study area. A future comprehensive analysis of any associated observational effort for these data is necessary to further characterize cetacean presence in the area over temporal and spatial scales. For surveys with either random placement of transects within the study area, or surveys with estimates of distance to sighting, density and distribution of species could be estimated (though such study results are not presented here). Consequently, outputs of this report include presence-only data, and we cannot say whether a lack of presence of a species relates to a real absence, a result of lack of effort, or because additional data sources were not reported for the area (e.g., sightings data from other sources, acoustic detections).

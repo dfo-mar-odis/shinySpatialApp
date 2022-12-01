@@ -68,7 +68,7 @@ ef_sf <- rbind(ef_sf, efSurvey_to_sf(efSurvey2018B_sf, efSpecList, region_sf))
 
 ef_rr <- list("title" = "Electrofishing Data","data_sf" = ef_sf,
               "attribute" = "Year",
-              "metadata" = read_google_metadata("ef_rr", pipelinePath = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R"))
+              "metadata" = read_google_metadata("ef_rr")
               
 )
 save(ef_rr, file = file.path(localFileSavePath, "Secure/ef_rr.RData"))
@@ -87,7 +87,7 @@ ws_sf <- dplyr::select(ws_sf, c("WS_NAME", "geometry"))
 ws_rr <- list("title" = "Watershed Boundries",
               "data_sf" = ws_sf,
               "attribute" = "NONE",
-              "metadata" = read_google_metadata("ws_rr", pipelinePath = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R"))
+              "metadata" = read_google_metadata("ws_rr")
               
 )
 save(ws_rr, file = file.path(localFileSavePath, "Open/rivers_rr.RData"))
@@ -105,7 +105,7 @@ rivers_sf <- sf::st_crop(rivers_sf, region_sf)
 rivers_rr <- list("title" = "Rivers",
               "data_sf" = rivers_sf,
               "attribute" = "NONE",
-              "metadata" = read_google_metadata("rivers_rr", pipelinePath = paste0(githubRepo, "reports/sections/electrofishing/ef_preprocessing.R"))
+              "metadata" = read_google_metadata("rivers_rr")
 )
 save(rivers_rr, file = file.path(localFileSavePath, "Open/rivers_rr.RData"))
 

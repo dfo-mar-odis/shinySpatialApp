@@ -40,7 +40,7 @@ isdbSpecies_df <- unique(sf::st_drop_geometry(dplyr::select(isdb_sf, "NAFO",
 isdb_rr <- list("title" = "Industry Survey Database (ISDB)",
                 "data_sf" = nafoGeoms_sf,
                 "attribute" = "NONE",
-                "metadata" = read_google_metadata("isdb_rr", pipelinePath = paste0(githubRepo, "reports/sections/isdb-marfis/isdbMarfis_preprocessing.R"))
+                "metadata" = read_google_metadata("isdb_rr")
 )
 save(isdb_rr, isdbSpecies_df, file = file.path(localFileSavePath, "Protected/isdb_rr.RData"))
 
@@ -80,7 +80,7 @@ marfisSpeceis_df <- unique(sf::st_drop_geometry(dplyr::select(marfis_sf, "NAFO",
 marfis_rr <- list("title" = "Maritime Fishery Information System (MARFIS)",
                   "data_sf" = nafoGeoms_sf,
                   "attribute" = "NONE",
-                  "metadata" = read_google_metadata("marfis_rr", pipelinePath = paste0(githubRepo, "reports/sections/isdb-marfis/isdbMarfis_preprocessing.R"))
+                  "metadata" = read_google_metadata("marfis_rr")
 )
 save(marfis_rr, marfisSpeceis_df, file = file.path(localFileSavePath, "Protected/marfis_rr.RData"))
 

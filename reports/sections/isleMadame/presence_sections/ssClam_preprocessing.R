@@ -30,7 +30,6 @@ ssClam_rr$data_sf <- sf::st_transform(ssClam_sf, crs = 4326) %>%
   sf::st_crop(region_sf)
 
 ssClam_rr$attribute <- "OVERALL_PRESENCE"
-pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/ssClam_preprocessing.R")
-ssClam_rr$metadata <- read_google_metadata("Many", pipelinePath = pipelinePath)
+ssClam_rr$metadata <- read_google_metadata("Many")
 ssClam_rr$datasetName <- "Likelihood of Presence of Soft Shelled Clams in Area Response Planning Pilot Areas"
 save(ssClam_rr, file = file.path(localFileSavePath, "Open/ssClam_rr.RData"))

@@ -33,6 +33,8 @@ La présente section décrit les résultats tirés des sources de données suiva
 ```{r child = here::here("reports/sections/obis/obis_fr.Rmd")}
 ```
 
+```{r child = here::here("reports/sections/electrofishing/ef_fr.Rmd")}
+```
 
 ## **CÉTACÉS**
 

@@ -31,7 +31,6 @@ tuna_rr$data_sf <- sf::st_transform(tuna_sf, crs = 4326) %>%
 
 
 tuna_rr$attribute <- "None"
-pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/tuna_preprocessing.R")
-tuna_rr$metadata <- read_google_metadata("Many", pipelinePath = pipelinePath)
+tuna_rr$metadata <- read_google_metadata("Many")
 tuna_rr$datasetName <- "Likelihood of Presence of Bluefin Tuna in Area Response Planning Pilot Areas"
 save(tuna_rr, file = file.path(localFileSavePath, "Open/tuna_rr.RData"))

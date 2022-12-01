@@ -31,7 +31,6 @@ imLobster_rr$data_sf <- sf::st_transform(imLobster_sf, crs = 4326) %>%
 
 
 imLobster_rr$attribute <- "None"
-pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/lobster_preprocessing.R")
-imLobster_rr$metadata <- read_google_metadata("Many", pipelinePath = pipelinePath)
+imLobster_rr$metadata <- read_google_metadata("Many")
 imLobster_rr$datasetName <- "Likelihood of Presence of American Lobster in Area Response Planning Pilot Areas"
 save(imLobster_rr, file = file.path(localFileSavePath, "Open/imLobster_rr.RData"))
