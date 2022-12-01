@@ -21,16 +21,6 @@ ocearch_sf <- sf::st_crop(ocearch_sf, region_sf)
 ocearch_rr <- list("title" = "OCEARCH Shark Tracker",
                    "data_sf" = ocearch_sf,
                    "attribute" = "NONE",
-                   "metadata" = list("contact" = paste("Bryan Franks (", email_format("bfranks@ju.edu"),  ") via Sean Butler (", email_format("sean.butler@dfo-mpo.gc.ca"), ")", sep=""), 
-                                     "url" = lang_list("<https://www.ocearch.org/tracker/>"),
-                                     "accessedOnStr" = list("en" ="July 22 2021 by Sean Butler", "fr" = "22 juillet 2021 par Sean Butler") ,
-                                     "accessDate" = as.Date("2021-07-22"),
-                                     "searchYears" = "2013-2020",
-                                     "securityLevel" = noneList,
-                                     "qualityTier" = highQuality,
-                                     "constraints" = internalUse,
-                                     "pipelinePath" = paste0(githubRepo, "reports/sections/ocearch/ocearch_preprocessing.R")
-                                     
-                   )
+                   "metadata" = read_google_metadata("ocearch_rr")
 )
 save(ocearch_rr, file = file.path(localFileSavePath, "Secure/ocearch_rr.RData"))

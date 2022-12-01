@@ -57,17 +57,7 @@ offshoreScallop_rr <- list(
   "title" = "Offshore Scallop Survey",
   "data_sf" = dat_sf,
   "attribute" = "NONE",
-  "metadata" = list("contact" = email_format("freya.keyser@dfo-mpo.gc.ca"), 
-                    "accessedOnStr" = list("en" ="May 4, 2022", 
-                                           "fr" = "4 Mai, 2022") ,
-                    "accessDate" = as.Date("2022-05-04"),
-                    "searchYears" = "1978-2021",
-                    "securityLevel" = protectedBList,
-                    "qualityTier" = highQuality,
-                    "constraints" = internalUse,
-                    "pipelinePath" = paste0(githubRepo, "reports/sections/offshore_scallop/offshore_scallop_preprocessing.R")
-                    
-                    )
+  "metadata" = read_google_metadata("offshoreScallop_rr")
   )
 save(offshoreScallop_rr, bankLabels, file = file.path(localFileSavePath, "Protected/offshoreScallop_rr.RData"))
 

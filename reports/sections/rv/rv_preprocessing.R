@@ -11,9 +11,7 @@ loadResult <- load_rdata(c("CommonData", "rv_rr"), regionStr)
 #----------------------RV SURVEY---------------------
 rvPkgId <- "8ddcaeea-b806-4958-a79f-ba9ab645f53b"
 
-rv_rr <- get_opendata_rr(rvPkgId, NULL, region_sf = region_sf)
-rv_rr$metadata$contact <- email_format("DFO.MAR-PED-Data-Request-Demande-de-donnes-DEP-MAR.MPO@dfo-mpo.gc.ca")
-rv_rr$metadata$qualityTier <- highQuality
+rv_rr <- get_opendata_rr(rvPkgId, region_sf = region_sf)
 
 rvCsvList <- c("GSCAT.csv", "GSINF.csv", "GSSPECIES.csv")
 # 4VSW
@@ -40,8 +38,8 @@ summer_sf$surveyType <- "Fall"
 rv_sf <- rbind(fourVSW_sf, spring_sf, summer_sf, fall_sf)
 rv_sf <- sf::st_crop(rv_sf, region_sf)
 rv_rr$data_sf <- rv_sf
-rv_rr$metadata$searchYears <- paste(rrMinYear, "-2022", sep="")
-rv_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/rv/rv_preprocessing.R")
+
+rv_rr$metadata <- read_google_metadata("rv_rr", isOpenData = TRUE)
 save(rv_rr, file = file.path(localFileSavePath, "Open/rv_rr.RData"))
 
 

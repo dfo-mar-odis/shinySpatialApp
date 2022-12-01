@@ -25,8 +25,6 @@ power_rr$data_sf <- sf::st_crop(power_sf, region_sf) %>%
 # already in 4326.
 
 power_rr$attribute <- "MEGAWATTS"
-power_rr$metadata$contact <- email_format("NRCan.geogratis-geogratis.RNCan@canada.ca")
-power_rr$metadata$searchYears <- "2016"
-power_rr$metadata$qualityTier <- mediumQuality
-power_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/power/power_preprocessing.R")
+power_rr$metadata <- read_google_metadata("power_rr", isOpenData = TRUE)
+
 save(power_rr, file = file.path(localFileSavePath, "Open/power_rr.RData"))

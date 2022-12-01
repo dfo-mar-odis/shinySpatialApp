@@ -74,19 +74,7 @@ obis_sf <- subset(obis_sf, !(obis_sf$`Scientific Name` %in% rr_otherSpecies$Scie
 obis_rr <- list("title" = "Ocean Biodiversity Information System (OBIS)",
                 "data_sf" = obis_sf,
                 "attribute" = "NONE",
-                "metadata" = list("contact" = email_format("helpdesk@obis.org"), 
-                                  "url" = lang_list("<https://obis.org/>"),
-                                  "accessedOnStr" = list("en" ="November 25 2022 using robis", 
-                                                        "fr" = "25 novembre 2022 par robis") ,
-                                  "accessDate" = as.Date("2022-11-25"),
-                                  "searchYears" = "2010-2022",
-                                  "securityLevel" = noneList,
-                                  "qualityTier" = variableQuality,
-                                  "constraints" = noneList,
-                                  "pipelinePath" = paste0(githubRepo, "reports/sections/obis/obis_preprocessing.R")
-                                  
-                                  
-                )
+                "metadata" = read_google_metadata("obis_rr")
 )
 save(obis_rr, file = file.path(localFileSavePath, "Open/obis_rr.RData"))
 

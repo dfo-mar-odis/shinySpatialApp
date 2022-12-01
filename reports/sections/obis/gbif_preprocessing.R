@@ -97,16 +97,7 @@ gbif_sf <- subset(gbif_sf, !(gbif_sf$`Scientific Name` %in% rr_otherSpecies$Scie
 gbif_rr <- list("title" = "Global Biodiversity Information Facility (GBIF)",
                 "data_sf" = gbif_sf,
                 "attribute" = "NONE",
-                "metadata" = list("contact" = email_format("info@gbif.org"), 
-                                   "url" = lang_list("<https://gbif.org/>"),
-                                   "accessedOnStr" = list("en" ="April 28 2022 using robis", 
-                                                          "fr" = "28 avril 2022 par robis") ,
-                                   "accessDate" = as.Date("2022-04-28"),
-                                   "searchYears" = "2010-2021",
-                                   "securityLevel" = noneList,
-                                   "qualityTier" = variableQuality,
-                                   "constraints" = noneList
-                                  )
+                "metadata" = read_google_metadata("gbif_rr", pipelinePath = paste0(githubRepo, "reports/sections/obis/gbif_preprocessing.R"))
 )
 save(gbif_rr, file = file.path(localFileSavePath, "Open/gbif_rr.RData"))
 

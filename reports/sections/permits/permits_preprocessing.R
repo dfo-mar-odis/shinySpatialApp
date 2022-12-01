@@ -72,16 +72,8 @@ names(permits_sf)[names(permits_sf) == 'scientificName'] <- 'Scientific Name'
 permits_rr = list("title" = "Section 73 Permits", 
                   "data_sf" = permits_sf,
                   "attribute" = "Legend",
-                  "metadata" = list("contact" = "<Sean.Butler@dfo-mpo.gc.ca>",
-                                  "url" = lang_list("<https://www.canada.ca/en/environment-climate-change/services/species-risk-public-registry/policies-guidelines/permitting-under-section-73.html>"),
-                                  "accessedOnStr" = list("en" ="April 26, 2022 by Charlotte Smith", "fr" = "26 avril 2022 par Charlotte Smith") ,
-                                  "accessDate" = as.Date("2022-04-26"),
-                                  "searchYears" = paste(rrMinYear, "-2020", sep=""),
-                                  "securityLevel" = internalUse,
-                                  "qualityTier" = mediumQuality,
-                                  "constraints" = internalUse,
-                                  "pipelinePath" = paste0(githubRepo, "reports/sections/permits/permits_preprocessing.R")
-                  ))
+                  "metadata" = read_google_metadata("permits_rr")
+                  )
 
 # Save the data. Do this locally and on the IN folder
 save(permits_rr, file = file.path(localFileSavePath, "Secure/permits_rr.RData"))

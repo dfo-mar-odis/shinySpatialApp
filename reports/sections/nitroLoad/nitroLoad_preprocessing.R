@@ -34,17 +34,10 @@ deltaNitroLoad_rr$data_sf <- sf::st_make_valid(delta_sf)
 
 
 totalNitroLoad_rr$attribute <- "Total_Nitrogen_Load"
-totalNitroLoad_rr$metadata$contact <- email_format("Noreen.Kelly\\@dfo-mpo.gc.ca")
-totalNitroLoad_rr$metadata$qualityTier <- mediumQuality
-totalNitroLoad_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/nitroLoad/nitroLoad_preprocessing.R")
-totalNitroLoad_rr$metadata$searchYears <- "2000-2020?"
-
+totalNitroLoad_rr$metadata <- read_google_metadata("nitroLoad_rr", isOpenData = TRUE)
 
 deltaNitroLoad_rr$attribute <- "Mean_DeltaN"
-deltaNitroLoad_rr$metadata$contact <- email_format("Noreen.Kelly\\@dfo-mpo.gc.ca")
-deltaNitroLoad_rr$metadata$qualityTier <- mediumQuality
-totalNitroLoad_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/nitroLoad/nitroLoad_preprocessing.R")
-totalNitroLoad_rr$metadata$searchYears <- "2000-2020?"
+deltaNitroLoad_rr$metadata <-  read_google_metadata("nitroLoad_rr", isOpenData = TRUE)
 
 save(totalNitroLoad_rr, deltaNitroLoad_rr, file = file.path(localFileSavePath, "Open/nitroLoad_rr.RData"))
 
