@@ -10,26 +10,30 @@ loadResult <- load_rdata(c("CommonData", "finWhale_rr", "seiWhale_rr",
 sdmPkgId <- "c094782e-0d6f-4cc0-b5a3-58908493a433"
 sdmResId <- "16df15fb-367c-46e3-8ab7-be25315b9fbd"
 
-save_open_data(sdmPkgId, sdmResId, "finWhale_rr", mediumQuality, localFileSavePath,
-               contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Fin_Whale.tif", searchYears="1975-2015",
-               reference = lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>"),
-               pipelinePath = paste0(githubRepo, "reports/sections/sdm/sdm_preprocessing.R"))
+finWhale_rr <-get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
+                              tifFile = "Fin_Whale.tif")
+finWhale_rr$metadata <- read_google_metadata("finWhale_rr", isOpenData = TRUE,
+                                             pipelinePath = paste0(githubRepo, "reports/sections/sdm/sdm_preprocessing.R"))
+save(finWhale_rr, file = file.path(localFileSavePath, "Open/finWhale_rr.RData"))
 
-save_open_data(sdmPkgId, sdmResId, "seiWhale_rr", mediumQuality, localFileSavePath,
-               contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Sei_Whale.tif", searchYears="1975-2015",
-               reference = lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>"),
-               pipelinePath = paste0(githubRepo, "reports/sections/sdm/sdm_preprocessing.R"))
 
-save_open_data(sdmPkgId, sdmResId, "humpbackWhale_rr", mediumQuality, localFileSavePath,
-               contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Humpback_Whale.tif", searchYears="1975-2015",
-               reference = lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>"),
-               pipelinePath = paste0(githubRepo, "reports/sections/sdm/sdm_preprocessing.R"))
+seiWhale_rr <-get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
+                              tifFile = "Sei_Whale.tif")
+seiWhale_rr$metadata <- read_google_metadata("seiWhale_rr", isOpenData = TRUE,
+                                             pipelinePath = paste0(githubRepo, "reports/sections/sdm/sdm_preprocessing.R"))
+save(seiWhale_rr, file = file.path(localFileSavePath, "Open/seiWhale_rr.RData"))
 
-save_open_data(sdmPkgId, sdmResId, "harbourPorpoise_rr", mediumQuality, localFileSavePath,
-               contactEmail = email_format("Hilary.Moors-Murphy\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, tifFile = "Harbour_Porpoise.tif", searchYears="1975-2015",
-               reference = lang_list("<https://waves-vagues.dfo-mpo.gc.ca/Library/40869155.pdf>"),
-               pipelinePath = paste0(githubRepo, "reports/sections/sdm/sdm_preprocessing.R"))
+
+humpbackWhale_rr <-get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
+                              tifFile = "Humpback_Whale.tif")
+humpbackWhale_rr$metadata <- read_google_metadata("humpbackWhale_rr", isOpenData = TRUE,
+                                             pipelinePath = paste0(githubRepo, "reports/sections/sdm/sdm_preprocessing.R"))
+save(humpbackWhale_rr, file = file.path(localFileSavePath, "Open/humpbackWhale_rr.RData"))
+
+
+harbourPorpoise_rr <-get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
+                              tifFile = "Harbour_Porpoise.tif")
+harbourPorpoise_rr$metadata <- read_google_metadata("harbourPorpoise_rr", isOpenData = TRUE,
+                                             pipelinePath = paste0(githubRepo, "reports/sections/sdm/sdm_preprocessing.R"))
+save(harbourPorpoise_rr, file = file.path(localFileSavePath, "Open/harbourPorpoise_rr.RData"))
+

@@ -67,14 +67,7 @@ sf::st_crs(sarsearch_sf) <- 4326
 sarsearch_rr <- list("title" = "DMapps SAR Search Database",
                      "data_sf" = sarsearch_sf,
                      "attributee" = "species_name",
-              "metadata" = list("contact" = email_format("Donald.Pirie-Hay@dfo-mpo.gc.ca"), 
-                                "accessedOnStr" = list("en" ="August 18, 2022", "fr" = "18 Aout, 2022") ,
-                                "accessDate" = as.Date("2022-08-18"),
-                                "searchYears" = "1874-2020",
-                                "securityLevel" = noneList,
-                                "qualityTier" = mediumQuality,
-                                "constraints" = internalUse
-              )
+              "metadata" = read_google_metadata("sarsearch_rr")
               
 )
 save(sarsearch_rr, file = file.path(localFileSavePath, "Secure/sarsearch_rr.RData"))

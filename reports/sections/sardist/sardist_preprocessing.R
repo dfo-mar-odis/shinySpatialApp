@@ -18,10 +18,6 @@ filter_and_union <- function(sciName, sfObj) {
 sardistPkgId <- "e0fabad5-9379-4077-87b9-5705f28c490b"
 sardist_rr <- get_opendata_rr(sardistPkgId)
 
-sardist_rr$metadata$qualityTier <- highQuality
-sardist_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/sardist/sardist_preprocessing.R")
-sardist_rr$metadata$contact <- email_format("info\\@dfo-mpo.gc.ca")
-
 # sara crs: 3857
 # get crs with: esri2sf(url, where="OBJECTID<10", progress=TRUE)
 
@@ -56,81 +52,7 @@ dplyr::left_join(sardist_sf, nationalList, by=c("Common Name"="Common.Name", "Po
 
 # save the data
 sardist_rr$data_sf <- sardist_sf
+sardist_rr$metadata <- read_google_metadata("sardist_rr")
+
 save(sardist_rr, file = file.path(localFileSavePath, "Open/sardist_rr.RData"))
-
-
-
-# ------------------GEODATABASE VERSION------------------------
-sf::sf_use_s2(FALSE) # because sf 1.0 is "broken" does not support treating spheres as flat
-
-library(arcgisbinding)
-arc.check_product() # you must have access to an ESRI arc license. Yuck :(
-
-# sanity check the bridge:
-filename <- system.file("extdata", "ca_ozone_pts.shp",
-                        package = "arcgisbinding")
-d <- arc.open(filename)
-cat('all fields:', names(d@fields), fill = TRUE) # print all fields
-
-
-get_sde_sf <- function(sdeLayerPath, whereClause = "OBJECTID > 0", isGeo=TRUE, cropRegion=FALSE) {
-  sdeDataset <- arc.open(sdeLayerPath)
-  sdeSelected <- arc.select(object = sdeDataset, where_clause = whereClause)
-  if (isGeo) {
-    outData <- arc.data2sf(sdeSelected) %>%
-      sf::st_transform(sardists_sf, crs=4326) %>% 
-      sf::st_make_valid()
-    if (cropRegion) {
-      outData <- sf::st_crop(outData, cropRegion)
-    }
-  } else {
-    outData <- sdeSelected
-  }
-  return(outData)
-}
-
-somePath <- "C:\\Users\\stoyelq\\Desktop\\Work\\Reproducible_reports\\sara_database\\WEB.DFO_Regions"
-arc.open(somePath)
-
-
-sde_file <- system.file("C:/Users/stoyelq/Desktop/Work/Reproducible_reports/sara_database/VIEWER_SARA.sde/WEB.DFO_Regions",
-                        package="arcgisbinding")
-dataSDE <- arc.open(sde_file)
-
-regionsPath <- here::here("../../sara_database/VIEWER_SARA.sde/WEB.DFO_Regions")
-arc.open(regionsPath)
-
-regions_sf <- get_sde_sf(regionsPath)
-
-plot(dplyr::filter(regions_sf, DFO_REGION=="Maritimes")$geom)
-
-
-crithabPath <- here::here("../../sara_database/VIEWER_SARA.sde/WEB.DFO_SARA_CritHab_Py")
-draftCrithab_sf <- get_sde_sf(crithabPath, whereClause="CHSTATUS_E != 'Final'")
-
-
-sardistPath <- here::here("../../sara_database/VIEWER_SARA.sde/WEB.DFO_SARA_Dist_Py")
-sardistDataset <- arc.open(sardistPath)
-
-sardists <- arc.select(object = sardistDataset, where_clause = "OBJECTID > 0")
-sardists_sf <- arc.data2sf(sardists)
-sardists_sf <- sf::st_transform(sardists_sf, crs=4326) %>% sf::st_make_valid()
-finalCrithabs_sf <- sf::st_crop(crithabs_sf, region_sf)
-
-
-crithabs_sf <- sf::st_transform(crithabs_sf, crs=4326) %>% sf::st_make_valid()
-finalCrithabs_sf <- sf::st_crop(crithabs_sf, region_sf)
-
-specList <- here::here("../../sara_database/VIEWER_SARA.sde/WEB.DFO_SARA_NationalList")
-specListDataset <- arc.open(specList)
-
-specLists <- arc.select(object = specListDataset, where_clause = "OBJECTID > 0")
-crithabsOut <- left_join(finalCrithabs_sf, specLists, by="SPECIES_ID")
-draftCH_sf <- dplyr::select(crithabsOut, c("CHSTATUS_E", "WATERBODY", "COMMON_E", 
-                                           "POP_E", "SCIENTIFIC", "LEAD_REG_E", 
-                                           "PROFILE_E"))
-# esri mucks up your working dir too, joy!
-setwd(here::here())
-
-
 

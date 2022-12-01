@@ -11,7 +11,7 @@ loadResult <- load_rdata(c("CommonData", "rv_rr"), regionStr)
 #----------------------RV SURVEY---------------------
 rvPkgId <- "8ddcaeea-b806-4958-a79f-ba9ab645f53b"
 
-rv_rr <- get_opendata_rr(rvPkgId, region_sf = region_sf)
+rv_rr <- get_opendata_rr(rvPkgId)
 
 rvCsvList <- c("GSCAT.csv", "GSINF.csv", "GSSPECIES.csv")
 # 4VSW

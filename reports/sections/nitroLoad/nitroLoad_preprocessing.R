@@ -22,13 +22,11 @@ totalUrl <- paste0(esriBase, "1")
 
 nitroCheckDate <- get_check_date("nitroLoad_rr")
 
-totalNitroLoad_rr <- get_opendata_rr(nitroPkgId, region_sf = region_sf,
-                               checkDate = nitroCheckDate)
+totalNitroLoad_rr <- get_opendata_rr(nitroPkgId)
 total_sf <- esri2sf::esri2sf(totalUrl, progress=TRUE)
 totalNitroLoad_rr$data_sf <- sf::st_make_valid(total_sf)
 
-deltaNitroLoad_rr <- get_opendata_rr(nitroPkgId, region_sf = region_sf,
-                               checkDate = nitroCheckDate)
+deltaNitroLoad_rr <- get_opendata_rr(nitroPkgId)
 delta_sf  <- esri2sf::esri2sf(deltaUrl, progress=TRUE)
 deltaNitroLoad_rr$data_sf <- sf::st_make_valid(delta_sf)
 

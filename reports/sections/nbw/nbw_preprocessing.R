@@ -10,7 +10,7 @@ loadResult <- load_rdata(c("CommonData", "nbw_rr"), regionStr)
 # -----------NBW-------------- 
 nbwPkgId <- "9fd7d004-970c-11eb-a2f3-1860247f53e3"
 
-nbw_rr <- get_opendata_rr(nbwPkgId, region_sf = region_sf)
+nbw_rr <- get_opendata_rr(nbwPkgId)
 
 esriBase <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Northern_Bottlenose_Whale_Important_Habitat_Eastern_Scotian_Shelf/MapServer/"
 esriUrl <- paste0(esriBase, "0")

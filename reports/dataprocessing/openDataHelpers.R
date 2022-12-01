@@ -203,39 +203,6 @@ email_format <- function(emailStr) {
 }
 
 
-# --------------save_open_data-----------------
-# Wrapper function to peform all the steps required to save an open data object.
-save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
-                           disableCheckDate = TRUE, contactEmail = NULL, searchYears=NULL,
-                           reference = NULL, pipelinePath = NULL, ...) {
-  dataSaved <- FALSE
-  fnCheckDate <- NULL
-  if (!disableCheckDate){
-    fnCheckDate <-  get_check_date(variableName)  
-  }
-  temp_rr <- get_opendata_rr(pkgId, resId, checkDate = fnCheckDate, ...)
-  if(!is.null(temp_rr)) {
-    if (!is.null(contactEmail)){
-      temp_rr$metadata$contact = contactEmail
-    }
-    if (!is.null(reference)){
-      temp_rr$metadata$reference = reference
-    }
-    if (!is.null(searchYears)){
-      temp_rr$metadata$searchYears = searchYears
-    }
-    if (!is.null(pipelinePath)){
-      temp_rr$metadata$pipelinePath = pipelinePath
-    }
-    temp_rr$metadata$qualityTier <- qualityTier
-    assign(variableName, temp_rr)
-    save(list = variableName, file = file.path(savePath, paste("Open/", variableName, ".RData", sep="")))
-    dataSaved <- TRUE
-  }
-  return(dataSaved)
-}
-
-
 # --------------RV_to_sf-----------------
 # Converts the three types of RV data files into a single coherent sf object.
 RV_to_sf <- function(gscat, gsinf, gsspec, minYear){

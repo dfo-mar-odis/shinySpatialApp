@@ -7,7 +7,7 @@ loadResult <- load_rdata(c("CommonData", "pasBay_rr"), regionStr)
 #----------------------Passamaquoddy Bay Biodiversity Trawls---------------------
 pasBayPkgId <- "2dfa19db-a8cf-4460-97b9-710c2b856276"
 
-pasBay_rr <- get_opendata_rr(pasBayPkgId, region_sf = region_sf)
+pasBay_rr <- get_opendata_rr(pasBayPkgId)
 
 catchDataResId <- "9ee042ea-ab9b-4af8-8cf5-de9c89a77a95"
 catchData <- download_extract_res_files(catchDataResId)

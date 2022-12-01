@@ -17,7 +17,7 @@ pkgId <- "e606ad01-843f-4730-93fa-f944dfbbbf07"
 resId <- "5355ea5b-ea37-4a4b-8f61-9d6b716b7d17"
 
 # get open data metadata
-whelk_rr <- get_opendata_rr(pkgId, NULL)
+whelk_rr <- get_opendata_rr(pkgId)
 whelk_rr$metadata$contact <- whelk_rr$metadata$contact$fr
 benthicEffort_rr$metadata$pipelinePath = paste0(githubRepo, "reports/sections/whelk/whelk_preprocessing.R")
 

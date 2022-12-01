@@ -24,13 +24,6 @@ mudPidData_sf <- sf::st_crop(mudPidData_sf, region_sf)
 sturg_rr <- list("title" = "Atlantic Sturgeon Foraging Areas in the Upper Bay of Fundy ",
                  "data_sf" = sturgData_sf,
                  "attribute" = "NONE",
-                 "metadata" = list("contact" = paste("Brent Law (", email_format("Brent.Law@dfo-mpo.gc.ca"), ")", sep =), 
-                                   "accessedOnStr" = list("en" ="September 21, 2021", "fr" = "21 septembre 2021") ,
-                                   "accessDate" = as.Date("2021-09-21"),
-                                   "securityLevel" = noneList,
-                                   "qualityTier" = highQuality,
-                                   "constraints" = internalUse,
-                                   "pipelinePath" = paste0(githubRepo, "reports/sections/sturg/sturg_preprocessing.R")
-                 )
+                 "metadata" = read_google_metadata("sturg_rr")
 )
 save(sturg_rr, file = file.path(localFileSavePath, "Secure/sturg_rr.RData"))
