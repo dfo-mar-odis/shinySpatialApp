@@ -31,8 +31,7 @@ greySeal_rr$data_sf <- sf::st_transform(greySeal_sf, crs = 4326) %>%
 
 
 greySeal_rr$attribute <- "None"
-greySeal_rr$metadata$qualityTier <- mediumQuality
-greySeal_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/greySeal_preprocessing.R")
-greySeal_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
+pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/greySeal_preprocessing.R")
+greySeal_rr$metadata <- read_google_metadata("Many", pipelinePath = pipelinePath)
 greySeal_rr$datasetName <- "Likelihood of Presence of Grey Seal in Area Response Planning Pilot Areas"
 save(greySeal_rr, file = file.path(localFileSavePath, "Open/greySeal_rr.RData"))

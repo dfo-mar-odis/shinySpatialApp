@@ -22,15 +22,6 @@ narwc_sf <- sf::st_crop(narwc_sf, region_sf)
 narwc_rr <- list("title" = "North Atlantic Right Whale consortium",
                  "data_sf" = narwc_sf,
                  "attribute" = "Legend",
-                 "metadata" = list("contact" = "<hpettis@neaq.org>", 
-                                   "url" = lang_list("<https://www.narwc.org/sightings-database.html>"),
-                                   "accessedOnStr" = list("en" ="February 23 2022", "fr" = "23 février 2022") ,
-                                   "accessDate" = as.Date("2022-02-23"),
-                                   "searchYears" = paste(rrMinYear, "-2019", sep=""),
-                                   "securityLevel" = noneList,
-                                   "qualityTier" = highQuality,
-                                   "constraints" = internalUse,
-                                   "pipelinePath" = paste0(githubRepo, "reports/sections/narwc/narwc_preprocessing.R")
-                 )
+                 "metadata" = read_google_metadata("narwc_rr")
 )
 save(narwc_rr, file = file.path(localFileSavePath, "Secure/narwc_rr.RData"))

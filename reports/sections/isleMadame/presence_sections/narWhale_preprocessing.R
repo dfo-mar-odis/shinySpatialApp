@@ -31,8 +31,7 @@ narWhale_rr$data_sf <- sf::st_transform(narWhale_sf, crs = 4326) %>%
 
 
 narWhale_rr$attribute <- "None"
-narWhale_rr$metadata$qualityTier <- mediumQuality
-narWhale_rr$metadata$pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/narWhale_preprocessing.R")
-narWhale_rr$metadata$constraints <- list("en" = "For environmental response use only", "fr" = "For environmental response use only")
+pipelinePath <- paste0(githubRepo, "reports/sections/isleMadame/presence_sections/narWhale_preprocessing.R")
+narWhale_rr$metadata <- read_google_metadata("Many", pipelinePath = pipelinePath)
 narWhale_rr$datasetName <- "Likelihood of Presence of North Atlantic Right Whales in Area Response Planning Pilot Areas"
 save(narWhale_rr, file = file.path(localFileSavePath, "Open/narWhale_rr.RData"))
