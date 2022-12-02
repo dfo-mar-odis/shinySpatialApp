@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "greySeal_rr"), regionStr)
 
-# ---------------------Bluefin Tuna Presence-----------------------------------
+print("---------------------Bluefin Tuna Presence-----------------------------------")
 pkgId <- "e73c90ff-0ab6-4257-8d6d-3dfc46fc0dc5"
 greySeal_rr <- get_opendata_rr(pkgId)
 

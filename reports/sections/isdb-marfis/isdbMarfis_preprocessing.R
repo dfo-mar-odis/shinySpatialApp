@@ -7,7 +7,7 @@ source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "isdb_rr", "marfis_rr"), regionStr)
 
-################ EGIS Version ########################
+print("------------------ISDB-MARFIS-----------------")
 if (globalControlEnv$updateGeoms) {
     
   # This url is the mapserver url where the data is stored:

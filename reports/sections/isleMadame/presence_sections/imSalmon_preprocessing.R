@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "imSalmon_rr"), regionStr)
 
-# --------------------- Presence-----------------------------------
+print("--------------------- imSalmon Presence-----------------------------------")
 pkgId <- "436cdf90-9d6b-4784-938b-feec48844a67"
 imSalmon_rr <- get_opendata_rr(pkgId)
 

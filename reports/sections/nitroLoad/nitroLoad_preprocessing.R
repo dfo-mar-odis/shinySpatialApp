@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "nitroLoad_rr"), regionStr)
 
-# ----------------Nitro----------------- 
+print("----------------Nitro----------------- ")
 if (globalControlEnv$updateGeoms) {
     
   nitroPkgId <- "08746031-1970-4bf6-b6d4-3de2715c8634"
@@ -20,7 +20,6 @@ if (globalControlEnv$updateGeoms) {
   esriBase <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Anthropogenic_Nitrogen_Eutrophication_Bay_of_Fundy_Scotian_Shelf_En/MapServer/"
   deltaUrl <- paste0(esriBase, "0")
   totalUrl <- paste0(esriBase, "1")
-  
   
   nitroCheckDate <- get_check_date("nitroLoad_rr")
   

@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "ssClam_rr"), regionStr)
 
-# ---------------------Clam Presence-----------------------------------
+print("---------------------Clam Presence-----------------------------------")
 pkgId <- "59121e8f-0acc-411a-99cb-54980df10ba6"
 ssClam_rr <- get_opendata_rr(pkgId)
 

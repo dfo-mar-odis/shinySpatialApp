@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "harbourSeal_rr"), regionStr)
 
-# ---------------------Presence-----------------------------------
+print("---------------------Harbour Seal-----------------------------------"
 pkgId <- "5bbc1575-4267-44fa-ae35-ee08cc2af8fb"
 harbourSeal_rr <- get_opendata_rr(pkgId)
 

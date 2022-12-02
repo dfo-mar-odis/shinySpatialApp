@@ -5,7 +5,7 @@ source(here::here("config.R"))
 loadResult <- load_rdata(c("CommonData", "benthicEffort_rr"), regionStr)
 
 
-# -----------Benthic Fishing Effort--------------
+print("----------Benthic Fishing Effort--------------")
 if (globalControlEnv$updateGeoms) {
     
   benthicEffortPkgId <- "273df20a-47ae-42c0-bc58-01e451d4897a"

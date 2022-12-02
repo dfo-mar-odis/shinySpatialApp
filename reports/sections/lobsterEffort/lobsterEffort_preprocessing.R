@@ -11,7 +11,7 @@ library(httr)
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "lobsterEffort_rr"), regionStr)
 
-# ---------------------TEMPLATE-----------------------------------
+print("---------------------LobsterEffort-----------------------------------")
 if (globalControlEnv$updateGeoms) {
     
   lobsterEffortPkgId <- "64f741d7-1129-49dd-9e5c-2b1de79024f0"

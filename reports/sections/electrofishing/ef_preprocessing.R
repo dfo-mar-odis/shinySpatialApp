@@ -9,7 +9,7 @@ source(here::here("config.R"))
 loadResult <- load_rdata(c("CommonData", "ef_rr", "ws_rr", "rivers_rr"), regionStr)
 
 
-# ---------------------ELECTROFISHING-----------------------------------
+print(" ---------------------ELECTROFISHING-----------------------------------")
 if (globalControlEnv$updateGeoms) {
     
   # Electrofishing

@@ -8,7 +8,7 @@ remoteFileSavePath <- file.path("//ent.dfo-mpo.ca","ATLShares", "Science", "BIOD
 # Dir where the local RData files are stored
 localFileSavePath <- here::here("app/data", regionStr)
 
-get_file_save_path(getRemotePath=FALSE){
+get_file_save_path <- function(getRemotePath=FALSE){
   if (getRemotePath) {
     return(remoteFileSavePath)
   } else {

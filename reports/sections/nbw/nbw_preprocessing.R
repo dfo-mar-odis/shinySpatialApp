@@ -7,7 +7,7 @@ source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "nbw_rr"), regionStr)
 
-# -----------NBW-------------- 
+print("-----------NBW-------------- ")
 if (globalControlEnv$updateGeoms) {
   nbwPkgId <- "9fd7d004-970c-11eb-a2f3-1860247f53e3"
 

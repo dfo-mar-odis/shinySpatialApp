@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "fbWhale_rr"), regionStr)
 
-# ---------------------Fin Whale Presence-----------------------------------
+print("---------------------Fin Whale Presence-----------------------------------")
 pkgId <- "7e2f85b3-19eb-4ecf-8557-69c8df1bc084"
 fbWhale_rr <- get_opendata_rr(pkgId)
 

@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "snowCrab_rr"), regionStr)
 
-# ---------------------Bluefin Tuna Presence-----------------------------------
+print("---------------------Snow Crab Presence-----------------------------------")
 pkgId <- "edb15c7b-d901-46b0-a460-1aca22c013ea"
 snowCrab_rr <- get_opendata_rr(pkgId)
 

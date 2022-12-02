@@ -8,15 +8,20 @@ source(here::here("config.R"))
 loadResult <- load_rdata(c("CommonData", "ocearch_rr"), regionStr)
 
 
-# --------------------OCEARCH---------------------
+print(" --------------------OCEARCH---------------------")
 # LOAD OCEARCH DATA #############
-ocearchDatafile <- file.path(fileLoadPath, "NaturalResources/Species/Sharks/OCEARCH/OCEARCH_08-27-2021.csv")
-lines <- readLines(ocearchDatafile)
-lines <- gsub('(^"|"$)', "", lines)
-ocearch <- read.csv(textConnection(lines), quote = '""')
-ocearch <- dplyr::select(ocearch, c("Date", "long", "lat", "ID"))
-ocearch_sf <- sf::st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
-ocearch_sf <- sf::st_crop(ocearch_sf, region_sf)
+if (globalControlEnv$updateGeoms) {
+  
+  ocearchDatafile <- file.path(fileLoadPath, "NaturalResources/Species/Sharks/OCEARCH/OCEARCH_08-27-2021.csv")
+  lines <- readLines(ocearchDatafile)
+  lines <- gsub('(^"|"$)', "", lines)
+  ocearch <- read.csv(textConnection(lines), quote = '""')
+  ocearch <- dplyr::select(ocearch, c("Date", "long", "lat", "ID"))
+  ocearch_sf <- sf::st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
+  ocearch_sf <- sf::st_crop(ocearch_sf, region_sf)
+} else {
+  ocearch_sf <- ocearch_rrr$data_sf
+}
 
 ocearch_rr <- list("title" = "OCEARCH Shark Tracker",
                    "data_sf" = ocearch_sf,

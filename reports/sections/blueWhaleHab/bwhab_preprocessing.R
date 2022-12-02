@@ -5,7 +5,7 @@ source(here::here("config.R"))
 loadResult <- load_rdata(c("CommonData", "blueWhaleHab_rr"), regionStr)
 
 
-# -------------------BWHAB-------------------
+print(" -------------------BWHAB-------------------")
 if (globalControlEnv$updateGeoms) {
   blueWhaleHabPkgId <- "8fafd919-fcbe-43a3-a911-3d9461273441"
   blueWhaleHab_rr <- get_opendata_rr(blueWhaleHabPkgId)

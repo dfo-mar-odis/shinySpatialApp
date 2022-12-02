@@ -7,7 +7,7 @@ source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "conservationSites_rr"), regionStr)
 
-# -------------Marine Protected Areas (mpa)---------------------
+print(" -------------Marine Protected Areas (mpa)--------------------- ")
 if (globalControlEnv$updateGeoms) {
     
   conservationSites_raw <- sf::st_read(file.path(fileLoadPath, "Management/MPAN-Draft/MPAN_DraftDesign_Maritimes/MPAN_DraftDesign_Maritimes.shp"), stringsAsFactors = FALSE)

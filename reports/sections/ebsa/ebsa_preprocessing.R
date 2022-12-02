@@ -7,7 +7,7 @@ source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "ebsa_rr"), regionStr)
 
-# ----------------EBSA----------------- 
+print("----------------EBSA----------------- ")
 if (globalControlEnv$updateGeoms) {
     
   ebsaPkgId <- "d2d6057f-d7c4-45d9-9fd9-0a58370577e0"

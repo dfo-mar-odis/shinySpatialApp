@@ -4,11 +4,8 @@ source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "asf_rr"), regionStr)
 
-
+print("#------------------ASF--------------------")
 if (globalControlEnv$updateGeoms) {
-  
-  #------------------WSDB--------------------
-  # Whale Sightings Database (wsdb)
   # Accessing API needs 2 parts: 1. the authentication token, and 2. the url to query.
   # There are 3-4 useful links/endpoints to make this happen.
   # This url is the mapserver url where the data is stored:
