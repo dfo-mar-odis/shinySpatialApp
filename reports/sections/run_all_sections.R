@@ -60,6 +60,7 @@ inDriveSecs <- c(here::here("reports/sections/commonSections/commonData_preproce
 
 allSecs <- c(openDataSecs, egisSecs, apiSecs, inDriveSecs)
 
+# create global env:
 source(here::here("config.R"))
 globalControlEnv$saveToRemote <- FALSE
 globalControlEnv$updateGeoms <- FALSE

@@ -34,7 +34,9 @@ rr_openDataList <- data.frame("rrStr" = c("ebsa_rr",
 configMetadataSheetUrl <- "1lEhBikDNAec-X88q1C02Aw6lOP8gKOkUlDurMznOAOI"
 githubRepo <- "https://github.com/dfo-mar-odis/shinySpatialApp/tree/main/"
 
-
-globalControlEnv <- new.env()
-globalControlEnv$saveToRemote <- FALSE
-globalControlEnv$updateGeoms <- TRUE
+# only create env if it doesn't already exists.
+if (!exists("globalControlEnv", mode="environment")){
+  globalControlEnv <- new.env()
+  globalControlEnv$saveToRemote <- FALSE
+  globalControlEnv$updateGeoms <- TRUE
+}
