@@ -8,6 +8,14 @@ remoteFileSavePath <- file.path("//ent.dfo-mpo.ca","ATLShares", "Science", "BIOD
 # Dir where the local RData files are stored
 localFileSavePath <- here::here("app/data", regionStr)
 
+get_file_save_path(getRemotePath=FALSE){
+  if (getRemotePath) {
+    return(remoteFileSavePath)
+  } else {
+    return(localFileSavePath)
+  }
+}
+
 # Dir where the raw data files are stored
 fileLoadPath <- file.path("//ent.dfo-mpo.ca","ATLShares", "Science", "BIODataSvc", 
                           "IN", "MSP", "Data")
@@ -25,3 +33,8 @@ rr_openDataList <- data.frame("rrStr" = c("ebsa_rr",
 
 configMetadataSheetUrl <- "1lEhBikDNAec-X88q1C02Aw6lOP8gKOkUlDurMznOAOI"
 githubRepo <- "https://github.com/dfo-mar-odis/shinySpatialApp/tree/main/"
+
+
+globalControlEnv <- new.env()
+globalControlEnv$saveToRemote <- FALSE
+globalControlEnv$updateGeoms <- TRUE

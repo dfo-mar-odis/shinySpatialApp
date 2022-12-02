@@ -99,6 +99,6 @@ gbif_rr <- list("title" = "Global Biodiversity Information Facility (GBIF)",
                 "attribute" = "NONE",
                 "metadata" = read_google_metadata("gbif_rr")
 )
-save(gbif_rr, file = file.path(localFileSavePath, "Open/gbif_rr.RData"))
+save(gbif_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/gbif_rr.RData"))
 
 # Still need to Remove cetaceans that are >300m from shore (not for machine observation records)

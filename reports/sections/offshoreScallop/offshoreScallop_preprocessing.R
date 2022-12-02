@@ -59,5 +59,5 @@ offshoreScallop_rr <- list(
   "attribute" = "NONE",
   "metadata" = read_google_metadata("offshoreScallop_rr")
   )
-save(offshoreScallop_rr, bankLabels, file = file.path(localFileSavePath, "Protected/offshoreScallop_rr.RData"))
+save(offshoreScallop_rr, bankLabels, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Protected/offshoreScallop_rr.RData"))
 

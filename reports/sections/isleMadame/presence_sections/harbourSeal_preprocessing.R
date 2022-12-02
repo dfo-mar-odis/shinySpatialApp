@@ -33,4 +33,4 @@ harbourSeal_rr$data_sf <- sf::st_transform(harbourSeal_sf, crs = 4326) %>%
 harbourSeal_rr$attribute <- "None"
 harbourSeal_rr$metadata <- read_google_metadata("Many")
 harbourSeal_rr$datasetName <- "Likelihood of Presence of Harbour Seal in Area Response Planning Pilot Areas"
-save(harbourSeal_rr, file = file.path(localFileSavePath, "Open/harbourSeal_rr.RData"))
+save(harbourSeal_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/harbourSeal_rr.RData"))

@@ -30,5 +30,5 @@ opprrpe_rr$data_sf <- sf::st_transform(opprrpe_sf, crs = 4326) %>%
 opprrpe_rr$attribute <- "Response Area"
 opprrpe_rr$metadata <- read_google_metadata("opprrpe_rr", isOpenData = TRUE)
 
-save(opprrpe_rr, file = file.path(localFileSavePath, "Open/opprrpe_rr.RData"))
+save(opprrpe_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/opprrpe_rr.RData"))
 

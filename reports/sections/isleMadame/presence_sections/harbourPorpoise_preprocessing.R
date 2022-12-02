@@ -33,4 +33,4 @@ harbourPorpoise_rr$data_sf <- sf::st_transform(harbourPorpoise_sf, crs = 4326) %
 harbourPorpoise_rr$attribute <- "None"
 harbourPorpoise_rr$metadata <- read_google_metadata("Many")
 harbourPorpoise_rr$datasetName <- "Likelihood of Presence of Harbour Porpoise in Area Response Planning Pilot Areas"
-save(harbourPorpoise_rr, file = file.path(localFileSavePath, "Open/harbourPorpoise_rr.RData"))
+save(harbourPorpoise_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/harbourPorpoise_rr.RData"))

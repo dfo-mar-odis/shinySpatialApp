@@ -23,4 +23,4 @@ ocearch_rr <- list("title" = "OCEARCH Shark Tracker",
                    "attribute" = "NONE",
                    "metadata" = read_google_metadata("ocearch_rr")
 )
-save(ocearch_rr, file = file.path(localFileSavePath, "Secure/ocearch_rr.RData"))
+save(ocearch_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Secure/ocearch_rr.RData"))

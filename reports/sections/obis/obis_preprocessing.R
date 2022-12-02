@@ -76,5 +76,5 @@ obis_rr <- list("title" = "Ocean Biodiversity Information System (OBIS)",
                 "attribute" = "NONE",
                 "metadata" = read_google_metadata("obis_rr")
 )
-save(obis_rr, file = file.path(localFileSavePath, "Open/obis_rr.RData"))
+save(obis_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/obis_rr.RData"))
 

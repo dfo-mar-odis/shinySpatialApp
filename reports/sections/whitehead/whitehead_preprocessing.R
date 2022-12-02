@@ -2,8 +2,6 @@ source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
 
 source(here::here("config.R"))
-fileSavePath <- here::here("app/data/MAR")
-
 
 loadResult <- load_rdata(c("CommonData", "whitehead_rr"), regionStr)
 
@@ -34,4 +32,4 @@ whitehead_rr <- list("title" = "Whitehead lab (Dalhousie University)",
                                        "pipelinePath" = paste0(githubRepo, "reports/sections/whitehead/whitehead_preprocessing.R")
                      )
 )
-save(whitehead_rr, file = file.path(fileSavePath, "Secure/whitehead_rr.RData"))
+save(whitehead_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Secure/whitehead_rr.RData"))

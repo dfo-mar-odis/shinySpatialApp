@@ -27,4 +27,4 @@ power_rr$data_sf <- sf::st_crop(power_sf, region_sf) %>%
 power_rr$attribute <- "MEGAWATTS"
 power_rr$metadata <- read_google_metadata("power_rr", isOpenData = TRUE)
 
-save(power_rr, file = file.path(localFileSavePath, "Open/power_rr.RData"))
+save(power_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/power_rr.RData"))

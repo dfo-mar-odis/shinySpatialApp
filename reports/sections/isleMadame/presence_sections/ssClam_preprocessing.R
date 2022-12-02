@@ -32,4 +32,4 @@ ssClam_rr$data_sf <- sf::st_transform(ssClam_sf, crs = 4326) %>%
 ssClam_rr$attribute <- "OVERALL_PRESENCE"
 ssClam_rr$metadata <- read_google_metadata("Many")
 ssClam_rr$datasetName <- "Likelihood of Presence of Soft Shelled Clams in Area Response Planning Pilot Areas"
-save(ssClam_rr, file = file.path(localFileSavePath, "Open/ssClam_rr.RData"))
+save(ssClam_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/ssClam_rr.RData"))

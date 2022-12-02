@@ -34,4 +34,4 @@ snowCrab_rr$data_sf <- sf::st_transform(snowCrab_sf, crs = 4326) %>%
 snowCrab_rr$attribute <- "Overall Presence"
 snowCrab_rr$metadata <- read_google_metadata("Many")
 snowCrab_rr$datasetName <- "Likelihood of Presence of Snow Crab in Area Response Planning Pilot Areas"
-save(snowCrab_rr, file = file.path(localFileSavePath, "Open/snowCrab_rr.RData"))
+save(snowCrab_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/snowCrab_rr.RData"))

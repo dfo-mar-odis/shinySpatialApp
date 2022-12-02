@@ -33,4 +33,4 @@ greySeal_rr$data_sf <- sf::st_transform(greySeal_sf, crs = 4326) %>%
 greySeal_rr$attribute <- "None"
 greySeal_rr$metadata <- read_google_metadata("Many")
 greySeal_rr$datasetName <- "Likelihood of Presence of Grey Seal in Area Response Planning Pilot Areas"
-save(greySeal_rr, file = file.path(localFileSavePath, "Open/greySeal_rr.RData"))
+save(greySeal_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/greySeal_rr.RData"))

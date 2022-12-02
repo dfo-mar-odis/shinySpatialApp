@@ -18,7 +18,7 @@ crithab_rr <- get_opendata_rr(crithabPkgId, crithabResId,
 
 crithab_rr$metadata <- read_google_metadata("crithab_rr", isOpenData = TRUE)
 crithab_rr$attribute <- "Common_Name_EN"
-save(crithab_rr, file = file.path(localFileSavePath, "Open/crithab_rr.RData"))
+save(crithab_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/crithab_rr.RData"))
 
 
 
@@ -35,7 +35,7 @@ leatherback_rr <- list("title" = " Leatherback Sea Turtle draft critical habitat
                        "attribute" = "NONE",
                        "metadata" = read_google_metadata("leatherback_rr")
 )
-save(leatherback_rr, file = file.path(localFileSavePath, "Secure/leatherback_rr.RData"))
+save(leatherback_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Secure/leatherback_rr.RData"))
 
 # -------------CRITHAB from SDE--------------
 library(sf)
@@ -78,7 +78,7 @@ crithab_rr$data_sf <- crithab_sf
 crithab_rr$attribute <- "Common_Name_EN"
 crithab_rr$metadata <- read_google_metadata("crithab_rr")
 
-save(crithab_rr, file = file.path(localFileSavePath, "Open/crithab_rr.RData"))
+save(crithab_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/crithab_rr.RData"))
 
 
 

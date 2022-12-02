@@ -33,4 +33,4 @@ narWhale_rr$data_sf <- sf::st_transform(narWhale_sf, crs = 4326) %>%
 narWhale_rr$attribute <- "None"
 narWhale_rr$metadata <- read_google_metadata("Many")
 narWhale_rr$datasetName <- "Likelihood of Presence of North Atlantic Right Whales in Area Response Planning Pilot Areas"
-save(narWhale_rr, file = file.path(localFileSavePath, "Open/narWhale_rr.RData"))
+save(narWhale_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/narWhale_rr.RData"))

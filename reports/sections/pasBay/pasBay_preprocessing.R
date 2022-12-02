@@ -34,5 +34,5 @@ pasBay_rr$data_sf <- pasBay_sf
 
 pasBay_rr$metadata <- read_google_metadata("pasBay_rr", isOpenData = TRUE)
 
-save(pasBay_rr, file = file.path(localFileSavePath, "Open/pasBay_rr.RData"))
+save(pasBay_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/pasBay_rr.RData"))
 

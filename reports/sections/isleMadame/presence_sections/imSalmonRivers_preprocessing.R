@@ -28,4 +28,4 @@ imSalmonRivers_rr$data_sf <- sf::st_transform(imSalmonRivers_sf, crs = 4326) %>%
 imSalmonRivers_rr$attribute <- "DU"
 imSalmonRivers_rr$metadata <- read_google_metadata("Many")
 imSalmonRivers_rr$datasetName <- "Salmon Rivers Presence in Area Response Planning Pilot Areas"
-save(imSalmonRivers_rr, file = file.path(localFileSavePath, "Open/imSalmonRivers_rr.RData"))
+save(imSalmonRivers_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/imSalmonRivers_rr.RData"))

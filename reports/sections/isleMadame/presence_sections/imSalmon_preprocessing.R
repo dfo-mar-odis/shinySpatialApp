@@ -33,4 +33,4 @@ imSalmon_rr$data_sf <- sf::st_transform(imSalmon_sf, crs = 4326) %>%
 imSalmon_rr$attribute <- "None"
 imSalmon_rr$metadata <- read_google_metadata("Many")
 imSalmon_rr$datasetName <- "Likelihood of Presence of Atlantic Salmon in Area Response Planning Pilot Areas"
-save(imSalmon_rr, file = file.path(localFileSavePath, "Open/imSalmon_rr.RData"))
+save(imSalmon_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/imSalmon_rr.RData"))

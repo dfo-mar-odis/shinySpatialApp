@@ -33,4 +33,4 @@ bnWhale_rr$attribute <- "None"
 bnWhale_rr$metadata <- read_google_metadata("Many")
 bnWhale_rr$datasetName <- "Likelihood of Presence of Bottlenose Whales in Area Response Planning Pilot Areas"
 
-save(bnWhale_rr, file = file.path(localFileSavePath, "Open/bnWhale_rr.RData"))
+save(bnWhale_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/bnWhale_rr.RData"))

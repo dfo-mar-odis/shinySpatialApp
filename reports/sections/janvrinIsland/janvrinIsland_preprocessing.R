@@ -36,5 +36,5 @@ janvrinIsland_rr <- list("title" = "Janvrin Island Eelgrass Presence/Absence",
                     )
                     
 )
-save(janvrinIsland_rr, file = file.path(localFileSavePath, "Open/janvrinIsland_rr.RData"))
+save(janvrinIsland_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/janvrinIsland_rr.RData"))
 

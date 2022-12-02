@@ -33,4 +33,4 @@ imLobster_rr$data_sf <- sf::st_transform(imLobster_sf, crs = 4326) %>%
 imLobster_rr$attribute <- "None"
 imLobster_rr$metadata <- read_google_metadata("Many")
 imLobster_rr$datasetName <- "Likelihood of Presence of American Lobster in Area Response Planning Pilot Areas"
-save(imLobster_rr, file = file.path(localFileSavePath, "Open/imLobster_rr.RData"))
+save(imLobster_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/imLobster_rr.RData"))

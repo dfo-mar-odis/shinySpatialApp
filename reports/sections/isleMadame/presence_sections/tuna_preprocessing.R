@@ -33,4 +33,4 @@ tuna_rr$data_sf <- sf::st_transform(tuna_sf, crs = 4326) %>%
 tuna_rr$attribute <- "None"
 tuna_rr$metadata <- read_google_metadata("Many")
 tuna_rr$datasetName <- "Likelihood of Presence of Bluefin Tuna in Area Response Planning Pilot Areas"
-save(tuna_rr, file = file.path(localFileSavePath, "Open/tuna_rr.RData"))
+save(tuna_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/tuna_rr.RData"))

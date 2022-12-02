@@ -27,5 +27,5 @@ rockweed_rr <- list("title" = "Satellite-based Maps of Intertidal Vegetation and
                     "attribute" = "status",
                     "metadata" = read_google_metadata("rockweed_rr")
 )
-save(rockweed_rr, file = file.path(localFileSavePath, "Open/rockweed_rr.RData"))
+save(rockweed_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/rockweed_rr.RData"))
 

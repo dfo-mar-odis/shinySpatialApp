@@ -58,4 +58,4 @@ rr_otherSpecies <- data.frame("Common_Name" = c("LOGGERHEAD SEA TURTLE", "ATLANT
                                               "Dermochelys coriacea",
                                               "Caretta caretta"))
 
-save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, rr_otherSpecies, file = file.path(localFileSavePath, "CommonData.RData"))
+save(region_sf, land10m_sf, land50k_sf, bounds_sf, listed_species, cetLegend, rr_otherSpecies, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "CommonData.RData"))

@@ -76,4 +76,4 @@ permits_rr = list("title" = "Section 73 Permits",
                   )
 
 # Save the data. Do this locally and on the IN folder
-save(permits_rr, file = file.path(localFileSavePath, "Secure/permits_rr.RData"))
+save(permits_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Secure/permits_rr.RData"))

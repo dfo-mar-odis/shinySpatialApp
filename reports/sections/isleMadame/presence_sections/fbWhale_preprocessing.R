@@ -35,4 +35,4 @@ fbWhale_rr$attribute <- "None"
 fbWhale_rr$metadata <- read_google_metadata("Many")
 
 fbWhale_rr$datasetName <- "Likelihood of Presence of Finback Whales in Area Response Planning Pilot Areas"
-save(fbWhale_rr, file = file.path(localFileSavePath, "Open/fbWhale_rr.RData"))
+save(fbWhale_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/fbWhale_rr.RData"))
