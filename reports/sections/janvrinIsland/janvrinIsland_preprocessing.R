@@ -11,16 +11,19 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "janvrinIsland_rr"), regionStr)
 
-# ---------------------Javrin Island Eelgrass-----------------------------------
-
-esriUrl <- "https://gisd.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Netforce/MapServer/"
-janvrinIsland_sf <- esri2sf::esri2sf(paste0(esriUrl, "1"), progress = TRUE)
-janvrinIsland_sf$`Eelgrass Observation` <- janvrinIsland_sf$Eelgrass_Observation
-
-janvrinIsland_sf <- sf::st_transform(janvrinIsland_sf, crs = 4326) %>%
-  sf::st_make_valid() %>%
-  sf::st_crop(region_sf)
-
+print("---------------------Javrin Island Eelgrass-----------------------------------")
+if (globalControlEnv$updateGeoms) {
+    
+  esriUrl <- "https://gisd.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Netforce/MapServer/"
+  janvrinIsland_sf <- esri2sf::esri2sf(paste0(esriUrl, "1"), progress = TRUE)
+  janvrinIsland_sf$`Eelgrass Observation` <- janvrinIsland_sf$Eelgrass_Observation
+  
+  janvrinIsland_sf <- sf::st_transform(janvrinIsland_sf, crs = 4326) %>%
+    sf::st_make_valid() %>%
+    sf::st_crop(region_sf)
+} else {
+  janvrinIsland_sf <- janvrinIsland_rr$data_sf
+}
 janvrinIsland_rr <- list("title" = "Janvrin Island Eelgrass Presence/Absence",
                          "data_sf" = janvrinIsland_sf,
                          "datasetName" = "Janvrin Island eelgrass",
