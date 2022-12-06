@@ -4,7 +4,6 @@ source(here::here("reports/R/dataFunctions.R"))
 source(here::here("config.R"))
 
 
-
 loadResult <- load_rdata(c("CommonData", "ebsa_rr"), regionStr)
 
 print("----------------EBSA----------------- ")
