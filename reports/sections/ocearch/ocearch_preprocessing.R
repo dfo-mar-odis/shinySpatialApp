@@ -20,7 +20,7 @@ if (globalControlEnv$updateGeoms) {
   ocearch_sf <- sf::st_as_sf(ocearch, coords = c("long", "lat"), crs = 4326)
   ocearch_sf <- sf::st_crop(ocearch_sf, region_sf)
 } else {
-  ocearch_sf <- ocearch_rrr$data_sf
+  ocearch_sf <- ocearch_rr$data_sf
 }
 
 ocearch_rr <- list("title" = "OCEARCH Shark Tracker",

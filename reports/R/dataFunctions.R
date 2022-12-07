@@ -123,19 +123,18 @@ intro_setup <- function(studyArea, env=globalenv()) {
 
 
 # ------------read_google_metadata----------------
-read_google_metadata <- function(rrID, isOpenData=FALSE){
-  rrBase <- rrID
-  rrBaseName <-  substring(rrID, 1, nchar(rrID)-3) # remove _rr from name
+read_google_metadata <- function(rrId, isOpenData=FALSE){
   metadata_df <- googlesheets4::read_sheet(configMetadataSheetUrl)
-  metadataRow <- head(dplyr::filter(metadata_df, DatasetName==rrID), 1)
+  metadataRow <- head(dplyr::filter(metadata_df, DatasetName==rrId), 1)
   metadataList <- list("contact" = lang_list(metadataRow$Contact),
-                       "url" = lang_list(metadataRow$URL),
+                       "url" = lang_list(ifelse(!is.na(metadataRow$URL), metadataRow$URL, NA)),
                        "searchYears"= ifelse(!is.null(metadataRow$SearchYear[[1]]),
-                                              metadataRow$SearchYear, ""),
+                                              metadataRow$SearchYear, NA),
                        "constraints" = lang_list(metadataRow$DataUseConstraints),
                        "securityLevel" = lang_list(metadataRow$SecurityLevel),
                        "qualityTier" =  lang_list(metadataRow$QualityTier),
-                       "reference" =  lang_list(metadataRow$referenceUrl),
+                       "reference" =  lang_list(ifelse(!is.na(metadataRow$referenceUrl),
+                                             metadataRow$referenceUrl, NA)),
                        "pipelinePath" = metadataRow$pipelinePath
                        )
   

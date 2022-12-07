@@ -18,13 +18,13 @@ openDataSecs <- c(here::here("reports/sections/benthicEffort/benthicEffort_prepr
                   here::here("reports/sections/docks/docks_preprocessing.R"),
                   here::here("reports/sections/ebsa/ebsa_preprocessing.R"),
                   here::here("reports/sections/imAcoustic/imAcoustic_preprocessing.R"),
-                    #here::here("reports/sections/janvrinIsland/janvrinIsland_preprocessing.R"),
+                   #here::here("reports/sections/janvrinIsland/janvrinIsland_preprocessing.R"),
                   here::here("reports/sections/lobsterEffort/lobsterEffort_preprocessing.R"),
                   here::here("reports/sections/nbw/nbw_preprocessing.R"),
                   here::here("reports/sections/nitroLoad/nitroLoad_preprocessing.R"),
                   here::here("reports/sections/opprrpe/opprrpe_preprocessing.R"),
                   here::here("reports/sections/pasBay/pasBay_preprocessing.R"),
-                  #here::here("reports/sections/power/power_preprocessing.R"),
+                  here::here("reports/sections/power/power_preprocessing.R"),
                   here::here("reports/sections/rv/rv_preprocessing.R"),
                   here::here("reports/sections/sdm/sdm_preprocessing.R"),
                   here::here("reports/sections/waste/waste_preprocessing.R"),
@@ -35,8 +35,8 @@ openDataSecs <- c(here::here("reports/sections/benthicEffort/benthicEffort_prepr
 egisSecs <- c(here::here("reports/sections/asf/asf_preprocessing.R"),
               here::here("reports/sections/isdb-marfis/isdbMarfis_preprocessing.R"),
               here::here("reports/sections/permits/permits_preprocessing.R"),
-              here::here("reports/sections/rockweed/rockweed_preprocessing.R"),
-              here::here("reports/sections/wsdb/wsdb_preprocessing.R")
+              here::here("reports/sections/rockweed/rockweed_preprocessing.R")
+              #here::here("reports/sections/wsdb/wsdb_preprocessing.R")
               )
 
 apiSecs <- c( here::here("reports/sections/obis/obis_preprocessing.R"),
@@ -75,12 +75,11 @@ source_preprocessing_script <- function(scriptPath) {
 # create global env:
 source(here::here("config.R"))
 globalControlEnv$saveToRemote <- FALSE
-globalControlEnv$updateGeoms <- TRUE
+globalControlEnv$updateGeoms <- FALSE
+allSecs <- c(openDataSecs, egisSecs, apiSecs, inDriveSecs)
 
 if (FALSE) {
   # need utf-8 for accents
-  allSecs <- c(openDataSecs, egisSecs, apiSecs, inDriveSecs)
-  
   lapply(egisSecs, source_preprocessing_script)
   lapply(apiSecs, source_preprocessing_script)
   lapply(inDriveSecs, source_preprocessing_script)  
