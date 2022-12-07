@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 ### Action:
-Clone the shiny app and install all the dependencies.  Here's the loose help guide I made for this: https://086gc-my.sharepoint.com/:w:/g/personal/quentin_stoyel_dfo-mpo_gc_ca/ETa4YB3BEDVJrDT4BScj80oBJgF1I-kHe8bLTJbqyb2qDQ?e=llP8nM 
+Clone the shiny app and install all the dependencies.  Here's the loose help guide I made for this: https://github.com/dfo-mar-odis/shinySpatialApp/wiki/Cloning-the-Repository-Instructions
 
 ### Context:
 It's good to install everything at once and R is a little tricky for dependencies.  
