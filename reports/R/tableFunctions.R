@@ -548,3 +548,31 @@ add_row_to_intro_summary <- function(introSummary, name, result) {
   return(introSummary)
   
 }
+
+# ---------OECM_report-------
+# Generates table for Other Effective Area Based Conservation Measures data
+# Inputs:
+# OECM_sf: OECM data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+# Directly writes table
+#
+OECM_report <- function(OECM_sf, lang="EN") {
+  OECMTable <- NULL
+  if (lang=="EN" & !is.null(OECM_sf)) {
+    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(Report, Report_URL,
+                                                               Name, Bioregion)))
+    OECMTable <- unique(OECMTable)
+    row.names(OECMTable) <- NULL
+    names(OECMTable) <- c("Report", "Report URL", "Location", "Bioregion")
+  } else if (lang=="FR" & !is.null(OECM_sf)) {
+    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(Rapport, RapportURL,
+                                                               Nom, Bioregion)))
+    OECMTable <- unique(OECMTable)
+    names(OECMTable) <- c("Report", "Report URL", "Location", "Bioregion")
+    row.names(OECMTable) <- NULL
+    
+  }
+  return(OECMTable)
+}
