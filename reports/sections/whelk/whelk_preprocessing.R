@@ -16,7 +16,6 @@ if (globalControlEnv$updateGeoms) {
 
 # Open Data dataset
 whelkpkgId <- "e606ad01-843f-4730-93fa-f944dfbbbf07"
-resId <- "5355ea5b-ea37-4a4b-8f61-9d6b716b7d17"
 
 # get open data metadata
 whelk_rr <- get_opendata_rr(whelkpkgId)
