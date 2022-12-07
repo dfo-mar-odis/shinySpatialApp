@@ -10,7 +10,7 @@ loadResult <- load_rdata(c("CommonData", "whitehead_rr"), regionStr)
 whitehead <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/Cetaceans/Whitehead_Lab/whitehead_lab.csv"), stringsAsFactors = FALSE)
 whitehead$YEAR <- lubridate::year(whitehead$Date)
 whitehead <- whitehead %>% dplyr::filter(YEAR >= rrMinYear)
-whitehead <- whitehead %>% rename("Scientific Name"= species.name)
+whitehead <- whitehead %>% dplyr::rename("Scientific Name"= species.name)
 whitehead <- merge(whitehead, cetLegend, by='Scientific Name')
 whitehead <- dplyr::select(whitehead, 'Scientific Name', YEAR, Legend, Lat, Long)
 # correct the longitude values to be negative
