@@ -26,4 +26,4 @@ oecm_rr$metadata <- read_google_metadata("oecm_rr", isOpenData = TRUE)
 
 save(oecm_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/oecm_rr.RData"))
 
-save(oecm_rr, file = file.path(localFileSavePath, "Open/oecm_rr.RData"))
+
