@@ -1,10 +1,6 @@
 source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
 source(here::here("config.R"))
-library(plyr)
-library(tibble)
-library(stringr)
-library(dplyr)
 
 loadResult = load_rdata(c("CommonData", "permits_rr"), regionStr)
 
@@ -25,7 +21,7 @@ if (globalControlEnv$updateGeoms) {
   perm_df <- sf::st_drop_geometry(rawPermits) 
   
   # Get scientific name. The name will be listed within brackets
-  species_brackets = str_extract_all(perm_df$Species, "\\([^()]+\\)")
+  species_brackets = stringr::str_extract_all(perm_df$Species, "\\([^()]+\\)")
   
   # Remove the brackets and add this as a new column to the perm_df data frame
   perm_df$scientificName = substring(species_brackets, 2, nchar(species_brackets)-1)
@@ -52,7 +48,7 @@ if (globalControlEnv$updateGeoms) {
   perm_df["scientificName"][perm_df["scientificName"] == "Phocoena phocoena vomerina"] = "Phocoena phocoena"
   
   # Then combine with the MAR species spreadsheet to get other relevant info based on a common field
-  comboPermits = full_join(perm_df, listed_species, by=c("scientificName" = "Scientific Name"))
+  comboPermits = dplyr::full_join(perm_df, listed_species, by=c("scientificName" = "Scientific Name"))
   # Remove species information that got added from the full_join above. These are species not observed in Charlotte's spreadsheet
   # Species not in Charlotte's spreadsheet will have NA values in a variety of fields.
   comboPermits = subset(comboPermits, 

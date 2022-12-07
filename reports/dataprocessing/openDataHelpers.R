@@ -207,16 +207,16 @@ email_format <- function(emailStr) {
 # Converts the three types of RV data files into a single coherent sf object.
 RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
   gscat <- gscat %>% tidyr::unite("MISSION_SET", MISSION:SETNO, remove = TRUE)
-  gscat <- gscat %>% rename(CODE = SPEC)
+  gscat <- gscat %>% dplyr::rename(CODE = SPEC)
   
   gsinf <- gsinf %>% tidyr::unite("MISSION_SET", MISSION:SETNO, remove = FALSE)
   gsinf$YEAR <- lubridate::year(gsinf$SDATE)
   gsinf <- gsinf %>% dplyr::filter(YEAR >= minYear)
   
   gsspec <- dplyr::distinct(gsspec)
-  gsspec <- gsspec %>% transmute(gsspec, SPEC = stringr::str_to_sentence(SPEC))
-  gsspec <- gsspec %>% transmute(gsspec, COMM = stringr::str_to_sentence(COMM))
-  gsspec <- gsspec %>% rename("Common Name"= COMM, "Scientific Name" = SPEC)
+  gsspec <- gsspec %>% dplyr::transmute(gsspec, SPEC = stringr::str_to_sentence(SPEC))
+  gsspec <- gsspec %>% dplyr::transmute(gsspec, COMM = stringr::str_to_sentence(COMM))
+  gsspec <- gsspec %>% dplyr::rename("Common Name"= COMM, "Scientific Name" = SPEC)
   
   out_sf <- st_as_sf(gsinf, coords = c("SLONG", "SLAT"), crs = 4326)
   
