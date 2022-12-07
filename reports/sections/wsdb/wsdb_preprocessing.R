@@ -4,7 +4,9 @@ source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "wsdb_rr"), regionStr)
 
-#------------------WSDB--------------------
+print("------------------WSDB-------------------- ")
+if (globalControlEnv$updateGeoms) {
+
 # Whale Sightings Database (wsdb)
 
 # Accessing API needs 2 parts: 1. the authentication token, and 2. the url to query.
@@ -34,19 +36,10 @@ wsdb_sf <- merge(wsdb_sf, cetLegend, by='Scientific Name')
 wsdb_sf <- dplyr::select(wsdb_sf, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
 wsdb_sf <- sf::st_crop(wsdb_sf, region_sf)
 
-wsdb_rr <- list("title" = "Whale Sightings Database",
-                "data_sf" = wsdb_sf,
-                "attribute" = "Legend",
-                "metadata" = list("contact" = "<XMARWhaleSightings@dfo-mpo.gc.ca>", 
-                                  "url" = lang_list("<http://www.inter.dfo-mpo.gc.ca/Maritimes/SABS/popec/sara/Database>"),
-                                  "url internal" = lang_list("<https://gisd.dfo-mpo.gc.ca/portal/home/webmap/viewer.html?webmap=7b4dd9e932864700a2f44ed70cc75b40&extent=-82.7098,36.4078,-30.8983,53.5042>"), 
-                                  "accessedOnStr" = list("en" ="April 7, 2021 by Amanda Babin", "fr" = "7 avril 2021 par Amanda Babin") ,
-                                  "accessDate" = as.Date("2021-04-07"),
-                                  "searchYears" = paste(rrMinYear, "-2020", sep=""),
-                                  "securityLevel" = noneList,
-                                  "qualityTier" = lowQuality,
-                                  "constraints" = internalUse,
-                                  "pipelinePath" = paste0(githubRepo, "reports/sections/wsdb/wsdb_preprocessing.R")
-                )
-)
-save(wsdb_rr, file = file.path(localFileSavePath, "Secure/wsdb_rr.RData"))
+}
+
+wsdb_rr$metadata <- read_google_metadata("wsdb_rr", isOpenData = FALSE)
+wsdb_rr$metadata$urlInternal <- "https://gisd.dfo-mpo.gc.ca/portal/home/webmap/viewer.html?webmap=7b4dd9e932864700a2f44ed70cc75b40&extent=-82.7098,36.4078,-30.8983,53.5042"
+
+save(wsdb_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Secure/wsdb_rr.RData"))
+
