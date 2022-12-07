@@ -2,7 +2,7 @@
 name: RRRequests
 about: Record report generation.
 title: 'RRRequests: Area + Topic'
-labels: ''
+labels: Training
 assignees: ''
 
 ---
