@@ -12,6 +12,8 @@ source(here::here("config.R"))
 loadResult <- load_rdata(c("CommonData", "tuna_rr"), regionStr)
 
 print("---------------------Bluefin Tuna Presence-----------------------------------")
+if (globalControlEnv$updateGeoms) {
+  
 pkgId <- "0c3b25df-f831-43e8-a8ac-336e1467c4fe"
 tuna_rr <- get_opendata_rr(pkgId)
 
@@ -23,12 +25,10 @@ tuna_sf <- dplyr::select(tuna_sf, c("OVERALL_PRESENCE", "LIFE_STAGE", "RELATIVE_
                                     "NOV", "DEC"))
 tuna_sf$OVERALL_PRESENCE[tuna_sf$OVERALL_PRESENCE == "see monthly presence"] <- "Verify with original record"
 
-
-
 tuna_rr$data_sf <- sf::st_transform(tuna_sf, crs = 4326) %>%
   sf::st_make_valid() %>%
   sf::st_crop(region_sf)
-
+}
 
 tuna_rr$attribute <- "None"
 tuna_rr$metadata <- read_google_metadata("Many")

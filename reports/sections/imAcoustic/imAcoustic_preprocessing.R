@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "imAcoustic_rr"), regionStr)
 
-# ---------------------A Novel Video and Acoustic Survey of the Seaweeds of Isle Madame-----------------------------------
+print(" ------------Acoustic Survey of Isle Madame-----------------------")
 if (globalControlEnv$updateGeoms) {
   
 pkgId <- "ebdd8f91-9131-45f0-8aec-aba9f65e3fae"

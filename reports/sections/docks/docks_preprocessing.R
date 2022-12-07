@@ -10,7 +10,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "docks_rr"), regionStr)
 
-# ---------------------TEMPLATE-----------------------------------
+print(" ---------------------Docks-------------------------")
 if (globalControlEnv$updateGeoms) {
   
   docksPkgId <- "30449352-2556-42df-9ffe-47ea8e696f91"

@@ -11,7 +11,7 @@ source(here::here("config.R"))
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "opprrpe_rr"), regionStr)
 
-print("---------------------TEMPLATE-----------------------------------")
+print("---------------------OPPRRPE-----------------------------------")
 
 if (globalControlEnv$updateGeoms) {
   pkgId <- "f32ce23d-4a16-4eaa-9648-2f02a98b91af"

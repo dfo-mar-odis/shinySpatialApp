@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # contains functions for downloading open data records
 source(here::here("reports/dataprocessing/openDataHelpers.R"))
 
@@ -5,7 +6,13 @@ source(here::here("reports/dataprocessing/openDataHelpers.R"))
 source(here::here("reports/R/dataFunctions.R"))
 
 #contains config parameters and paths
+=======
+source(here::here("reports/dataprocessing/openDataHelpers.R"))
+source(here::here("reports/R/dataFunctions.R"))
+
+>>>>>>> 55bb2c7263f3d4d9159c3493f026a945dcb6f28a
 source(here::here("config.R"))
+
 
 
 # load in rr objects, CommonData contains data such as land borders, etc.

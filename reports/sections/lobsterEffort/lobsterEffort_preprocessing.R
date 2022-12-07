@@ -1,12 +1,7 @@
-# contains functions for downloading open data records
-source(here::here("dataprocessing/openDataHelpers.R"))
+source(here::here("reports/dataprocessing/openDataHelpers.R"))
+source(here::here("reports/R/dataFunctions.R"))
 
-#contains load_rdata function
-source(here::here("app/R/dataFunctions.R"))
-
-#contains config parameters and paths
 source(here::here("config.R"))
-library(httr)
 
 # load in rr objects, CommonData contains data such as land borders, etc.
 loadResult <- load_rdata(c("CommonData", "lobsterEffort_rr"), regionStr)
@@ -18,9 +13,11 @@ if (globalControlEnv$updateGeoms) {
   
   lobsterEffort_rr <- get_opendata_rr(lobsterEffortPkgId)
   
-  url <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Maritimes_Inshore_Lobster_Landings_Effort_2012_2014_EN/MapServer"
-  lobsterEffort_sf <- get_esri_rest(url, layer="1")
-  lobsterEffort_rr$data_sf <- sf::st_make_valid(lobsterEffort_sf)
+  esriBase <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Maritimes_Inshore_Lobster_Landings_Effort_2012_2014_EN/MapServer/"
+  esriUrl <- paste0(esriBase, "1")
+  regionBbox <- sf::st_bbox(sf::st_transform(region_sf, 2961))
+  data_sf <- esri2sf::esri2sf(esriUrl, bbox=regionBbox, progress = TRUE)
+  lobsterEffort_rr$data_sf <- sf::st_make_valid(data_sf)
   # already in 4326 and cropped.
 }
 
