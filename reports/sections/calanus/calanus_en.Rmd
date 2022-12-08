@@ -5,7 +5,7 @@ output:
     theme: paper
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
-```{r ebsa-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```{r calanus-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
 ``` 
 
 ```{r eval=FALSE}
@@ -16,59 +16,63 @@ if (FALSE) { #load in data:
 }
 ```
 
-### **Ecologically and Biologically Significant Areas (EBSAs)** {#ebsa-section}   
+### **Calanus spp. size and lipid content metrics in North Atlantic, 1977-2019** {#calanus-section}   
 
-```{r EBSA-load, include=FALSE}
-load_rdata(c("ebsa_rr"), regionStr, env = environment())
+```{r calanus-load, include=FALSE}
+load_rdata(c("calanus_rr"), regionStr, env = environment())
 ```
 
-```{r EBSA-meta, results='asis'}
-write_meta(ebsa_rr, "EN")
-```
-A Story Map summarizing work that has been done to identify EBSAs in the Maritimes Region is available here: https://gisp.dfo-mpo.gc.ca/portal/apps/MapJournal/index.html?appid=b91f85de60f44a7b90633e4b43e3916a
-
-Dataset description from the Open Data record [@OpenData_ebsa]:
-```{r EBSA-text, results='asis'}
-writeLines(noquote(ebsa_rr$text$en))
-
+```{r calanus-meta, results='asis'}
+write_meta(calanus_rr, "EN")
 ```
 
-##### *Area-Specific EBSA Search Results*
+Dataset description from the Open Data record [@OpenData_calanus]:
+```{r calanus-text, results='asis'}
+writeLines(noquote(calanus_rr$text$en))
 
-```{r EBSA-results, echo=FALSE, results='asis'}
+```
+
+##### *Area-Specific Calanus content metrics Search Results*
+
+```{r calanus-results, echo=FALSE, results='asis'}
 #function for overlap
-EBSAoutput <- master_intersect(ebsa_rr$data_sf, mapDataList, getRegion=TRUE)
+calanusOutput <- master_intersect(calanus_rr$data_sf, mapDataList, getRegion=TRUE)
 
 # summary intro table
-ebsaResult <- !is.null(EBSAoutput$studyData)
-summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[EBSA](#ebsa-section)", result=ebsaResult)
-
+calanusResult <- !is.null(calanusOutput$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[calanus](#calanus-section)", result=calanusResult)
 
 #function for overlap
-Query_output_EBSA <- if(ebsaResult){
-    "* The search area overlaps with identified Ecologically and Biologically Significant Areas (EBSAs)."
+Query_output_calanus <- if(calanusResult){
+    "* The search area overlaps with Calanus spp. size and lipid content metrics."
   } else {
-    "* The search area does not overlap with identified Ecologically and Biologically Significant Areas (EBSAs)."
+    "* The search area does not overlap with Calanus spp. size and lipid content metrics."
   }
-writeLines(Query_output_EBSA)
+writeLines(Query_output_calanus)
 
 ```
 
-```{r EBSA-table,  echo=FALSE, results='asis'}
-EBSATable <- EBSA_report(EBSAoutput$studyData, lang="EN")
-if (!is.null(EBSATable)){
-   knitr::kable(EBSATable, align="l", caption="Details for Ecologically and Biologically Significant Areas (EBSAs) overlapping the study area.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```{r calanus-table,  echo=FALSE, results='asis'}
+calanusTable <- NULL
+if(calanusResult){
+  calanusTable <- unique(dplyr::select(calanusOutput$studyData, c("Year", "Station")))
+  calanusTable <- sf::st_drop_geometry(calanusTable)
+  rownames(calanusTable) <- NULL
+} 
+
+if (!is.null(calanusTable)){
+   knitr::kable(calanusTable, align="l", caption="Details for Ecologically and Biologically Significant Areas (calanuss) overlapping the study area.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 
-```{r EBSA-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSAs) within the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Data were obtained from @OpenData_ebsa.')}
-if (!is.null(EBSAoutput$regionData)){
-  plot_rr_sf(regionMap, EBSAoutput$regionData, ebsa_rr$attribute)
+```{r calanus-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(calanus_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (calanuss) within the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Data were obtained from @OpenData_calanus.')}
+if (!is.null(calanusOutput$regionData)){
+  plot_rr_sf(regionMap, calanusOutput$regionData, calanus_rr$attribute)
 }
 ```
 
-```{r EBSA-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSAs) within the search area (red outline). Data were obtained from @OpenData_ebsa.')}
-if(!is.null(EBSAoutput$studyData)){
-  plot_rr_sf(areaMap, EBSAoutput$mapData, ebsa_rr$attribute)
+```{r calanus-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(calanus_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (calanuss) within the search area (red outline). Data were obtained from @OpenData_calanus.')}
+if(!is.null(calanusOutput$studyData)){
+  plot_rr_sf(areaMap, calanusOutput$mapData, calanus_rr$attribute)
 }
 ```
