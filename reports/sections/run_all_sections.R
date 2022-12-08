@@ -33,7 +33,7 @@ openDataSecs <- c(here::here("reports/sections/benthicEffort/benthicEffort_prepr
 egisSecs <- c(here::here("reports/sections/asf/asf_preprocessing.R"),
               here::here("reports/sections/isdb-marfis/isdbMarfis_preprocessing.R"),
               here::here("reports/sections/permits/permits_preprocessing.R"),
-              here::here("reports/sections/rockweed/rockweed_preprocessing.R")
+              here::here("reports/sections/rockweed/rockweed_preprocessing.R"),
               here::here("reports/sections/wsdb/wsdb_preprocessing.R")
               )
 
@@ -51,7 +51,7 @@ inDriveSecs <- c(here::here("reports/sections/commonSections/commonData_preproce
                  here::here("reports/sections/ocearch/ocearch_preprocessing.R"),
                  here::here("reports/sections/offshoreScallop/offshoreScallop_preprocessing.R"),
                  #here::here("reports/sections/sardist/sardist_preprocessing.R"),
-                 here::here("reports/sections/sturg/sturg_preprocessing.R")
+                 here::here("reports/sections/sturg/sturg_preprocessing.R"),
                  here::here("reports/sections/threats/ThreatsPreprocessing.R"),
                  here::here("reports/sections/whitehead/whitehead_preprocessing.R")
 )
@@ -67,6 +67,7 @@ lost_sections <- c(here::here("reports/sections/whelk/whelk_preprocessing.R"),
 source_preprocessing_script <- function(scriptPath) {
   tryCatch(
     expr = {
+      # need utf-8 for accents
       suppressWarnings(source(scriptPath, encoding="utf-8"))
     },
     error = function(e){ 
@@ -80,11 +81,10 @@ source_preprocessing_script <- function(scriptPath) {
 # create global env:
 source(here::here("config.R"))
 globalControlEnv$saveToRemote <- FALSE
-globalControlEnv$updateGeoms <- FALSE
+globalControlEnv$updateGeoms <- TRUE
 allSecs <- c(openDataSecs, egisSecs, apiSecs, inDriveSecs)
 
 if (FALSE) {
-  # need utf-8 for accents
   lapply(egisSecs, source_preprocessing_script)
   lapply(apiSecs, source_preprocessing_script)
   lapply(inDriveSecs, source_preprocessing_script)  

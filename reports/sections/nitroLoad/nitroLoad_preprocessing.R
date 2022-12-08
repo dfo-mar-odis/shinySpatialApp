@@ -36,5 +36,3 @@ deltaNitroLoad_rr$metadata <-  read_google_metadata("nitroLoad_rr", isOpenData =
 
 save(totalNitroLoad_rr, deltaNitroLoad_rr,
      file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/nitroLoad_rr.RData"))
-
-terra::app()
