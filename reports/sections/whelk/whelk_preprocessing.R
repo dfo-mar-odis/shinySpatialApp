@@ -41,7 +41,10 @@ if (globalControlEnv$updateGeoms) {
   whelk_rr$data_sf <- whelk_sf
 }
 
-whelk_rr$metadata <- read_google_metadata("whelk_rr", isOpenData = TRUE)
-
-save(wsdb_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/whelk_rr.RData"))
+whelk_rr$metadata$url <- lang_list(NA)
+whelk_rr$metadata$contact <- lang_list(NA)
+whelk_rr$metadata$searchYears <- NA
+whelk_rr$metadata$reference <- lang_list(NA)
+whelk_rr$metadata$pipelinePath = paste0(githubRepo, "reports/sections/whelk/whelk_preprocessing.R")
+save(whelk_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/whelk_rr.RData"))
 

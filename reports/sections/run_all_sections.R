@@ -18,7 +18,6 @@ openDataSecs <- c(here::here("reports/sections/benthicEffort/benthicEffort_prepr
                   here::here("reports/sections/docks/docks_preprocessing.R"),
                   here::here("reports/sections/ebsa/ebsa_preprocessing.R"),
                   here::here("reports/sections/imAcoustic/imAcoustic_preprocessing.R"),
-                   #here::here("reports/sections/janvrinIsland/janvrinIsland_preprocessing.R"),
                   here::here("reports/sections/lobsterEffort/lobsterEffort_preprocessing.R"),
                   here::here("reports/sections/nbw/nbw_preprocessing.R"),
                   here::here("reports/sections/nitroLoad/nitroLoad_preprocessing.R"),
@@ -28,7 +27,6 @@ openDataSecs <- c(here::here("reports/sections/benthicEffort/benthicEffort_prepr
                   here::here("reports/sections/rv/rv_preprocessing.R"),
                   here::here("reports/sections/sdm/sdm_preprocessing.R"),
                   here::here("reports/sections/waste/waste_preprocessing.R"),
-                  #here::here("reports/sections/whelk/whelk_preprocessing.R"),
                   imSecs
 )
 
@@ -36,7 +34,7 @@ egisSecs <- c(here::here("reports/sections/asf/asf_preprocessing.R"),
               here::here("reports/sections/isdb-marfis/isdbMarfis_preprocessing.R"),
               here::here("reports/sections/permits/permits_preprocessing.R"),
               here::here("reports/sections/rockweed/rockweed_preprocessing.R")
-              #here::here("reports/sections/wsdb/wsdb_preprocessing.R")
+              here::here("reports/sections/wsdb/wsdb_preprocessing.R")
               )
 
 apiSecs <- c( here::here("reports/sections/obis/obis_preprocessing.R"),
@@ -54,8 +52,15 @@ inDriveSecs <- c(here::here("reports/sections/commonSections/commonData_preproce
                  here::here("reports/sections/offshoreScallop/offshoreScallop_preprocessing.R"),
                  #here::here("reports/sections/sardist/sardist_preprocessing.R"),
                  here::here("reports/sections/sturg/sturg_preprocessing.R")
-                 #here::here("reports/sections/threats/ThreatsPreprocessing.R"),
-                 #here::here("reports/sections/whitehead/whitehead_preprocessing.R")
+                 here::here("reports/sections/threats/ThreatsPreprocessing.R"),
+                 here::here("reports/sections/whitehead/whitehead_preprocessing.R")
+)
+
+lost_sections <- c(here::here("reports/sections/whelk/whelk_preprocessing.R"),
+                   here::here("reports/sections/janvrinIsland/janvrinIsland_preprocessing.R")
+                   
+
+  
 )
 
 
