@@ -34,7 +34,8 @@ if (globalControlEnv$updateGeoms) {
   wsdb_sf <- merge(wsdb_sf, cetLegend, by='Scientific Name')
   wsdb_sf <- dplyr::select(wsdb_sf, CNAME, 'Scientific Name', YEAR, Legend, LATITUDE, LONGITUDE)
   wsdb_sf <- sf::st_crop(wsdb_sf, region_sf)
-
+  
+  wsdb_rr$data_sf <- wsdb_sf
 }
 
 wsdb_rr$metadata <- read_google_metadata("wsdb_rr", isOpenData = FALSE)
