@@ -68,21 +68,25 @@ Code used to extract information is available here: https://github.com/dfo-mar-o
 ```{r marfis-isdb-results, include=FALSE, cache=FALSE}
 outputListI <- master_intersect(isdb_rr$data_sf, mapDataList)
 outputListM <- master_intersect(marfis_rr$data_sf, mapDataList)
-
+```
+```{r marfis-isdb-results-2, include=FALSE, cache=FALSE}
 # summary intro table
 introResultI <- !is.null(outputListI$studyData)
 summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[ISDB](#ISDB-section)", result=introResultI)
-
+```
+```{r marfis-isdb-results-3, include=FALSE, cache=FALSE}
 # summary intro table
 introResultM <- !is.null(outputListM$studyData)
 summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[MARFIS](#MARFIS-section)", result=introResultM)
 
-
+```
+```{r marfis-isdb-results-4, include=FALSE, cache=FALSE}
 tableList <- create_table_ISDB(outputListI$studyData, isdbSpecies_df, listed_species)
 isdbAllTable <- tableList$allSpecies
 isdbSarTable <- tableList$sarData
 summarySarTable <- add_col_to_sar_summary(summarySarTable, "[ISDB](#ISDB-section)", isdbSarTable, "Common Name", "Common Name")
-
+```
+```{r marfis-isdb-results-5, include=FALSE, cache=FALSE}
 tableList <- create_table_MARFIS(outputListM$studyData, marfisSpeceis_df, listed_species)
 marfisAllTable <- tableList$allSpecies
 marfisSarTable <- tableList$sarData

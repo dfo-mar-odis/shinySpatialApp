@@ -20,7 +20,7 @@ if (FALSE) { #load in data:
 ### **Species Distribution Models (SDM): Priority Areas to Enhance Monitoring of Cetaceans** {#sdm-section}
 
 ```{r sdm-load, include=FALSE}
-load_rdata(c("finWhale_rr", "harbourPorpoise_rr", "humpbackWhale_rr", "seiWhale_rr" ), "MAR", env = environment())
+load_rdata("sdm_rr", "MAR", env = environment())
 ```
 
 ```{r sdm-meta, results='asis'}
