@@ -15,27 +15,25 @@ if (globalControlEnv$updateGeoms) {
   finWhale_rr <-get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
                                 tifFile = "Fin_Whale.tif")
 }
-finWhale_rr$metadata <- read_google_metadata("finWhale_rr", isOpenData = TRUE)
-save(finWhale_rr, file = file.path(localFileSavePath, "Open/finWhale_rr.RData"))
+finWhale_rr$metadata <- read_google_metadata("sdm_rr", isOpenData = TRUE)
 
 if (globalControlEnv$updateGeoms) {
 seiWhale_rr <-get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
                               tifFile = "Sei_Whale.tif")
 }
-seiWhale_rr$metadata <- read_google_metadata("seiWhale_rr", isOpenData = TRUE)
-save(seiWhale_rr, file = file.path(localFileSavePath, "Open/seiWhale_rr.RData"))
+seiWhale_rr$metadata <- read_google_metadata("sdm_rr", isOpenData = TRUE)
 
 if (globalControlEnv$updateGeoms) {
 humpbackWhale_rr <-get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
                               tifFile = "Humpback_Whale.tif")
 }
-humpbackWhale_rr$metadata <- read_google_metadata("humpbackWhale_rr", isOpenData = TRUE)
-save(humpbackWhale_rr, file = file.path(localFileSavePath, "Open/humpbackWhale_rr.RData"))
+humpbackWhale_rr$metadata <- read_google_metadata("sdm_rr", isOpenData = TRUE)
 
 if (globalControlEnv$updateGeoms) {
 harbourPorpoise_rr <-get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
                               tifFile = "Harbour_Porpoise.tif")
 }
-harbourPorpoise_rr$metadata <- read_google_metadata("harbourPorpoise_rr", isOpenData = TRUE)
-save(harbourPorpoise_rr, file = file.path(localFileSavePath, "Open/harbourPorpoise_rr.RData"))
+harbourPorpoise_rr$metadata <- read_google_metadata("sdm_rr", isOpenData = TRUE)
+
+save(finWhale_rr, seiWhale_rr, humpbackWhale_rr, harbourPorpoise_rr, file = file.path(localFileSavePath, "Open/sdm_rr.RData"))
 
