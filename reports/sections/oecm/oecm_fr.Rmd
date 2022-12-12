@@ -6,7 +6,7 @@ output:
     theme: paper
 bibliography: '`r here::here("app/data/mybiblio.bib")`'
 ---
-```{r ebsa-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```{r oecm-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
 ``` 
 
 ```{r eval=FALSE}
@@ -16,59 +16,60 @@ if (FALSE) { #load in data:
   intro_setup(studyArea, env = environment())  
 }
 ```
-### **Zones d’importance écologique et biologique (ZIEB)**  
+### **Autres mesures de conservation efficaces par zone**  
 
-```{r EBSA-load, include=FALSE}
-load_rdata(c("ebsa_rr"), regionStr, env = environment())
+```{r OECM-load, include=FALSE}
+load_rdata(c("oecm_rr"), regionStr, env = environment())
 ```
 
-```{r EBSA-meta, results='asis'}
-write_meta(ebsa_rr, "FR")
-```
-Histoir ZIEB: <https://gisp.dfo-mpo.gc.ca/portal/apps/MapJournal/index.html?appid=b91f85de60f44a7b90633e4b43e3916a>
-
-Description de l’ensemble de données (tirée du dossier des données ouvertes)  [@OpenData_ebsa]:
-```{r EBSA-text, results='asis'}
-writeLines(noquote(ebsa_rr$text$fr))
-
+```{r OECM-meta, results='asis'}
+write_meta(oecm_rr, "FR")
 ```
 
-#### ***Résultats de la recherche des ZIEB par zone***  
+Description de l’ensemble de données (tirée du dossier des données ouvertes)  [@OpenData_oecm]:
+```{r OECM-text, results='asis'}
+writeLines(noquote(oecm_rr$text$fr))
 
-```{r EBSA-results, echo=FALSE, results='asis'}
+```
+
+#### ***Résultats de la recherche des OECM par zone***  
+
+```{r OECM-results, echo=FALSE, results='asis'}
 #function for overlap
-EBSAoutput <- master_intersect(ebsa_rr$data_sf, mapDataList, getRegion=TRUE)
+OECMoutput <- master_intersect(oecm_rr$data_sf, mapDataList, getRegion=TRUE)
 ```
  
 ```{r EBSA-check, echo=FALSE, results='asis'}
 #function for overlap
-Query_output_EBSA<-if(is.null(EBSAoutput$studyData)){
-    "* La zone de recherche ne chevauche pas les zones d’importance écologique et biologique (ZIEB)."
+Query_output_OECM<-if(is.null(OECMoutput$studyData)){
+    "* 
+La zone de recherche chevauche les autres mesures de conservation efficaces basées sur la zone (OECM)."
   } else {
-    "* La zone de recherche chevauche les zones d’importance écologique et biologique (ZIEB)."
+    "* 
+La zone de recherche ne chevauche pas les autres mesures de conservation efficaces basées sur la zone (OECM)."
   }
-Query_output_EBSA2<-noquote(Query_output_EBSA)
+Query_output_OECM2<-noquote(Query_output_OECM)
 
-writeLines(Query_output_EBSA)
+writeLines(Query_output_OECM)
 
 ```
 
-```{r EBSA-table,  echo=FALSE, results='asis'}
-EBSATable <- EBSA_report(EBSAoutput$studyData, lang="FR")
-if (!is.null(EBSATable)){
-   knitr::kable(EBSATable, align="l", caption="Details for EBSA's overlapping the study area.</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```{r OECM-table,  echo=FALSE, results='asis'}
+OECMTable <- OECM_report(OECMoutput$studyData, lang="FR")
+if (!is.null(OECMTable)){
+   knitr::kable(OECMTable, align="l", caption="Détails des OECM chevauchant la zone d'étude</b>", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 }
 ```
 
 
-```{r EBSA-region-plot, fig.height=7, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) par rapport à la zone de recherche définie par l’utilisateur (entourée de rouge).'}
-if (!is.null(EBSAoutput$regionData)){
-  plot_rr_sf(regionMap, EBSAoutput$regionData, ebsa_rr$attribute)
+```{r OECM-region-plot, fig.height=7, fig.width=11, fig.cap= 'Carte montrant les autres mesures de conservation efficaces basées sur la zone dans la biorégion du plateau néo-écossais. La zone de recherche est représentée par un contour rouge et une vue plus détaillée est présentée dans la figure ci-dessous, si des données pertinentes sont présentes. Les données ont été obtenues à partir de @OpenData_oecm.'}
+if (!is.null(OECMoutput$regionData)){
+  plot_rr_sf(regionMap, OECMoutput$regionData, oecm_rr$attribute)
 }
 ```
 
-```{r EBSA-area-plot, fig.height=7, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones d’importance écologique et biologique (ZIEB) dans la zone de recherche définie par l’utilisateur (entourée de rouge).'}
-if(!is.null(EBSAoutput$studyData)){
-  plot_rr_sf(areaMap, EBSAoutput$mapData, ebsa_rr$attribute)
+```{r OECM-area-plot, fig.height=7, fig.width=11, fig.cap= 'Carte montrant les autres mesures de conservation efficaces basées sur la zone dans la zone de recherche (contour rouge). Les données ont été obtenues à partir de @OpenData_oecm.'}
+if(!is.null(OECMoutput$studyData)){
+  plot_rr_sf(areaMap, OECMoutput$mapData, oecm_rr$attribute)
 }
 ```
