@@ -1,5 +1,7 @@
 source(here::here("config.R"))
 source(here::here("reports/R/plotFunctions.R"))
+source(here::here("reports/R/textFunctions.R"))
+
 library(dplyr)
 
 # function to make sure that the data dir for this region is set up
@@ -116,3 +118,39 @@ intro_setup <- function(studyArea, env=globalenv()) {
   
   return("Data Setup Complete")
 }
+
+
+
+
+# ------------read_google_metadata----------------
+read_google_metadata <- function(rrId, isOpenData=FALSE){
+  metadata_df <- googlesheets4::read_sheet(configMetadataSheetUrl)
+  metadataRow <- head(dplyr::filter(metadata_df, DatasetName==rrId), 1)
+  metadataList <- list("contact" = lang_list(metadataRow$Contact),
+                       "url" = lang_list(ifelse(!is.na(metadataRow$URL), metadataRow$URL, NA)),
+                       "searchYears"= ifelse(!is.null(metadataRow$SearchYear[[1]]),
+                                              metadataRow$SearchYear, NA),
+                       "constraints" = lang_list(metadataRow$DataUseConstraints),
+                       "securityLevel" = lang_list(metadataRow$SecurityLevel),
+                       "qualityTier" =  lang_list(metadataRow$QualityTier),
+                       "reference" =  lang_list(ifelse(!is.na(metadataRow$referenceUrl),
+                                             metadataRow$referenceUrl, NA)),
+                       "pipelinePath" = metadataRow$pipelinePath
+                       )
+  
+  # date nonesense:
+  Sys.setlocale(locale = "French")
+  accessedDateFr <-paste(strftime(lubridate::today(), "%B %d, %Y"), ifelse(isOpenData, "sur le Portail de données ouvertes", ""))
+  Sys.setlocale(locale = "English")
+  accessedDateEn <- paste(strftime(lubridate::today(), "%B %d, %Y"), ifelse(isOpenData, "from Open Data", ""))
+  # reset locale to default:
+  Sys.setlocale(locale="")
+
+  metadataList = c(metadataList, "accessedOnStr"= list(list("en" = accessedDateEn, 
+                                                       "fr" = accessedDateFr)))
+  
+  
+ return(metadataList)
+}
+
+

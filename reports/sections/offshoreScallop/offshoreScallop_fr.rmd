@@ -1,0 +1,120 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+```{r offshoreScallop-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```
+
+```{r eval=FALSE}
+if (FALSE) { 
+  # load in generic data, e.g.functions, study area, and base maps into the 
+  # environment, when knitting, these will be loaded through the child rmd.
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
+  intro_setup(studyArea, env = environment())
+}
+```
+
+### **Pétoncles Offshore** {#offshore-scallop-section}
+
+```{r offshoreScallop-load, include=FALSE}
+# load in section specific data
+load_rdata(c("offshoreScallop_rr"), regionStr, env = environment())
+
+```
+
+```{r offshoreScallop-meta, results='asis'}
+# metadata blurb at start of each section
+write_meta(offshoreScallop_rr, "FR")
+```
+#This needs to be translated#
+The Offshore Scallop Survey Database (SCALOFF) contains data collected through Collaborative Agreements (formerly Joint Project Agreements) between DFO Science and the Seafood Producers Association of Nova Scotia (SPANS). The Offshore Scallop Survey collects data on the stocks of Sea Scallop (*Placopecten magellanicus*) on the Scotian Shelf and the Canadian side of Georges Bank, as well as Iceland Scallop (*Chlamys islandica*) on Banquereau Bank. These stocks correspond to the DFO management units known as Scallop Fishing Areas (SFA) 25, 26, and 27, and the survey data are the primary source of fishery-independent information used in the Maritimes Region scallop stock assessments.
+
+The Offshore Scallop Survey has occurred between May and September annually since 1978 with few exceptions, but spatial coverage and survey designs have changed over time. Regardless of survey design, the same sampling protocol is followed: At each survey station, the 8-ft scallop dredge lined with 38 mm mesh is towed for 10 minutes, and every scallop is counted and assigned to a 5 mm shell height bin (ranging from 0-200 mm). Detailed sampling occurs at a selection of the stations, where the exact shell heights and meat weights are measured for a sub-sample of the scallops caught. Bottom temperature data has also been collected on the Offshore Scallop survey since 2011.  
+
+Under the Collaborative Agreement, survey responsibilities are shared by DFO and SPANS. At-sea survey activities are directed by the DFO Chief Scientist aboard the survey vessel. SPANS coordinates the provision the survey vessel as well as the necessary crew complement to conduct the survey activities. DFO Science designs the survey, provides and manages scientific equipment, and validates, archives, and analyzes survey data. 
+
+
+Data requests are subject to the terms of the Collaborative Agreement. Please contact Freya Keyser (DFO Offshore Scallop Biologist, freya.keyser@dfo-mpo.gc.ca) with details on your request, and you will be guided through the Offshore Scallop Survey data request process. 
+
+
+#### *Résultats des pétoncles offshore spécifiques à la zone*
+```{r offshoreScallop-results, include=FALSE, cache=FALSE}
+# clip the data to the Study and Map areas:
+osOutputList <- master_intersect(offshoreScallop_rr$data_sf, 
+                                              mapDataList, getRegion = TRUE)
+
+
+# summary intro table
+introResult <- !is.null(osOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Offshore Scallop](#offshore-scallop-section)", result=introResult)
+
+# gen table:
+if (!is.null(osOutputList$studyData)) {
+  osStudyData <- sf::st_drop_geometry(osOutputList$studyData)
+  osTable <- osStudyData %>%
+  left_join(bankLabels) %>%
+  dplyr::select(year, name, TOW_NO) %>%
+  dplyr::group_by(year, name) %>%
+  dplyr::summarize(number_of_tows=n()) %>%
+  tidyr::pivot_wider(names_from = name, values_from = number_of_tows)
+  
+  names(osTable)[1]<-"Année"
+  
+}
+
+```
+
+```{r offshoreScallop-check, echo=FALSE, results='asis',}
+# Check if there is any data in the study area
+offshoreScallopReport <- if (is.null(osOutputList$studyData)) {
+  "* Il n’y a pas d’enregistrements pertinents de pétoncles au large pour cette zone de recherche."
+} else {
+  "* Il existe des enregistrements de pétoncles au large pertinents pour cette zone de recherche."
+}
+writeLines(noquote(offshoreScallopReport))
+```
+
+```{r offshoreScallop-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(offshoreScallop_rr, "FR"), "Carte montrant l'emplacement de la zone d'étude par rapport à la région des Maritimes du MPO. La ligne grise pointillée indique les frontières internationales.")}
+if (!is.null(osOutputList$regionData)) {
+  # common plotting function:
+  plot_rr_sf(regionMap, osOutputList$regionData, attribute = 
+               offshoreScallop_rr$attribute, labelData = bankLabels,
+             labelAttribute = "name")
+}
+```
+
+```{r offshoreScallop-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(offshoreScallop_rr, "FR"), "Carte montrant la zone de recherche définie par l'utilisateur (contour rouge) pour rechercher des informations et générer automatiquement ce rapport.")}
+if (!is.null(osOutputList$studyData)) {
+  
+  labelData <- dplyr::filter(bankLabels, bank %in% osOutputList$mapData$bank)
+  # common plotting function:
+  plot_rr_sf(areaMap, osOutputList$mapData, attribute = 
+               offshoreScallop_rr$attribute, labelData = labelData, 
+             labelAttribute = "name")
+}
+```
+<br>
+```{r offshoreScallop-table}
+if (!is.null(osOutputList$studyData)) {
+  if (nrow(osTable) > 0) {
+     options(knitr.kable.NA = '--')
+    knitr::kable(osTable, align = "l", caption = paste("\\label{tab:offshoreScallop_table}", write_caption_blurb(offshoreScallop_rr, "FR"), "Couverture spatiale et temporelle du relevé du pétoncle hauturier, représentée en nombre de traits par année par banc pour la zone définie par l'utilisateur (contour rouge). L'absence d'enregistrement dans ce tableau doit être interprétée comme une absence de déclaration, pas nécessairement comme une absence de l'espèce dans la zone. Des données sur la coquille Saint-Jacques d'Islande ont été collectées sur Banquereau en 2006, 2012 et 2019."), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "center")
+  }
+}
+```
+### Informations complémentaires: 
+
+[Plan de gestion intégrée de la pêche hauturière du pétoncle - Région des Maritimes](https://www.dfo-mpo.gc.ca/fisheries-peches/ifmp-gmp/scallop-petoncle/2018/index-fra.html)
+
+[MPO. 2020. Mise à jour de l’état du stock de pétoncles (Placopecten magellanicus) de la zone « a » du banc de Georges pour la saison de pêche 2020. Secr. can. de consult. sci. du MPO, Rép. des Sci. 2020/043.](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ScR-RS/2020/2020_043-fra.html)
+
+[MPO. 2013. Évaluation du stock de pétoncle (Placopecten magellanicus) du banc Georges. Secr. can. de consult. sci. du MPO, Avis sci. 2013/058.](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/SAR-AS/2013/2013_058-fra.html)
+
+[MPO. 2020. Mise à jour sur l’état du stock de pétoncles du nord du banc de Brown(Placopecten magellanicus) pour la saison de pêche 2020. Secr. can. de consult. sci. du MPO, Rép. des Sci. 2020/042.](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ScR-RS/2020/2020_042-fra.html)
+
+[Évaluation du stock de pétoncle du secteur nord du banc de Brown (Placopecten magellanicus)MPO. 2013. Évaluation du stock de pétoncle du secteur nord du banc de Brown (Placopecten magellanicus). Secr. can. de consult. sci. du MPO, Avis sci. 2013/059)](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/SAR-AS/2013/2013_059-fra.html)

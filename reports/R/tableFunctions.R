@@ -200,7 +200,7 @@ create_table_MARFIS <- function(data_sf, speciesTable, sarTable) {
     dplyr::summarise_all(max)%>%
     base::subset(select = -c(NAFO))
   
-  cleanDf <- rename(finalDf, Common = SPECIES_NAME) %>%
+  cleanDf <- dplyr::rename(finalDf, Common = SPECIES_NAME) %>%
     dplyr::mutate(Common = stringr::str_to_sentence(Common))
   
   for (nafoStr in nafoList) {
@@ -241,13 +241,12 @@ create_table_ISDB <- function(data_sf, speciesTable, sarTable) {
   absentCode <- "&nbsp;-&nbsp;"
   presentCode <- "&#x2714;"
   
-  
   nafoList <- as.list(unique(data_sf$NAFO))
   # nafoList <- append(nafoList, "4WG")
   nafoSpeciesFilter <- dplyr::filter(speciesTable, NAFO %in% nafoList)
   # sometime for loops are just better and R apply's can go hide in a hole:
   for (nafoStr in nafoList) {
-    nafoSpeciesFilter[nafoStr] = nafoSpeciesFilter$NAFO == nafoStr
+    nafoSpeciesFilter[nafoStr] <- nafoSpeciesFilter$NAFO == nafoStr
   }
   
   finalDf <- nafoSpeciesFilter %>% 
@@ -255,7 +254,7 @@ create_table_ISDB <- function(data_sf, speciesTable, sarTable) {
     dplyr::summarise_all(max)%>%
     base::subset(select = -c(NAFO))
   
-  cleanDf <- rename(finalDf, Scientific = SCIENTIFIC) %>%
+  cleanDf <- dplyr::rename(finalDf, Scientific = SCIENTIFIC) %>%
     dplyr::rename(Common = COMMON) %>%
     dplyr::mutate(Scientific = stringr::str_to_sentence(Scientific)) %>%
     dplyr::mutate(Common = stringr::str_to_sentence(Common))

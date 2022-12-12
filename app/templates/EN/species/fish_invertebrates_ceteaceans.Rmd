@@ -15,7 +15,7 @@ editor_options:
 ```{r child = here::here("reports/sections/ilts/ilts_en.Rmd")}
 ```
 
-```{r child = here::here("reports/sections/offshore_scallop/offshore_scallop_en.Rmd")}
+```{r child = here::here("reports/sections/offshoreScallop/offshoreScallop_en.Rmd")}
 ```
 
 ```{r child = here::here("reports/sections/isdb-marfis/isdbMarfis_en.Rmd")}
@@ -31,6 +31,9 @@ editor_options:
 ```
 
 ```{r child = here::here("reports/sections/ocearch/ocearch_en.Rmd")}
+```
+
+```{r child = here::here("reports/sections/electrofishing/ef_en.Rmd")}
 ```
 
 ## **DATASETS INCLUDING CETACEAN SPECIES**

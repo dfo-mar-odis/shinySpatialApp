@@ -10,6 +10,7 @@ library(httr)
 library(raster)
 source(here::here("config.R"))
 source(here::here("reports/R/dataFunctions.R"))
+source(here::here("reports/R/textFunctions.R"))
 
 highQuality <- list("en" = "High", "fr" = "Élevée")
 mediumQuality <- list("en" = "Medium", "fr" = "Moyenne")
@@ -31,59 +32,22 @@ protectedBList <- list("en" = "Protected B", "fr" = "Protégé B")
 #
 # Outputs:
 # 1 .out_rr: output rr object containing spatial data and metadata
-get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE, checkDate=NULL) {
+get_opendata_rr <- function(pkgId, resId=NULL, region_sf=NULL, gdbLayer=NULL, tifFile=NULL, returnRaster=FALSE) {
   opendataPKG <- package_show(pkgId)
   
-  # check if package has been updated since checkdate
-  if (!is.null(checkDate)){
-    if ("date_modified" %in% names(opendataPKG)) {
-      pkgTime <- strptime(opendataPKG$date_modified, "%Y-%m-%d %H:%M:%S")  
-      if (pkgTime < checkDate) {
-        return(NULL)
-      }
-    } else if ("metadata_modified" %in% names(opendataPKG)) {
-      pkgTime <- strptime(opendataPKG$metadata_modified, "%Y-%m-%dT%H:%M:%S")  
-      if (pkgTime < checkDate) {
-        return(NULL)
-      }
-    }
-  }
-  
   pkgTitle <- opendataPKG$title_translated
-  contactInfo <- opendataPKG$metadata_contact
   pkgText <- opendataPKG$notes_translated
+  
   if (!is.null(resId)) {
     data_sf <- get_opendata_sf(resId, region_sf, gdbLayer=gdbLayer, tifFile=tifFile, returnRaster=returnRaster)  
   } else {
     data_sf <- NULL
   }
-  
-  url <- list("en" = paste("<https://open.canada.ca/data/en/dataset/", pkgId, ">", sep =""), 
-              "fr" = paste("<https://open.canada.ca/data/fr/dataset/", pkgId, ">", sep =""))  
-  securityLevel <- list("en" = "None", "fr"= "Aucun")
-  constraints <- list("en" = "None", "fr"= "Aucun")
-  accessedDate <- list("en" = NA, "fr" = NA)
-  # date nonesense:
-  Sys.setlocale(locale = "French")
-  accessedDate$fr <-paste(strftime(lubridate::today(), "%B %d, %Y"), "sur le Portail de données ouvertes")
-  Sys.setlocale(locale = "English")
-  accessedDate$en <- paste(strftime(lubridate::today(), "%B %d, %Y"), "from Open Data")
-  # reset locale to default:
-  Sys.setlocale(locale="")
-  
   out_rr <- list("title" = pkgTitle,
                  "text" = pkgText,
                  "attribute" = "NONE",
-                 "data_sf" = data_sf,
-                 "metadata" = list("contact" = contactInfo,
-                                   "url" = url,
-                                   "accessedOnStr" = accessedDate,
-                                   "accessedDate" = lubridate::today(),
-                                   "constraints" = constraints,
-                                   "securityLevel" = securityLevel
-                   
-                 ) # end metadata
-             ) # end rr
+                 "data_sf" = data_sf
+             ) 
   return(out_rr)
 }
 
@@ -232,13 +196,6 @@ get_check_date <- function(varName) {
   return(checkDate)
 }
 
-
-# --------------lang_list-----------------
-# Helper function that converts a string into a bilinugual list
-lang_list <- function(inValue) {
-  return(list("en" = inValue, "fr" = inValue))
-}
-
 # --------------email_format-----------------
 # Helper function that converts a string email address into a linked one for use in rmd
 email_format <- function(emailStr) {
@@ -246,53 +203,20 @@ email_format <- function(emailStr) {
 }
 
 
-# --------------save_open_data-----------------
-# Wrapper function to peform all the steps required to save an open data object.
-save_open_data <- function(pkgId, resId, variableName, qualityTier, savePath,
-                           disableCheckDate = TRUE, contactEmail = NULL, searchYears=NULL,
-                           reference = NULL, pipelinePath = NULL, ...) {
-  dataSaved <- FALSE
-  fnCheckDate <- NULL
-  if (!disableCheckDate){
-    fnCheckDate <-  get_check_date(variableName)  
-  }
-  temp_rr <- get_opendata_rr(pkgId, resId, checkDate = fnCheckDate, ...)
-  if(!is.null(temp_rr)) {
-    if (!is.null(contactEmail)){
-      temp_rr$metadata$contact = contactEmail
-    }
-    if (!is.null(reference)){
-      temp_rr$metadata$reference = reference
-    }
-    if (!is.null(searchYears)){
-      temp_rr$metadata$searchYears = searchYears
-    }
-    if (!is.null(pipelinePath)){
-      temp_rr$metadata$pipelinePath = pipelinePath
-    }
-    temp_rr$metadata$qualityTier <- qualityTier
-    assign(variableName, temp_rr)
-    save(list = variableName, file = file.path(savePath, paste("Open/", variableName, ".RData", sep="")))
-    dataSaved <- TRUE
-  }
-  return(dataSaved)
-}
-
-
 # --------------RV_to_sf-----------------
 # Converts the three types of RV data files into a single coherent sf object.
 RV_to_sf <- function(gscat, gsinf, gsspec, minYear){
   gscat <- gscat %>% tidyr::unite("MISSION_SET", MISSION:SETNO, remove = TRUE)
-  gscat <- gscat %>% rename(CODE = SPEC)
+  gscat <- gscat %>% dplyr::rename(CODE = SPEC)
   
   gsinf <- gsinf %>% tidyr::unite("MISSION_SET", MISSION:SETNO, remove = FALSE)
   gsinf$YEAR <- lubridate::year(gsinf$SDATE)
   gsinf <- gsinf %>% dplyr::filter(YEAR >= minYear)
   
   gsspec <- dplyr::distinct(gsspec)
-  gsspec <- gsspec %>% transmute(gsspec, SPEC = stringr::str_to_sentence(SPEC))
-  gsspec <- gsspec %>% transmute(gsspec, COMM = stringr::str_to_sentence(COMM))
-  gsspec <- gsspec %>% rename("Common Name"= COMM, "Scientific Name" = SPEC)
+  gsspec <- gsspec %>% dplyr::transmute(gsspec, SPEC = stringr::str_to_sentence(SPEC))
+  gsspec <- gsspec %>% dplyr::transmute(gsspec, COMM = stringr::str_to_sentence(COMM))
+  gsspec <- gsspec %>% dplyr::rename("Common Name"= COMM, "Scientific Name" = SPEC)
   
   out_sf <- st_as_sf(gsinf, coords = c("SLONG", "SLAT"), crs = 4326)
   
