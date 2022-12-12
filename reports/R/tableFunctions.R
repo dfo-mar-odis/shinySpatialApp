@@ -560,18 +560,19 @@ add_row_to_intro_summary <- function(introSummary, name, result) {
 OECM_report <- function(OECM_sf, lang="EN") {
   OECMTable <- NULL
   if (lang=="EN" & !is.null(OECM_sf)) {
-    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(Report, Report_URL,
-                                                               Name, Bioregion)))
+    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(NAME_E, OBJECTIVE,
+                                                               PROHIBITIONS,REGION_E, URL_E)))
     OECMTable <- unique(OECMTable)
     row.names(OECMTable) <- NULL
-    names(OECMTable) <- c("Report", "Report URL", "Location", "Bioregion")
+    names(OECMTable) <- c("Name", "Objective", "Prohibitions","Region", "Report url")
   } else if (lang=="FR" & !is.null(OECM_sf)) {
-    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(Rapport, RapportURL,
-                                                               Nom, Bioregion)))
+    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(NAME_F, OBJECTIF, INTERDICTIONS,
+                                                               REGION_F, URL_F)))
     OECMTable <- unique(OECMTable)
-    names(OECMTable) <- c("Report", "Report URL", "Location", "Bioregion")
+    names(OECMTable) <- c("Nom", "Objectif", "Interdictions", "Region", "Rapport url")
     row.names(OECMTable) <- NULL
     
   }
   return(OECMTable)
 }
+
