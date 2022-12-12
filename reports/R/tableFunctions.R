@@ -576,3 +576,30 @@ OECM_report <- function(OECM_sf, lang="EN") {
   return(OECMTable)
 }
 
+# ---------DCSB_report-------
+# Generates table for Coral and Sponge Significant Benthic Areas in Eastern Canada data
+# Inputs:
+# DCSB_sf: DCSB data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+# Directly writes table
+#
+DCSB_report <- function(DCSB_sf, lang="EN") {
+  DCSBTable <- NULL
+  if (lang=="EN" & !is.null(DCSB_sf)) {
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(NAME_E, OBJECTIVE,
+                                                               PROHIBITIONS,REGION_E, URL_E)))
+    DCSBTable <- unique(DCSBTable)
+    row.names(DCSBTable) <- NULL
+    names(DCSBTable) <- c("Name", "Objective", "Prohibitions","Region", "Report url")
+  } else if (lang=="FR" & !is.null(DCSB_sf)) {
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(NAME_F, OBJECTIF, INTERDICTIONS,
+                                                               REGION_F, URL_F)))
+    DCSBTable <- unique(DCSBTable)
+    names(DCSBTable) <- c("Nom", "Objectif", "Interdictions", "Region", "Rapport url")
+    row.names(DCSBTable) <- NULL
+    
+  }
+  return(DCSBTable)
+}
