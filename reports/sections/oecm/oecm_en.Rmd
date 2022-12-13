@@ -54,7 +54,7 @@ writeLines(Query_output_OECM)
 
 ```
 
-```{r EBSA-table,  echo=FALSE, results='asis'}
+```{r OECM-table,  echo=FALSE, results='asis'}
 OECMTable <- OECM_report(OECMoutput$studyData, lang="EN")
 if (!is.null(OECMTable)){
    knitr::kable(OECMTable, align="l", caption="Details for Other Effective Area Based Conservation Measures overlapping the study area.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
