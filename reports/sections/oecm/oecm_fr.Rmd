@@ -39,7 +39,7 @@ writeLines(noquote(oecm_rr$text$fr))
 OECMoutput <- master_intersect(oecm_rr$data_sf, mapDataList, getRegion=TRUE)
 ```
  
-```{r EBSA-check, echo=FALSE, results='asis'}
+```{r OECM-check, echo=FALSE, results='asis'}
 #function for overlap
 Query_output_OECM<-if(is.null(OECMoutput$studyData)){
     "* 
