@@ -1,0 +1,74 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+```{r oecm-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+``` 
+
+```{r eval=FALSE}
+if (FALSE) { #load in data:
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson")) 
+  intro_setup(studyArea, env = environment())  
+}
+```
+
+### **Other Effective Area Based Conservation Measures** {#oecm-section}   
+
+```{r OECM-load, include=FALSE}
+load_rdata(c("oecm_rr"), regionStr, env = environment())
+```
+
+```{r OECM-meta, results='asis'}
+write_meta(oecm_rr, "EN")
+```
+
+
+Dataset description from the Open Data record [@OpenData_oecm]:
+```{r OECM-text, results='asis'}
+writeLines(noquote(oecm_rr$text$en))
+
+```
+
+##### *Area-Specific OECM Search Results*
+
+```{r OECM-results, echo=FALSE, results='asis'}
+#function for overlap
+OECMoutput <- master_intersect(oecm_rr$data_sf, mapDataList, getRegion=TRUE)
+
+# summary intro table
+oecmResult <- !is.null(OECMoutput$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[OECM](#oecm-section)", result=oecmResult)
+
+
+#function for overlap
+Query_output_OECM <- if(oecmResult){
+    "* The search area overlaps with Other Effective Area Based Conservation Measures."
+  } else {
+    "* The search area does not overlap with Other Effective Area Based Conservation Measures."
+  }
+writeLines(Query_output_OECM)
+
+```
+
+```{r OECM-table,  echo=FALSE, results='asis'}
+OECMTable <- OECM_report(OECMoutput$studyData, lang="EN")
+if (!is.null(OECMTable)){
+   knitr::kable(OECMTable, align="l", caption="Details for Other Effective Area Based Conservation Measures overlapping the study area.", booktabs = T, escape = F, linesep="") %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+}
+```
+
+```{r OECM-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(oecm_rr, "EN"), 'Map showing Other Effective Area Based Conservation Measures within the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Data were obtained from @OpenData_oecm.')}
+if (!is.null(OECMoutput$regionData)){
+  plot_rr_sf(regionMap, OECMoutput$regionData, oecm_rr$attribute)
+}
+```
+
+```{r OECM-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(oecm_rr, "EN"), 'Map showing Other Effective Area Based Conservation Measures within the search area (red outline). Data were obtained from @OpenData_oecm.')}
+if(!is.null(OECMoutput$studyData)){
+  plot_rr_sf(areaMap, OECMoutput$mapData, oecm_rr$attribute)
+}
+```

@@ -547,3 +547,32 @@ add_row_to_intro_summary <- function(introSummary, name, result) {
   return(introSummary)
   
 }
+
+# ---------OECM_report-------
+# Generates table for Other Effective Area Based Conservation Measures data
+# Inputs:
+# OECM_sf: OECM data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+# Directly writes table
+#
+OECM_report <- function(OECM_sf, lang="EN") {
+  OECMTable <- NULL
+  if (lang=="EN" & !is.null(OECM_sf)) {
+    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(NAME_E, OBJECTIVE,
+                                                               PROHIBITIONS,REGION_E, URL_E)))
+    OECMTable <- unique(OECMTable)
+    row.names(OECMTable) <- NULL
+    names(OECMTable) <- c("Name", "Objective", "Prohibitions","Region", "Report url")
+  } else if (lang=="FR" & !is.null(OECM_sf)) {
+    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(NAME_F, OBJECTIF, INTERDICTIONS,
+                                                               REGION_F, URL_F)))
+    OECMTable <- unique(OECMTable)
+    names(OECMTable) <- c("Nom", "Objectif", "Interdictions", "Region", "Rapport url")
+    row.names(OECMTable) <- NULL
+    
+  }
+  return(OECMTable)
+}
+
