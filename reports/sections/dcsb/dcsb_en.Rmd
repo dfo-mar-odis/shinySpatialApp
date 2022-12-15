@@ -45,9 +45,9 @@ summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[DCSB](#d
 
 #function for overlap
 Query_output_DCSB <- if(dcsbResult){
-    "* The search area overlaps with identified Coral and Sponge Significant Benthic Areas in Eastern Canada."
+    "* The search area overlaps with identified Significant Coral and Sponge Benthic Areas in Eastern Canada."
   } else {
-    "* The search area does not overlap with identified Coral and Sponge Significant Benthic Areas in Eastern Canada."
+    "* The search area does not overlap with identified Significant Coral and Sponge Benthic Areas in Eastern Canada."
   }
 writeLines(Query_output_DCSB)
 
@@ -60,13 +60,13 @@ if (!is.null(DCSBTable)){
 }
 ```
 
-```{r DCSB-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(dcsb_rr, "EN"), 'Map showing Coral and Sponge Significant Benthic Areas in Eastern Canada within the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Data were obtained from @OpenData_ebsa.')}
+```{r DCSB-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(dcsb_rr, "EN"), 'Map showing Coral and Sponge Significant Benthic Areas in Eastern Canada within the Scotian Shelf bioregion. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Data were obtained from @OpenData_dcsb.')}
 if (!is.null(DCSBoutput$regionData)){
   plot_rr_sf(regionMap, DCSBoutput$regionData, dcsb_rr$attribute)
 }
 ```
 
-```{r EBSA-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(ebsa_rr, "EN"), 'Map showing Coral and Sponge Significant Benthic Areas in Eastern Canada within the search area (red outline). Data were obtained from @OpenData_ebsa.')}
+```{r DCSB-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(dcsb_rr, "EN"), 'Map showing Coral and Sponge Significant Benthic Areas in Eastern Canada within the search area (red outline). Data were obtained from @OpenData_dcsb.')}
 if(!is.null(DCSBoutput$studyData)){
   plot_rr_sf(areaMap, DCSBoutput$mapData, dcsb_rr$attribute)
 }

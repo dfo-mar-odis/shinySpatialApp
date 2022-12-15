@@ -18,6 +18,8 @@ if (globalControlEnv$updateGeoms) {
   regionBbox <- sf::st_bbox(sf::st_transform(region_sf, 3857))
   data_sf <- esri2sf::esri2sf(esriUrl, bbox=regionBbox, progress = TRUE)
   dcsb_rr$data_sf <- sf::st_make_valid(data_sf)
+  dcsb_rr$data_sf$Label_Name <- as.factor(dcsb_rr$data_sf$Label_Name)
+  dcsb_rr$attribute <- "Label_Name"
 }
 
 dcsb_rr$metadata <- read_google_metadata("dcsb_rr", isOpenData = TRUE)

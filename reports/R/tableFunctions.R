@@ -588,18 +588,44 @@ OECM_report <- function(OECM_sf, lang="EN") {
 DCSB_report <- function(DCSB_sf, lang="EN") {
   DCSBTable <- NULL
   if (lang=="EN" & !is.null(DCSB_sf)) {
-    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(NAME_E, OBJECTIVE,
-                                                               PROHIBITIONS,REGION_E, URL_E)))
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, Label_Name,
+                                                               Map_Ref)))
     DCSBTable <- unique(DCSBTable)
     row.names(DCSBTable) <- NULL
-    names(DCSBTable) <- c("Name", "Objective", "Prohibitions","Region", "Report url")
+    names(DCSBTable) <- c("Biogeographic Region", "Species assemblage", "Map Reference number from publication")
   } else if (lang=="FR" & !is.null(DCSB_sf)) {
-    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(NAME_F, OBJECTIF, INTERDICTIONS,
-                                                               REGION_F, URL_F)))
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, Label_Name,
+                                                               Map_Ref)))
     DCSBTable <- unique(DCSBTable)
-    names(DCSBTable) <- c("Nom", "Objectif", "Interdictions", "Region", "Rapport url")
+    names(DCSBTable) <- c("Région biogéographique", "Assemblage d'espèces", "Carte Numéro de référence de la publication")
     row.names(DCSBTable) <- NULL
     
   }
   return(DCSBTable)
+}
+
+# ---------SUBSTRATE_report-------
+# Generates table for A substrate classification for the Inshore Scotian Shelf and Bay of Fundy, Maritimes Region data
+# Inputs:
+# SUBSTRATE_sf: Substrate data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+# Directly writes table
+#
+SUBSTRATE_report <- function(SUBSTRATE_sf, lang="EN") {
+  SUBSTRATETable <- NULL
+  if (lang=="EN" & !is.null(SUBSTRATE_sf)) {
+    SUBSTRATETable <- sf::st_drop_geometry(dplyr::select(SUBSTRATE_sf, c(All_Bottom_Type, Substrate)))
+    SUBSTRATETable <- unique(SUBSTRATETable)
+    row.names(SUBSTRATETable) <- NULL
+    names(SUBSTRATETable) <- c("Bottom Type", "Substrate")
+  } else if (lang=="FR" & !is.null(SUBSTRATE_sf)) {
+    SUBSTRATETable <- sf::st_drop_geometry(dplyr::select(SUBSTRATE_sf, c(All_Bottom_Type, Substrate)))
+    SUBSTRATETable <- unique(SUBSTRATETable)
+    names(SUBSTRATETable) <- c("Type de fond", "Substrat")
+    row.names(SUBSTRATETable) <- NULL
+    
+  }
+  return(SUBSTRATETable)
 }

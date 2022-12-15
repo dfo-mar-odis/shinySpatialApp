@@ -8,3 +8,9 @@ This module describes outputs of habitat derived from a variety of sources. Area
 
 ```{r child = here::here("reports/sections/imAcoustic/imAcoustic_en.Rmd")}
 ```
+
+```{r child = here::here("reports/sections/substrate/substrate_en.Rmd")}
+```
+
+```{r child = here::here("reports/sections/dcsb/dcsb_en.Rmd")}
+```
