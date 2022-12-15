@@ -24,7 +24,7 @@ load_rdata(c("crithab_rr", "draftCritHab_rr"), regionStr, env = environment())
 ```
 
 ```{r crtihab-meta, results='asis'}
-write_meta(crithab_rr, "EN")
+write_meta(draftCritHab_rr, "EN")
 ```
 
 Dataset description from the Open Data record [@OpenData_SARcriticalhabitat]:
