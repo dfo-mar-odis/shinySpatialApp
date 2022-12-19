@@ -62,12 +62,12 @@ if (!is.null(DCSBTable)){
 
 ```{r DCSB-region-plot, fig.height=7, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones benthiques importantes de coraux et d\'éponges dans l\'est du Canada dans la biorégion du plateau néo-écossais. La zone de recherche est représentée par un contour rouge et une vue plus détaillée est présentée dans la figure ci-dessous, si des données pertinentes sont présentes. Les données ont été obtenues à partir de @OpenData_dcsb.'}
 if (!is.null(DCSBoutput$regionData)){
-  plot_rr_sf(regionMap, DCSBoutput$regionData, dcsb_rr$attribute)
+  plot_rr_sf(regionMap, DCSBoutput$regionData, dcsb_rr$attribute,legendName= "Zones Benthiques Importantes", alpha = 0.6)
 }
 ```
 
 ```{r DCSB-area-plot, fig.height=7, fig.width=11, fig.cap= 'Niveau de qualité : Élevée. Niveau de sécurité : Aucun. Carte montrant les zones benthiques importantes de coraux et d\'éponges dans l\'est du Canada dans la zone de recherche (contour rouge). Les données ont été obtenues à partir de @OpenData_dcsb.'}
 if(!is.null(DCSBoutput$studyData)){
-  plot_rr_sf(areaMap, DCSBoutput$mapData, dcsb_rr$attribute)
+  plot_rr_sf(areaMap, DCSBoutput$mapData, dcsb_rr$attribute, legendName= "Zones Benthiques Importantes", alpha = 0.6)
 }
 ```

@@ -588,16 +588,16 @@ OECM_report <- function(OECM_sf, lang="EN") {
 DCSB_report <- function(DCSB_sf, lang="EN") {
   DCSBTable <- NULL
   if (lang=="EN" & !is.null(DCSB_sf)) {
-    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, Label_Name,
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, significantBenthicAreas,
                                                                Map_Ref)))
     DCSBTable <- unique(DCSBTable)
     row.names(DCSBTable) <- NULL
-    names(DCSBTable) <- c("Biogeographic Region", "Species assemblage", "Map Reference number from publication")
+    names(DCSBTable) <- c("Biogeographic Region", "Significant Benthic Areas", "Map Reference Number from Publication")
   } else if (lang=="FR" & !is.null(DCSB_sf)) {
-    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, Label_Name,
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, significantBenthicAreas,
                                                                Map_Ref)))
     DCSBTable <- unique(DCSBTable)
-    names(DCSBTable) <- c("Région biogéographique", "Assemblage d'espèces", "Carte Numéro de référence de la publication")
+    names(DCSBTable) <- c("Région Biogéographique", "Zones Benthiques Importantes", "Carte Numéro de Référence de la Publication")
     row.names(DCSBTable) <- NULL
     
   }

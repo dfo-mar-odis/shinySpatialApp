@@ -19,7 +19,11 @@ if (globalControlEnv$updateGeoms) {
   data_sf <- esri2sf::esri2sf(esriUrl, bbox=regionBbox, progress = TRUE)
   dcsb_rr$data_sf <- sf::st_make_valid(data_sf)
   dcsb_rr$data_sf$Label_Name <- as.factor(dcsb_rr$data_sf$Label_Name)
-  dcsb_rr$attribute <- "Label_Name"
+  dcsb_rr$data_sf <- dcsb_rr$data_sf %>% 
+    dplyr::rename("significantBenthicAreas" = Label_Name) %>% 
+    dplyr::mutate(significantBenthicAreas = gsub('Significant Benthic Areas ','', significantBenthicAreas))
+
+  dcsb_rr$attribute <- "significantBenthicAreas"
 }
 
 dcsb_rr$metadata <- read_google_metadata("dcsb_rr", isOpenData = TRUE)
