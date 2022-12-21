@@ -200,7 +200,7 @@ create_table_MARFIS <- function(data_sf, speciesTable, sarTable) {
     dplyr::summarise_all(max)%>%
     base::subset(select = -c(NAFO))
   
-  cleanDf <- rename(finalDf, Common = SPECIES_NAME) %>%
+  cleanDf <- dplyr::rename(finalDf, Common = SPECIES_NAME) %>%
     dplyr::mutate(Common = stringr::str_to_sentence(Common))
   
   for (nafoStr in nafoList) {
@@ -241,13 +241,12 @@ create_table_ISDB <- function(data_sf, speciesTable, sarTable) {
   absentCode <- "&nbsp;-&nbsp;"
   presentCode <- "&#x2714;"
   
-  
   nafoList <- as.list(unique(data_sf$NAFO))
   # nafoList <- append(nafoList, "4WG")
   nafoSpeciesFilter <- dplyr::filter(speciesTable, NAFO %in% nafoList)
   # sometime for loops are just better and R apply's can go hide in a hole:
   for (nafoStr in nafoList) {
-    nafoSpeciesFilter[nafoStr] = nafoSpeciesFilter$NAFO == nafoStr
+    nafoSpeciesFilter[nafoStr] <- nafoSpeciesFilter$NAFO == nafoStr
   }
   
   finalDf <- nafoSpeciesFilter %>% 
@@ -255,7 +254,7 @@ create_table_ISDB <- function(data_sf, speciesTable, sarTable) {
     dplyr::summarise_all(max)%>%
     base::subset(select = -c(NAFO))
   
-  cleanDf <- rename(finalDf, Scientific = SCIENTIFIC) %>%
+  cleanDf <- dplyr::rename(finalDf, Scientific = SCIENTIFIC) %>%
     dplyr::rename(Common = COMMON) %>%
     dplyr::mutate(Scientific = stringr::str_to_sentence(Scientific)) %>%
     dplyr::mutate(Common = stringr::str_to_sentence(Common))
@@ -547,4 +546,86 @@ add_row_to_intro_summary <- function(introSummary, name, result) {
                                                   absentCode )))
   return(introSummary)
   
+}
+
+# ---------OECM_report-------
+# Generates table for Other Effective Area Based Conservation Measures data
+# Inputs:
+# OECM_sf: OECM data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+# Directly writes table
+#
+OECM_report <- function(OECM_sf, lang="EN") {
+  OECMTable <- NULL
+  if (lang=="EN" & !is.null(OECM_sf)) {
+    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(NAME_E, OBJECTIVE,
+                                                               PROHIBITIONS,REGION_E, URL_E)))
+    OECMTable <- unique(OECMTable)
+    row.names(OECMTable) <- NULL
+    names(OECMTable) <- c("Name", "Objective", "Prohibitions","Region", "Report url")
+  } else if (lang=="FR" & !is.null(OECM_sf)) {
+    OECMTable <- sf::st_drop_geometry(dplyr::select(OECM_sf, c(NAME_F, OBJECTIF, INTERDICTIONS,
+                                                               REGION_F, URL_F)))
+    OECMTable <- unique(OECMTable)
+    names(OECMTable) <- c("Nom", "Objectif", "Interdictions", "Region", "Rapport url")
+    row.names(OECMTable) <- NULL
+    
+  }
+  return(OECMTable)
+}
+
+# ---------DCSB_report-------
+# Generates table for Coral and Sponge Significant Benthic Areas in Eastern Canada data
+# Inputs:
+# DCSB_sf: DCSB data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+# Directly writes table
+#
+DCSB_report <- function(DCSB_sf, lang="EN") {
+  DCSBTable <- NULL
+  if (lang=="EN" & !is.null(DCSB_sf)) {
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, significantBenthicAreas,
+                                                               Map_Ref)))
+    DCSBTable <- unique(DCSBTable)
+    row.names(DCSBTable) <- NULL
+    names(DCSBTable) <- c("Biogeographic Region", "Significant Benthic Areas", "Map Reference Number from Publication")
+  } else if (lang=="FR" & !is.null(DCSB_sf)) {
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, significantBenthicAreas,
+                                                               Map_Ref)))
+    DCSBTable <- unique(DCSBTable)
+    names(DCSBTable) <- c("Région Biogéographique", "Zones Benthiques Importantes", "Carte Numéro de Référence de la Publication")
+    row.names(DCSBTable) <- NULL
+    
+  }
+  return(DCSBTable)
+}
+
+# ---------SUBSTRATE_report-------
+# Generates table for A substrate classification for the Inshore Scotian Shelf and Bay of Fundy, Maritimes Region data
+# Inputs:
+# SUBSTRATE_sf: Substrate data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+# Directly writes table
+#
+SUBSTRATE_report <- function(SUBSTRATE_sf, lang="EN") {
+  SUBSTRATETable <- NULL
+  if (lang=="EN" & !is.null(SUBSTRATE_sf)) {
+    SUBSTRATETable <- sf::st_drop_geometry(dplyr::select(SUBSTRATE_sf, c(All_Bottom_Type, Substrate)))
+    SUBSTRATETable <- unique(SUBSTRATETable)
+    row.names(SUBSTRATETable) <- NULL
+    names(SUBSTRATETable) <- c("Bottom Type", "Substrate")
+  } else if (lang=="FR" & !is.null(SUBSTRATE_sf)) {
+    SUBSTRATETable <- sf::st_drop_geometry(dplyr::select(SUBSTRATE_sf, c(All_Bottom_Type, Substrate)))
+    SUBSTRATETable <- unique(SUBSTRATETable)
+    names(SUBSTRATETable) <- c("Type de fond", "Substrat")
+    row.names(SUBSTRATETable) <- NULL
+    
+  }
+  return(SUBSTRATETable)
 }

@@ -20,11 +20,11 @@ if (FALSE) { #load in data:
 ### **Critical Habitat of Species at Risk** {#crithab-section}   
 
 ```{r crithab-load, include=FALSE}
-load_rdata(c("crithab_rr"), regionStr, env = environment())
+load_rdata(c("crithab_rr", "draftCritHab_rr"), regionStr, env = environment())
 ```
 
 ```{r crtihab-meta, results='asis'}
-write_meta(crithab_rr, "EN")
+write_meta(draftCritHab_rr, "EN")
 ```
 
 Dataset description from the Open Data record [@OpenData_SARcriticalhabitat]:
@@ -41,11 +41,13 @@ Critical habitat presented in this section are available in the Government of Ca
 # plotted with colour
 legendNameCrithab <- "Common Name"
 outputListCrithab <- master_intersect(crithab_rr$data_sf, mapDataList)
-
 critHabCheck <- !is.null(outputListCrithab$studyData)
 
 summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Critical Habitat](#crithab-section)", result=critHabCheck)
 
+
+outputListDraft <- master_intersect(draftCritHab_rr$data_sf, mapDataList)
+draftCheck <- !is.null(outputListDraft$studyData)
 
 ```
 
@@ -53,6 +55,13 @@ summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Critical
 if (critHabCheck) {
   critTable <- table_crit(outputListCrithab$studyData, "EN")  
   summaryHabTable <- add_to_hab_summary(summaryHabTable, "CH", "[SAR Critical Habitat](#crithab-section)", critTable, "Common Name", "Common Name")
+}
+```
+
+```{r draft-crithab-table-gen, echo=FALSE, results='asis'}
+if (draftCheck) {
+  draftTable <- table_crit(outputListDraft$studyData, "EN")  
+  summaryHabTable <- add_to_hab_summary(summaryHabTable, "CH", "[SAR Draft Critical Habitat](#crithab-section)", draftTable, "Common Name", "Common Name")
 }
 ```
 
@@ -86,6 +95,29 @@ if (!is.null(crithab_rr$data_sf)){
 if (!is.null(outputListCrithab$mapData)){
   plot_rr_sf(areaMap, outputListCrithab$mapData, crithab_rr$attribute,
              legendName = legendNameCrithab, outlines=FALSE, colorMap = critPlotList$colorMap)
+}  
+```
+
+```{r draft-crithab-table, echo=FALSE, results='asis'}
+if(draftCheck){
+  knitr::kable(draftTable, caption=paste(write_caption_blurb(draftCritHab_rr, "EN"), "Species at Risk listed as Endangered or Threatened under the Species at Risk Act [@SARA2002] with their critical habitat located within the search area. Critical habitat is defined under section 2 of SARA as, “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the Recovery Strategy or in an Action Plan for the species”. Critical habitat is identified in a species’ Recovery Strategy or Action Plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is <b>not</b> the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative SARA report."), booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
+}
+
+```
+<br>
+```{r draft-crithab-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "EN"), 'Critical habitat of Species at Risk listed as Endangered or Threatened under the Species at Risk Act [@SARA2002] in the Scotian Shelf Bioregion. Please see table above for complementary information. Critical habitat is defined under section 2 of SARA as, “the habitat that is necessary for the survival or recovery of a listed wildlife species and that is identified as the species’ critical habitat in the Recovery Strategy or in an Action Plan for the species.” Critical habitat is identified in a species’ Recovery Strategy or Action Plan, posted on the [SAR Public Registry](http://www.sararegistry.gc.ca). This is not the authoritative source or advice for Species at Risk data. Please access the Species at Risk [GIS tool](http://dfonl7swvgip001.ent.dfo-mpo.ca/Html5Viewer/index.html?viewer=NationalSARMap_EN&LayerTheme=0&locale=en-US) to create an authoritative report. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Dashed grey lines indicate international boundaries. Data were obtained from @OpenData_SARcriticalhabitat.')}
+if (!is.null(draftCritHab_rr$data_sf)){
+  draftPlotList <- plot_rr_sf(regionMap, draftCritHab_rr$data_sf,
+                             draftCritHab_rr$attribute, legendName = legendNameCrithab,
+                             outlines=FALSE, getColorMap=TRUE)
+  draftPlotList$polyMap
+}  
+```
+<br>
+```{r draft-crithab-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(crithab_rr, "EN"), 'Critical habitat of Species at Risk, listed as Endangered or Threatened under the Species at Risk Act (SARA), located within the search area (red outline). Data were obtained from @OpenData_SARcriticalhabitat.')}
+if (!is.null(outputListDraft$mapData)){
+  plot_rr_sf(areaMap, outputListDraft$mapData, draftCritHab_rr$attribute,
+             legendName = legendNameCrithab, outlines=FALSE, colorMap = draftPlotList$colorMap)
 }  
 ```
 

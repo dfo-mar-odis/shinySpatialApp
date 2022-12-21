@@ -7,14 +7,20 @@ source(here::here("config.R"))
 
 loadResult <- load_rdata(c("CommonData", "nbw_rr"), regionStr)
 
-# -----------NBW-------------- 
-nbwPkgId <- "9fd7d004-970c-11eb-a2f3-1860247f53e3"
-nbwResId <- "f69a7d34-7c18-485b-98d7-8d45b7f8a3ce"
+print("-----------NBW-------------- ")
+if (globalControlEnv$updateGeoms) {
+  nbwPkgId <- "9fd7d004-970c-11eb-a2f3-1860247f53e3"
 
-bwRefList <- list("en" = "<http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-eng.pdf>",
-                  "fr" = "<http://publications.gc.ca/collections/collection_2020/mpo-dfo/fs70-6/Fs70-6-2020-008-fra.pdf>")
+  nbw_rr <- get_opendata_rr(nbwPkgId)
+  
+  esriBase <- "https://gisp.dfo-mpo.gc.ca/arcgis/rest/services/FGP/Northern_Bottlenose_Whale_Important_Habitat_Eastern_Scotian_Shelf/MapServer/"
+  esriUrl <- paste0(esriBase, "0")
+  regionBbox <- sf::st_bbox(sf::st_transform(region_sf, 3857))
+  data_sf <- esri2sf::esri2sf(esriUrl, bbox=regionBbox, progress = TRUE)
+  nbw_rr$data_sf <- sf::st_make_valid(data_sf)
+}
 
-save_open_data(nbwPkgId, nbwResId, "nbw_rr", highQuality, localFileSavePath,
-               contactEmail = email_format("MaritimesRAP.XMAR\\@dfo-mpo.gc.ca"),  
-               region_sf = region_sf, gdbLayer = "NorthernBottlenoseWhale_InterCanyonHabitat",
-               reference = bwRefList)
+nbw_rr$metadata <- read_google_metadata("nbw_rr", isOpenData = TRUE)
+
+
+save(nbw_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/nbw_rr.RData"))

@@ -70,6 +70,7 @@ writeLines(Report_asf)
 
 <br>
 
+
 ```{r asf-table}
 if (!is.null(asfClipped$studyData)) {
   if (nrow(asfTable) > 0) {

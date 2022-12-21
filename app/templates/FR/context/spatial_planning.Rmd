@@ -6,3 +6,6 @@
 
 ```{r child = here::here("sections/conservationSites/conservationSites_fr.Rmd")}
 ```
+
+```{r child = here::here("sections/oecm/oecm_fr.Rmd")}
+```

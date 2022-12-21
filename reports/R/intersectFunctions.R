@@ -86,11 +86,12 @@ master_intersect <- function(data_sf, mapDataList, getRegion=FALSE, ...) {
       # duplicate geometries
       # for RV the ELAT and ELONG fields are necessary as well
       if (inherits(sf::st_geometry(data_sf), "sfc_POINT")) {
+        mapPoints <- sf::st_set_geometry(mapData, "geometry")
         if ("ELAT" %in% colnames(mapData)) {
-          mapPoints <- dplyr::select(mapData, ELAT, ELONG, geoms)
+          mapPoints <- dplyr::select(mapPoints, ELAT, ELONG, geometry)
         }
         else {
-          mapPoints <- dplyr::select(mapData, geoms)
+          mapPoints <- dplyr::select(mapPoints, geometry)
         }
         # remove redundant geometries and set lat/long columns:
         mapPoints <- unique(mapPoints)

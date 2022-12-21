@@ -11,24 +11,26 @@ write_meta <- function(rr, lang) {
   if (lang == "EN"){
     outText <- c(
       paste("Contact:", lang_check(metadata$contact, lang)),
-      ifelse("url" %in% names(metadata), paste("URL:", metadata$url$en), NA),
+      ifelse(!is.na(metadata$url$en), paste("URL:", metadata$url$en), NA),
       paste("Last retrieved on:", metadata$accessedOnStr$en),
-      ifelse("searchYears" %in% names(metadata), paste("Search Year:", metadata$searchYears), NA),
+      ifelse(!is.na(metadata$searchYears), paste("Search Year:", metadata$searchYears), NA),
       paste("Quality tier:", metadata$qualityTier$en),
       paste("Security level:", metadata$securityLevel$en), 
       paste("Data use constraints:", metadata$constraints$en),
-      ifelse("reference" %in% names(metadata), paste("Reference:", metadata$reference$en), NA)
+      ifelse(!is.na(metadata$reference$en), paste("Reference:", metadata$reference$en), NA),
+      ifelse(!is.na(metadata$pipelinePath), paste("Pipeline Path:", metadata$pipelinePath), NA)
     )
   } else if (lang == "FR") {
     outText <- c(
       paste("Personne-ressource:",lang_check(metadata$contact, lang)),
-      ifelse("url" %in% names(metadata), paste("LIEN:", metadata$url$fr), NA),
+      ifelse(!is.na(metadata$url$fr), paste("LIEN:", metadata$url$fr), NA),
       paste("Consulté le:", metadata$accessedOnStr$fr),
-      ifelse("searchYears" %in% names(metadata), paste("Année de recherche:", metadata$searchYears), NA),
+      ifelse(!is.na(metadata$searchYears), paste("Année de recherche:", metadata$searchYears), NA),
       paste("Niveau de qualité:", metadata$qualityTier$fr),
       paste("Niveau de sécurité:", metadata$securityLevel$fr), 
       paste("Contraintes d'usage:", metadata$constraints$fr),
-      ifelse("reference" %in% names(metadata), paste("Reference:", metadata$reference$fr), NA)
+      ifelse(!is.na(metadata$reference$fr), paste("Reference:", metadata$reference$fr), NA),
+      ifelse(!is.na(metadata$pipelinePath), paste("Pipeline de données:", metadata$pipelinePath), NA)
     )
   }
   outText <- outText[!is.na(outText)]
@@ -68,4 +70,10 @@ write_caption_blurb <- function(rr, lang, constraints=FALSE) {
   return(outText)
 }
 
+
+# --------------lang_list-----------------
+# Helper function that converts a string into a bilinugual list
+lang_list <- function(inValue) {
+  return(list("en" = inValue, "fr" = inValue))
+}
 
