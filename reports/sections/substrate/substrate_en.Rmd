@@ -62,12 +62,14 @@ if (!is.null(SUBSTRATETable)){
 
 ```{r SUBSTRATE-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(substrate_rr, "EN"), 'Map showing substrate classification for the Inshore Scotian Shelf and Bay of Fundy, Maritimes Region. The search area is shown as a red outline, and a more detailed view is shown in the figure below, if relevant data are present. Data were obtained from @OpenData_substrate.')}
 if (!is.null(SUBSTRATEoutput$regionData)){
-  plot_rr_sf(regionMap, SUBSTRATEoutput$regionData, substrate_rr$attribute)
+  substratePlotList <- plot_rr_sf(regionMap, SUBSTRATEoutput$regionData, substrate_rr$attribute, getColorMap = TRUE)
+  
+  substratePlotList$polyMap
 }
 ```
 
 ```{r SUBSTRATE-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(substrate_rr, "EN"), 'Map showing substrate classification for the Inshore Scotian Shelf and Bay of Fundy, Maritimes Region within the search area (red outline). Data were obtained from @OpenData_substrate.')}
 if(!is.null(SUBSTRATEoutput$studyData)){
-  plot_rr_sf(areaMap, SUBSTRATEoutput$mapData, substrate_rr$attribute)
+  plot_rr_sf(areaMap, SUBSTRATEoutput$mapData, substrate_rr$attribute, colorMap=substratePlotList$colorMap)
 }
 ```
