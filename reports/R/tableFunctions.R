@@ -576,3 +576,56 @@ OECM_report <- function(OECM_sf, lang="EN") {
   return(OECMTable)
 }
 
+# ---------DCSB_report-------
+# Generates table for Coral and Sponge Significant Benthic Areas in Eastern Canada data
+# Inputs:
+# DCSB_sf: DCSB data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+# Directly writes table
+#
+DCSB_report <- function(DCSB_sf, lang="EN") {
+  DCSBTable <- NULL
+  if (lang=="EN" & !is.null(DCSB_sf)) {
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, significantBenthicAreas,
+                                                               Map_Ref)))
+    DCSBTable <- unique(DCSBTable)
+    row.names(DCSBTable) <- NULL
+    names(DCSBTable) <- c("Biogeographic Region", "Significant Benthic Areas", "Map Reference Number from Publication")
+  } else if (lang=="FR" & !is.null(DCSB_sf)) {
+    DCSBTable <- sf::st_drop_geometry(dplyr::select(DCSB_sf, c(BioGeo_Reg, significantBenthicAreas,
+                                                               Map_Ref)))
+    DCSBTable <- unique(DCSBTable)
+    names(DCSBTable) <- c("Région Biogéographique", "Zones Benthiques Importantes", "Carte Numéro de Référence de la Publication")
+    row.names(DCSBTable) <- NULL
+    
+  }
+  return(DCSBTable)
+}
+
+# ---------SUBSTRATE_report-------
+# Generates table for A substrate classification for the Inshore Scotian Shelf and Bay of Fundy, Maritimes Region data
+# Inputs:
+# SUBSTRATE_sf: Substrate data clipped to area of interest
+# lang: "EN" or "FR", toggles language of data returned
+#
+# Outputs:
+# Directly writes table
+#
+SUBSTRATE_report <- function(SUBSTRATE_sf, lang="EN") {
+  SUBSTRATETable <- NULL
+  if (lang=="EN" & !is.null(SUBSTRATE_sf)) {
+    SUBSTRATETable <- sf::st_drop_geometry(dplyr::select(SUBSTRATE_sf, c(All_Bottom_Type, Substrate)))
+    SUBSTRATETable <- unique(SUBSTRATETable)
+    row.names(SUBSTRATETable) <- NULL
+    names(SUBSTRATETable) <- c("Bottom Type", "Substrate")
+  } else if (lang=="FR" & !is.null(SUBSTRATE_sf)) {
+    SUBSTRATETable <- sf::st_drop_geometry(dplyr::select(SUBSTRATE_sf, c(All_Bottom_Type, Substrate)))
+    SUBSTRATETable <- unique(SUBSTRATETable)
+    names(SUBSTRATETable) <- c("Type de fond", "Substrat")
+    row.names(SUBSTRATETable) <- NULL
+    
+  }
+  return(SUBSTRATETable)
+}
