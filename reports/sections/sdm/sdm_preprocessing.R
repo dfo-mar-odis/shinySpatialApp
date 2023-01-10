@@ -35,5 +35,4 @@ harbourPorpoise_rr <-get_opendata_rr(sdmPkgId, sdmResId, region_sf = region_sf,
 }
 harbourPorpoise_rr$metadata <- read_google_metadata("sdm_rr", isOpenData = TRUE)
 
-save(finWhale_rr, seiWhale_rr, humpbackWhale_rr, harbourPorpoise_rr, file = file.path(localFileSavePath, "Open/sdm_rr.RData"))
-
+save(finWhale_rr, seiWhale_rr, humpbackWhale_rr, harbourPorpoise_rr, file = file.path(get_file_save_path(globalControlEnv$saveToRemote), "Open/sdm_rr.RData"))
