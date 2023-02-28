@@ -20,7 +20,7 @@ To do a new request:
 - On the top left, select the tab 'Issues'
 - On the top right, select green tab 'New Issue'
 - Select 'RRRequests' and click 'Get Started'. This step will prompt you to add all the details of your requests. 
-- Please send an email to Quentin & Catalina. They will support next steps.
+- Please send an email to Jake Coates. He will support next steps.
 
 # How to use the App
 
