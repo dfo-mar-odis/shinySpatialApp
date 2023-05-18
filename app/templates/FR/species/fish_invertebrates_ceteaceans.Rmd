@@ -21,6 +21,9 @@ La présente section décrit les résultats tirés des sources de données suiva
 ```{r child = here::here("reports/sections/offshoreScallop/offshoreScallop_fr.Rmd")}
 ```
 
+```{r child = here::here("reports/sections/inshoreScallop/inshoreScallop_fr.Rmd")}
+```
+
 ```{r child = here::here("reports/sections/isdb-marfis/isdbMarfis_fr.Rmd")}
 ```
 

@@ -1,0 +1,126 @@
+---
+output:
+  bookdown::html_document2:
+    number_sections: FALSE
+    theme: paper
+bibliography: '`r here::here("app/data/mybiblio.bib")`'
+---
+
+```{r inshoreScallop-load-common, child = here::here("reports/sections/commonSections/commonIntro.Rmd")}
+```
+
+```{r eval=FALSE}
+if (FALSE) { 
+  # load in generic data, e.g.functions, study area, and base maps into the 
+  # environment, when knitting, these will be loaded through the child rmd.
+  lapply(list.files(here::here("reports/R"), pattern = ".[Rr]$", full.names = TRUE), source)
+  studyArea <- sf::st_read(here::here("app/output/geoms_slc.geojson"))
+  intro_setup(studyArea, env = environment())
+}
+```
+
+### **Pétoncles Inshore** {#inshore-scallop-section}
+
+```{r inshoreScallop-load, include=FALSE}
+# load in section specific data
+load_rdata(c("inshoreScallop_rr"), regionStr, env = environment())
+
+```
+
+```{r inshoreScallop-meta, results='asis'}
+# metadata blurb at start of each section
+write_meta(inshoreScallop_rr, "FR")
+```
+#This needs to be translated#
+The Inshore Scallop Survey collects data on the stocks of Sea Scallop (*Placopecten magellanicus*) in the Bay of Fundy and Approaches. These stocks correspond to the Fisheries and Oceans Canada (DFO) management units known as  Scallop Production Areas (SPAs) 1A, 1B and 4 (Bay of Fundy), SPA 5 (Annapolis Basin), SPA 2 (Bay of Fundy Approach), SPA 3 (Brier/Lurcher), SPA 6 (Grand Manan) and Scallop Fishing Area (SFA) 29 West. These surveys are partially conducted through Collaborative Agreements between DFO and various inshore scallop associations. The survey data are the primary source of fishery-independent information used in the Maritimes Region scallop stock assessments. The Inshore Scallop Survey Database (SCALLSUR) contains all data collected on the Inshore Scallop Stock Assessment Surveys.
+
+The Inshore Scallop Survey occurs between May and September annually since 1981 with few exceptions. Spatial coverage, survey designs and survey fishing gear have changed over time. At-sea survey activities are directed by the DFO Scientist onboard the survey vessel. DFO Science designs the survey, provides and manages scientific equipment, and validates, archives, and analyzes survey data.
+
+Currently, the gear used to conduct the survey includes 9 gang toothed miracle scallop gear with flat tire chaffers and are deployed from a commercial scallop dragger. Each drag is 2 ft by 1 ft. 2 drags are lined with 38 mm polypropylene stretch mesh, and the remaining 7 drags are unlined.
+
+At each station an approx. 800 meter tow at a speed of 2.5-3.5 knots is conducted. For each tow, information such as tow track, distance coefficient, start and end location, heading, tide cycle, depth, and amount of cable out are recorded in a logbook. Positional data is recorded using OLEX navigational software.
+
+With dividers installed on the table to ensure the catch per drag remains separated, the catch is dumped on the table. The volume of scallop catch in bushels for the lined (2) and all unlined (7) drags , the shell height frequency in the lined drags, and the shell height frequency in the unlined drags are recorded.
+
+A biological sample of scallops will be conducted if deemed appropriate by the DFO scientist onboard. A biological sample consists of 3 scallops per 5 mm size increment. The scallop is shucked, shell height is measured in mm, meats are weighed to the tenth of a gram using a Marel motion compensating scale and are recorded on deck sheets. Shells are retained for ageing at a later date.
+
+The survey bycatch sampling protocols have been refined since the start of the survey time series, with reliable collection start dates varying depending on study area and species. Currently, these protocols include the identification and measurement of all commercial fish species and Horse Mussels. Lobster, octopus and skate species are sexed and measured. Sea Cucumbers are counted.
+
+Data requests are subject to review and the terms of the Collaborative Agreement. Please contact Jessica Sameoto (DFO Inshore Scallop Biologist, Jessica.Sameoto@dfo-mpo.gc.ca) with details on your request, and you will be guided through the Inshore Scallop Survey data request process. 
+
+
+#### *Résultats des pétoncles inshore spécifiques à la zone*
+```{r inshoreScallop-results, include=FALSE, cache=FALSE}
+# clip the data to the Study and Map areas:
+osOutputList <- master_intersect(inshoreScallop_rr$data_sf, 
+                                              mapDataList, getRegion = TRUE)
+
+
+# summary intro table
+introResult <- !is.null(osOutputList$studyData)
+summaryIntroTable <- add_row_to_intro_summary(summaryIntroTable, name="[Inshore Scallop](#inshore-scallop-section)", result=introResult)
+
+# gen table:
+if (!is.null(osOutputList$studyData)) {
+  osStudyData <- sf::st_drop_geometry(osOutputList$studyData)
+  osTable <- osStudyData %>%
+  left_join(areaLabels) %>%
+  dplyr::select(year, name, TOW_NO) %>%
+  dplyr::group_by(year, name) %>%
+  dplyr::summarize(number_of_tows=n()) %>%
+  tidyr::pivot_wider(names_from = name, values_from = number_of_tows)
+  
+  names(osTable)[1]<-"Année"
+  
+}
+
+```
+
+```{r inshoreScallop-check, echo=FALSE, results='asis',}
+# Check if there is any data in the study area
+inshoreScallopReport <- if (is.null(osOutputList$studyData)) {
+  "* Il n'y a pas d'enregistrements pertinents de pétoncles côtiers pour cette zone de recherche."
+} else {
+  "* Il existe des enregistrements de pétoncles côtiers pertinents pour cette zone de recherche."
+}
+writeLines(noquote(inshoreScallopReport))
+```
+
+```{r inshoreScallop-region-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(inshoreScallop_rr, "FR"), "Carte montrant l'emplacement de la zone d'étude par rapport à la région des Maritimes du MPO. La ligne grise pointillée indique les frontières internationales.")}
+if (!is.null(osOutputList$regionData)) {
+  # common plotting function:
+  plot_rr_sf(regionMap, osOutputList$regionData, attribute = 
+               inshoreScallop_rr$attribute, labelData = areaLabels,
+             labelAttribute = "name")
+}
+```
+
+```{r inshoreScallop-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(inshoreScallop_rr, "FR"), "Carte montrant la zone de recherche définie par l'utilisateur (contour rouge) pour rechercher des informations et générer automatiquement ce rapport.")}
+if (!is.null(osOutputList$studyData)) {
+  
+  labelData <- dplyr::filter(areaLabels, AREA %in% osOutputList$mapData$AREA)
+  # common plotting function:
+  plot_rr_sf(areaMap, osOutputList$mapData, attribute = 
+               inshoreScallop_rr$attribute, labelData = labelData, 
+             labelAttribute = "name")
+}
+```
+<br>
+```{r inshoreScallop-table}
+if (!is.null(osOutputList$studyData)) {
+  if (nrow(osTable) > 0) {
+     options(knitr.kable.NA = '--')
+    knitr::kable(osTable, align = "l", caption = paste("\\label{tab:inshoreScallop_table}", write_caption_blurb(inshoreScallop_rr, "FR"), "Couverture spatiale et temporelle du relevé côtier du pétoncle, représentée en nombre de traits par année par banc pour la zone définie par l'utilisateur (contour rouge). L'absence d'enregistrement dans ce tableau doit être interprétée comme une absence de déclaration, pas nécessairement comme une absence de l'espèce dans la zone."), booktabs = T, escape = F, linesep = "") %>% kable_styling(bootstrap_options = "striped", full_width = T, position = "center")
+  }
+}
+```
+### Informations complémentaires: 
+
+[Pêche côtière du pétoncle - Région des Maritimes - 2015](https://www.dfo-mpo.gc.ca/fisheries-peches/ifmp-gmp/scallop-petoncle/scallop-petoncle2015-toc-fra.html)
+
+[Relevé d'évaluation des pétoncles côtiers de la région des Maritimes : Description technique détaillée. ](https://publications.gc.ca/collections/collection_2018/mpo-dfo/Fs97-6-3231-eng.pdf)
+
+[2022 Mise à jour de l’état du stock de pétoncles (Placopecten Magellanicus) des zones de production de pétoncles 1 à 6 de la baie de Fundy ](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ScR-RS/2022/2022_017-fra.html)
+
+[2022 Mise à jour de l’état du stock de pétoncles (Placopecten magellanicus) de la zone de pêche du pétoncle 29 à l’ouest de la longitude 65° 30’.](https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ScR-RS/2022/2022_042-fra.html)
+

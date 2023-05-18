@@ -27,6 +27,9 @@ openDataSecs <- c(here::here("reports/sections/benthicEffort/benthicEffort_prepr
                   here::here("reports/sections/rv/rv_preprocessing.R"),
                   here::here("reports/sections/sdm/sdm_preprocessing.R"),
                   here::here("reports/sections/waste/waste_preprocessing.R"),
+                  here::here("reports/sections/oecm/oecm_preprocessing.R"),
+                  here::here("reports/sections/substrate/substrate_preprocessing.R"),
+                  here::here("reports/sections/dcsb/dcsb_preprocessing.R"),
                   imSecs
 )
 
@@ -50,6 +53,7 @@ inDriveSecs <- c(here::here("reports/sections/commonSections/commonData_preproce
                  here::here("reports/sections/narwc/narwc_preprocessing.R"),
                  here::here("reports/sections/ocearch/ocearch_preprocessing.R"),
                  here::here("reports/sections/offshoreScallop/offshoreScallop_preprocessing.R"),
+                 here::here("reports/sections/inshoreScallop/inshoreScallop_preprocessing.R"),
                  #here::here("reports/sections/sardist/sardist_preprocessing.R"),
                  here::here("reports/sections/sturg/sturg_preprocessing.R"),
                  here::here("reports/sections/threats/ThreatsPreprocessing.R"),

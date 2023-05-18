@@ -28,7 +28,8 @@ rr_openDataList <- data.frame("rrStr" = c("ebsa_rr",
                                           "imSalmon_rr", "imSalmonRivers_rr",
                                           "imLobster_rr", "narWhale_rr", "snowCrab_rr",
                                           "ssClam_rr", "tuna_rr", "imAcoustic_rr",
-                                          "opprrpe_rr"))
+                                          "opprrpe_rr", "dcsb_rr", "substrate_rr",
+                                          "oecm_rr"))
 
 
 configMetadataSheetUrl <- "1lEhBikDNAec-X88q1C02Aw6lOP8gKOkUlDurMznOAOI"
