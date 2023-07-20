@@ -10,7 +10,7 @@ loadResult <- load_rdata(c("CommonData", "ilts_rr"), regionStr)
 # --------------------ILTS-----------------------------
 if (globalControlEnv$updateGeoms) {
     
-  ilts <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/InshoreLobsterTrawlSurvey/ILTS.csv"), stringsAsFactors = FALSE)
+  ilts <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/InshoreLobsterTrawlSurvey/ILTS_2022.csv"), stringsAsFactors = FALSE)
   # set = start, haul = end
   iltsSpeciesCode <- read.csv(file.path(fileLoadPath, "NaturalResources/Species/InshoreLobsterTrawlSurvey/SPECIESCODES.csv"), stringsAsFactors = FALSE)
   ilts <- dplyr::left_join(ilts, iltsSpeciesCode, by = "SPECIES_CODE")
