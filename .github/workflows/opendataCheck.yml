@@ -10,7 +10,7 @@ on:
         required: false
   schedule:
   # run at 10am every wednesday
-  - cron: "0 10 * * 3"
+  - cron: "0 10 1 1 *"
 
 jobs:
   open_data_check:
