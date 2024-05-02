@@ -184,8 +184,11 @@ create_sar_tables <- function(data_sf, sarTable, uniqueCols = c("geometry"), ext
 # 1. allSpeciesData: datatable of all species found within the studyArea
 # 2. sarData: datatable of only listed species found within the studyArea
 create_table_MARFIS <- function(data_sf, speciesTable, sarTable) {
-  absentCode <- "&nbsp;-&nbsp;"
-  presentCode <- "&#x2714;"
+  #absentCode <- "&nbsp;-&nbsp;"
+  #presentCode <- "&#x2714;"
+  
+  absentCode <- "\U2013"
+  presentCode <- "\U2714"
   
   nafoList <- as.list(unique(data_sf$NAFO))
   # nafoList <- append(nafoList, "4WG")
@@ -238,8 +241,11 @@ create_table_MARFIS <- function(data_sf, speciesTable, sarTable) {
 # 2. datatable2: datatable of only listed species found within the studyArea
 
 create_table_ISDB <- function(data_sf, speciesTable, sarTable) {
-  absentCode <- "&nbsp;-&nbsp;"
-  presentCode <- "&#x2714;"
+  #absentCode <- "&nbsp;-&nbsp;"
+  #presentCode <- "&#x2714;"
+  
+  absentCode <- "\U2013"
+  presentCode <- "\U2714"
   
   nafoList <- as.list(unique(data_sf$NAFO))
   # nafoList <- append(nafoList, "4WG")
@@ -454,9 +460,12 @@ add_col_to_whale_summary <- function(whaleSummary, dbName, data_sf, attribute) {
 # sarSummary: updated sarSummary with added column
 #
 add_col_to_sar_summary <- function(sarSummary, dbName, dataTable, indexCol, attributeCol) {
-  absentCode <- "&nbsp;-&nbsp;"
-  presentCode <- "&#x2714;"
+  #absentCode <- "&nbsp;-&nbsp;"
+  #presentCode <- "&#x2714;"
 
+  absentCode <- "\U2013"
+  presentCode <- "\U2714"
+  
   if (!is.null(dataTable)){
     if (indexCol == attributeCol) {
       dataTable <- distinct(dataTable, !!sym(indexCol))
@@ -534,8 +543,11 @@ isle_madame_table <- function(data_sf, cols, colnames){
 }
 
 add_row_to_intro_summary <- function(introSummary, name, result) {
-  absentCode <- "&nbsp;-&nbsp;"
-  presentCode <- "&#x2714;"
+  #absentCode <- "&nbsp;-&nbsp;"
+  #presentCode <- "&#x2714;"
+  
+  absentCode <- "\U2013"
+  presentCode <- "\U2714"
   
   rowNum <- nrow(introSummary) + 1
   
