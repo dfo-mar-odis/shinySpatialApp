@@ -115,10 +115,10 @@ if (file.exists(introTableFilePath)){
   if (is.data.frame(finalSummaryIntroTable)){
     if (nrow(finalSummaryIntroTable) > 0){
       
-      absentCode <- "&nbsp;-&nbsp;"
-      presentCode <- "&#x2714;"
+      absentCode <- "\U2013"
+      presentCode <- "\U2714"
 
-      finalSummaryIntroTable <-dplyr:: mutate_all(finalSummaryIntroTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+      #finalSummaryIntroTable <-dplyr:: mutate_all(finalSummaryIntroTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
       
       knitr::kable(finalSummaryIntroTable, align="l",
         caption = "Overview of which data sources queried have results within the study area", booktabs = T, escape = F, linesep="") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = T, position = "left")
@@ -153,14 +153,14 @@ This section is a work-in-progress. It summarizes available information of human
 
 ```{r threat-class-table}
 if (!is.null(rrEnv$haClassTable)) {
-  absentCode <- "&nbsp;-&nbsp;"
-  presentCode <- "&#x2714;"
+  absentCode <- "\U2013"
+      presentCode <- "\U2714"
   rrEnv$haClassTable[is.na(rrEnv$haClassTable)] <- FALSE
 
   rrEnv$haClassTable[rrEnv$haClassTable == FALSE] <- absentCode
   rrEnv$haClassTable[rrEnv$haClassTable == TRUE] <- presentCode
 
-  haClassTable <-dplyr:: mutate_all(rrEnv$haClassTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+  #haClassTable <-dplyr:: mutate_all(rrEnv$haClassTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
 
 }
 ```
@@ -175,22 +175,24 @@ knitr::kable(haClassTable, align="l", caption = "Classification of areas impacte
 This section summarizes available information of species presence within the search area. Results are reported for species listed by SARA, and/or assessed by COSEWIC, per each data source presented in this report. The absence of a species in this report should be interpreted as an absence of observation or reporting of the species within the search area, not necessarily as a true absence of the species. Unless otherwise specified, data were queried from 2010 to present. Please contact data providers if data outside of these ranges are required. Outputs are not suitable for real-time, dynamic spatial planning.
 
 ```{r sar-obs-summary-table}
-absentCode <- "&nbsp;-&nbsp;"
-presentCode <- "&#x2714;"
+absentCode <- "\U2013"
+      presentCode <- "\U2714"
 summarySarTable[is.na(summarySarTable)] <- absentCode
-formatedSarTable <-dplyr:: mutate_all(summarySarTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+formatedSarTable <- summarySarTable
+
+#formatedSarTable <- dplyr:: mutate_all(summarySarTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""), background = ifelse(. == presentCode, "green", ""), escape = FALSE))
 
 ```
 
 ```{r sar-hab-summary-table}
-  summaryHabTable[is.na(summaryHabTable)] <- "&nbsp;-&nbsp;"
+  summaryHabTable[is.na(summaryHabTable)] <- "\U2013"
 
   # add column for observations from sar table
   obsColumn <- apply(summarySarTable, 1, function(r) any(r %in% c(presentCode)))
   summaryHabTable$Obs <- ifelse(obsColumn, presentCode, absentCode)
 
-  summaryHabTable <- dplyr::mutate_all(summaryHabTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""),
-                  background = ifelse(. == presentCode, "green", ""), escape = FALSE))
+  #summaryHabTable <- dplyr::mutate_all(summaryHabTable, ~ kableExtra::cell_spec(., color = ifelse(. == presentCode, "white", ""),
+                  #background = ifelse(. == presentCode, "green", ""), escape = FALSE))
 
   names(summaryHabTable) <- c("Species", "COSEWIC", "SARA", "Observations", "SAR Range", "SDM", "Important Habitat", "Critical Habitat")
 
