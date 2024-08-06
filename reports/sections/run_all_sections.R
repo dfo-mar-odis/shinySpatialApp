@@ -54,6 +54,7 @@ inDriveSecs <- c(here::here("reports/sections/commonSections/commonData_preproce
                  here::here("reports/sections/ocearch/ocearch_preprocessing.R"),
                  here::here("reports/sections/offshoreScallop/offshoreScallop_preprocessing.R"),
                  here::here("reports/sections/inshoreScallop/inshoreScallop_preprocessing.R"),
+                 here::here("reports/sections/snowCrabTrawl/snowCrab_preprocessing.R"),
                  #here::here("reports/sections/sardist/sardist_preprocessing.R"),
                  here::here("reports/sections/sturg/sturg_preprocessing.R"),
                  here::here("reports/sections/threats/ThreatsPreprocessing.R"),
@@ -85,7 +86,7 @@ source_preprocessing_script <- function(scriptPath) {
 # create global env:
 source(here::here("config.R"))
 globalControlEnv$saveToRemote <- FALSE
-globalControlEnv$updateGeoms <- TRUE
+globalControlEnv$updateGeoms <- FALSE
 allSecs <- c(openDataSecs, egisSecs, apiSecs, inDriveSecs)
 
 if (FALSE) {

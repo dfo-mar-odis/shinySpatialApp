@@ -22,7 +22,8 @@ dat <- read.csv("R:/Science/BIODataSvc/IN/MSP/Data/NaturalResources/Species/Insh
     dplyr::select(year, month, AREA, TOW_NO, SLONG, SLAT) %>% #select required columns
     distinct() %>%
     sf::st_as_sf(coords=c("SLONG", "SLAT"), crs=4326) %>% #set coordinate system
-    sf::st_intersection(region_sf) #trim to region #This line is not working
+    dplyr::filter(year > 2012) #Trim data to the 10 year window
+    #sf::st_intersection(region_sf) #trim to region #This line is not working
   
   areaNames <- data.frame(AREA = c("Bay of Fundy", "Bay of Fundy Approach", "Brier/Lurcher", "Annapolis Basin", "Grand Manan", "SFA 29 West"), 
                           name = c("Bay of Fundy", "Bay of Fundy Approach", "Brier/Lurcher", "Annapolis Basin", "Grand Manan", "SFA 29 West"))
