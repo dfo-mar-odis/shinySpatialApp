@@ -88,6 +88,7 @@ if (!is.null(EBSAoutput$regionData)){
 }
 ```
 
+
 ```{r IMRPEBS-area-plot, fig.height=7, fig.width=11, fig.cap=paste(write_caption_blurb(IMRPebs_rr, "EN"), 'Map showing Ecologically and Biologically Significant Areas (EBSAs) within the search area (red outline). Data were obtained from @OpenData_ebsa.')}
 if(!is.null(EBSAoutput$studyData)){
   areaLabels <- EBSAoutput$mapData %>% dplyr::select(c("Name"))
